@@ -227,7 +227,13 @@
         <div class="field"><label>Description</label><textarea class="textarea">${project.description}</textarea></div>
         <div class="field">
           <label>Platform</label>
-          <select class="select"><option>LinkedIn</option><option disabled>X — coming soon</option></select>
+          <select class="select">
+            <option ${project.platform==='linkedin'?'selected':''}>LinkedIn</option>
+            <option ${project.platform==='x'?'selected':''}>X</option>
+            <option ${project.platform==='blog'?'selected':''}>Blog</option>
+            <option disabled>Instagram — coming soon</option>
+            <option disabled>Facebook — coming soon</option>
+          </select>
         </div>
         <hr class="divider" />
         <div class="flex items-center justify-between">

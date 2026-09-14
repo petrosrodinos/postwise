@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Organisation Settings · Signal</title>
+<link rel="stylesheet" href="assets/styles.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
+          background: 'var(--background)', foreground: 'var(--foreground)',
+          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
+      }
+    }
+  }
+</script>
+
+</head>
+<body data-page="settings" data-title="Organisation Settings" data-sub="">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar-root"></aside>
+
+    <div class="main-col">
+      <header class="topbar" id="topbar-root"></header>
+
+      <main class="content">
+
+        <div id="orgHeader"></div>
+
+        <div data-tabs="settingsTabScope" class="tabs mt-24">
+          <button class="tab is-active" data-tab-target="general">General</button>
+          <button class="tab" data-tab-target="members">Members</button>
+          <button class="tab" data-tab-target="billing">Billing</button>
+        </div>
+
+        <div id="settingsTabScope">
+          <div data-tab-panel="general"></div>
+          <div data-tab-panel="members" style="display:none;"></div>
+          <div data-tab-panel="billing" style="display:none;"></div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Invite member modal -->
+  <div class="overlay" id="inviteModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="card-title">Invite a member</div>
+        <button class="modal-close" onclick="closeOverlay('inviteModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label>Email address</label>
+          <input class="input" id="inviteEmail" placeholder="teammate@company.com" />
+        </div>
+        <div class="field">
+          <label>Role</label>
+          <select class="select" id="inviteRole">
+            <option value="ADMIN">Admin — manages members, assets and channels</option>
+            <option value="MEMBER" selected>Member — drafts, schedules and publishes content</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeOverlay('inviteModal')">Cancel</button>
+        <button class="btn btn-brass" onclick="sendInvite()">Send invite</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remove member confirmation -->
+  <div class="overlay" id="removeMemberModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="card-title">Remove member</div>
+        <button class="modal-close" onclick="closeOverlay('removeMemberModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm" id="removeMemberCopy">Are you sure you want to remove this member? They will immediately lose access to Acme Inc.</p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeOverlay('removeMemberModal')">Cancel</button>
+        <button class="btn btn-danger-ghost" onclick="confirmRemoveMember()">Remove member</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/nav.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const ws = getActiveWorkspace();
+    const roleLabel = { OWNER:'Owner', ADMIN:'Admin', MEMBER:'Member' };
+    let members = ORG_MEMBERS.map(m => ({...m}));
+    let pendingRemoveId = null;
+
+    document.getElementById('orgHeader').innerHTML = `
+      <a href="index.html" class="text-sm text-muted" style="display:inline-flex; align-items:center; gap:6px; margin-bottom:14px;">← Back to dashboard</a>
+      <div class="flex items-start justify-between" style="flex-wrap:wrap; gap:16px;">
+        <div class="flex items-center gap-14">
+          <div class="avatar" style="width:44px; height:44px; font-size:15px; border-radius:12px;">${initials(ws.name)}</div>
+          <div>
+            <div class="flex items-center gap-8 mb-4">
+              <h1 style="font-size:22px;">${ws.name}</h1>
+              ${ws.kind==='organisation' ? '<span class="tag tag-brass">Organisation</span>' : '<span class="tag">Personal account</span>'}
+            </div>
+            <p class="text-muted">${ws.kind==='organisation' ? `${ws.plan} plan · ${ws.seats.used} of ${ws.seats.total} seats used` : 'Not part of a shared workspace'}</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.querySelector('[data-tab-panel="general"]').innerHTML = `
+      <div class="card card-pad mt-20" style="max-width:640px;">
+        <div class="field"><label>Organisation name</label><input class="input" id="orgNameInput" value="${ws.name}" /></div>
+        <div class="field">
+          <label>Slug <span class="text-muted" style="font-weight:400;">— used in shareable links</span></label>
+          <input class="input" value="acme-inc" />
+        </div>
+        <div class="field">
+          <label>Logo</label>
+          <div class="flex items-center gap-12">
+            <div class="avatar" style="width:44px; height:44px; border-radius:12px;">${initials(ws.name)}</div>
+            <button class="btn btn-secondary btn-sm">Upload logo</button>
+          </div>
+        </div>
+        <hr class="divider" />
+        <div class="flex items-center justify-between">
+          <div>
+            <div style="font-weight:600; font-size:14px; color:var(--coral);">Delete organisation</div>
+            <div class="text-xs text-muted" style="max-width:420px;">Permanently deletes ${ws.name} along with its posts, brand assets and connected channels. Members are removed. This cannot be undone.</div>
+          </div>
+          <button class="btn btn-danger-ghost btn-sm">Delete</button>
+        </div>
+      </div>
+      <p class="text-xs text-muted mt-12" style="max-width:640px;">Only the organisation Owner can rename, delete or transfer ownership of this workspace.</p>
+    `;
+
+    function renderMembers(){
+      document.querySelector('[data-tab-panel="members"]').innerHTML = `
+        <div class="flex items-center justify-between mt-20 mb-16">
+          <p class="text-sm text-muted" style="max-width:480px;">People with access to ${ws.name}'s posts, brand assets and connected channels.</p>
+          <button class="btn btn-brass" onclick="openOverlay('inviteModal')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            Invite member
+          </button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Member</th><th>Role</th><th>Status</th><th>Joined</th><th></th></tr></thead>
+              <tbody>
+                ${members.map(m => `
+                  <tr>
+                    <td>
+                      <div class="flex items-center gap-10">
+                        <div class="avatar-sm" style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff;">${m.avatar}</div>
+                        <div>
+                          <div class="cell-strong">${m.name}</div>
+                          <div class="text-xs text-muted">${m.email}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      ${m.role === 'OWNER'
+                        ? `<span class="tag tag-brass">Owner</span>`
+                        : `<select class="select" style="width:130px; padding:6px 10px; font-size:12.5px;" onchange="changeRole('${m.id}', this.value)">
+                            <option value="ADMIN" ${m.role==='ADMIN'?'selected':''}>Admin</option>
+                            <option value="MEMBER" ${m.role==='MEMBER'?'selected':''}>Member</option>
+                          </select>`}
+                    </td>
+                    <td><span class="tag ${m.status==='ACTIVE'?'tag-teal':'tag-coral'}">${m.status==='ACTIVE'?'Active':'Invited'}</span></td>
+                    <td class="cell-muted">${m.joined}</td>
+                    <td>${m.role==='OWNER' ? '' : `<button class="btn btn-ghost btn-sm" onclick="askRemoveMember('${m.id}')">Remove</button>`}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+    renderMembers();
+
+    document.querySelector('[data-tab-panel="billing"]').innerHTML = `
+      <div class="grid" style="grid-template-columns:2fr 1fr; margin-top:20px; align-items:flex-start;">
+        <div class="card card-pad">
+          <div class="card-head">
+            <div>
+              <div class="card-eyebrow">Current plan</div>
+              <div class="card-title">${ws.plan} plan</div>
+            </div>
+            <span class="tag tag-teal">Active</span>
+          </div>
+          <p class="text-sm text-muted mb-16">Billing covers every member of ${ws.name} — there is one subscription per organisation, not per person.</p>
+          <div class="flex items-center justify-between text-sm mb-8">
+            <span>Seats used</span>
+            <span style="font-weight:600;">${ws.seats.used} of ${ws.seats.total}</span>
+          </div>
+          <div class="progress-track mb-16"><div class="progress-fill" style="width:${(ws.seats.used/ws.seats.total)*100}%;"></div></div>
+          <div class="flex gap-10">
+            <button class="btn btn-brass" onclick="toast('Plan management is coming soon in this preview.')">Change plan</button>
+            <button class="btn btn-secondary" onclick="toast('Opening billing portal is coming soon in this preview.')">Manage billing</button>
+          </div>
+        </div>
+        <div class="card card-pad">
+          <div class="card-title mb-12">Next invoice</div>
+          <div class="stat-value" style="font-size:24px;">$249.00</div>
+          <div class="text-xs text-muted mt-8">Due Oct 1, 2026 · 10 seats</div>
+        </div>
+      </div>
+      <p class="text-xs text-muted mt-16" style="max-width:640px;">Only the organisation Owner can view invoices, change plans or update the payment method.</p>
+    `;
+
+    function sendInvite(){
+      const email = document.getElementById('inviteEmail').value.trim();
+      const role = document.getElementById('inviteRole').value;
+      if(!email){ toast('Enter an email address to invite.'); return; }
+      members.push({
+        id:'m' + (members.length + 1),
+        name: email.split('@')[0].replace(/[._]/g,' ').replace(/\b\w/g, c => c.toUpperCase()),
+        email, role, status:'INVITED', avatar: initials(email), joined:'Invited just now',
+      });
+      renderMembers();
+      closeOverlay('inviteModal');
+      document.getElementById('inviteEmail').value = '';
+      toast(`Invitation sent to ${email}.`);
+    }
+
+    function changeRole(id, role){
+      const m = members.find(x => x.id === id);
+      if(m){ m.role = role; toast(`${m.name} is now ${roleLabel[role]}.`); }
+    }
+
+    function askRemoveMember(id){
+      pendingRemoveId = id;
+      const m = members.find(x => x.id === id);
+      document.getElementById('removeMemberCopy').textContent = `Are you sure you want to remove ${m.name}? They will immediately lose access to ${ws.name}.`;
+      openOverlay('removeMemberModal');
+    }
+
+    function confirmRemoveMember(){
+      const m = members.find(x => x.id === pendingRemoveId);
+      members = members.filter(x => x.id !== pendingRemoveId);
+      renderMembers();
+      closeOverlay('removeMemberModal');
+      if(m) toast(`${m.name} was removed from ${ws.name}.`);
+    }
+  </script>
+</body>
+</html>

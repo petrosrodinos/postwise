@@ -55,6 +55,24 @@ const STYLE_PROFILES = [
     vocab:['stop doing this','hot take','said no one ever','plot twist'],
     pillars:['Sales','Personal brand'],
   },
+  {
+    id:'sp-07', name:'Thread Builder', source:'x.com/kenji_ships', platform:'x',
+    posts:47, updated:'4 days ago',
+    traits:{ tone:60, structure:85, hooks:80, vocabulary:55, rhythm:72 },
+    tone:'Punchy numbered threads that open with a bold claim and unpack it one tweet at a time, each line able to stand alone.',
+    hook:'Numbered thread opener',
+    vocab:['1/','here\'s the thread','a quick breakdown','tl;dr'],
+    pillars:['Build in public','Product decisions'],
+  },
+  {
+    id:'sp-08', name:'Technical Deep-Diver', source:'blog.acme.io/engineering', platform:'blog',
+    posts:22, updated:'1 week ago',
+    traits:{ tone:30, structure:90, hooks:40, vocabulary:78, rhythm:35 },
+    tone:'Long-form, precise and example-driven — opens with the problem, walks through the investigation, and ends with a concrete takeaway.',
+    hook:'Problem statement opener',
+    vocab:['the root cause was','here\'s the trade-off','in production, this meant','the fix was simpler than expected'],
+    pillars:['Engineering','Architecture','Case studies'],
+  },
 ];
 
 const PROJECTS = [
@@ -90,10 +108,55 @@ const PROJECTS = [
     counts:{ draft:1, review:0, ready:3, scheduled:1, published:6 },
     updated:'Updated 5 days ago',
   },
+  {
+    id:'pr-05', title:'Build in Public — X threads', platform:'x',
+    description:'Daily and weekly X threads chronicling product decisions and metrics for an engaged founder audience.',
+    pillars:['Build in public','Product decisions','Metrics'],
+    styleProfiles:['sp-07'],
+    counts:{ draft:3, review:1, ready:2, scheduled:4, published:5 },
+    updated:'Updated 6h ago',
+  },
+  {
+    id:'pr-06', title:'Engineering Blog — Deep Dives', platform:'blog',
+    description:'Long-form technical articles for the company blog that establish engineering credibility and support SEO.',
+    pillars:['Engineering','Architecture','Case studies'],
+    styleProfiles:['sp-08'],
+    counts:{ draft:2, review:1, ready:0, scheduled:1, published:4 },
+    updated:'Updated yesterday',
+  },
 ];
 
+// Organisations (workspaces) — a user can act inside a personal account or a
+// shared Organisation with its own members, billing and connected channels.
+const WORKSPACES = [
+  { id:'ws-acme', kind:'organisation', name:'Acme Inc', role:'OWNER', plan:'Team', seats:{ used:4, total:10 } },
+  { id:'ws-personal', kind:'personal', name:'Mira Kessler', role:null },
+];
+
+const ORG_MEMBERS = [
+  { id:'m1', name:'Mira Kessler', email:'mira@acme.io', role:'OWNER', status:'ACTIVE', avatar:'MK', joined:'Jan 12, 2026' },
+  { id:'m2', name:'Theo Lindqvist', email:'theo@acme.io', role:'ADMIN', status:'ACTIVE', avatar:'TL', joined:'Feb 3, 2026' },
+  { id:'m3', name:'Priya Shah', email:'priya@acme.io', role:'MEMBER', status:'ACTIVE', avatar:'PS', joined:'Mar 21, 2026' },
+  { id:'m4', name:'Jordan Metz', email:'jordan@acme.io', role:'MEMBER', status:'INVITED', avatar:'JM', joined:'Invited 2 days ago' },
+];
+
+function initials(name){
+  return name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+
+function getActiveWorkspace(){
+  const id = (typeof localStorage!=='undefined' && localStorage.getItem('signal_workspace')) || WORKSPACES[0].id;
+  return WORKSPACES.find(w => w.id === id) || WORKSPACES[0];
+}
+
+function setActiveWorkspace(id){
+  if(typeof localStorage!=='undefined') localStorage.setItem('signal_workspace', id);
+}
+
 const ACTIVITY = [
+  { type:'schedule', text:'Scheduled a 7-part X thread for <b>Build in Public — X threads</b>', time:'8 min ago' },
   { type:'generate', text:'Generated 6 new drafts for <b>Q4 Thought Leadership</b> using Contrarian Operator', time:'12 min ago' },
+  { type:'review', text:'Blog draft <i>"A practical guide to feature flags at scale"</i> moved to Pending Review in <b>Engineering Blog — Deep Dives</b>', time:'40 min ago' },
   { type:'analysis', text:'Finished analyzing 40 posts from <b>linkedin.com/in/nora-vance</b> — Style DNA ready', time:'1h ago' },
   { type:'publish', text:'Post <i>"The best engineers I\'ve hired all had this one habit"</i> published', time:'3h ago' },
   { type:'review', text:'2 drafts moved to Pending Review in <b>Product Launch — Pulse 2.0</b>', time:'6h ago' },
@@ -106,7 +169,7 @@ function styleProfileById(id){
 }
 
 function platformGlyph(platform){
-  const map = { linkedin:['in','pg-linkedin'], x:['X','pg-x'], instagram:['ig','pg-instagram'], facebook:['f','pg-facebook'] };
+  const map = { linkedin:['in','pg-linkedin'], x:['X','pg-x'], blog:['B','pg-blog'], instagram:['ig','pg-instagram'], facebook:['f','pg-facebook'] };
   const [label, cls] = map[platform] || map.linkedin;
   return `<span class="platform-glyph ${cls}">${label}</span>`;
 }
@@ -178,6 +241,10 @@ const CALENDAR_POSTS = [
   { day:18, title:'Customers keep asking for this Pulse 2.0 feature. Here\'s why we said no.', platform:'linkedin', status:'scheduled', project:'Product Launch — Pulse 2.0' },
   { day:22, title:'Month 14: the round we almost didn\'t close', platform:'linkedin', status:'draft', project:'Founder Story Arc' },
   { day:25, title:'Stop hiring for "10x engineers." Hire for this instead.', platform:'linkedin', status:'scheduled', project:'Hiring Season Push' },
+  { day:8, title:'Thread: the pricing page rewrite, in 7 posts', platform:'x', status:'scheduled', project:'Build in Public — X threads' },
+  { day:15, title:'How we cut our p95 API latency by 60% without a rewrite', platform:'blog', status:'draft', project:'Engineering Blog — Deep Dives' },
+  { day:20, title:'Thread: what breaks first when you 10x signups', platform:'x', status:'scheduled', project:'Build in Public — X threads' },
+  { day:27, title:'A practical guide to feature flags at scale', platform:'blog', status:'review', project:'Engineering Blog — Deep Dives' },
 ];
 
 const GENERATED_POSTS = [
@@ -191,6 +258,10 @@ const GENERATED_POSTS = [
   { id:'g8', run:'r4', project:'pr-03', styleProfile:'sp-04', status:'published', title:'Week 3 of building in public: the pricing page rewrite', body:'We almost didn\'t ship this. Three rewrites, one very honest Slack thread, and a pricing page that finally makes sense...', hook:'In-the-moment story', updated:'3 days ago' },
   { id:'g9', run:'r5', project:'pr-04', styleProfile:'sp-06', status:'ready', title:'The interview question that predicts retention better than any other', body:'Hot take: "where do you see yourself in 5 years" is a wasted question. Ask this instead...', hook:'One-line declaration', updated:'6h ago' },
   { id:'g10', run:'r6', project:'pr-04', styleProfile:'sp-01', status:'published', title:'Unpopular opinion: your culture deck is not your culture', body:'Let\'s be honest — nobody has ever quit a job because the values weren\'t laminated. Here\'s what actually keeps people...', hook:'Contrarian claim', updated:'4 days ago' },
+  { id:'g11', run:'r7', project:'pr-05', styleProfile:'sp-07', status:'draft', title:'Thread: the pricing page rewrite, in 7 posts', body:'1/ We rewrote our pricing page for the third time this year. Here\'s the messy version of why the first two attempts failed...', hook:'Numbered thread opener', updated:'3h ago' },
+  { id:'g12', run:'r7', project:'pr-05', styleProfile:'sp-07', status:'scheduled', title:'Thread: what breaks first when you 10x signups', body:'1/ Everyone warns you about scaling infra. Nobody warns you about scaling support. Here\'s what broke first...', hook:'Numbered thread opener', updated:'1 day ago' },
+  { id:'g13', run:'r8', project:'pr-06', styleProfile:'sp-08', status:'draft', title:'How we cut our p95 API latency by 60% without a rewrite', body:'The root cause was never the algorithm — it was three sequential calls that could run in parallel. Here\'s how we found it, and the two other changes that mattered most...', hook:'Problem statement opener', updated:'5h ago' },
+  { id:'g14', run:'r8', project:'pr-06', styleProfile:'sp-08', status:'review', title:'A practical guide to feature flags at scale', body:'In production, this meant treating feature flags as a first-class part of the architecture, not an afterthought bolted onto CI. Here\'s the system we landed on...', hook:'Problem statement opener', updated:'2 days ago' },
 ];
 
 // A generation is one AI Generation run within a project: a batch of posts
@@ -202,6 +273,8 @@ const GENERATION_RUNS = [
   { id:'r4', project:'pr-03', styleProfile:'sp-04', createdAt:'Sep 13', label:'Batch #6' },
   { id:'r5', project:'pr-04', styleProfile:'sp-06', createdAt:'Sep 9', label:'Batch #3' },
   { id:'r6', project:'pr-04', styleProfile:'sp-01', createdAt:'Sep 6', label:'Batch #2' },
+  { id:'r7', project:'pr-05', styleProfile:'sp-07', createdAt:'Sep 13', label:'Batch #2' },
+  { id:'r8', project:'pr-06', styleProfile:'sp-08', createdAt:'Sep 12', label:'Batch #3' },
 ];
 
 const AUTOMATIONS = [

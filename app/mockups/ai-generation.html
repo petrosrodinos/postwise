@@ -59,7 +59,13 @@
             </div>
             <div class="field">
               <label>Platform</label>
-              <select class="select"><option>LinkedIn</option><option disabled>X — coming soon</option></select>
+              <select class="select" id="platformSelect">
+                <option>LinkedIn</option>
+                <option>X</option>
+                <option>Blog</option>
+                <option disabled>Instagram — coming soon</option>
+                <option disabled>Facebook — coming soon</option>
+              </select>
             </div>
             <div class="field" style="margin-bottom:6px;">
               <label>Draw from</label>
@@ -110,6 +116,9 @@
 
     document.getElementById('styleSelect').innerHTML = project.styleProfiles.map(id => `<option value="${id}">${styleProfileById(id).name}</option>`).join('');
     if(run) document.getElementById('styleSelect').value = run.styleProfile;
+
+    const platformLabel = { linkedin:'LinkedIn', x:'X', blog:'Blog' };
+    document.getElementById('platformSelect').value = platformLabel[project.platform] || 'LinkedIn';
 
     const statusLabel = { draft:'Draft', review:'Pending review', ready:'Ready', scheduled:'Scheduled', published:'Published' };
     let currentPosts;

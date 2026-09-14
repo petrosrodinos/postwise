@@ -10,6 +10,7 @@ const ICONS = {
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke-linecap="round"/></svg>',
   analytics: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V10M11 20V4M18 20v-7" stroke-linecap="round"/></svg>',
   automation: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M4.2 7.5l2.6 1.5M17.2 15l2.6 1.5M4.2 16.5l2.6-1.5M17.2 9l2.6-1.5" stroke-linecap="round"/></svg>',
+  org: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 21V7l8-4 8 4v14" stroke-linejoin="round"/><path d="M4 21h16M9 21v-6h6v6" stroke-linejoin="round"/></svg>',
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 10a6 6 0 1 1 12 0c0 4 1.5 5.5 1.5 5.5H4.5S6 14 6 10Z"/><path d="M9.5 18a2.5 2.5 0 0 0 5 0"/></svg>',
   search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21" stroke-linecap="round"/></svg>',
   plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>',
@@ -21,7 +22,7 @@ const NAV_SECTIONS = [
   ]},
   { label:'Intelligence', items:[
     { id:'analysis', label:'Content Analysis', href:'content-analysis.html', icon:'analysis' },
-    { id:'profiles', label:'Style Profiles', href:'style-profiles.html', icon:'dna', badge:'6' },
+    { id:'profiles', label:'Style Profiles', href:'style-profiles.html', icon:'dna', badge:'8' },
   ]},
   { label:'Create', items:[
     { id:'projects', label:'Projects', href:'projects.html', icon:'projects' },
@@ -31,6 +32,9 @@ const NAV_SECTIONS = [
     { id:'calendar', label:'Calendar', href:'calendar.html', icon:'calendar' },
     { id:'analytics', label:'Analytics', href:'analytics.html', icon:'analytics' },
     { id:'automation', label:'Automation', href:'automation.html', icon:'automation' },
+  ]},
+  { label:'Settings', items:[
+    { id:'settings', label:'Organisation', href:'settings.html', icon:'org' },
   ]},
 ];
 
@@ -48,6 +52,8 @@ function renderSidebar(activePage){
     </div>
   `).join('');
 
+  const ws = getActiveWorkspace();
+
   return `
     <div class="brand">
       <div class="brand-mark"></div>
@@ -56,16 +62,35 @@ function renderSidebar(activePage){
     ${sections}
     <div class="sidebar-foot">
       <div class="platform-pill-row" title="Connected platforms">
-        <div class="mini-platform active">in</div>
-        <div class="mini-platform">X</div>
-        <div class="mini-platform">ig</div>
-        <div class="mini-platform">f</div>
+        <div class="mini-platform active" title="LinkedIn">in</div>
+        <div class="mini-platform active" title="X">X</div>
+        <div class="mini-platform active" title="Blog">B</div>
+        <div class="mini-platform" title="Instagram — coming soon">ig</div>
+        <div class="mini-platform" title="Facebook — coming soon">f</div>
       </div>
-      <div class="user-chip">
-        <div class="avatar">MK</div>
-        <div>
-          <div class="user-chip-name">Mira Kessler</div>
-          <div class="user-chip-role">Growth workspace</div>
+      <div class="ws-switcher">
+        <button class="user-chip ws-trigger" id="wsTrigger" onclick="toggleWorkspaceMenu(event)">
+          <div class="avatar">${initials(ws.name)}</div>
+          <div style="flex:1; min-width:0; text-align:left;">
+            <div class="user-chip-name">${ws.name}</div>
+            <div class="user-chip-role">${ws.kind==='organisation' ? `${ws.role} · Organisation` : 'Personal account'}</div>
+          </div>
+          <svg class="ws-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M7 10l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="ws-menu" id="wsMenu">
+          <div class="ws-menu-label">Workspaces</div>
+          ${WORKSPACES.map(w => `
+            <button class="ws-menu-item ${w.id===ws.id?'is-active':''}" onclick="selectWorkspace('${w.id}')">
+              <div class="avatar-xs">${initials(w.name)}</div>
+              <span>${w.name}</span>
+              ${w.id===ws.id ? '<span class="ws-check">✓</span>' : ''}
+            </button>
+          `).join('')}
+          <div class="ws-menu-divider"></div>
+          <a class="ws-menu-item" href="settings.html">Organisation settings</a>
+          <button class="ws-menu-item" onclick="closeWorkspaceMenu(); toast('Creating additional organisations is coming soon.')">+ New organisation</button>
+          <div class="ws-menu-divider"></div>
+          <button class="ws-menu-item ws-menu-danger" onclick="toast('Signed out (preview only).')">Sign out</button>
         </div>
       </div>
     </div>
@@ -81,7 +106,8 @@ function renderTopbar(title, sub){
     <div class="topbar-spacer"></div>
     <div class="platform-switch" id="platformSwitch">
       <button class="is-active" data-platform="linkedin"><span class="dot" style="color:#0A66C2"></span>LinkedIn</button>
-      <button class="is-soon" data-platform="x">X</button>
+      <button data-platform="x"><span class="dot" style="color:#0E1013"></span>X</button>
+      <button data-platform="blog"><span class="dot" style="color:#2E6B5E"></span>Blog</button>
       <button class="is-soon" data-platform="instagram">Instagram</button>
       <button class="is-soon" data-platform="facebook">Facebook</button>
     </div>
@@ -110,7 +136,7 @@ function initShell(){
     switchEl.querySelectorAll('button').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         if(btn.classList.contains('is-soon')){
-          toast(`${btn.textContent.trim()} support is coming soon — LinkedIn is live today.`);
+          toast(`${btn.textContent.trim()} support is coming soon — LinkedIn, X and Blog are live today.`);
           return;
         }
         switchEl.querySelectorAll('button').forEach(b=>b.classList.remove('is-active'));
@@ -118,6 +144,32 @@ function initShell(){
       });
     });
   }
+
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('wsMenu');
+    const trigger = document.getElementById('wsTrigger');
+    if(menu && menu.classList.contains('is-open') && !menu.contains(e.target) && trigger && !trigger.contains(e.target)){
+      menu.classList.remove('is-open');
+    }
+  });
+}
+
+function toggleWorkspaceMenu(e){
+  e.stopPropagation();
+  document.getElementById('wsMenu')?.classList.toggle('is-open');
+}
+
+function closeWorkspaceMenu(){
+  document.getElementById('wsMenu')?.classList.remove('is-open');
+}
+
+function selectWorkspace(id){
+  const ws = WORKSPACES.find(w => w.id === id);
+  if(!ws) return;
+  setActiveWorkspace(id);
+  const sidebarRoot = document.getElementById('sidebar-root');
+  if(sidebarRoot) sidebarRoot.innerHTML = renderSidebar(document.body.getAttribute('data-page') || '');
+  toast(`Switched to ${ws.name}.`);
 }
 
 function toast(message){

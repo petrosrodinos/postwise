@@ -7,6 +7,7 @@ Using:
 - `docs/Product_Specification.md`
 - `api/prisma/schema.prisma`
 - The `.cursor\rules\app-code-structure-and-best-practices.mdc`
+- The complete api functionality
 - The current frontend application and its existing pages, components, routes, navigation, and UI patterns
 
 create and maintain a complete, implementation-ready frontend documentation system **and** a master implementation progress roadmap.
