@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Style Profiles · Signal</title>
+<link rel="stylesheet" href="assets/styles.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
+          background: 'var(--background)', foreground: 'var(--foreground)',
+          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
+      }
+    }
+  }
+</script>
+
+</head>
+<body data-page="profiles" data-title="Style Profiles" data-sub="Reusable Style DNA extracted from creators you've analyzed">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar-root"></aside>
+
+    <div class="main-col">
+      <header class="topbar" id="topbar-root"></header>
+
+      <main class="content">
+
+        <div class="flex items-center justify-between mb-20">
+          <p class="text-muted" style="max-width:560px;">Each profile is a reusable fingerprint of how a creator writes — tone, structure, hooks and vocabulary — trained from their own published posts.</p>
+          <a href="content-analysis.html" class="btn btn-brass">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            Analyze a new creator
+          </a>
+        </div>
+
+        <div class="grid grid-3" id="profilesGrid"></div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Detail drawer -->
+  <div class="drawer-overlay" id="profileOverlay"></div>
+  <div class="drawer drawer-lg" id="profileDrawer">
+    <div id="profileDrawerContent"></div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/nav.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const traitCopy = {
+      tone:'Tone', structure:'Structure', hooks:'Hooks', vocabulary:'Vocabulary', rhythm:'Rhythm'
+    };
+
+    function profileCard(sp){
+      return `
+        <div class="card card-pad" style="cursor:pointer;" onclick="showProfile('${sp.id}')">
+          <div class="flex items-center justify-between mb-12">
+            <div class="flex items-center gap-10">
+              <div class="avatar-sm" style="width:28px;height:28px;"></div>
+              <div>
+                <div style="font-weight:600; font-size:14px;">${sp.name}</div>
+                <div class="text-xs text-muted">${sp.source}</div>
+              </div>
+            </div>
+            ${platformGlyph(sp.platform)}
+          </div>
+          <div class="strand" data-strand data-traits='${JSON.stringify(sp.traits)}' style="margin-bottom:6px;"></div>
+          <div class="strand-legend" style="margin-top:4px; margin-bottom:14px;">
+            <span class="strand-legend-item"><i style="background:var(--brass);"></i>Tone</span>
+            <span class="strand-legend-item"><i style="background:var(--teal);"></i>Structure</span>
+            <span class="strand-legend-item"><i style="background:var(--coral);"></i>Hooks</span>
+            <span class="strand-legend-item"><i style="background:var(--violet);"></i>Vocab</span>
+          </div>
+          <p class="text-sm text-muted" style="line-height:1.5; margin-bottom:14px;">${sp.tone}</p>
+          <div class="flex gap-6 mb-14" style="flex-wrap:wrap;">
+            ${sp.pillars.map(pl => `<span class="tag">${pl}</span>`).join('')}
+          </div>
+          <div class="flex items-center justify-between text-xs text-muted">
+            <span>${sp.posts} posts analyzed</span>
+            <span>Updated ${sp.updated}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    document.getElementById('profilesGrid').innerHTML = STYLE_PROFILES.map(profileCard).join('');
+    renderStrands();
+
+    function showProfile(id){
+      const sp = styleProfileById(id);
+      const vocabSizes = [19,15,13,12,11];
+      document.getElementById('profileDrawerContent').innerHTML = `
+        <div class="drawer-head">
+          <div>
+            <div class="text-xs text-muted mb-4">${sp.source}</div>
+            <h2 style="font-size:22px;">${sp.name}</h2>
+            <div class="flex items-center gap-8 mt-8">
+              ${platformGlyph(sp.platform)}
+              <span class="text-xs text-muted">${sp.posts} posts analyzed · updated ${sp.updated}</span>
+            </div>
+          </div>
+          <button class="modal-close" onclick="closeDrawer('profileOverlay','profileDrawer')">✕</button>
+        </div>
+        <div class="drawer-body">
+          <div class="strand" data-strand data-traits='${JSON.stringify(sp.traits)}' style="height:12px; margin-bottom:8px;"></div>
+          <div class="strand-legend mb-24">
+            <span class="strand-legend-item"><i style="background:var(--brass);"></i>Tone ${sp.traits.tone}</span>
+            <span class="strand-legend-item"><i style="background:var(--teal);"></i>Structure ${sp.traits.structure}</span>
+            <span class="strand-legend-item"><i style="background:var(--coral);"></i>Hooks ${sp.traits.hooks}</span>
+            <span class="strand-legend-item"><i style="background:var(--violet);"></i>Vocabulary ${sp.traits.vocabulary}</span>
+            <span class="strand-legend-item"><i style="background:#7C8AA5;"></i>Rhythm ${sp.traits.rhythm}</span>
+          </div>
+
+          <div class="card-eyebrow">Tone & voice</div>
+          <p class="text-sm mb-20" style="line-height:1.6;">${sp.tone}</p>
+
+          <div class="card-eyebrow">Signature hook</div>
+          <div class="flex items-center gap-10 mb-20">
+            <span class="tag tag-coral">${sp.hook}</span>
+            <span class="text-sm text-muted">used to open most high-performing posts</span>
+          </div>
+
+          <div class="card-eyebrow">Vocabulary & recurring phrases</div>
+          <div class="flex gap-8 mb-20" style="flex-wrap:wrap; align-items:center;">
+            ${sp.vocab.map((v,i) => `<span style="font-size:${vocabSizes[i]||11}px; font-weight:600; color:var(--brass-ink);">${v}</span>`).join('')}
+          </div>
+
+          <div class="card-eyebrow">Content pillars observed</div>
+          <div class="flex gap-6 mb-20" style="flex-wrap:wrap;">
+            ${sp.pillars.map(pl => `<span class="tag">${pl}</span>`).join('')}
+          </div>
+
+          <div class="card-eyebrow">Sample deconstructed post</div>
+          <div class="card card-pad" style="box-shadow:none; background:var(--surface-2);">
+            <p class="text-sm" style="line-height:1.7;">
+              <mark style="background:var(--coral-soft); color:var(--coral); padding:1px 3px; border-radius:3px;">Unpopular opinion:</mark>
+              most "culture fit" interviews are just a nicer way of saying "hires people like me."
+              <mark style="background:var(--brass-soft); color:var(--brass-ink); padding:1px 3px; border-radius:3px;">Here's what to ask instead.</mark>
+            </p>
+            <div class="flex gap-8 mt-12" style="flex-wrap:wrap;">
+              <span class="tag tag-coral">Hook</span>
+              <span class="tag tag-brass">Call to reframe</span>
+            </div>
+          </div>
+        </div>
+        <div class="drawer-foot">
+          <button class="btn btn-secondary">Re-analyze</button>
+          <a href="projects.html?styleProfile=${sp.id}" class="btn btn-brass">Use in new project</a>
+        </div>
+      `;
+      renderStrands();
+      openDrawer('profileOverlay','profileDrawer');
+    }
+
+    // deep-link from content-analysis "Run analysis"
+    if(new URLSearchParams(location.search).get('new')){
+      setTimeout(() => showProfile('sp-01'), 200);
+    }
+  </script>
+</body>
+</html>

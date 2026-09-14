@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Generation · Signal</title>
+<link rel="stylesheet" href="assets/styles.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
+          background: 'var(--background)', foreground: 'var(--foreground)',
+          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
+      }
+    }
+  }
+</script>
+
+</head>
+<body data-page="projects" data-title="AI Generation" data-sub="">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar-root"></aside>
+
+    <div class="main-col">
+      <header class="topbar" id="topbar-root"></header>
+
+      <main class="content">
+        <div id="breadcrumb" class="mb-14"></div>
+
+        <div class="grid" style="grid-template-columns:320px 1fr; align-items:flex-start;">
+
+          <div class="card card-pad" style="position:sticky; top:96px;" id="contextCard">
+            <div class="card-eyebrow">Generation context</div>
+            <div class="card-title mb-16" style="font-size:16px;" id="contextTitle">Set up this batch</div>
+
+            <div class="field">
+              <label>Project</label>
+              <div class="input" id="projectStatic" style="display:flex; align-items:center; justify-content:space-between; background:var(--muted); color:var(--foreground); font-weight:600;"></div>
+            </div>
+            <div class="field">
+              <label>Style profile</label>
+              <select class="select" id="styleSelect"></select>
+            </div>
+            <div class="field">
+              <label>Number of posts</label>
+              <input class="input" type="number" value="4" min="1" max="10" id="countInput" />
+            </div>
+            <div class="field">
+              <label>Platform</label>
+              <select class="select"><option>LinkedIn</option><option disabled>X — coming soon</option></select>
+            </div>
+            <div class="field" style="margin-bottom:6px;">
+              <label>Draw from</label>
+              <div class="flex-col gap-8 text-sm">
+                <label class="flex items-center gap-8"><input type="checkbox" class="row-check" checked/> Project ideas</label>
+                <label class="flex items-center gap-8"><input type="checkbox" class="row-check" checked/> Content pillars</label>
+                <label class="flex items-center gap-8"><input type="checkbox" class="row-check" checked/> Instructions</label>
+              </div>
+            </div>
+            <button class="btn btn-brass btn-block mt-16" onclick="generateBatch()" id="generateBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" stroke-linecap="round"/></svg>
+              Generate posts
+            </button>
+          </div>
+
+          <div>
+            <div class="section-head">
+              <h2 id="resultsTitle">Generated posts</h2>
+              <span class="text-sm text-muted" id="batchMeta"></span>
+            </div>
+
+            <div id="loadingGrid" style="display:none;" class="grid grid-2 mb-20"></div>
+            <div class="grid grid-2" id="genGrid"></div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/nav.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const projId = params.get('project') || PROJECTS[0].id;
+    const runId = params.get('run');
+    const project = projectById(projId) || PROJECTS[0];
+    const run = runId ? runById(runId) : null;
+
+    document.getElementById('breadcrumb').innerHTML = `
+      <a href="project-detail.html?id=${project.id}" class="text-sm text-muted" style="display:inline-flex; align-items:center; gap:6px;">← Back to ${project.title}</a>
+    `;
+
+    document.getElementById('projectStatic').innerHTML = `
+      <span>${project.title}</span>${platformGlyph(project.platform)}
+    `;
+
+    document.getElementById('styleSelect').innerHTML = project.styleProfiles.map(id => `<option value="${id}">${styleProfileById(id).name}</option>`).join('');
+    if(run) document.getElementById('styleSelect').value = run.styleProfile;
+
+    const statusLabel = { draft:'Draft', review:'Pending review', ready:'Ready', scheduled:'Scheduled', published:'Published' };
+    let currentPosts;
+
+    if(run){
+      document.getElementById('contextTitle').textContent = 'Regenerate this batch';
+      document.getElementById('generateBtn').innerHTML = '↻ Regenerate this batch';
+      document.getElementById('resultsTitle').textContent = run.label;
+      document.getElementById('batchMeta').textContent = 'Created ' + run.createdAt;
+      currentPosts = postsForRun(run.id).map(p => ({...p}));
+    } else {
+      document.getElementById('resultsTitle').textContent = 'New generation';
+      currentPosts = postsForProject(project.id).slice(0,4).map(p => ({...p}));
+    }
+
+    function postCard(p, idx){
+      const sp = styleProfileById(p.styleProfile);
+      return `
+        <div class="card card-pad gen-card" data-idx="${idx}">
+          <div class="flex items-center justify-between mb-12">
+            <span class="dna-badge"><span class="strand" data-strand data-traits='${JSON.stringify(sp.traits)}'></span>${sp.name}</span>
+            <span class="tag tag-coral">${p.hook}</span>
+          </div>
+          <div class="post-body text-sm" style="line-height:1.6; min-height:70px;" data-view>${p.body}</div>
+          <textarea class="textarea post-edit" style="display:none;">${p.body}</textarea>
+          <div class="flex items-center justify-between mt-16">
+            <div class="flex gap-6">
+              <button class="btn btn-ghost btn-sm" onclick="regenerate(${idx})">↻ Regenerate</button>
+              <button class="btn btn-ghost btn-sm" onclick="toggleEdit(${idx})">✎ Edit</button>
+            </div>
+            <select class="select" style="width:150px; padding:6px 10px; font-size:12.5px;">
+              <option ${p.status==='draft'?'selected':''}>Draft</option>
+              <option ${p.status==='review'?'selected':''}>Pending review</option>
+              <option ${p.status==='ready'?'selected':''}>Ready</option>
+            </select>
+          </div>
+        </div>
+      `;
+    }
+
+    function render(){
+      document.getElementById('genGrid').innerHTML = currentPosts.map(postCard).join('');
+      if(!run) document.getElementById('batchMeta').textContent = currentPosts.length + ' posts in this batch';
+      renderStrands();
+    }
+    render();
+
+    function toggleEdit(idx){
+      const card = document.querySelector(`.gen-card[data-idx="${idx}"]`);
+      const view = card.querySelector('[data-view]');
+      const edit = card.querySelector('.post-edit');
+      const editing = edit.style.display !== 'none';
+      edit.style.display = editing ? 'none' : 'block';
+      view.style.display = editing ? 'block' : 'none';
+      if(editing){ view.textContent = edit.value; currentPosts[idx].body = edit.value; }
+    }
+
+    const ALT_BODIES = [
+      'Here\'s the thing: most process changes fail not because the idea was wrong, but because nobody explained the "why" to the people doing the work.',
+      'The mental model I use: treat every recurring complaint as a symptom, not the disease. Here\'s how that played out for us this quarter...',
+      'Turns out the metric we were proudest of was actively hiding a problem. Here\'s what we look at now instead...',
+      'We almost shipped the easy version of this. Glad we didn\'t — here\'s the messier, better one.',
+    ];
+
+    function regenerate(idx){
+      const card = document.querySelector(`.gen-card[data-idx="${idx}"]`);
+      const view = card.querySelector('[data-view]');
+      view.style.opacity = '0.35';
+      setTimeout(() => {
+        const newBody = ALT_BODIES[Math.floor(Math.random()*ALT_BODIES.length)];
+        currentPosts[idx].body = newBody;
+        view.textContent = newBody;
+        view.style.opacity = '1';
+        toast('Regenerated using the same Style DNA and project context.');
+      }, 500);
+    }
+
+    function generateBatch(){
+      const grid = document.getElementById('genGrid');
+      const n = run ? currentPosts.length : (parseInt(document.getElementById('countInput').value) || 4);
+      const loading = document.getElementById('loadingGrid');
+      loading.style.display = 'grid';
+      loading.innerHTML = Array.from({length:n}).map(() => `
+        <div class="card card-pad">
+          <div class="skeleton-block" style="height:14px; width:60%; margin-bottom:14px;"></div>
+          <div class="skeleton-block" style="height:12px; width:95%; margin-bottom:8px;"></div>
+          <div class="skeleton-block" style="height:12px; width:88%; margin-bottom:8px;"></div>
+          <div class="skeleton-block" style="height:12px; width:70%;"></div>
+        </div>
+      `).join('');
+      grid.style.display = 'none';
+
+      setTimeout(() => {
+        const spId = document.getElementById('styleSelect').value;
+        const base = postsForProject(project.id);
+        currentPosts = Array.from({length:n}).map((_, i) => ({
+          ...(base[i % base.length] || GENERATED_POSTS[0]),
+          styleProfile: spId,
+          body: ALT_BODIES[i % ALT_BODIES.length],
+          status:'draft',
+        }));
+        loading.style.display = 'none';
+        grid.style.display = 'grid';
+        render();
+        toast(run ? `Regenerated ${n} posts for ${run.label}.` : `Generated ${n} posts using ${styleProfileById(spId).name}. Save this batch from the project's Generations tab.`);
+      }, 1100);
+    }
+  </script>
+
+  <style>
+    .skeleton-block{ border-radius:6px; background:linear-gradient(90deg, var(--surface-2) 25%, var(--line) 37%, var(--surface-2) 63%); background-size:400% 100%; animation:shimmer 1.4s ease infinite; }
+    @keyframes shimmer{ 0%{background-position:100% 0;} 100%{background-position:0 0;} }
+  </style>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard · Signal</title>
+<link rel="stylesheet" href="assets/styles.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
+          background: 'var(--background)', foreground: 'var(--foreground)',
+          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
+      }
+    }
+  }
+</script>
+
+</head>
+<body data-page="dashboard" data-title="Dashboard" data-sub="LinkedIn workspace">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar-root"></aside>
+
+    <div class="main-col">
+      <header class="topbar" id="topbar-root"></header>
+
+      <main class="content">
+
+        <div class="flex items-center justify-between mb-16" style="flex-wrap:wrap; gap:14px;">
+          <div>
+            <h1 style="font-size:26px;">Good morning, Mira</h1>
+            <p class="text-muted mt-4">Here's what's happening across your LinkedIn content today.</p>
+          </div>
+          <div class="flex gap-10">
+            <a href="content-analysis.html" class="btn btn-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21" stroke-linecap="round"/></svg>
+              Analyze a creator
+            </a>
+            <button class="btn btn-brass" onclick="openOverlay('newProjectModal')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+              New project
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-4 mb-24">
+          <div class="card stat-card">
+            <div class="stat-top">
+              <span class="stat-label">Active projects</span>
+              <span class="stat-icon" style="background:var(--brass-soft); color:var(--brass-ink);">◧</span>
+            </div>
+            <div class="stat-value">4</div>
+            <div class="stat-delta up">↑ 1 this week</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-top">
+              <span class="stat-label">Posts generated · 30d</span>
+              <span class="stat-icon" style="background:var(--violet-soft); color:var(--violet);">✦</span>
+            </div>
+            <div class="stat-value">86</div>
+            <div class="stat-delta up">↑ 23% vs prior 30d</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-top">
+              <span class="stat-label">Avg. engagement lift</span>
+              <span class="stat-icon" style="background:var(--teal-soft); color:var(--teal);">▲</span>
+            </div>
+            <div class="stat-value">+38%</div>
+            <div class="text-xs text-muted mt-8">vs. this creator's own baseline</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-top">
+              <span class="stat-label">Style profiles trained</span>
+              <span class="stat-icon" style="background:var(--surface-2); color:var(--text-2);">◎</span>
+            </div>
+            <div class="stat-value">6</div>
+            <div class="text-xs text-muted mt-8">264 source posts analyzed</div>
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns:2fr 1fr; align-items:flex-start;">
+
+          <div class="flex-col gap-20">
+            <div>
+              <div class="section-head">
+                <h2>Your projects</h2>
+                <a href="projects.html" class="link">View all →</a>
+              </div>
+              <div class="grid grid-2" id="dashProjects"></div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-head">
+                <div>
+                  <div class="card-eyebrow">Performance pulse</div>
+                  <div class="card-title">Engagement across all published posts</div>
+                </div>
+                <div class="pill-tabs">
+                  <button class="is-active">8 weeks</button>
+                  <button>Quarter</button>
+                  <button>Year</button>
+                </div>
+              </div>
+              <svg viewBox="0 0 640 200" style="width:100%; height:auto; overflow:visible;">
+                <defs>
+                  <linearGradient id="pulseFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#B8862E" stop-opacity="0.22"/>
+                    <stop offset="100%" stop-color="#B8862E" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <g stroke="#E6E1D4" stroke-width="1">
+                  <line x1="0" y1="40" x2="640" y2="40"/>
+                  <line x1="0" y1="90" x2="640" y2="90"/>
+                  <line x1="0" y1="140" x2="640" y2="140"/>
+                  <line x1="0" y1="190" x2="640" y2="190"/>
+                </g>
+                <path d="M0,150 L91,130 L182,142 L273,96 L364,108 L455,64 L546,74 L640,30 L640,190 L0,190 Z" fill="url(#pulseFill)"/>
+                <path d="M0,150 L91,130 L182,142 L273,96 L364,108 L455,64 L546,74 L640,30" fill="none" stroke="#B8862E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <g fill="#B8862E">
+                  <circle cx="0" cy="150" r="3.5"/><circle cx="91" cy="130" r="3.5"/><circle cx="182" cy="142" r="3.5"/>
+                  <circle cx="273" cy="96" r="3.5"/><circle cx="364" cy="108" r="3.5"/><circle cx="455" cy="64" r="3.5"/>
+                  <circle cx="546" cy="74" r="3.5"/><circle cx="640" cy="30" r="4" stroke="#fff" stroke-width="2"/>
+                </g>
+              </svg>
+              <div class="flex justify-between text-xs text-muted mt-8">
+                <span>Jul 21</span><span>Aug 4</span><span>Aug 18</span><span>Sep 1</span><span>Sep 14</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-col gap-20">
+            <div class="card card-pad">
+              <div class="card-head">
+                <div class="card-title">Recent activity</div>
+              </div>
+              <ul id="dashActivity"></ul>
+              <a href="analytics.html" class="link text-sm" style="display:inline-block; margin-top:10px;">View all activity →</a>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-head">
+                <div class="card-title">Style profiles</div>
+                <a href="style-profiles.html" class="link text-sm">Manage →</a>
+              </div>
+              <div id="dashProfiles" class="flex-col gap-12"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- New project modal -->
+  <div class="overlay" id="newProjectModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="card-title">New project</div>
+        <button class="modal-close" onclick="closeOverlay('newProjectModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label>Project title</label>
+          <input class="input" placeholder="e.g. Q1 Thought Leadership" />
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <textarea class="textarea" placeholder="What is this project trying to achieve?"></textarea>
+        </div>
+        <div class="field">
+          <label>Platform</label>
+          <select class="select">
+            <option>LinkedIn</option>
+            <option disabled>X — coming soon</option>
+            <option disabled>Instagram — coming soon</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Content pillars</label>
+          <div class="pillar-input">
+            <span class="tag">Leadership <button>✕</button></span>
+            <span class="tag">Hiring <button>✕</button></span>
+            <input placeholder="Add a pillar…" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeOverlay('newProjectModal')">Cancel</button>
+        <a href="projects.html" class="btn btn-brass">Create project</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/nav.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    document.getElementById('dashProjects').innerHTML = PROJECTS.slice(0,4).map(renderProjectCard).join('');
+    document.getElementById('dashActivity').innerHTML = ACTIVITY.slice(0,5).map(renderActivityItem).join('');
+    document.getElementById('dashProfiles').innerHTML = STYLE_PROFILES.slice(0,4).map(sp => `
+      <a href="style-profiles.html" class="flex items-center gap-10" style="text-decoration:none;">
+        <div class="avatar-sm"></div>
+        <div style="flex:1; min-width:0;">
+          <div class="text-sm" style="font-weight:600; color:var(--text-1);">${sp.name}</div>
+          <div class="strand" data-strand data-traits='${JSON.stringify(sp.traits)}' style="width:100%; max-width:140px;"></div>
+        </div>
+        <span class="text-xs text-muted">${sp.posts} posts</span>
+      </a>
+    `).join('');
+    renderStrands();
+  </script>
+</body>
+</html>

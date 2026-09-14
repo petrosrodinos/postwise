@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Project · Signal</title>
+<link rel="stylesheet" href="assets/styles.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
+          background: 'var(--background)', foreground: 'var(--foreground)',
+          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
+      }
+    }
+  }
+</script>
+
+</head>
+<body data-page="projects" data-title="Project" data-sub="">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar-root"></aside>
+
+    <div class="main-col">
+      <header class="topbar" id="topbar-root"></header>
+
+      <main class="content">
+        <a href="projects.html" class="text-sm text-muted" style="display:inline-flex; align-items:center; gap:6px; margin-bottom:14px;">← All projects</a>
+
+        <div id="projectHeader"></div>
+
+        <div data-tabs="projectTabScope" class="tabs mt-24">
+          <button class="tab is-active" data-tab-target="overview">Overview</button>
+          <button class="tab" data-tab-target="generations">Generations</button>
+          <button class="tab" data-tab-target="ideas">Ideas & instructions</button>
+          <button class="tab" data-tab-target="settings">Settings</button>
+        </div>
+
+        <div id="projectTabScope">
+          <div data-tab-panel="overview"></div>
+          <div data-tab-panel="generations" style="display:none;"></div>
+          <div data-tab-panel="ideas" style="display:none;"></div>
+          <div data-tab-panel="settings" style="display:none;"></div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/nav.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const pid = new URLSearchParams(location.search).get('id') || 'pr-01';
+    const project = projectById(pid) || PROJECTS[0];
+    const posts = postsForProject(project.id);
+    const runs = runsForProject(project.id);
+    const profiles = project.styleProfiles.map(styleProfileById);
+
+    document.getElementById('projectHeader').innerHTML = `
+      <div class="flex items-start justify-between" style="flex-wrap:wrap; gap:16px;">
+        <div>
+          <div class="flex items-center gap-10 mb-8">
+            ${platformGlyph(project.platform)}
+            <h1 style="font-size:24px;">${project.title}</h1>
+          </div>
+          <p class="text-muted" style="max-width:560px;">${project.description}</p>
+        </div>
+        <div class="flex gap-10">
+          <button class="btn btn-secondary">Edit project</button>
+          <a href="ai-generation.html?project=${project.id}" class="btn btn-brass">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" stroke-linecap="round"/></svg>
+            New generation
+          </a>
+        </div>
+      </div>
+    `;
+
+    const statusLabel = { draft:'Draft', review:'Pending review', ready:'Ready', scheduled:'Scheduled', published:'Published' };
+
+    document.querySelector('[data-tab-panel="overview"]').innerHTML = `
+      <div class="grid" style="grid-template-columns:2fr 1fr; margin-top:20px; align-items:flex-start;">
+        <div class="flex-col gap-20">
+          <div class="card card-pad">
+            <div class="card-title mb-14">Workflow funnel</div>
+            ${workflowBar(project.counts)}
+            <div class="grid grid-4 mt-16" style="gap:10px;">
+              ${Object.entries(project.counts).map(([k,v]) => `
+                <div style="text-align:center;">
+                  <div style="font-family:var(--font-display); font-size:22px; font-weight:600;">${v}</div>
+                  <div class="text-xs text-muted" style="text-transform:capitalize;">${statusLabel[k]||k}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="card card-pad">
+            <div class="card-head"><div class="card-title">Recent generated posts</div><a class="link text-sm" href="#" onclick="document.querySelector('.tab[data-tab-target=generations]').click(); return false;">View all →</a></div>
+            <ul>
+              ${posts.slice(0,4).map(p => `
+                <li class="flex items-center justify-between" style="padding:11px 0; border-bottom:1px solid var(--line);">
+                  <div>
+                    <div class="text-sm" style="font-weight:600;">${p.title}</div>
+                    <div class="text-xs text-muted mt-4">${styleProfileById(p.styleProfile).name} · ${p.updated}</div>
+                  </div>
+                  <span class="tag"><span class="status-dot ${p.status}"></span> ${statusLabel[p.status]}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        </div>
+
+        <div class="flex-col gap-20">
+          <div class="card card-pad">
+            <div class="card-title mb-12">Content pillars</div>
+            <div class="flex gap-6" style="flex-wrap:wrap;">${project.pillars.map(pl => `<span class="tag">${pl}</span>`).join('')}</div>
+          </div>
+          <div class="card card-pad">
+            <div class="card-title mb-12">Style profiles in use</div>
+            <div class="flex-col gap-12">
+              ${profiles.map(sp => `
+                <div>
+                  <div class="flex items-center justify-between text-sm mb-4"><span style="font-weight:600;">${sp.name}</span><span class="text-xs text-muted">${sp.posts} posts</span></div>
+                  <div class="strand" data-strand data-traits='${JSON.stringify(sp.traits)}'></div>
+                </div>
+              `).join('')}
+            </div>
+            <a href="style-profiles.html" class="btn btn-secondary btn-sm btn-block mt-16">Manage style profiles</a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.querySelector('[data-tab-panel="ideas"]').innerHTML = `
+      <div class="grid grid-2 mt-20">
+        <div class="card card-pad">
+          <div class="card-title mb-10">Ideas</div>
+          <p class="text-sm text-muted mb-10">Rough topics and angles Signal draws from when generating new posts.</p>
+          <ul class="flex-col gap-10">
+            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Our new interview loop cut time-to-hire by 40% — the story behind why we killed take-home assignments.</li>
+            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Why we stopped asking "where do you see yourself in 5 years."</li>
+            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">The onboarding change that dropped 90-day attrition by a third.</li>
+          </ul>
+          <button class="btn btn-secondary btn-sm mt-16">+ Add idea</button>
+        </div>
+        <div class="card card-pad">
+          <div class="card-title mb-10">Instructions</div>
+          <p class="text-sm text-muted mb-10">Rules the AI always follows when writing for this project.</p>
+          <ul class="flex-col gap-10">
+            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Never use emojis or hashtags.</li>
+            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Keep posts under 150 words.</li>
+            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Always end with a direct, answerable question.</li>
+            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Reference real team examples, never hypotheticals.</li>
+          </ul>
+          <button class="btn btn-secondary btn-sm mt-16">+ Add instruction</button>
+        </div>
+      </div>
+    `;
+
+    document.querySelector('[data-tab-panel="generations"]').innerHTML = `
+      <div class="flex items-center justify-between mt-20 mb-16">
+        <p class="text-sm text-muted" style="max-width:480px;">Every batch of AI-generated posts for this project, in one place. Start a new one whenever you need fresh drafts.</p>
+        <a href="ai-generation.html?project=${project.id}" class="btn btn-brass">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" stroke-linecap="round"/></svg>
+          New generation
+        </a>
+      </div>
+
+      <div class="grid grid-2 mb-28">
+        ${runs.length ? runs.map(r => {
+          const sp = styleProfileById(r.styleProfile);
+          const runPosts = postsForRun(r.id);
+          return `
+            <a href="ai-generation.html?project=${project.id}&run=${r.id}" class="card card-pad" style="display:block;">
+              <div class="flex items-center justify-between mb-10">
+                <span style="font-weight:600; font-size:14px;">${r.label}</span>
+                <span class="text-xs text-muted">${r.createdAt}</span>
+              </div>
+              <span class="dna-badge mb-12"><span class="strand" data-strand data-traits='${JSON.stringify(sp.traits)}'></span>${sp.name}</span>
+              <div class="flex items-center justify-between mt-12 text-xs text-muted">
+                <span>${runPosts.length} post${runPosts.length===1?'':'s'} generated</span>
+                <span class="link">View generation →</span>
+              </div>
+            </a>
+          `;
+        }).join('') : `<div class="empty" style="grid-column:1/-1;"><h3>No generations yet</h3><p>Run your first AI generation for this project to get a batch of on-brand drafts.</p><a href="ai-generation.html?project=${project.id}" class="btn btn-brass btn-sm">Generate posts</a></div>`}
+      </div>
+
+      <div class="card-title mb-12">All generated posts</div>
+      <div class="card">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Post</th><th>Batch</th><th>Style profile</th><th>Hook</th><th>Status</th><th>Updated</th><th></th></tr></thead>
+            <tbody>
+              ${posts.map(p => `
+                <tr>
+                  <td class="cell-strong" style="max-width:260px;">${p.title}</td>
+                  <td class="cell-muted">${runById(p.run) ? runById(p.run).label : '—'}</td>
+                  <td class="cell-muted">${styleProfileById(p.styleProfile).name}</td>
+                  <td><span class="tag">${p.hook}</span></td>
+                  <td><span class="tag"><span class="status-dot ${p.status}"></span> ${statusLabel[p.status]}</span></td>
+                  <td class="cell-muted">${p.updated}</td>
+                  <td><a href="workflow.html" class="btn btn-ghost btn-sm">Open →</a></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+
+    document.querySelector('[data-tab-panel="settings"]').innerHTML = `
+      <div class="card card-pad mt-20" style="max-width:640px;">
+        <div class="field"><label>Project title</label><input class="input" value="${project.title}" /></div>
+        <div class="field"><label>Description</label><textarea class="textarea">${project.description}</textarea></div>
+        <div class="field">
+          <label>Platform</label>
+          <select class="select"><option>LinkedIn</option><option disabled>X — coming soon</option></select>
+        </div>
+        <hr class="divider" />
+        <div class="flex items-center justify-between">
+          <div>
+            <div style="font-weight:600; font-size:14px;">Archive project</div>
+            <div class="text-xs text-muted">Hides this project from active views. Content is kept.</div>
+          </div>
+          <button class="btn btn-secondary btn-sm">Archive</button>
+        </div>
+        <div class="flex items-center justify-between mt-16">
+          <div>
+            <div style="font-weight:600; font-size:14px; color:var(--coral);">Delete project</div>
+            <div class="text-xs text-muted">Permanently deletes this project and its drafts.</div>
+          </div>
+          <button class="btn btn-danger-ghost btn-sm">Delete</button>
+        </div>
+      </div>
+    `;
+
+    renderStrands();
+  </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Automation · Signal</title>
+<link rel="stylesheet" href="assets/styles.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
+          background: 'var(--background)', foreground: 'var(--foreground)',
+          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
+      }
+    }
+  }
+</script>
+
+</head>
+<body data-page="automation" data-title="Automation" data-sub="Let Signal generate content on a schedule you set">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar-root"></aside>
+
+    <div class="main-col">
+      <header class="topbar" id="topbar-root"></header>
+
+      <main class="content">
+
+        <div class="flex items-center justify-between mb-20">
+          <p class="text-muted" style="max-width:560px;">Each automation runs on a schedule, generates from a project's context and a chosen Style DNA, and lands in draft, review, or published — your call.</p>
+          <button class="btn btn-brass" onclick="openOverlay('newAutomationModal')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            New automation
+          </button>
+        </div>
+
+        <div class="grid grid-2" id="autoGrid"></div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- New automation modal -->
+  <div class="overlay" id="newAutomationModal">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <div class="card-title">New automation</div>
+        <button class="modal-close" onclick="closeOverlay('newAutomationModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field"><label>Automation name</label><input class="input" placeholder="e.g. Monday Momentum" /></div>
+        <div class="grid grid-2" style="gap:16px;">
+          <div class="field"><label>Project</label><select class="select" id="autoProjectSelect"></select></div>
+          <div class="field"><label>Style profile</label><select class="select" id="autoStyleSelect"></select></div>
+        </div>
+        <div class="field">
+          <label>Frequency</label>
+          <div class="flex gap-8 mb-10">
+            <button type="button" class="btn btn-secondary btn-sm is-freq is-active">Weekly</button>
+            <button type="button" class="btn btn-secondary btn-sm is-freq">Daily</button>
+            <button type="button" class="btn btn-secondary btn-sm is-freq">Weekdays</button>
+          </div>
+          <div class="flex gap-6">
+            ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i) => `<button type="button" class="btn btn-secondary btn-sm day-pill ${i===1?'is-active':''}" style="width:40px; padding:6px 0;">${d}</button>`).join('')}
+          </div>
+        </div>
+        <div class="grid grid-2" style="gap:16px;">
+          <div class="field"><label>Time</label><input class="input" type="time" value="09:00" /></div>
+          <div class="field"><label>Posts per run</label><input class="input" type="number" value="3" min="1" max="10" /></div>
+        </div>
+        <div class="field">
+          <label>When posts are generated</label>
+          <div class="flex-col gap-8">
+            <label class="radio-card is-selected"><input type="radio" name="output" checked/> <div><div style="font-weight:600; font-size:13.5px;">Save as draft</div><div class="text-xs text-muted">Land in the workflow board for review before anything goes out.</div></div></label>
+            <label class="radio-card"><input type="radio" name="output"/> <div><div style="font-weight:600; font-size:13.5px;">Send to pending review</div><div class="text-xs text-muted">Notify a reviewer that new posts are waiting.</div></div></label>
+            <label class="radio-card"><input type="radio" name="output"/> <div><div style="font-weight:600; font-size:13.5px;">Auto-publish</div><div class="text-xs text-muted">Publish directly on schedule — no manual step.</div></div></label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeOverlay('newAutomationModal')">Cancel</button>
+        <button class="btn btn-brass" onclick="closeOverlay('newAutomationModal'); toast('Automation created.')">Create automation</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/nav.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    document.getElementById('autoProjectSelect').innerHTML = PROJECTS.map(p => `<option>${p.title}</option>`).join('');
+    document.getElementById('autoStyleSelect').innerHTML = STYLE_PROFILES.map(s => `<option>${s.name}</option>`).join('');
+
+    document.querySelectorAll('.is-freq').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('.is-freq').forEach(x=>x.classList.remove('is-active','btn-primary'));
+      b.classList.add('is-active');
+    }));
+    document.querySelectorAll('.day-pill').forEach(b => b.addEventListener('click', () => b.classList.toggle('is-active')));
+    document.querySelectorAll('.radio-card').forEach(rc => rc.addEventListener('click', () => {
+      document.querySelectorAll('.radio-card').forEach(x=>x.classList.remove('is-selected'));
+      rc.classList.add('is-selected');
+      rc.querySelector('input').checked = true;
+    }));
+
+    const outputLabel = { draft:'Saves as draft', review:'Sends to review', publish:'Auto-publishes' };
+    const outputTag = { draft:'tag', review:'tag-coral', publish:'tag-teal' };
+
+    function autoCard(a){
+      const proj = projectById(a.project);
+      const sp = styleProfileById(a.style);
+      return `
+        <div class="card card-pad">
+          <div class="flex items-center justify-between mb-10">
+            <div class="flex items-center gap-10">
+              <span style="width:32px;height:32px;border-radius:8px;background:${a.active?'var(--brass-soft)':'var(--surface-2)'};display:flex;align-items:center;justify-content:center;">⟳</span>
+              <div>
+                <div style="font-weight:600; font-size:14.5px;">${a.name}</div>
+                <div class="text-xs text-muted">${a.schedule}</div>
+              </div>
+            </div>
+            <label class="switch"><input type="checkbox" ${a.active?'checked':''} onchange="toast('${a.name} ${a.active? 'paused':'resumed'}.')"/><span class="track"></span><span class="knob"></span></label>
+          </div>
+          <div class="flex gap-6 mb-12" style="flex-wrap:wrap;">
+            <span class="tag">${proj.title}</span>
+            <span class="dna-badge"><span class="strand" data-strand data-traits='${JSON.stringify(sp.traits)}'></span>${sp.name}</span>
+            <span class="tag ${outputTag[a.output]}">${outputLabel[a.output]}</span>
+          </div>
+          <div class="flex items-center justify-between text-xs text-muted" style="padding-top:12px; border-top:1px solid var(--line);">
+            <span>${a.count} post${a.count>1?'s':''} per run</span>
+            <span>${a.lastRun}</span>
+          </div>
+          <div class="flex items-center justify-between text-xs mt-6">
+            <span class="text-muted">Next run</span>
+            <span style="font-weight:600;">${a.nextRun}</span>
+          </div>
+        </div>
+      `;
+    }
+    document.getElementById('autoGrid').innerHTML = AUTOMATIONS.map(autoCard).join('');
+    renderStrands();
+  </script>
+</body>
+</html>

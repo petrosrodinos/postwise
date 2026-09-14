@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projects · Signal</title>
+<link rel="stylesheet" href="assets/styles.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
+          background: 'var(--background)', foreground: 'var(--foreground)',
+          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
+      }
+    }
+  }
+</script>
+
+</head>
+<body data-page="projects" data-title="Projects" data-sub="Organize generation around a goal, audience and voice">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar-root"></aside>
+
+    <div class="main-col">
+      <header class="topbar" id="topbar-root"></header>
+
+      <main class="content">
+
+        <div class="flex items-center justify-between mb-20">
+          <div class="pill-tabs">
+            <button class="is-active">All projects</button>
+            <button>Active</button>
+            <button>Archived</button>
+          </div>
+          <button class="btn btn-brass" onclick="openOverlay('newProjectModal')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            New project
+          </button>
+        </div>
+
+        <div class="grid grid-2" id="projectsGrid"></div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- New project modal -->
+  <div class="overlay" id="newProjectModal">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <div class="card-title">New project</div>
+        <button class="modal-close" onclick="closeOverlay('newProjectModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="grid grid-2" style="gap:16px;">
+          <div class="field" style="grid-column:1/-1;">
+            <label>Project title</label>
+            <input class="input" placeholder="e.g. Q1 Thought Leadership" />
+          </div>
+          <div class="field" style="grid-column:1/-1;">
+            <label>Description</label>
+            <textarea class="textarea" placeholder="What is this project trying to achieve, and for who?"></textarea>
+          </div>
+          <div class="field">
+            <label>Platform</label>
+            <select class="select">
+              <option>LinkedIn</option>
+              <option disabled>X — coming soon</option>
+              <option disabled>Instagram — coming soon</option>
+              <option disabled>Facebook — coming soon</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Style profile(s)</label>
+            <select class="select">
+              <option>Contrarian Operator</option>
+              <option>Warm Educator</option>
+              <option>Data Storyteller</option>
+              <option>Founder Diary</option>
+            </select>
+          </div>
+          <div class="field" style="grid-column:1/-1;">
+            <label>Content pillars</label>
+            <div class="pillar-input">
+              <span class="tag">Leadership <button>✕</button></span>
+              <span class="tag">Hiring <button>✕</button></span>
+              <input placeholder="Add a pillar and press enter…" />
+            </div>
+          </div>
+          <div class="field" style="grid-column:1/-1;">
+            <label>Ideas <span class="text-muted" style="font-weight:400;">— rough topics, angles or notes to draw from</span></label>
+            <textarea class="textarea" placeholder="e.g. Our new interview loop cut time-to-hire by 40%. The story behind why we killed take-home assignments."></textarea>
+          </div>
+          <div class="field" style="grid-column:1/-1;">
+            <label>Instructions <span class="text-muted" style="font-weight:400;">— rules the AI should always follow</span></label>
+            <textarea class="textarea" placeholder="e.g. Never use emojis. Keep posts under 150 words. Always end with a question."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeOverlay('newProjectModal')">Cancel</button>
+        <a href="project-detail.html?id=pr-01" class="btn btn-brass">Create project</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/nav.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    document.getElementById('projectsGrid').innerHTML = PROJECTS.map(renderProjectCard).join('');
+    renderStrands();
+  </script>
+</body>
+</html>

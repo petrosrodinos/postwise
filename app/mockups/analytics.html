@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Analytics · Signal</title>
+<link rel="stylesheet" href="assets/styles.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
+          background: 'var(--background)', foreground: 'var(--foreground)',
+          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
+      }
+    }
+  }
+</script>
+
+</head>
+<body data-page="analytics" data-title="Analytics" data-sub="Which patterns actually drive engagement">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar-root"></aside>
+
+    <div class="main-col">
+      <header class="topbar" id="topbar-root"></header>
+
+      <main class="content">
+
+        <div class="grid grid-4 mb-24">
+          <div class="card stat-card">
+            <div class="stat-top"><span class="stat-label">Posts published · 90d</span><span class="stat-icon" style="background:var(--teal-soft); color:var(--teal);">▲</span></div>
+            <div class="stat-value">42</div>
+            <div class="stat-delta up">↑ 14% vs prior period</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-top"><span class="stat-label">Avg. engagement rate</span><span class="stat-icon" style="background:var(--brass-soft); color:var(--brass-ink);">◧</span></div>
+            <div class="stat-value">7.9%</div>
+            <div class="stat-delta up">↑ 2.1pt vs pre-Signal baseline</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-top"><span class="stat-label">Best performing pillar</span><span class="stat-icon" style="background:var(--violet-soft); color:var(--violet);">◎</span></div>
+            <div class="stat-value" style="font-size:19px;">Hiring & talent</div>
+            <div class="text-xs text-muted mt-8">11.2% avg engagement</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-top"><span class="stat-label">Top Style DNA</span><span class="stat-icon" style="background:var(--coral-soft); color:var(--coral);">✦</span></div>
+            <div class="stat-value" style="font-size:19px;">Contrarian Operator</div>
+            <div class="text-xs text-muted mt-8">9.4% avg engagement</div>
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns:1.6fr 1fr;">
+          <div class="card card-pad">
+            <div class="card-head">
+              <div class="card-title">Engagement over time</div>
+              <div class="pill-tabs"><button class="is-active">90 days</button><button>Year</button></div>
+            </div>
+            <svg viewBox="0 0 640 220" style="width:100%; height:auto;">
+              <g stroke="#E6E1D4" stroke-width="1"><line x1="0" y1="30" x2="640" y2="30"/><line x1="0" y1="90" x2="640" y2="90"/><line x1="0" y1="150" x2="640" y2="150"/><line x1="0" y1="210" x2="640" y2="210"/></g>
+              <path d="M0,180 L64,175 L128,160 L192,168 L256,140 L320,150 L384,110 L448,120 L512,85 L576,95 L640,60" fill="none" stroke="#8B8D93" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/>
+              <path d="M0,170 L64,150 L128,155 L192,120 L256,128 L320,95 L384,100 L448,70 L512,78 L576,45 L640,28" fill="none" stroke="#B8862E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <g fill="#B8862E"><circle cx="640" cy="28" r="4" stroke="#fff" stroke-width="2"/></g>
+            </svg>
+            <div class="flex items-center gap-16 mt-8 text-xs text-muted">
+              <span class="flex items-center gap-6"><span style="width:14px;height:2.5px;background:#B8862E;display:inline-block;border-radius:2px;"></span>With Signal</span>
+              <span class="flex items-center gap-6"><span style="width:14px;height:2.5px;background:#8B8D93;display:inline-block;border-radius:2px;"></span>Before Signal</span>
+            </div>
+          </div>
+
+          <div class="card card-pad">
+            <div class="card-title mb-14">Top performing posts</div>
+            <ul class="flex-col gap-14" id="topPosts"></ul>
+          </div>
+        </div>
+
+        <div class="section-head mt-32">
+          <h2>What's working</h2>
+        </div>
+        <div class="grid" style="grid-template-columns:1.3fr 1fr;">
+          <div class="card card-pad">
+            <div class="card-eyebrow">By hook type</div>
+            <div class="card-title mb-16" style="font-size:15px;">Average engagement rate by opening hook</div>
+            <div class="flex-col gap-14" id="hookBars"></div>
+          </div>
+          <div class="card card-pad">
+            <div class="card-eyebrow">By structure</div>
+            <div class="card-title mb-16" style="font-size:15px;">Structural pattern performance</div>
+            <div class="flex-col gap-14" id="structBars"></div>
+          </div>
+        </div>
+
+        <div class="section-head mt-32">
+          <h2>Style profile comparison</h2>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Style profile</th><th>Posts published</th><th>Avg. engagement</th><th>Best hook</th><th>Style DNA</th></tr></thead>
+              <tbody id="spTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/nav.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const TOP_POSTS = [
+      { title:'Let\'s be honest: most "unlimited PTO" policies exist so companies don\'t have to pay out unused vacation.', profile:'sp-01', engagement:11.4 },
+      { title:'Stop hiring for "10x engineers." Hire for this instead.', profile:'sp-06', engagement:10.2 },
+      { title:'We ran the numbers on the most requested Pulse 2.0 feature — turns out saying no was right.', profile:'sp-03', engagement:9.1 },
+      { title:'The interview question that predicts retention better than any other.', profile:'sp-01', engagement:8.6 },
+    ];
+    document.getElementById('topPosts').innerHTML = TOP_POSTS.map(p => `
+      <li>
+        <div class="text-sm" style="font-weight:600; line-height:1.4; margin-bottom:5px;">${p.title}</div>
+        <div class="flex items-center justify-between text-xs text-muted">
+          <span>${styleProfileById(p.profile).name}</span>
+          <span class="tag tag-teal">${p.engagement}%</span>
+        </div>
+      </li>
+    `).join('');
+
+    const HOOKS = [
+      ['Contrarian claim', 9.4, 'var(--brass)'],
+      ['One-line declaration', 8.1, 'var(--coral)'],
+      ['Surprising statistic', 7.6, 'var(--violet)'],
+      ['In-the-moment story', 6.9, 'var(--teal)'],
+      ['Framing question', 5.8, '#7C8AA5'],
+    ];
+    const maxHook = Math.max(...HOOKS.map(h=>h[1]));
+    document.getElementById('hookBars').innerHTML = HOOKS.map(([label,val,color]) => `
+      <div>
+        <div class="flex items-center justify-between text-sm mb-6"><span>${label}</span><span style="font-weight:600;">${val}%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${(val/maxHook)*100}%; background:${color};"></div></div>
+      </div>
+    `).join('');
+
+    const STRUCTS = [
+      ['Claim → evidence → line', 8.8, 'var(--brass)'],
+      ['Numbered framework', 7.4, 'var(--teal)'],
+      ['Story → lesson', 7.0, 'var(--coral)'],
+      ['Question → answer', 6.2, 'var(--violet)'],
+    ];
+    const maxStruct = Math.max(...STRUCTS.map(h=>h[1]));
+    document.getElementById('structBars').innerHTML = STRUCTS.map(([label,val,color]) => `
+      <div>
+        <div class="flex items-center justify-between text-sm mb-6"><span>${label}</span><span style="font-weight:600;">${val}%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${(val/maxStruct)*100}%; background:${color};"></div></div>
+      </div>
+    `).join('');
+
+    document.getElementById('spTable').innerHTML = STYLE_PROFILES.map(sp => `
+      <tr>
+        <td class="cell-strong">${sp.name}</td>
+        <td>${Math.floor(sp.posts*0.4)}</td>
+        <td><span class="tag tag-teal">${(sp.traits.hooks/10).toFixed(1)}%</span></td>
+        <td class="cell-muted">${sp.hook}</td>
+        <td style="width:140px;"><div class="strand" data-strand data-traits='${JSON.stringify(sp.traits)}'></div></td>
+      </tr>
+    `).join('');
+    renderStrands();
+  </script>
+</body>
+</html>
