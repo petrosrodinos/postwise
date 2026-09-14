@@ -5,28 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Dashboard · Signal</title>
 <link rel="stylesheet" href="assets/styles.css" />
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    corePlugins: { preflight: false },
-    theme: {
-      extend: {
-        colors: {
-          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
-          background: 'var(--background)', foreground: 'var(--foreground)',
-          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
-          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
-          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
-          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
-          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
-          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
-        },
-        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
-        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
-      }
-    }
-  }
-</script>
 
 </head>
 <body data-page="dashboard" data-title="Dashboard" data-sub="Acme Inc workspace">
@@ -44,10 +22,10 @@
             <p class="text-muted mt-4">Here's what's happening across your LinkedIn, X and blog content today.</p>
           </div>
           <div class="flex gap-10">
-            <a href="content-analysis.html" class="btn btn-secondary">
+            <button class="btn btn-secondary" onclick="openOverlay('analyzeModal')">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21" stroke-linecap="round"/></svg>
               Analyze a creator
-            </a>
+            </button>
             <button class="btn btn-brass" onclick="openOverlay('newProjectModal')">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
               New project
@@ -146,7 +124,6 @@
                 <div class="card-title">Recent activity</div>
               </div>
               <ul id="dashActivity"></ul>
-              <a href="analytics.html" class="link text-sm" style="display:inline-block; margin-top:10px;">View all activity →</a>
             </div>
 
             <div class="card card-pad">
@@ -202,6 +179,52 @@
       <div class="modal-foot">
         <button class="btn btn-secondary" onclick="closeOverlay('newProjectModal')">Cancel</button>
         <a href="projects.html" class="btn btn-brass">Create project</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analyze a creator modal -->
+  <div class="overlay" id="analyzeModal">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <div class="card-title">Analyze a new creator</div>
+        <button class="modal-close" onclick="closeOverlay('analyzeModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="grid grid-2" style="gap:16px;">
+          <div class="field" style="grid-column:1/-1;">
+            <label>Profile URL</label>
+            <input class="input" placeholder="linkedin.com/in/username" value="linkedin.com/in/jordan-metz" />
+          </div>
+          <div class="field">
+            <label>Platform</label>
+            <select class="select">
+              <option>LinkedIn</option>
+              <option>X</option>
+              <option>Blog / RSS</option>
+              <option disabled>Instagram — soon</option>
+              <option disabled>Facebook — soon</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Profile name</label>
+            <input class="input" placeholder="e.g. Contrarian Operator" value="Contrarian Operator" />
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>What Signal will extract</label>
+          <div class="grid grid-2" style="gap:10px;">
+            <div class="flex gap-8 items-center text-sm card" style="padding:10px 12px; box-shadow:none;"><span>◧</span> Tone & voice</div>
+            <div class="flex gap-8 items-center text-sm card" style="padding:10px 12px; box-shadow:none;"><span>▤</span> Structural patterns</div>
+            <div class="flex gap-8 items-center text-sm card" style="padding:10px 12px; box-shadow:none;"><span>✦</span> Opening hooks</div>
+            <div class="flex gap-8 items-center text-sm card" style="padding:10px 12px; box-shadow:none;"><span>◎</span> Vocabulary & phrases</div>
+          </div>
+          <p class="hint">Signal reads publicly visible posts only. Typical import: 30–90 days of history, up to 200 posts.</p>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeOverlay('analyzeModal')">Cancel</button>
+        <a href="style-profiles.html?new=1" class="btn btn-brass">Analyze creator</a>
       </div>
     </div>
   </div>

@@ -5,28 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Automation · Signal</title>
 <link rel="stylesheet" href="assets/styles.css" />
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    corePlugins: { preflight: false },
-    theme: {
-      extend: {
-        colors: {
-          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
-          background: 'var(--background)', foreground: 'var(--foreground)',
-          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
-          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
-          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
-          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
-          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
-          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
-        },
-        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
-        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
-      }
-    }
-  }
-</script>
 
 </head>
 <body data-page="automation" data-title="Automation" data-sub="Let Signal generate content on a schedule you set">
@@ -72,9 +50,7 @@
             <button type="button" class="btn btn-secondary btn-sm is-freq">Daily</button>
             <button type="button" class="btn btn-secondary btn-sm is-freq">Weekdays</button>
           </div>
-          <div class="flex gap-6">
-            ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i) => `<button type="button" class="btn btn-secondary btn-sm day-pill ${i===1?'is-active':''}" style="width:40px; padding:6px 0;">${d}</button>`).join('')}
-          </div>
+          <div class="flex gap-6" id="dayPills"></div>
         </div>
         <div class="grid grid-2" style="gap:16px;">
           <div class="field"><label>Time</label><input class="input" type="time" value="09:00" /></div>
@@ -83,7 +59,7 @@
         <div class="field">
           <label>When posts are generated</label>
           <div class="flex-col gap-8">
-            <label class="radio-card is-selected"><input type="radio" name="output" checked/> <div><div style="font-weight:600; font-size:13.5px;">Save as draft</div><div class="text-xs text-muted">Land in the workflow board for review before anything goes out.</div></div></label>
+            <label class="radio-card is-selected"><input type="radio" name="output" checked/> <div><div style="font-weight:600; font-size:13.5px;">Save as draft</div><div class="text-xs text-muted">Sit in Draft for review before anything goes out.</div></div></label>
             <label class="radio-card"><input type="radio" name="output"/> <div><div style="font-weight:600; font-size:13.5px;">Send to pending review</div><div class="text-xs text-muted">Notify a reviewer that new posts are waiting.</div></div></label>
             <label class="radio-card"><input type="radio" name="output"/> <div><div style="font-weight:600; font-size:13.5px;">Auto-publish</div><div class="text-xs text-muted">Publish directly on schedule — no manual step.</div></div></label>
           </div>
@@ -102,6 +78,7 @@
   <script>
     document.getElementById('autoProjectSelect').innerHTML = PROJECTS.map(p => `<option>${p.title}</option>`).join('');
     document.getElementById('autoStyleSelect').innerHTML = STYLE_PROFILES.map(s => `<option>${s.name}</option>`).join('');
+    document.getElementById('dayPills').innerHTML = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i) => `<button type="button" class="btn btn-secondary btn-sm day-pill ${i===1?'is-active':''}" style="width:40px; padding:6px 0;">${d}</button>`).join('');
 
     document.querySelectorAll('.is-freq').forEach(b => b.addEventListener('click', () => {
       document.querySelectorAll('.is-freq').forEach(x=>x.classList.remove('is-active','btn-primary'));

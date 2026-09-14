@@ -2,13 +2,9 @@
 
 const ICONS = {
   dashboard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>',
-  analysis: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21" stroke-linecap="round"/><path d="M7.5 10.5h6M10.5 7.5v6" stroke-linecap="round"/></svg>',
   dna: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 3c0 4 10 4 10 8s-10 4-10 8" stroke-linecap="round"/><path d="M17 3c0 4-10 4-10 8s10 4 10 8" stroke-linecap="round"/><path d="M8 7h8M8 17h8" stroke-linecap="round"/></svg>',
   projects: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1" /></svg>',
   generate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" stroke-linecap="round"/></svg>',
-  workflow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="5" cy="6" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="19" cy="18" r="2.3"/><path d="M7 7.2 10 10.5M14 13.5l3 3" stroke-linecap="round"/></svg>',
-  calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke-linecap="round"/></svg>',
-  analytics: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V10M11 20V4M18 20v-7" stroke-linecap="round"/></svg>',
   automation: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M4.2 7.5l2.6 1.5M17.2 15l2.6 1.5M4.2 16.5l2.6-1.5M17.2 9l2.6-1.5" stroke-linecap="round"/></svg>',
   org: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 21V7l8-4 8 4v14" stroke-linejoin="round"/><path d="M4 21h16M9 21v-6h6v6" stroke-linejoin="round"/></svg>',
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 10a6 6 0 1 1 12 0c0 4 1.5 5.5 1.5 5.5H4.5S6 14 6 10Z"/><path d="M9.5 18a2.5 2.5 0 0 0 5 0"/></svg>',
@@ -21,16 +17,12 @@ const NAV_SECTIONS = [
     { id:'dashboard', label:'Dashboard', href:'index.html', icon:'dashboard' },
   ]},
   { label:'Intelligence', items:[
-    { id:'analysis', label:'Content Analysis', href:'content-analysis.html', icon:'analysis' },
     { id:'profiles', label:'Style Profiles', href:'style-profiles.html', icon:'dna', badge:'8' },
   ]},
   { label:'Create', items:[
     { id:'projects', label:'Projects', href:'projects.html', icon:'projects' },
-    { id:'workflow', label:'Workflow', href:'workflow.html', icon:'workflow' },
   ]},
-  { label:'Plan & measure', items:[
-    { id:'calendar', label:'Calendar', href:'calendar.html', icon:'calendar' },
-    { id:'analytics', label:'Analytics', href:'analytics.html', icon:'analytics' },
+  { label:'Automate', items:[
     { id:'automation', label:'Automation', href:'automation.html', icon:'automation' },
   ]},
   { label:'Settings', items:[
@@ -73,7 +65,7 @@ function renderSidebar(activePage){
           <div class="avatar">${initials(ws.name)}</div>
           <div style="flex:1; min-width:0; text-align:left;">
             <div class="user-chip-name">${ws.name}</div>
-            <div class="user-chip-role">${ws.kind==='organisation' ? `${ws.role} · Organisation` : 'Personal account'}</div>
+            <div class="user-chip-role">${ws.kind==='organisation' ? 'Organisation' : 'Personal account'}</div>
           </div>
           <svg class="ws-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M7 10l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>

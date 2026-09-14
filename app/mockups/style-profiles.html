@@ -5,28 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Style Profiles · Signal</title>
 <link rel="stylesheet" href="assets/styles.css" />
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    corePlugins: { preflight: false },
-    theme: {
-      extend: {
-        colors: {
-          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
-          background: 'var(--background)', foreground: 'var(--foreground)',
-          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
-          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
-          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
-          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
-          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
-          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
-        },
-        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
-        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
-      }
-    }
-  }
-</script>
 
 </head>
 <body data-page="profiles" data-title="Style Profiles" data-sub="Reusable Style DNA extracted from creators you've analyzed">
@@ -40,10 +18,10 @@
 
         <div class="flex items-center justify-between mb-20">
           <p class="text-muted" style="max-width:560px;">Each profile is a reusable fingerprint of how a creator writes — tone, structure, hooks and vocabulary — trained from their own published posts.</p>
-          <a href="content-analysis.html" class="btn btn-brass">
+          <button class="btn btn-brass" onclick="openOverlay('analyzeModal')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
             Analyze a new creator
-          </a>
+          </button>
         </div>
 
         <div class="grid grid-3" id="profilesGrid"></div>
@@ -56,6 +34,52 @@
   <div class="drawer-overlay" id="profileOverlay"></div>
   <div class="drawer drawer-lg" id="profileDrawer">
     <div id="profileDrawerContent"></div>
+  </div>
+
+  <!-- Analyze a creator modal -->
+  <div class="overlay" id="analyzeModal">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <div class="card-title">Analyze a new creator</div>
+        <button class="modal-close" onclick="closeOverlay('analyzeModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="grid grid-2" style="gap:16px;">
+          <div class="field" style="grid-column:1/-1;">
+            <label>Profile URL</label>
+            <input class="input" placeholder="linkedin.com/in/username" value="linkedin.com/in/jordan-metz" />
+          </div>
+          <div class="field">
+            <label>Platform</label>
+            <select class="select">
+              <option>LinkedIn</option>
+              <option>X</option>
+              <option>Blog / RSS</option>
+              <option disabled>Instagram — soon</option>
+              <option disabled>Facebook — soon</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Profile name</label>
+            <input class="input" placeholder="e.g. Contrarian Operator" value="Contrarian Operator" />
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>What Signal will extract</label>
+          <div class="grid grid-2" style="gap:10px;">
+            <div class="flex gap-8 items-center text-sm card" style="padding:10px 12px; box-shadow:none;"><span>◧</span> Tone & voice</div>
+            <div class="flex gap-8 items-center text-sm card" style="padding:10px 12px; box-shadow:none;"><span>▤</span> Structural patterns</div>
+            <div class="flex gap-8 items-center text-sm card" style="padding:10px 12px; box-shadow:none;"><span>✦</span> Opening hooks</div>
+            <div class="flex gap-8 items-center text-sm card" style="padding:10px 12px; box-shadow:none;"><span>◎</span> Vocabulary & phrases</div>
+          </div>
+          <p class="hint">Signal reads publicly visible posts only. Typical import: 30–90 days of history, up to 200 posts.</p>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeOverlay('analyzeModal')">Cancel</button>
+        <button class="btn btn-brass" onclick="submitAnalysis()">Analyze creator</button>
+      </div>
+    </div>
   </div>
 
   <script src="assets/data.js"></script>
@@ -170,6 +194,12 @@
     // deep-link from content-analysis "Run analysis"
     if(new URLSearchParams(location.search).get('new')){
       setTimeout(() => showProfile('sp-01'), 200);
+    }
+
+    function submitAnalysis(){
+      closeOverlay('analyzeModal');
+      toast('Analyzing posts and building a Style DNA profile…');
+      setTimeout(() => showProfile('sp-01'), 500);
     }
   </script>
 </body>

@@ -5,28 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Project · Signal</title>
 <link rel="stylesheet" href="assets/styles.css" />
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    corePlugins: { preflight: false },
-    theme: {
-      extend: {
-        colors: {
-          border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
-          background: 'var(--background)', foreground: 'var(--foreground)',
-          primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
-          secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
-          muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
-          accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
-          destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
-          card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
-        },
-        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
-        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Fraunces', 'serif'] },
-      }
-    }
-  }
-</script>
 
 </head>
 <body data-page="projects" data-title="Project" data-sub="">
@@ -94,7 +72,7 @@
       <div class="grid" style="grid-template-columns:2fr 1fr; margin-top:20px; align-items:flex-start;">
         <div class="flex-col gap-20">
           <div class="card card-pad">
-            <div class="card-title mb-14">Workflow funnel</div>
+            <div class="card-title mb-14">Status breakdown</div>
             ${workflowBar(project.counts)}
             <div class="grid grid-4 mt-16" style="gap:10px;">
               ${Object.entries(project.counts).map(([k,v]) => `
@@ -170,13 +148,7 @@
     `;
 
     document.querySelector('[data-tab-panel="generations"]').innerHTML = `
-      <div class="flex items-center justify-between mt-20 mb-16">
-        <p class="text-sm text-muted" style="max-width:480px;">Every batch of AI-generated posts for this project, in one place. Start a new one whenever you need fresh drafts.</p>
-        <a href="ai-generation.html?project=${project.id}" class="btn btn-brass">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" stroke-linecap="round"/></svg>
-          New generation
-        </a>
-      </div>
+      <p class="text-sm text-muted mt-20 mb-16" style="max-width:480px;">Every batch of AI-generated posts for this project, in one place. Start a new one whenever you need fresh drafts.</p>
 
       <div class="grid grid-2 mb-28">
         ${runs.length ? runs.map(r => {
@@ -212,7 +184,7 @@
                   <td><span class="tag">${p.hook}</span></td>
                   <td><span class="tag"><span class="status-dot ${p.status}"></span> ${statusLabel[p.status]}</span></td>
                   <td class="cell-muted">${p.updated}</td>
-                  <td><a href="workflow.html" class="btn btn-ghost btn-sm">Open →</a></td>
+                  <td><a href="ai-generation.html?project=${project.id}&run=${p.run}" class="btn btn-ghost btn-sm">Open →</a></td>
                 </tr>
               `).join('')}
             </tbody>

@@ -126,18 +126,12 @@ const PROJECTS = [
   },
 ];
 
-// Organisations (workspaces) — a user can act inside a personal account or a
-// shared Organisation with its own members, billing and connected channels.
+// Organisations (workspaces) — a user can act inside their personal account
+// or a separate, single-owner Organisation with its own brand assets and
+// connected channels. No multi-user membership or billing in v1.
 const WORKSPACES = [
-  { id:'ws-acme', kind:'organisation', name:'Acme Inc', role:'OWNER', plan:'Team', seats:{ used:4, total:10 } },
-  { id:'ws-personal', kind:'personal', name:'Mira Kessler', role:null },
-];
-
-const ORG_MEMBERS = [
-  { id:'m1', name:'Mira Kessler', email:'mira@acme.io', role:'OWNER', status:'ACTIVE', avatar:'MK', joined:'Jan 12, 2026' },
-  { id:'m2', name:'Theo Lindqvist', email:'theo@acme.io', role:'ADMIN', status:'ACTIVE', avatar:'TL', joined:'Feb 3, 2026' },
-  { id:'m3', name:'Priya Shah', email:'priya@acme.io', role:'MEMBER', status:'ACTIVE', avatar:'PS', joined:'Mar 21, 2026' },
-  { id:'m4', name:'Jordan Metz', email:'jordan@acme.io', role:'MEMBER', status:'INVITED', avatar:'JM', joined:'Invited 2 days ago' },
+  { id:'ws-acme', kind:'organisation', name:'Acme Inc' },
+  { id:'ws-personal', kind:'personal', name:'Mira Kessler' },
 ];
 
 function initials(name){
@@ -218,34 +212,6 @@ function renderProjectCard(p){
 const ACTIVITY_ICON = {
   generate:'✦', analysis:'◎', publish:'▲', review:'◐', schedule:'▤', automation:'⟳'
 };
-
-const SOURCE_POSTS = [
-  { id:'s1', date:'2026-09-10', snippet:'Unpopular opinion: most "culture fit" interviews are just a nicer way of saying "hires people like me." Here\'s what to ask instead.', likes:1284, comments:96, reposts:41, engagement:6.8 },
-  { id:'s2', date:'2026-09-06', snippet:'We rejected a candidate for being "too senior." Then watched a competitor hire them and ship in 6 weeks what took us 6 months. Lesson learned.', likes:2210, comments:154, reposts:88, engagement:9.1 },
-  { id:'s3', date:'2026-08-29', snippet:'Nobody wants to hear this, but your onboarding doc is not a substitute for a manager who shows up on day one.', likes:876, comments:52, reposts:19, engagement:4.4 },
-  { id:'s4', date:'2026-08-22', snippet:'The real reason your best engineer is quiet in meetings has nothing to do with confidence.', likes:1590, comments:112, reposts:37, engagement:7.2 },
-  { id:'s5', date:'2026-08-15', snippet:'Let\'s be honest: most "unlimited PTO" policies exist so companies don\'t have to pay out unused vacation. Here\'s how to tell the difference.', likes:3040, comments:201, reposts:120, engagement:11.4 },
-  { id:'s6', date:'2026-08-08', snippet:'Here\'s the thing about 10x engineers — they\'re not writing 10x more code. They\'re asking 10x better questions before writing any.', likes:1988, comments:143, reposts:64, engagement:8.6 },
-  { id:'s7', date:'2026-08-01', snippet:'I used to think flat organizations were the future. Three companies later, I think they\'re a slow-motion trust exercise with no safety net.', likes:1122, comments:80, reposts:28, engagement:5.9 },
-  { id:'s8', date:'2026-07-24', snippet:'Your job posting says "fast-paced environment." Candidates read that as "chronically understaffed." Same thing, different framing.', likes:2650, comments:176, reposts:95, engagement:10.2 },
-];
-
-const CALENDAR_POSTS = [
-  { day:2, title:'The real reason your best hires leave in year one', platform:'linkedin', status:'scheduled', project:'Q4 Thought Leadership' },
-  { day:4, title:'What we got wrong about async standups', platform:'linkedin', status:'scheduled', project:'Q4 Thought Leadership' },
-  { day:5, title:'Pulse 2.0: the metric that finally made sense to our CFO', platform:'linkedin', status:'published', project:'Product Launch — Pulse 2.0' },
-  { day:9, title:'Week 3 of building in public: the pricing page rewrite', platform:'linkedin', status:'scheduled', project:'Founder Story Arc' },
-  { day:11, title:'Unpopular opinion: your culture deck is not your culture', platform:'linkedin', status:'draft', project:'Hiring Season Push' },
-  { day:12, title:'How we cut onboarding time from 3 weeks to 4 days', platform:'linkedin', status:'scheduled', project:'Q4 Thought Leadership' },
-  { day:16, title:'The interview question that predicts retention better than any other', platform:'linkedin', status:'ready', project:'Hiring Season Push' },
-  { day:18, title:'Customers keep asking for this Pulse 2.0 feature. Here\'s why we said no.', platform:'linkedin', status:'scheduled', project:'Product Launch — Pulse 2.0' },
-  { day:22, title:'Month 14: the round we almost didn\'t close', platform:'linkedin', status:'draft', project:'Founder Story Arc' },
-  { day:25, title:'Stop hiring for "10x engineers." Hire for this instead.', platform:'linkedin', status:'scheduled', project:'Hiring Season Push' },
-  { day:8, title:'Thread: the pricing page rewrite, in 7 posts', platform:'x', status:'scheduled', project:'Build in Public — X threads' },
-  { day:15, title:'How we cut our p95 API latency by 60% without a rewrite', platform:'blog', status:'draft', project:'Engineering Blog — Deep Dives' },
-  { day:20, title:'Thread: what breaks first when you 10x signups', platform:'x', status:'scheduled', project:'Build in Public — X threads' },
-  { day:27, title:'A practical guide to feature flags at scale', platform:'blog', status:'review', project:'Engineering Blog — Deep Dives' },
-];
 
 const GENERATED_POSTS = [
   { id:'g1', run:'r1', project:'pr-01', styleProfile:'sp-01', status:'draft', title:'The real reason your best hires leave in year one', body:'Unpopular opinion: exit interviews are the least honest data your company collects. Here\'s what actually predicts a resignation, six months before it happens...', hook:'Contrarian claim', updated:'2h ago' },
