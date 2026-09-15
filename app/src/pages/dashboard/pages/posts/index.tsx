@@ -14,6 +14,7 @@ import type { Post } from "@/features/posts/interfaces/posts.interfaces";
 import { PostsFilters, type PostsFilterState } from "./components/posts-filters";
 import { PostRowActions } from "./components/post-row-actions";
 import { PostPreviewDrawer } from "./components/post-preview-drawer";
+import { EditablePostTitle } from "./components/editable-post-title";
 
 const DEFAULT_FILTERS: PostsFilterState = {
   search: "",
@@ -118,7 +119,7 @@ export default function PostsPage() {
               {posts.map((post) => (
                 <TableRow key={post.id} className="cursor-pointer" onClick={() => setSelectedPost(post)}>
                   <TableCell className="max-w-xs">
-                    <div className="truncate font-medium">{post.title || post.hook || post.body?.slice(0, 60) || "Untitled post"}</div>
+                    <EditablePostTitle post={post} fallback={post.body?.slice(0, 60)} className="block truncate font-medium" />
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{post.project?.title ?? "—"}</TableCell>
                   <TableCell>

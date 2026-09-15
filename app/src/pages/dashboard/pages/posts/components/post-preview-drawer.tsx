@@ -14,6 +14,7 @@ import { getPostSource } from "@/features/posts/utils/post-source.utils";
 import { PostStatuses, type Post } from "@/features/posts/interfaces/posts.interfaces";
 import { Routes } from "@/routes/routes";
 import { PostRowActions } from "./post-row-actions";
+import { EditablePostTitle } from "./editable-post-title";
 
 const EDITABLE_STATUSES: string[] = [PostStatuses.DRAFT, PostStatuses.REVIEW, PostStatuses.READY];
 
@@ -42,7 +43,9 @@ export function PostPreviewDrawer({ post, onClose }: PostPreviewDrawerProps) {
             <SheetHeader className="text-left">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <SheetTitle className="font-display truncate text-xl">{post.title || post.hook || "Untitled post"}</SheetTitle>
+                  <SheetTitle className="font-display text-xl">
+                    <EditablePostTitle post={post} className="block truncate" />
+                  </SheetTitle>
                   <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                     <PlatformChip platform={post.type} label={getPostTypeLabel(post.type)} />
                     <PostStatusTag status={post.status} title={post.status === PostStatuses.FAILED ? (post.failed_reason ?? undefined) : undefined} />
