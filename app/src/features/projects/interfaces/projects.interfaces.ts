@@ -11,8 +11,7 @@ export interface ProjectStyleProfileLink {
 
 export interface Project {
   id: string;
-  user_id?: string | null;
-  organisation_id?: string | null;
+  organisation_id: string;
   title: string;
   description?: string | null;
   platform: PostType;
@@ -33,7 +32,7 @@ export interface CreateProjectDto {
   pillars?: string[];
   ideas?: string[];
   instructions?: string[];
-  organisation_id?: string;
+  organisation_id: string;
 }
 
 export type UpdateProjectDto = Partial<Omit<CreateProjectDto, "organisation_id">> & {
@@ -59,7 +58,7 @@ export interface ProjectAiSuggestions {
 export interface ProjectsQueryType {
   page?: number;
   limit?: number;
-  organisation_id?: string;
+  organisation_id: string;
   platform?: PostType;
   is_archived?: boolean;
 }

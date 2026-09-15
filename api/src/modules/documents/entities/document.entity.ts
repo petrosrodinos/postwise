@@ -5,11 +5,8 @@ export class DocumentEntity {
   @ApiProperty()
   id: string;
 
-  @ApiProperty({ required: false, nullable: true })
-  user_uuid?: string | null;
-
-  @ApiProperty({ required: false, nullable: true })
-  organisation_id?: string | null;
+  @ApiProperty()
+  organisation_id: string;
 
   @ApiProperty()
   filename: string;

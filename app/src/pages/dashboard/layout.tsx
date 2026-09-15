@@ -3,8 +3,11 @@ import { Outlet } from "react-router-dom";
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
 import { Header } from "@/components/layout/header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { useEnsureActiveOrganisation } from "@/features/organisations/hooks/use-organisations";
 
 export default function DashboardLayout() {
+  useEnsureActiveOrganisation();
+
   return (
     <SidebarProvider style={{ "--sidebar-width": "248px" } as CSSProperties}>
       <DashboardSidebar />

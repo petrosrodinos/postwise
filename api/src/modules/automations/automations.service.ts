@@ -19,11 +19,9 @@ export class AutomationsService {
     private readonly ownershipService: OwnershipService,
   ) {}
 
-  private async assertManage(userId: string, project: { organisation_id?: string | null }) {
-    if (project.organisation_id) {
-      const context = await this.ownershipService.resolveContext(userId, project.organisation_id);
-      this.ownershipService.assertRole(context, MANAGE_ROLES);
-    }
+  private async assertManage(userId: string, project: { organisation_id: string }) {
+    const context = await this.ownershipService.resolveContext(userId, project.organisation_id);
+    this.ownershipService.assertRole(context, MANAGE_ROLES);
   }
 
   async create(userId: string, dto: CreateAutomationDto) {

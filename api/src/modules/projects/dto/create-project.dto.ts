@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { PostType } from 'generated/prisma';
 
 export class CreateProjectDto {
@@ -34,12 +34,8 @@ export class CreateProjectDto {
   @IsString({ each: true })
   instructions?: string[];
 
-  @ApiProperty({
-    required: false,
-    description:
-      'Organisation workspace to own this project. Omit to own it under the personal account.',
-  })
-  @IsOptional()
+  @ApiProperty({ description: 'Organisation workspace that owns this project' })
+  @IsNotEmpty()
   @IsString()
-  organisation_id?: string;
+  organisation_id: string;
 }

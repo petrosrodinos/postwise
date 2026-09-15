@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -55,7 +54,6 @@ Platform: ${dto.platform ?? 'general social media'}`;
 
     return this.prisma.project.create({
       data: {
-        user_id: context.user_id,
         organisation_id: context.organisation_id,
         title: dto.title,
         description: dto.description,
@@ -68,14 +66,10 @@ Platform: ${dto.platform ?? 'general social media'}`;
   }
 
   async findAll(userId: string, query: ProjectsQueryType) {
-    if (query.organisation_id) {
-      await this.ownershipService.resolveContext(userId, query.organisation_id);
-    }
+    await this.ownershipService.resolveContext(userId, query.organisation_id);
 
     const where = {
-      ...(query.organisation_id
-        ? { organisation_id: query.organisation_id }
-        : { user_id: userId }),
+      organisation_id: query.organisation_id,
       ...(query.platform && { platform: query.platform }),
       ...(query.is_archived !== undefined && { is_archived: query.is_archived }),
     };
@@ -125,11 +119,7 @@ Platform: ${dto.platform ?? 'general social media'}`;
     });
     if (!project) throw new NotFoundException('Project not found');
 
-    if (project.organisation_id) {
-      await this.ownershipService.resolveContext(userId, project.organisation_id);
-    } else if (project.user_id !== userId) {
-      throw new ForbiddenException('You do not have access to this project');
-    }
+    await this.ownershipService.resolveContext(userId, project.organisation_id);
 
     return project;
   }
@@ -150,11 +140,9 @@ Platform: ${dto.platform ?? 'general social media'}`;
     return { ...project, post_status_counts };
   }
 
-  private async assertManage(userId: string, project: { organisation_id?: string | null }) {
-    if (project.organisation_id) {
-      const context = await this.ownershipService.resolveContext(userId, project.organisation_id);
-      this.ownershipService.assertRole(context, MANAGE_ROLES);
-    }
+  private async assertManage(userId: string, project: { organisation_id: string }) {
+    const context = await this.ownershipService.resolveContext(userId, project.organisation_id);
+    this.ownershipService.assertRole(context, MANAGE_ROLES);
   }
 
   async update(userId: string, id: string, dto: UpdateProjectDto) {
@@ -192,9 +180,7 @@ Platform: ${dto.platform ?? 'general social media'}`;
     });
     if (!styleProfile) throw new NotFoundException('Style profile not found');
 
-    const sameOwner =
-      (project.organisation_id && styleProfile.organisation_id === project.organisation_id) ||
-      (!project.organisation_id && styleProfile.user_id === project.user_id);
+    const sameOwner = styleProfile.organisation_id === project.organisation_id;
     if (!sameOwner) {
       throw new BadRequestException(
         'Style profile must belong to the same owner context as the project',

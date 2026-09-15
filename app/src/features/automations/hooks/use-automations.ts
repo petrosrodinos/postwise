@@ -23,8 +23,9 @@ export const useAllAutomations = () => {
   const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
 
   const projectsQuery = useQuery({
-    queryKey: ["projects", { organisation_id: activeOrganisationId ?? undefined, limit: 100 }],
-    queryFn: () => getProjects({ organisation_id: activeOrganisationId ?? undefined, limit: 100 }),
+    queryKey: ["projects", { organisation_id: activeOrganisationId!, limit: 100 }],
+    queryFn: () => getProjects({ organisation_id: activeOrganisationId!, limit: 100 }),
+    enabled: !!activeOrganisationId,
   });
 
   const projects = projectsQuery.data?.data ?? [];

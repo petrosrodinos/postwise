@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-// The "active workspace" a user is currently acting as: their personal
-// account (organisation_id = null) or a specific Organisation they belong
-// to. Every list/detail request for owner-scoped domains (posts, projects,
-// style profiles, documents, social channel connections, automations)
-// passes `organisation_id` derived from this store.
+// The Organisation a user is currently acting as. `null` is only a
+// transient "not yet resolved" state (right after login, before the
+// auto-select effect in DashboardLayout picks one) — every user always
+// belongs to at least one Organisation. Every list/detail request for
+// owner-scoped domains (posts, projects, style profiles, documents, social
+// channel connections, automations) passes `organisation_id` derived from
+// this store.
 interface WorkspaceState {
   active_organisation_id: string | null;
   active_organisation_name: string | null;

@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { z } from 'zod';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { AiService } from '@/integrations/ai/services/ai.service';
@@ -54,7 +49,6 @@ export class StyleProfilesService {
 
     return this.prisma.styleProfile.create({
       data: {
-        user_id: context.user_id,
         organisation_id: context.organisation_id,
         name: dto.name,
         platform: dto.platform,
@@ -64,14 +58,10 @@ export class StyleProfilesService {
   }
 
   async findAll(userId: string, query: StyleProfilesQueryType) {
-    if (query.organisation_id) {
-      await this.ownershipService.resolveContext(userId, query.organisation_id);
-    }
+    await this.ownershipService.resolveContext(userId, query.organisation_id);
 
     const where = {
-      ...(query.organisation_id
-        ? { organisation_id: query.organisation_id }
-        : { user_id: userId }),
+      organisation_id: query.organisation_id,
       ...(query.platform && { platform: query.platform }),
     };
 
@@ -96,16 +86,7 @@ export class StyleProfilesService {
     });
     if (!profile) throw new NotFoundException('Style profile not found');
 
-    if (profile.organisation_id) {
-      await this.ownershipService.resolveContext(
-        userId,
-        profile.organisation_id,
-      );
-    } else if (profile.user_id !== userId) {
-      throw new ForbiddenException(
-        'You do not have access to this style profile',
-      );
-    }
+    await this.ownershipService.resolveContext(userId, profile.organisation_id);
 
     return profile;
   }
@@ -114,17 +95,12 @@ export class StyleProfilesService {
     return this.findOwned(userId, id);
   }
 
-  private async assertManage(
-    userId: string,
-    profile: { organisation_id?: string | null },
-  ) {
-    if (profile.organisation_id) {
-      const context = await this.ownershipService.resolveContext(
-        userId,
-        profile.organisation_id,
-      );
-      this.ownershipService.assertRole(context, MANAGE_ROLES);
-    }
+  private async assertManage(userId: string, profile: { organisation_id: string }) {
+    const context = await this.ownershipService.resolveContext(
+      userId,
+      profile.organisation_id,
+    );
+    this.ownershipService.assertRole(context, MANAGE_ROLES);
   }
 
   async update(userId: string, id: string, dto: UpdateStyleProfileDto) {

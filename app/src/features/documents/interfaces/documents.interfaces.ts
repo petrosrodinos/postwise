@@ -12,8 +12,7 @@ export type DocumentType = (typeof DocumentTypes)[keyof typeof DocumentTypes];
 
 export interface Document {
   id: string;
-  user_uuid?: string | null;
-  organisation_id?: string | null;
+  organisation_id: string;
   filename: string;
   mimetype: string;
   size: number;
@@ -26,7 +25,7 @@ export interface Document {
 export interface CreateDocumentDto {
   file: File;
   type?: DocumentType;
-  organisation_id?: string;
+  organisation_id: string;
 }
 
 export interface UpdateDocumentDto {
@@ -37,6 +36,6 @@ export interface UpdateDocumentDto {
 export interface DocumentsQueryType {
   page?: number;
   limit?: number;
-  organisation_id?: string;
+  organisation_id: string;
   type?: DocumentType;
 }

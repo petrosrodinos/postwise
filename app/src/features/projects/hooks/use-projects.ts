@@ -23,11 +23,12 @@ const PROJECTS_KEY = "projects";
 
 export const useProjects = (query?: Omit<ProjectsQueryType, "organisation_id">) => {
   const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
-  const resolvedQuery = { ...query, organisation_id: activeOrganisationId ?? undefined };
+  const resolvedQuery = { ...query, organisation_id: activeOrganisationId! };
 
   return useQuery({
     queryKey: [PROJECTS_KEY, resolvedQuery],
     queryFn: () => getProjects(resolvedQuery),
+    enabled: !!activeOrganisationId,
   });
 };
 
@@ -45,7 +46,7 @@ export const useCreateProject = () => {
 
   return useMutation({
     mutationFn: (dto: Omit<CreateProjectDto, "organisation_id">) =>
-      createProject({ ...dto, organisation_id: activeOrganisationId ?? undefined }),
+      createProject({ ...dto, organisation_id: activeOrganisationId! }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [PROJECTS_KEY] });
       toast({ title: "Project created", description: "Your new project is ready.", duration: 2000 });

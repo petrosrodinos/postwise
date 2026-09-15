@@ -1,4 +1,4 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { OrganisationRole, SocialChannelConnectionStatus } from 'generated/prisma';
@@ -45,7 +45,6 @@ export class SocialChannelConnectionsService {
 
     const connection = await this.prisma.socialChannelConnection.create({
       data: {
-        user_id: context.user_id,
         organisation_id: context.organisation_id,
         channel: dto.channel,
         external_account_id: dto.external_account_id,
@@ -61,14 +60,10 @@ export class SocialChannelConnectionsService {
   }
 
   async findAll(userId: string, query: SocialChannelConnectionsQueryType) {
-    if (query.organisation_id) {
-      await this.ownershipService.resolveContext(userId, query.organisation_id);
-    }
+    await this.ownershipService.resolveContext(userId, query.organisation_id);
 
     const where = {
-      ...(query.organisation_id
-        ? { organisation_id: query.organisation_id }
-        : { user_id: userId }),
+      organisation_id: query.organisation_id,
       ...(query.channel && { channel: query.channel }),
     };
 
@@ -94,11 +89,7 @@ export class SocialChannelConnectionsService {
     const connection = await this.prisma.socialChannelConnection.findUnique({ where: { id } });
     if (!connection) throw new NotFoundException('Social channel connection not found');
 
-    if (connection.organisation_id) {
-      await this.ownershipService.resolveContext(userId, connection.organisation_id);
-    } else if (connection.user_id !== userId) {
-      throw new ForbiddenException('You do not have access to this connection');
-    }
+    await this.ownershipService.resolveContext(userId, connection.organisation_id);
 
     return connection;
   }
@@ -116,13 +107,11 @@ export class SocialChannelConnectionsService {
   async update(userId: string, id: string, dto: UpdateSocialChannelConnectionDto) {
     const connection = await this.findOwned(userId, id);
 
-    if (connection.organisation_id) {
-      const context = await this.ownershipService.resolveContext(
-        userId,
-        connection.organisation_id,
-      );
-      this.ownershipService.assertRole(context, MANAGE_ROLES);
-    }
+    const context = await this.ownershipService.resolveContext(
+      userId,
+      connection.organisation_id,
+    );
+    this.ownershipService.assertRole(context, MANAGE_ROLES);
 
     const updated = await this.prisma.socialChannelConnection.update({
       where: { id },
@@ -141,13 +130,11 @@ export class SocialChannelConnectionsService {
   async remove(userId: string, id: string) {
     const connection = await this.findOwned(userId, id);
 
-    if (connection.organisation_id) {
-      const context = await this.ownershipService.resolveContext(
-        userId,
-        connection.organisation_id,
-      );
-      this.ownershipService.assertRole(context, MANAGE_ROLES);
-    }
+    const context = await this.ownershipService.resolveContext(
+      userId,
+      connection.organisation_id,
+    );
+    this.ownershipService.assertRole(context, MANAGE_ROLES);
 
     await this.prisma.socialChannelConnection.delete({ where: { id } });
     return { message: 'Social channel connection removed successfully' };

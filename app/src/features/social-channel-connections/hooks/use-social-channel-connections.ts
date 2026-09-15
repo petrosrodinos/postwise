@@ -17,11 +17,12 @@ const CONNECTIONS_KEY = "social-channel-connections";
 
 export const useSocialChannelConnections = (query?: Omit<SocialChannelConnectionsQueryType, "organisation_id">) => {
   const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
-  const resolvedQuery = { ...query, organisation_id: activeOrganisationId ?? undefined };
+  const resolvedQuery = { ...query, organisation_id: activeOrganisationId! };
 
   return useQuery({
     queryKey: [CONNECTIONS_KEY, resolvedQuery],
     queryFn: () => getSocialChannelConnections(resolvedQuery),
+    enabled: !!activeOrganisationId,
   });
 };
 
@@ -31,7 +32,7 @@ export const useCreateSocialChannelConnection = () => {
 
   return useMutation({
     mutationFn: (dto: Omit<CreateSocialChannelConnectionDto, "organisation_id">) =>
-      createSocialChannelConnection({ ...dto, organisation_id: activeOrganisationId ?? undefined }),
+      createSocialChannelConnection({ ...dto, organisation_id: activeOrganisationId! }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [CONNECTIONS_KEY] });
       toast({ title: "Channel connected", description: "Posts can now be scheduled to this account.", duration: 2500 });

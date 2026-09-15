@@ -22,11 +22,12 @@ const STYLE_PROFILES_KEY = "style-profiles";
 
 export const useStyleProfiles = (query?: Omit<StyleProfilesQueryType, "organisation_id">) => {
   const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
-  const resolvedQuery = { ...query, organisation_id: activeOrganisationId ?? undefined };
+  const resolvedQuery = { ...query, organisation_id: activeOrganisationId! };
 
   return useQuery({
     queryKey: [STYLE_PROFILES_KEY, resolvedQuery],
     queryFn: () => getStyleProfiles(resolvedQuery),
+    enabled: !!activeOrganisationId,
   });
 };
 
@@ -44,7 +45,7 @@ export const useCreateStyleProfile = () => {
 
   return useMutation({
     mutationFn: (dto: Omit<CreateStyleProfileDto, "organisation_id">) =>
-      createStyleProfile({ ...dto, organisation_id: activeOrganisationId ?? undefined }),
+      createStyleProfile({ ...dto, organisation_id: activeOrganisationId! }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [STYLE_PROFILES_KEY] });
       toast({ title: "Style profile created", description: "Add sample posts and analyze it to build its Style DNA.", duration: 2500 });

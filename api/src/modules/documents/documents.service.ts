@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { GcsService } from '@/integrations/storage/gcs/services/gcs.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
@@ -19,17 +19,9 @@ export class DocumentsService {
     private readonly ownershipService: OwnershipService,
   ) {}
 
-  private async ownerWhere(userId: string, organisationId?: string) {
-    const context = await this.ownershipService.resolveContext(userId, organisationId);
-    if (context.organisation_id) {
-      this.ownershipService.assertRole(context, MANAGE_ROLES);
-      return { organisation_id: context.organisation_id };
-    }
-    return { user_uuid: context.user_id };
-  }
-
   async create(userId: string, file: any, dto: CreateDocumentDto) {
-    const owner = await this.ownerWhere(userId, dto.organisation_id);
+    const context = await this.ownershipService.resolveContext(userId, dto.organisation_id);
+    this.ownershipService.assertRole(context, MANAGE_ROLES);
 
     const uploaded = await this.gcsService.uploadImageFromBuffer(
       file.buffer,
@@ -40,7 +32,7 @@ export class DocumentsService {
 
     return this.prisma.document.create({
       data: {
-        ...owner,
+        organisation_id: context.organisation_id,
         filename: file.originalname,
         mimetype: file.mimetype,
         size: uploaded.size,
@@ -52,14 +44,10 @@ export class DocumentsService {
   }
 
   async findAll(userId: string, query: DocumentsQueryType) {
-    if (query.organisation_id) {
-      await this.ownershipService.resolveContext(userId, query.organisation_id);
-    }
+    await this.ownershipService.resolveContext(userId, query.organisation_id);
 
     const where = {
-      ...(query.organisation_id
-        ? { organisation_id: query.organisation_id }
-        : { user_uuid: userId }),
+      organisation_id: query.organisation_id,
       ...(query.type && { type: query.type }),
     };
 
@@ -82,11 +70,7 @@ export class DocumentsService {
     const document = await this.prisma.document.findUnique({ where: { id } });
     if (!document) throw new NotFoundException('Document not found');
 
-    if (document.organisation_id) {
-      await this.ownershipService.resolveContext(userId, document.organisation_id);
-    } else if (document.user_uuid !== userId) {
-      throw new ForbiddenException('You do not have access to this document');
-    }
+    await this.ownershipService.resolveContext(userId, document.organisation_id);
 
     return document;
   }
@@ -98,13 +82,8 @@ export class DocumentsService {
   async update(userId: string, id: string, dto: UpdateDocumentDto) {
     const document = await this.findOwned(userId, id);
 
-    if (document.organisation_id) {
-      const context = await this.ownershipService.resolveContext(
-        userId,
-        document.organisation_id,
-      );
-      this.ownershipService.assertRole(context, MANAGE_ROLES);
-    }
+    const context = await this.ownershipService.resolveContext(userId, document.organisation_id);
+    this.ownershipService.assertRole(context, MANAGE_ROLES);
 
     return this.prisma.document.update({
       where: { id },
@@ -115,13 +94,8 @@ export class DocumentsService {
   async remove(userId: string, id: string) {
     const document = await this.findOwned(userId, id);
 
-    if (document.organisation_id) {
-      const context = await this.ownershipService.resolveContext(
-        userId,
-        document.organisation_id,
-      );
-      this.ownershipService.assertRole(context, MANAGE_ROLES);
-    }
+    const context = await this.ownershipService.resolveContext(userId, document.organisation_id);
+    this.ownershipService.assertRole(context, MANAGE_ROLES);
 
     await this.gcsService.deleteImage({ filename: document.path });
     await this.prisma.document.delete({ where: { id } });

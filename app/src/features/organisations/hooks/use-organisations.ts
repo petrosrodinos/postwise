@@ -1,5 +1,8 @@
+import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
+import { useAuthStore } from "@/stores/auth";
+import { useWorkspaceStore } from "@/stores/workspace";
 import {
   addOrganisationMember,
   createOrganisation,
@@ -14,6 +17,7 @@ import {
 import type {
   AddOrganisationMemberDto,
   CreateOrganisationDto,
+  Organisation,
   UpdateOrganisationDto,
   UpdateOrganisationMemberDto,
 } from "../interfaces/organisations.interfaces";
@@ -26,6 +30,38 @@ export const useOrganisations = () => {
     queryKey: [ORGANISATIONS_KEY],
     queryFn: () => getOrganisations(),
   });
+};
+
+const pickDefaultOrganisation = (organisations: Organisation[], userUuid: string | null) => {
+  const ownCreated = organisations
+    .filter((organisation) => organisation.created_by_user_id === userUuid)
+    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+
+  if (ownCreated[0]) return ownCreated[0];
+
+  return [...organisations].sort(
+    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+  )[0];
+};
+
+// Ensures the workspace store always points at an organisation the user is
+// still a member of, auto-selecting one (their own default workspace,
+// falling back to their oldest membership) right after login or whenever
+// the persisted selection turns out to be stale.
+export const useEnsureActiveOrganisation = () => {
+  const { data: organisations } = useOrganisations();
+  const { user_uuid } = useAuthStore();
+  const { active_organisation_id, setActiveWorkspace } = useWorkspaceStore();
+
+  useEffect(() => {
+    if (!organisations) return;
+
+    const isActiveValid = organisations.some((organisation) => organisation.id === active_organisation_id);
+    if (isActiveValid) return;
+
+    const next = pickDefaultOrganisation(organisations, user_uuid);
+    if (next) setActiveWorkspace({ id: next.id, name: next.name });
+  }, [organisations, active_organisation_id, user_uuid, setActiveWorkspace]);
 };
 
 export const useOrganisation = (id?: string) => {

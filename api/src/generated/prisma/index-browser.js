@@ -142,7 +142,6 @@ exports.Prisma.PasswordResetTokenScalarFieldEnum = {
 
 exports.Prisma.DocumentScalarFieldEnum = {
   id: 'id',
-  user_uuid: 'user_uuid',
   organisation_id: 'organisation_id',
   filename: 'filename',
   mimetype: 'mimetype',
@@ -173,7 +172,6 @@ exports.Prisma.OrganisationMemberScalarFieldEnum = {
 
 exports.Prisma.SocialChannelConnectionScalarFieldEnum = {
   id: 'id',
-  user_id: 'user_id',
   organisation_id: 'organisation_id',
   channel: 'channel',
   status: 'status',
@@ -188,7 +186,6 @@ exports.Prisma.SocialChannelConnectionScalarFieldEnum = {
 
 exports.Prisma.StyleProfileScalarFieldEnum = {
   id: 'id',
-  user_id: 'user_id',
   organisation_id: 'organisation_id',
   name: 'name',
   platform: 'platform',
@@ -210,7 +207,6 @@ exports.Prisma.StyleProfileScalarFieldEnum = {
 
 exports.Prisma.ProjectScalarFieldEnum = {
   id: 'id',
-  user_id: 'user_id',
   organisation_id: 'organisation_id',
   title: 'title',
   description: 'description',

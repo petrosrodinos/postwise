@@ -2,8 +2,7 @@ import type { PostType } from "@/features/posts/interfaces/posts.interfaces";
 
 export interface StyleProfile {
   id: string;
-  user_id?: string | null;
-  organisation_id?: string | null;
+  organisation_id: string;
   name: string;
   platform: PostType;
   source_url?: string | null;
@@ -26,7 +25,7 @@ export interface CreateStyleProfileDto {
   name: string;
   platform: PostType;
   source_url?: string;
-  organisation_id?: string;
+  organisation_id: string;
 }
 
 export type UpdateStyleProfileDto = Partial<Omit<CreateStyleProfileDto, "organisation_id">>;
@@ -58,6 +57,6 @@ export interface ScrapedLinkedInPost {
 export interface StyleProfilesQueryType {
   page?: number;
   limit?: number;
-  organisation_id?: string;
+  organisation_id: string;
   platform?: PostType;
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { DocumentType } from 'generated/prisma';
 
 export class CreateDocumentDto {
@@ -8,14 +8,10 @@ export class CreateDocumentDto {
   @IsEnum(DocumentType)
   type?: DocumentType;
 
-  @ApiProperty({
-    required: false,
-    description:
-      'Organisation workspace to own this document. Omit to own it under the personal account.',
-  })
-  @IsOptional()
+  @ApiProperty({ description: 'Organisation workspace that owns this document' })
+  @IsNotEmpty()
   @IsString()
-  organisation_id?: string;
+  organisation_id: string;
 
   @ApiProperty({ type: 'string', format: 'binary' })
   file: any;

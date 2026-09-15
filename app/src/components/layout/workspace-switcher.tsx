@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Building2, Check, ChevronsUpDown, Plus, User } from "lucide-react";
+import { Building2, Check, ChevronsUpDown, Plus } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,12 +23,12 @@ const MENU_ITEM_CLASSES = "gap-2.5 rounded-[7px] px-2 py-2 text-[13px] font-medi
 export function WorkspaceSwitcher() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const navigate = useNavigate();
-  const { full_name, logout } = useAuthStore();
+  const { logout } = useAuthStore();
   const { data: organisations = [] } = useOrganisations();
   const { active_organisation_id, active_organisation_name, setActiveWorkspace } = useWorkspaceStore();
 
-  const activeName = active_organisation_id ? (active_organisation_name ?? "Organisation") : (full_name ?? "Personal account");
-  const activeKind = active_organisation_id ? "Organisation" : "Personal account";
+  const activeName = active_organisation_name ?? "Loading…";
+  const activeKind = "Organisation";
 
   return (
     <SidebarMenu>
@@ -51,11 +51,6 @@ export function WorkspaceSwitcher() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) min-w-64 border-sidebar-border bg-sidebar p-1.5 text-sidebar-foreground shadow-[0_12px_40px_-8px_rgba(20,18,10,0.35)]" align="start" side="top" sideOffset={8}>
             <DropdownMenuLabel className="px-2 pb-1 pt-1 text-[10.5px] font-bold uppercase tracking-wide text-sidebar-foreground/50">Workspaces</DropdownMenuLabel>
-            <DropdownMenuItem className={MENU_ITEM_CLASSES} onClick={() => setActiveWorkspace(null)}>
-              <User />
-              <span className="flex-1 truncate">{full_name ?? "Personal account"}</span>
-              {!active_organisation_id && <Check className="size-3.5 text-brass" />}
-            </DropdownMenuItem>
             {organisations.map((organisation) => (
               <DropdownMenuItem key={organisation.id} className={MENU_ITEM_CLASSES} onClick={() => setActiveWorkspace({ id: organisation.id, name: organisation.name })}>
                 <Building2 />
@@ -67,11 +62,9 @@ export function WorkspaceSwitcher() {
             <DropdownMenuItem className={MENU_ITEM_CLASSES} onClick={() => navigate(Routes.dashboard.profile)}>
               My profile
             </DropdownMenuItem>
-            {active_organisation_id && (
-              <DropdownMenuItem className={MENU_ITEM_CLASSES} onClick={() => navigate(Routes.dashboard.settings)}>
-                Organisation settings
-              </DropdownMenuItem>
-            )}
+            <DropdownMenuItem className={MENU_ITEM_CLASSES} onClick={() => navigate(Routes.dashboard.settings)}>
+              Organisation settings
+            </DropdownMenuItem>
             <DropdownMenuItem className={MENU_ITEM_CLASSES} onClick={() => setIsCreateOpen(true)}>
               <Plus />
               New organisation

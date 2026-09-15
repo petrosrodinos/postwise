@@ -2193,24 +2193,16 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     password_reset_tokens: number
-    documents: number
     organisations_created: number
     organisation_memberships: number
     authored_posts: number
-    channel_connections: number
-    style_profiles: number
-    projects: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     password_reset_tokens?: boolean | UserCountOutputTypeCountPassword_reset_tokensArgs
-    documents?: boolean | UserCountOutputTypeCountDocumentsArgs
     organisations_created?: boolean | UserCountOutputTypeCountOrganisations_createdArgs
     organisation_memberships?: boolean | UserCountOutputTypeCountOrganisation_membershipsArgs
     authored_posts?: boolean | UserCountOutputTypeCountAuthored_postsArgs
-    channel_connections?: boolean | UserCountOutputTypeCountChannel_connectionsArgs
-    style_profiles?: boolean | UserCountOutputTypeCountStyle_profilesArgs
-    projects?: boolean | UserCountOutputTypeCountProjectsArgs
   }
 
   // Custom InputTypes
@@ -2234,13 +2226,6 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DocumentWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountOrganisations_createdArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrganisationWhereInput
   }
@@ -2257,27 +2242,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAuthored_postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountChannel_connectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SocialChannelConnectionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountStyle_profilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: StyleProfileWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProjectWhereInput
   }
 
 
@@ -2848,13 +2812,9 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     password_reset_tokens?: boolean | User$password_reset_tokensArgs<ExtArgs>
-    documents?: boolean | User$documentsArgs<ExtArgs>
     organisations_created?: boolean | User$organisations_createdArgs<ExtArgs>
     organisation_memberships?: boolean | User$organisation_membershipsArgs<ExtArgs>
     authored_posts?: boolean | User$authored_postsArgs<ExtArgs>
-    channel_connections?: boolean | User$channel_connectionsArgs<ExtArgs>
-    style_profiles?: boolean | User$style_profilesArgs<ExtArgs>
-    projects?: boolean | User$projectsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2894,13 +2854,9 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "password" | "role" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     password_reset_tokens?: boolean | User$password_reset_tokensArgs<ExtArgs>
-    documents?: boolean | User$documentsArgs<ExtArgs>
     organisations_created?: boolean | User$organisations_createdArgs<ExtArgs>
     organisation_memberships?: boolean | User$organisation_membershipsArgs<ExtArgs>
     authored_posts?: boolean | User$authored_postsArgs<ExtArgs>
-    channel_connections?: boolean | User$channel_connectionsArgs<ExtArgs>
-    style_profiles?: boolean | User$style_profilesArgs<ExtArgs>
-    projects?: boolean | User$projectsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2910,13 +2866,9 @@ export namespace Prisma {
     name: "User"
     objects: {
       password_reset_tokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
-      documents: Prisma.$DocumentPayload<ExtArgs>[]
       organisations_created: Prisma.$OrganisationPayload<ExtArgs>[]
       organisation_memberships: Prisma.$OrganisationMemberPayload<ExtArgs>[]
       authored_posts: Prisma.$PostPayload<ExtArgs>[]
-      channel_connections: Prisma.$SocialChannelConnectionPayload<ExtArgs>[]
-      style_profiles: Prisma.$StyleProfilePayload<ExtArgs>[]
-      projects: Prisma.$ProjectPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3322,13 +3274,9 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     password_reset_tokens<T extends User$password_reset_tokensArgs<ExtArgs> = {}>(args?: Subset<T, User$password_reset_tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    documents<T extends User$documentsArgs<ExtArgs> = {}>(args?: Subset<T, User$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     organisations_created<T extends User$organisations_createdArgs<ExtArgs> = {}>(args?: Subset<T, User$organisations_createdArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     organisation_memberships<T extends User$organisation_membershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$organisation_membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganisationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     authored_posts<T extends User$authored_postsArgs<ExtArgs> = {}>(args?: Subset<T, User$authored_postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    channel_connections<T extends User$channel_connectionsArgs<ExtArgs> = {}>(args?: Subset<T, User$channel_connectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    style_profiles<T extends User$style_profilesArgs<ExtArgs> = {}>(args?: Subset<T, User$style_profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StyleProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    projects<T extends User$projectsArgs<ExtArgs> = {}>(args?: Subset<T, User$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3778,30 +3726,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.documents
-   */
-  export type User$documentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Document
-     */
-    select?: DocumentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Document
-     */
-    omit?: DocumentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DocumentInclude<ExtArgs> | null
-    where?: DocumentWhereInput
-    orderBy?: DocumentOrderByWithRelationInput | DocumentOrderByWithRelationInput[]
-    cursor?: DocumentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DocumentScalarFieldEnum | DocumentScalarFieldEnum[]
-  }
-
-  /**
    * User.organisations_created
    */
   export type User$organisations_createdArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3871,78 +3795,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
-  }
-
-  /**
-   * User.channel_connections
-   */
-  export type User$channel_connectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SocialChannelConnection
-     */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the SocialChannelConnection
-     */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
-    where?: SocialChannelConnectionWhereInput
-    orderBy?: SocialChannelConnectionOrderByWithRelationInput | SocialChannelConnectionOrderByWithRelationInput[]
-    cursor?: SocialChannelConnectionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SocialChannelConnectionScalarFieldEnum | SocialChannelConnectionScalarFieldEnum[]
-  }
-
-  /**
-   * User.style_profiles
-   */
-  export type User$style_profilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the StyleProfile
-     */
-    select?: StyleProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the StyleProfile
-     */
-    omit?: StyleProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: StyleProfileInclude<ExtArgs> | null
-    where?: StyleProfileWhereInput
-    orderBy?: StyleProfileOrderByWithRelationInput | StyleProfileOrderByWithRelationInput[]
-    cursor?: StyleProfileWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: StyleProfileScalarFieldEnum | StyleProfileScalarFieldEnum[]
-  }
-
-  /**
-   * User.projects
-   */
-  export type User$projectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Project
-     */
-    select?: ProjectSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Project
-     */
-    omit?: ProjectOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProjectInclude<ExtArgs> | null
-    where?: ProjectWhereInput
-    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
-    cursor?: ProjectWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
   }
 
   /**
@@ -5057,7 +4909,6 @@ export namespace Prisma {
 
   export type DocumentMinAggregateOutputType = {
     id: string | null
-    user_uuid: string | null
     organisation_id: string | null
     filename: string | null
     mimetype: string | null
@@ -5070,7 +4921,6 @@ export namespace Prisma {
 
   export type DocumentMaxAggregateOutputType = {
     id: string | null
-    user_uuid: string | null
     organisation_id: string | null
     filename: string | null
     mimetype: string | null
@@ -5083,7 +4933,6 @@ export namespace Prisma {
 
   export type DocumentCountAggregateOutputType = {
     id: number
-    user_uuid: number
     organisation_id: number
     filename: number
     mimetype: number
@@ -5106,7 +4955,6 @@ export namespace Prisma {
 
   export type DocumentMinAggregateInputType = {
     id?: true
-    user_uuid?: true
     organisation_id?: true
     filename?: true
     mimetype?: true
@@ -5119,7 +4967,6 @@ export namespace Prisma {
 
   export type DocumentMaxAggregateInputType = {
     id?: true
-    user_uuid?: true
     organisation_id?: true
     filename?: true
     mimetype?: true
@@ -5132,7 +4979,6 @@ export namespace Prisma {
 
   export type DocumentCountAggregateInputType = {
     id?: true
-    user_uuid?: true
     organisation_id?: true
     filename?: true
     mimetype?: true
@@ -5232,8 +5078,7 @@ export namespace Prisma {
 
   export type DocumentGroupByOutputType = {
     id: string
-    user_uuid: string | null
-    organisation_id: string | null
+    organisation_id: string
     filename: string
     mimetype: string
     size: number
@@ -5264,7 +5109,6 @@ export namespace Prisma {
 
   export type DocumentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_uuid?: boolean
     organisation_id?: boolean
     filename?: boolean
     mimetype?: boolean
@@ -5273,8 +5117,7 @@ export namespace Prisma {
     path?: boolean
     type?: boolean
     created_at?: boolean
-    user?: boolean | Document$userArgs<ExtArgs>
-    organisation?: boolean | Document$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     post_attachments?: boolean | Document$post_attachmentsArgs<ExtArgs>
     cover_of_posts?: boolean | Document$cover_of_postsArgs<ExtArgs>
     _count?: boolean | DocumentCountOutputTypeDefaultArgs<ExtArgs>
@@ -5282,7 +5125,6 @@ export namespace Prisma {
 
   export type DocumentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_uuid?: boolean
     organisation_id?: boolean
     filename?: boolean
     mimetype?: boolean
@@ -5291,13 +5133,11 @@ export namespace Prisma {
     path?: boolean
     type?: boolean
     created_at?: boolean
-    user?: boolean | Document$userArgs<ExtArgs>
-    organisation?: boolean | Document$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
   export type DocumentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_uuid?: boolean
     organisation_id?: boolean
     filename?: boolean
     mimetype?: boolean
@@ -5306,13 +5146,11 @@ export namespace Prisma {
     path?: boolean
     type?: boolean
     created_at?: boolean
-    user?: boolean | Document$userArgs<ExtArgs>
-    organisation?: boolean | Document$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
   export type DocumentSelectScalar = {
     id?: boolean
-    user_uuid?: boolean
     organisation_id?: boolean
     filename?: boolean
     mimetype?: boolean
@@ -5323,35 +5161,30 @@ export namespace Prisma {
     created_at?: boolean
   }
 
-  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "organisation_id" | "filename" | "mimetype" | "size" | "url" | "path" | "type" | "created_at", ExtArgs["result"]["document"]>
+  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "filename" | "mimetype" | "size" | "url" | "path" | "type" | "created_at", ExtArgs["result"]["document"]>
   export type DocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Document$userArgs<ExtArgs>
-    organisation?: boolean | Document$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     post_attachments?: boolean | Document$post_attachmentsArgs<ExtArgs>
     cover_of_posts?: boolean | Document$cover_of_postsArgs<ExtArgs>
     _count?: boolean | DocumentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DocumentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Document$userArgs<ExtArgs>
-    organisation?: boolean | Document$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
   export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Document$userArgs<ExtArgs>
-    organisation?: boolean | Document$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
 
   export type $DocumentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Document"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
-      organisation: Prisma.$OrganisationPayload<ExtArgs> | null
+      organisation: Prisma.$OrganisationPayload<ExtArgs>
       post_attachments: Prisma.$PostAttachmentPayload<ExtArgs>[]
       cover_of_posts: Prisma.$PostPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      user_uuid: string | null
-      organisation_id: string | null
+      organisation_id: string
       filename: string
       mimetype: string
       size: number
@@ -5753,8 +5586,7 @@ export namespace Prisma {
    */
   export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends Document$userArgs<ExtArgs> = {}>(args?: Subset<T, Document$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    organisation<T extends Document$organisationArgs<ExtArgs> = {}>(args?: Subset<T, Document$organisationArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organisation<T extends OrganisationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationDefaultArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     post_attachments<T extends Document$post_attachmentsArgs<ExtArgs> = {}>(args?: Subset<T, Document$post_attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     cover_of_posts<T extends Document$cover_of_postsArgs<ExtArgs> = {}>(args?: Subset<T, Document$cover_of_postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -5787,7 +5619,6 @@ export namespace Prisma {
    */
   interface DocumentFieldRefs {
     readonly id: FieldRef<"Document", 'String'>
-    readonly user_uuid: FieldRef<"Document", 'String'>
     readonly organisation_id: FieldRef<"Document", 'String'>
     readonly filename: FieldRef<"Document", 'String'>
     readonly mimetype: FieldRef<"Document", 'String'>
@@ -6189,44 +6020,6 @@ export namespace Prisma {
      * Limit how many Documents to delete.
      */
     limit?: number
-  }
-
-  /**
-   * Document.user
-   */
-  export type Document$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * Document.organisation
-   */
-  export type Document$organisationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organisation
-     */
-    select?: OrganisationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organisation
-     */
-    omit?: OrganisationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganisationInclude<ExtArgs> | null
-    where?: OrganisationWhereInput
   }
 
   /**
@@ -8628,7 +8421,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionMinAggregateOutputType = {
     id: string | null
-    user_id: string | null
     organisation_id: string | null
     channel: $Enums.SocialChannel | null
     status: $Enums.SocialChannelConnectionStatus | null
@@ -8643,7 +8435,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionMaxAggregateOutputType = {
     id: string | null
-    user_id: string | null
     organisation_id: string | null
     channel: $Enums.SocialChannel | null
     status: $Enums.SocialChannelConnectionStatus | null
@@ -8658,7 +8449,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionCountAggregateOutputType = {
     id: number
-    user_id: number
     organisation_id: number
     channel: number
     status: number
@@ -8675,7 +8465,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionMinAggregateInputType = {
     id?: true
-    user_id?: true
     organisation_id?: true
     channel?: true
     status?: true
@@ -8690,7 +8479,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionMaxAggregateInputType = {
     id?: true
-    user_id?: true
     organisation_id?: true
     channel?: true
     status?: true
@@ -8705,7 +8493,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionCountAggregateInputType = {
     id?: true
-    user_id?: true
     organisation_id?: true
     channel?: true
     status?: true
@@ -8793,8 +8580,7 @@ export namespace Prisma {
 
   export type SocialChannelConnectionGroupByOutputType = {
     id: string
-    user_id: string | null
-    organisation_id: string | null
+    organisation_id: string
     channel: $Enums.SocialChannel
     status: $Enums.SocialChannelConnectionStatus
     external_account_id: string
@@ -8825,7 +8611,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     channel?: boolean
     status?: boolean
@@ -8836,15 +8621,13 @@ export namespace Prisma {
     token_expires_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    user?: boolean | SocialChannelConnection$userArgs<ExtArgs>
-    organisation?: boolean | SocialChannelConnection$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     post_channels?: boolean | SocialChannelConnection$post_channelsArgs<ExtArgs>
     _count?: boolean | SocialChannelConnectionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["socialChannelConnection"]>
 
   export type SocialChannelConnectionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     channel?: boolean
     status?: boolean
@@ -8855,13 +8638,11 @@ export namespace Prisma {
     token_expires_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    user?: boolean | SocialChannelConnection$userArgs<ExtArgs>
-    organisation?: boolean | SocialChannelConnection$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["socialChannelConnection"]>
 
   export type SocialChannelConnectionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     channel?: boolean
     status?: boolean
@@ -8872,13 +8653,11 @@ export namespace Prisma {
     token_expires_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    user?: boolean | SocialChannelConnection$userArgs<ExtArgs>
-    organisation?: boolean | SocialChannelConnection$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["socialChannelConnection"]>
 
   export type SocialChannelConnectionSelectScalar = {
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     channel?: boolean
     status?: boolean
@@ -8891,33 +8670,28 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type SocialChannelConnectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "organisation_id" | "channel" | "status" | "external_account_id" | "external_account_name" | "access_token" | "refresh_token" | "token_expires_at" | "created_at" | "updated_at", ExtArgs["result"]["socialChannelConnection"]>
+  export type SocialChannelConnectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "channel" | "status" | "external_account_id" | "external_account_name" | "access_token" | "refresh_token" | "token_expires_at" | "created_at" | "updated_at", ExtArgs["result"]["socialChannelConnection"]>
   export type SocialChannelConnectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | SocialChannelConnection$userArgs<ExtArgs>
-    organisation?: boolean | SocialChannelConnection$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     post_channels?: boolean | SocialChannelConnection$post_channelsArgs<ExtArgs>
     _count?: boolean | SocialChannelConnectionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SocialChannelConnectionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | SocialChannelConnection$userArgs<ExtArgs>
-    organisation?: boolean | SocialChannelConnection$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
   export type SocialChannelConnectionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | SocialChannelConnection$userArgs<ExtArgs>
-    organisation?: boolean | SocialChannelConnection$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
 
   export type $SocialChannelConnectionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SocialChannelConnection"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
-      organisation: Prisma.$OrganisationPayload<ExtArgs> | null
+      organisation: Prisma.$OrganisationPayload<ExtArgs>
       post_channels: Prisma.$PostChannelPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      user_id: string | null
-      organisation_id: string | null
+      organisation_id: string
       channel: $Enums.SocialChannel
       status: $Enums.SocialChannelConnectionStatus
       external_account_id: string
@@ -9321,8 +9095,7 @@ export namespace Prisma {
    */
   export interface Prisma__SocialChannelConnectionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends SocialChannelConnection$userArgs<ExtArgs> = {}>(args?: Subset<T, SocialChannelConnection$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    organisation<T extends SocialChannelConnection$organisationArgs<ExtArgs> = {}>(args?: Subset<T, SocialChannelConnection$organisationArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organisation<T extends OrganisationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationDefaultArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     post_channels<T extends SocialChannelConnection$post_channelsArgs<ExtArgs> = {}>(args?: Subset<T, SocialChannelConnection$post_channelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9354,7 +9127,6 @@ export namespace Prisma {
    */
   interface SocialChannelConnectionFieldRefs {
     readonly id: FieldRef<"SocialChannelConnection", 'String'>
-    readonly user_id: FieldRef<"SocialChannelConnection", 'String'>
     readonly organisation_id: FieldRef<"SocialChannelConnection", 'String'>
     readonly channel: FieldRef<"SocialChannelConnection", 'SocialChannel'>
     readonly status: FieldRef<"SocialChannelConnection", 'SocialChannelConnectionStatus'>
@@ -9761,44 +9533,6 @@ export namespace Prisma {
   }
 
   /**
-   * SocialChannelConnection.user
-   */
-  export type SocialChannelConnection$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * SocialChannelConnection.organisation
-   */
-  export type SocialChannelConnection$organisationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organisation
-     */
-    select?: OrganisationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organisation
-     */
-    omit?: OrganisationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganisationInclude<ExtArgs> | null
-    where?: OrganisationWhereInput
-  }
-
-  /**
    * SocialChannelConnection.post_channels
    */
   export type SocialChannelConnection$post_channelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9873,7 +9607,6 @@ export namespace Prisma {
 
   export type StyleProfileMinAggregateOutputType = {
     id: string | null
-    user_id: string | null
     organisation_id: string | null
     name: string | null
     platform: $Enums.PostType | null
@@ -9893,7 +9626,6 @@ export namespace Prisma {
 
   export type StyleProfileMaxAggregateOutputType = {
     id: string | null
-    user_id: string | null
     organisation_id: string | null
     name: string | null
     platform: $Enums.PostType | null
@@ -9913,7 +9645,6 @@ export namespace Prisma {
 
   export type StyleProfileCountAggregateOutputType = {
     id: number
-    user_id: number
     organisation_id: number
     name: number
     platform: number
@@ -9955,7 +9686,6 @@ export namespace Prisma {
 
   export type StyleProfileMinAggregateInputType = {
     id?: true
-    user_id?: true
     organisation_id?: true
     name?: true
     platform?: true
@@ -9975,7 +9705,6 @@ export namespace Prisma {
 
   export type StyleProfileMaxAggregateInputType = {
     id?: true
-    user_id?: true
     organisation_id?: true
     name?: true
     platform?: true
@@ -9995,7 +9724,6 @@ export namespace Prisma {
 
   export type StyleProfileCountAggregateInputType = {
     id?: true
-    user_id?: true
     organisation_id?: true
     name?: true
     platform?: true
@@ -10104,8 +9832,7 @@ export namespace Prisma {
 
   export type StyleProfileGroupByOutputType = {
     id: string
-    user_id: string | null
-    organisation_id: string | null
+    organisation_id: string
     name: string
     platform: $Enums.PostType
     source_url: string | null
@@ -10145,7 +9872,6 @@ export namespace Prisma {
 
   export type StyleProfileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     name?: boolean
     platform?: boolean
@@ -10163,8 +9889,7 @@ export namespace Prisma {
     last_analyzed_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    user?: boolean | StyleProfile$userArgs<ExtArgs>
-    organisation?: boolean | StyleProfile$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     projects?: boolean | StyleProfile$projectsArgs<ExtArgs>
     generation_runs?: boolean | StyleProfile$generation_runsArgs<ExtArgs>
     automations?: boolean | StyleProfile$automationsArgs<ExtArgs>
@@ -10174,7 +9899,6 @@ export namespace Prisma {
 
   export type StyleProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     name?: boolean
     platform?: boolean
@@ -10192,13 +9916,11 @@ export namespace Prisma {
     last_analyzed_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    user?: boolean | StyleProfile$userArgs<ExtArgs>
-    organisation?: boolean | StyleProfile$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["styleProfile"]>
 
   export type StyleProfileSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     name?: boolean
     platform?: boolean
@@ -10216,13 +9938,11 @@ export namespace Prisma {
     last_analyzed_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    user?: boolean | StyleProfile$userArgs<ExtArgs>
-    organisation?: boolean | StyleProfile$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["styleProfile"]>
 
   export type StyleProfileSelectScalar = {
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     name?: boolean
     platform?: boolean
@@ -10242,10 +9962,9 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type StyleProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "organisation_id" | "name" | "platform" | "source_url" | "posts_analyzed" | "tone_score" | "structure_score" | "hooks_score" | "vocabulary_score" | "rhythm_score" | "tone_description" | "dominant_hook" | "vocabulary" | "pillars" | "last_analyzed_at" | "created_at" | "updated_at", ExtArgs["result"]["styleProfile"]>
+  export type StyleProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "name" | "platform" | "source_url" | "posts_analyzed" | "tone_score" | "structure_score" | "hooks_score" | "vocabulary_score" | "rhythm_score" | "tone_description" | "dominant_hook" | "vocabulary" | "pillars" | "last_analyzed_at" | "created_at" | "updated_at", ExtArgs["result"]["styleProfile"]>
   export type StyleProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | StyleProfile$userArgs<ExtArgs>
-    organisation?: boolean | StyleProfile$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     projects?: boolean | StyleProfile$projectsArgs<ExtArgs>
     generation_runs?: boolean | StyleProfile$generation_runsArgs<ExtArgs>
     automations?: boolean | StyleProfile$automationsArgs<ExtArgs>
@@ -10253,19 +9972,16 @@ export namespace Prisma {
     _count?: boolean | StyleProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type StyleProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | StyleProfile$userArgs<ExtArgs>
-    organisation?: boolean | StyleProfile$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
   export type StyleProfileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | StyleProfile$userArgs<ExtArgs>
-    organisation?: boolean | StyleProfile$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
 
   export type $StyleProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "StyleProfile"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
-      organisation: Prisma.$OrganisationPayload<ExtArgs> | null
+      organisation: Prisma.$OrganisationPayload<ExtArgs>
       projects: Prisma.$ProjectStyleProfilePayload<ExtArgs>[]
       generation_runs: Prisma.$GenerationRunPayload<ExtArgs>[]
       automations: Prisma.$AutomationPayload<ExtArgs>[]
@@ -10273,8 +9989,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      user_id: string | null
-      organisation_id: string | null
+      organisation_id: string
       name: string
       platform: $Enums.PostType
       source_url: string | null
@@ -10685,8 +10400,7 @@ export namespace Prisma {
    */
   export interface Prisma__StyleProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends StyleProfile$userArgs<ExtArgs> = {}>(args?: Subset<T, StyleProfile$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    organisation<T extends StyleProfile$organisationArgs<ExtArgs> = {}>(args?: Subset<T, StyleProfile$organisationArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organisation<T extends OrganisationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationDefaultArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     projects<T extends StyleProfile$projectsArgs<ExtArgs> = {}>(args?: Subset<T, StyleProfile$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectStyleProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     generation_runs<T extends StyleProfile$generation_runsArgs<ExtArgs> = {}>(args?: Subset<T, StyleProfile$generation_runsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     automations<T extends StyleProfile$automationsArgs<ExtArgs> = {}>(args?: Subset<T, StyleProfile$automationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -10721,7 +10435,6 @@ export namespace Prisma {
    */
   interface StyleProfileFieldRefs {
     readonly id: FieldRef<"StyleProfile", 'String'>
-    readonly user_id: FieldRef<"StyleProfile", 'String'>
     readonly organisation_id: FieldRef<"StyleProfile", 'String'>
     readonly name: FieldRef<"StyleProfile", 'String'>
     readonly platform: FieldRef<"StyleProfile", 'PostType'>
@@ -11135,44 +10848,6 @@ export namespace Prisma {
   }
 
   /**
-   * StyleProfile.user
-   */
-  export type StyleProfile$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * StyleProfile.organisation
-   */
-  export type StyleProfile$organisationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organisation
-     */
-    select?: OrganisationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organisation
-     */
-    omit?: OrganisationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganisationInclude<ExtArgs> | null
-    where?: OrganisationWhereInput
-  }
-
-  /**
    * StyleProfile.projects
    */
   export type StyleProfile$projectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11299,7 +10974,6 @@ export namespace Prisma {
 
   export type ProjectMinAggregateOutputType = {
     id: string | null
-    user_id: string | null
     organisation_id: string | null
     title: string | null
     description: string | null
@@ -11311,7 +10985,6 @@ export namespace Prisma {
 
   export type ProjectMaxAggregateOutputType = {
     id: string | null
-    user_id: string | null
     organisation_id: string | null
     title: string | null
     description: string | null
@@ -11323,7 +10996,6 @@ export namespace Prisma {
 
   export type ProjectCountAggregateOutputType = {
     id: number
-    user_id: number
     organisation_id: number
     title: number
     description: number
@@ -11340,7 +11012,6 @@ export namespace Prisma {
 
   export type ProjectMinAggregateInputType = {
     id?: true
-    user_id?: true
     organisation_id?: true
     title?: true
     description?: true
@@ -11352,7 +11023,6 @@ export namespace Prisma {
 
   export type ProjectMaxAggregateInputType = {
     id?: true
-    user_id?: true
     organisation_id?: true
     title?: true
     description?: true
@@ -11364,7 +11034,6 @@ export namespace Prisma {
 
   export type ProjectCountAggregateInputType = {
     id?: true
-    user_id?: true
     organisation_id?: true
     title?: true
     description?: true
@@ -11452,8 +11121,7 @@ export namespace Prisma {
 
   export type ProjectGroupByOutputType = {
     id: string
-    user_id: string | null
-    organisation_id: string | null
+    organisation_id: string
     title: string
     description: string | null
     platform: $Enums.PostType
@@ -11484,7 +11152,6 @@ export namespace Prisma {
 
   export type ProjectSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     title?: boolean
     description?: boolean
@@ -11495,8 +11162,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
-    user?: boolean | Project$userArgs<ExtArgs>
-    organisation?: boolean | Project$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     style_profiles?: boolean | Project$style_profilesArgs<ExtArgs>
     posts?: boolean | Project$postsArgs<ExtArgs>
     generation_runs?: boolean | Project$generation_runsArgs<ExtArgs>
@@ -11506,7 +11172,6 @@ export namespace Prisma {
 
   export type ProjectSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     title?: boolean
     description?: boolean
@@ -11517,13 +11182,11 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
-    user?: boolean | Project$userArgs<ExtArgs>
-    organisation?: boolean | Project$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     title?: boolean
     description?: boolean
@@ -11534,13 +11197,11 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
-    user?: boolean | Project$userArgs<ExtArgs>
-    organisation?: boolean | Project$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectScalar = {
     id?: boolean
-    user_id?: boolean
     organisation_id?: boolean
     title?: boolean
     description?: boolean
@@ -11553,10 +11214,9 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "organisation_id" | "title" | "description" | "platform" | "pillars" | "ideas" | "instructions" | "is_archived" | "created_at" | "updated_at", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "title" | "description" | "platform" | "pillars" | "ideas" | "instructions" | "is_archived" | "created_at" | "updated_at", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Project$userArgs<ExtArgs>
-    organisation?: boolean | Project$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     style_profiles?: boolean | Project$style_profilesArgs<ExtArgs>
     posts?: boolean | Project$postsArgs<ExtArgs>
     generation_runs?: boolean | Project$generation_runsArgs<ExtArgs>
@@ -11564,19 +11224,16 @@ export namespace Prisma {
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Project$userArgs<ExtArgs>
-    organisation?: boolean | Project$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Project$userArgs<ExtArgs>
-    organisation?: boolean | Project$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
 
   export type $ProjectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Project"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
-      organisation: Prisma.$OrganisationPayload<ExtArgs> | null
+      organisation: Prisma.$OrganisationPayload<ExtArgs>
       style_profiles: Prisma.$ProjectStyleProfilePayload<ExtArgs>[]
       posts: Prisma.$PostPayload<ExtArgs>[]
       generation_runs: Prisma.$GenerationRunPayload<ExtArgs>[]
@@ -11584,8 +11241,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      user_id: string | null
-      organisation_id: string | null
+      organisation_id: string
       title: string
       description: string | null
       platform: $Enums.PostType
@@ -11989,8 +11645,7 @@ export namespace Prisma {
    */
   export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends Project$userArgs<ExtArgs> = {}>(args?: Subset<T, Project$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    organisation<T extends Project$organisationArgs<ExtArgs> = {}>(args?: Subset<T, Project$organisationArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organisation<T extends OrganisationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationDefaultArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     style_profiles<T extends Project$style_profilesArgs<ExtArgs> = {}>(args?: Subset<T, Project$style_profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectStyleProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     posts<T extends Project$postsArgs<ExtArgs> = {}>(args?: Subset<T, Project$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     generation_runs<T extends Project$generation_runsArgs<ExtArgs> = {}>(args?: Subset<T, Project$generation_runsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -12025,7 +11680,6 @@ export namespace Prisma {
    */
   interface ProjectFieldRefs {
     readonly id: FieldRef<"Project", 'String'>
-    readonly user_id: FieldRef<"Project", 'String'>
     readonly organisation_id: FieldRef<"Project", 'String'>
     readonly title: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
@@ -12429,44 +12083,6 @@ export namespace Prisma {
      * Limit how many Projects to delete.
      */
     limit?: number
-  }
-
-  /**
-   * Project.user
-   */
-  export type Project$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * Project.organisation
-   */
-  export type Project$organisationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organisation
-     */
-    select?: OrganisationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organisation
-     */
-    omit?: OrganisationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganisationInclude<ExtArgs> | null
-    where?: OrganisationWhereInput
   }
 
   /**
@@ -16371,7 +15987,7 @@ export namespace Prisma {
   export type PostGroupByOutputType = {
     id: string
     user_id: string
-    organisation_id: string | null
+    organisation_id: string
     project_id: string | null
     style_profile_id: string | null
     generation_run_id: string | null
@@ -16436,7 +16052,7 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    organisation?: boolean | Post$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
@@ -16473,7 +16089,7 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    organisation?: boolean | Post$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
@@ -16506,7 +16122,7 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    organisation?: boolean | Post$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
@@ -16543,7 +16159,7 @@ export namespace Prisma {
   export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "organisation_id" | "project_id" | "style_profile_id" | "generation_run_id" | "source_post_id" | "type" | "status" | "hook" | "body" | "metadata" | "title" | "excerpt" | "cover_document_id" | "seo_title" | "seo_description" | "canonical_url" | "scheduled_at" | "published_at" | "failed_reason" | "created_at" | "updated_at", ExtArgs["result"]["post"]>
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    organisation?: boolean | Post$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
@@ -16556,7 +16172,7 @@ export namespace Prisma {
   }
   export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    organisation?: boolean | Post$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
@@ -16565,7 +16181,7 @@ export namespace Prisma {
   }
   export type PostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    organisation?: boolean | Post$organisationArgs<ExtArgs>
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
@@ -16577,7 +16193,7 @@ export namespace Prisma {
     name: "Post"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      organisation: Prisma.$OrganisationPayload<ExtArgs> | null
+      organisation: Prisma.$OrganisationPayload<ExtArgs>
       project: Prisma.$ProjectPayload<ExtArgs> | null
       style_profile: Prisma.$StyleProfilePayload<ExtArgs> | null
       generation_run: Prisma.$GenerationRunPayload<ExtArgs> | null
@@ -16590,7 +16206,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       user_id: string
-      organisation_id: string | null
+      organisation_id: string
       project_id: string | null
       style_profile_id: string | null
       generation_run_id: string | null
@@ -17006,7 +16622,7 @@ export namespace Prisma {
   export interface Prisma__PostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    organisation<T extends Post$organisationArgs<ExtArgs> = {}>(args?: Subset<T, Post$organisationArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organisation<T extends OrganisationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationDefaultArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     project<T extends Post$projectArgs<ExtArgs> = {}>(args?: Subset<T, Post$projectArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     style_profile<T extends Post$style_profileArgs<ExtArgs> = {}>(args?: Subset<T, Post$style_profileArgs<ExtArgs>>): Prisma__StyleProfileClient<$Result.GetResult<Prisma.$StyleProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     generation_run<T extends Post$generation_runArgs<ExtArgs> = {}>(args?: Subset<T, Post$generation_runArgs<ExtArgs>>): Prisma__GenerationRunClient<$Result.GetResult<Prisma.$GenerationRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -17460,25 +17076,6 @@ export namespace Prisma {
      * Limit how many Posts to delete.
      */
     limit?: number
-  }
-
-  /**
-   * Post.organisation
-   */
-  export type Post$organisationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organisation
-     */
-    select?: OrganisationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organisation
-     */
-    omit?: OrganisationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganisationInclude<ExtArgs> | null
-    where?: OrganisationWhereInput
   }
 
   /**
@@ -19940,7 +19537,6 @@ export namespace Prisma {
 
   export const DocumentScalarFieldEnum: {
     id: 'id',
-    user_uuid: 'user_uuid',
     organisation_id: 'organisation_id',
     filename: 'filename',
     mimetype: 'mimetype',
@@ -19980,7 +19576,6 @@ export namespace Prisma {
 
   export const SocialChannelConnectionScalarFieldEnum: {
     id: 'id',
-    user_id: 'user_id',
     organisation_id: 'organisation_id',
     channel: 'channel',
     status: 'status',
@@ -19998,7 +19593,6 @@ export namespace Prisma {
 
   export const StyleProfileScalarFieldEnum: {
     id: 'id',
-    user_id: 'user_id',
     organisation_id: 'organisation_id',
     name: 'name',
     platform: 'platform',
@@ -20023,7 +19617,6 @@ export namespace Prisma {
 
   export const ProjectScalarFieldEnum: {
     id: 'id',
-    user_id: 'user_id',
     organisation_id: 'organisation_id',
     title: 'title',
     description: 'description',
@@ -20419,13 +20012,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
     password_reset_tokens?: PasswordResetTokenListRelationFilter
-    documents?: DocumentListRelationFilter
     organisations_created?: OrganisationListRelationFilter
     organisation_memberships?: OrganisationMemberListRelationFilter
     authored_posts?: PostListRelationFilter
-    channel_connections?: SocialChannelConnectionListRelationFilter
-    style_profiles?: StyleProfileListRelationFilter
-    projects?: ProjectListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -20438,13 +20027,9 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     password_reset_tokens?: PasswordResetTokenOrderByRelationAggregateInput
-    documents?: DocumentOrderByRelationAggregateInput
     organisations_created?: OrganisationOrderByRelationAggregateInput
     organisation_memberships?: OrganisationMemberOrderByRelationAggregateInput
     authored_posts?: PostOrderByRelationAggregateInput
-    channel_connections?: SocialChannelConnectionOrderByRelationAggregateInput
-    style_profiles?: StyleProfileOrderByRelationAggregateInput
-    projects?: ProjectOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -20460,13 +20045,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
     password_reset_tokens?: PasswordResetTokenListRelationFilter
-    documents?: DocumentListRelationFilter
     organisations_created?: OrganisationListRelationFilter
     organisation_memberships?: OrganisationMemberListRelationFilter
     authored_posts?: PostListRelationFilter
-    channel_connections?: SocialChannelConnectionListRelationFilter
-    style_profiles?: StyleProfileListRelationFilter
-    projects?: ProjectListRelationFilter
   }, "id" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -20562,8 +20143,7 @@ export namespace Prisma {
     OR?: DocumentWhereInput[]
     NOT?: DocumentWhereInput | DocumentWhereInput[]
     id?: StringFilter<"Document"> | string
-    user_uuid?: StringNullableFilter<"Document"> | string | null
-    organisation_id?: StringNullableFilter<"Document"> | string | null
+    organisation_id?: StringFilter<"Document"> | string
     filename?: StringFilter<"Document"> | string
     mimetype?: StringFilter<"Document"> | string
     size?: IntFilter<"Document"> | number
@@ -20571,16 +20151,14 @@ export namespace Prisma {
     path?: StringFilter<"Document"> | string
     type?: EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
     created_at?: DateTimeFilter<"Document"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     post_attachments?: PostAttachmentListRelationFilter
     cover_of_posts?: PostListRelationFilter
   }
 
   export type DocumentOrderByWithRelationInput = {
     id?: SortOrder
-    user_uuid?: SortOrderInput | SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
     size?: SortOrder
@@ -20588,7 +20166,6 @@ export namespace Prisma {
     path?: SortOrder
     type?: SortOrder
     created_at?: SortOrder
-    user?: UserOrderByWithRelationInput
     organisation?: OrganisationOrderByWithRelationInput
     post_attachments?: PostAttachmentOrderByRelationAggregateInput
     cover_of_posts?: PostOrderByRelationAggregateInput
@@ -20599,8 +20176,7 @@ export namespace Prisma {
     AND?: DocumentWhereInput | DocumentWhereInput[]
     OR?: DocumentWhereInput[]
     NOT?: DocumentWhereInput | DocumentWhereInput[]
-    user_uuid?: StringNullableFilter<"Document"> | string | null
-    organisation_id?: StringNullableFilter<"Document"> | string | null
+    organisation_id?: StringFilter<"Document"> | string
     filename?: StringFilter<"Document"> | string
     mimetype?: StringFilter<"Document"> | string
     size?: IntFilter<"Document"> | number
@@ -20608,16 +20184,14 @@ export namespace Prisma {
     path?: StringFilter<"Document"> | string
     type?: EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
     created_at?: DateTimeFilter<"Document"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     post_attachments?: PostAttachmentListRelationFilter
     cover_of_posts?: PostListRelationFilter
   }, "id">
 
   export type DocumentOrderByWithAggregationInput = {
     id?: SortOrder
-    user_uuid?: SortOrderInput | SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
     size?: SortOrder
@@ -20637,8 +20211,7 @@ export namespace Prisma {
     OR?: DocumentScalarWhereWithAggregatesInput[]
     NOT?: DocumentScalarWhereWithAggregatesInput | DocumentScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Document"> | string
-    user_uuid?: StringNullableWithAggregatesFilter<"Document"> | string | null
-    organisation_id?: StringNullableWithAggregatesFilter<"Document"> | string | null
+    organisation_id?: StringWithAggregatesFilter<"Document"> | string
     filename?: StringWithAggregatesFilter<"Document"> | string
     mimetype?: StringWithAggregatesFilter<"Document"> | string
     size?: IntWithAggregatesFilter<"Document"> | number
@@ -20795,8 +20368,7 @@ export namespace Prisma {
     OR?: SocialChannelConnectionWhereInput[]
     NOT?: SocialChannelConnectionWhereInput | SocialChannelConnectionWhereInput[]
     id?: StringFilter<"SocialChannelConnection"> | string
-    user_id?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    organisation_id?: StringNullableFilter<"SocialChannelConnection"> | string | null
+    organisation_id?: StringFilter<"SocialChannelConnection"> | string
     channel?: EnumSocialChannelFilter<"SocialChannelConnection"> | $Enums.SocialChannel
     status?: EnumSocialChannelConnectionStatusFilter<"SocialChannelConnection"> | $Enums.SocialChannelConnectionStatus
     external_account_id?: StringFilter<"SocialChannelConnection"> | string
@@ -20806,15 +20378,13 @@ export namespace Prisma {
     token_expires_at?: DateTimeNullableFilter<"SocialChannelConnection"> | Date | string | null
     created_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
     updated_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     post_channels?: PostChannelListRelationFilter
   }
 
   export type SocialChannelConnectionOrderByWithRelationInput = {
     id?: SortOrder
-    user_id?: SortOrderInput | SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     channel?: SortOrder
     status?: SortOrder
     external_account_id?: SortOrder
@@ -20824,7 +20394,6 @@ export namespace Prisma {
     token_expires_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    user?: UserOrderByWithRelationInput
     organisation?: OrganisationOrderByWithRelationInput
     post_channels?: PostChannelOrderByRelationAggregateInput
   }
@@ -20835,8 +20404,7 @@ export namespace Prisma {
     AND?: SocialChannelConnectionWhereInput | SocialChannelConnectionWhereInput[]
     OR?: SocialChannelConnectionWhereInput[]
     NOT?: SocialChannelConnectionWhereInput | SocialChannelConnectionWhereInput[]
-    user_id?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    organisation_id?: StringNullableFilter<"SocialChannelConnection"> | string | null
+    organisation_id?: StringFilter<"SocialChannelConnection"> | string
     channel?: EnumSocialChannelFilter<"SocialChannelConnection"> | $Enums.SocialChannel
     status?: EnumSocialChannelConnectionStatusFilter<"SocialChannelConnection"> | $Enums.SocialChannelConnectionStatus
     external_account_id?: StringFilter<"SocialChannelConnection"> | string
@@ -20846,15 +20414,13 @@ export namespace Prisma {
     token_expires_at?: DateTimeNullableFilter<"SocialChannelConnection"> | Date | string | null
     created_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
     updated_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     post_channels?: PostChannelListRelationFilter
   }, "id" | "channel_external_account_id">
 
   export type SocialChannelConnectionOrderByWithAggregationInput = {
     id?: SortOrder
-    user_id?: SortOrderInput | SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     channel?: SortOrder
     status?: SortOrder
     external_account_id?: SortOrder
@@ -20874,8 +20440,7 @@ export namespace Prisma {
     OR?: SocialChannelConnectionScalarWhereWithAggregatesInput[]
     NOT?: SocialChannelConnectionScalarWhereWithAggregatesInput | SocialChannelConnectionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"SocialChannelConnection"> | string
-    user_id?: StringNullableWithAggregatesFilter<"SocialChannelConnection"> | string | null
-    organisation_id?: StringNullableWithAggregatesFilter<"SocialChannelConnection"> | string | null
+    organisation_id?: StringWithAggregatesFilter<"SocialChannelConnection"> | string
     channel?: EnumSocialChannelWithAggregatesFilter<"SocialChannelConnection"> | $Enums.SocialChannel
     status?: EnumSocialChannelConnectionStatusWithAggregatesFilter<"SocialChannelConnection"> | $Enums.SocialChannelConnectionStatus
     external_account_id?: StringWithAggregatesFilter<"SocialChannelConnection"> | string
@@ -20892,8 +20457,7 @@ export namespace Prisma {
     OR?: StyleProfileWhereInput[]
     NOT?: StyleProfileWhereInput | StyleProfileWhereInput[]
     id?: StringFilter<"StyleProfile"> | string
-    user_id?: StringNullableFilter<"StyleProfile"> | string | null
-    organisation_id?: StringNullableFilter<"StyleProfile"> | string | null
+    organisation_id?: StringFilter<"StyleProfile"> | string
     name?: StringFilter<"StyleProfile"> | string
     platform?: EnumPostTypeFilter<"StyleProfile"> | $Enums.PostType
     source_url?: StringNullableFilter<"StyleProfile"> | string | null
@@ -20910,8 +20474,7 @@ export namespace Prisma {
     last_analyzed_at?: DateTimeNullableFilter<"StyleProfile"> | Date | string | null
     created_at?: DateTimeFilter<"StyleProfile"> | Date | string
     updated_at?: DateTimeFilter<"StyleProfile"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     projects?: ProjectStyleProfileListRelationFilter
     generation_runs?: GenerationRunListRelationFilter
     automations?: AutomationListRelationFilter
@@ -20920,8 +20483,7 @@ export namespace Prisma {
 
   export type StyleProfileOrderByWithRelationInput = {
     id?: SortOrder
-    user_id?: SortOrderInput | SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     name?: SortOrder
     platform?: SortOrder
     source_url?: SortOrderInput | SortOrder
@@ -20938,7 +20500,6 @@ export namespace Prisma {
     last_analyzed_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    user?: UserOrderByWithRelationInput
     organisation?: OrganisationOrderByWithRelationInput
     projects?: ProjectStyleProfileOrderByRelationAggregateInput
     generation_runs?: GenerationRunOrderByRelationAggregateInput
@@ -20951,8 +20512,7 @@ export namespace Prisma {
     AND?: StyleProfileWhereInput | StyleProfileWhereInput[]
     OR?: StyleProfileWhereInput[]
     NOT?: StyleProfileWhereInput | StyleProfileWhereInput[]
-    user_id?: StringNullableFilter<"StyleProfile"> | string | null
-    organisation_id?: StringNullableFilter<"StyleProfile"> | string | null
+    organisation_id?: StringFilter<"StyleProfile"> | string
     name?: StringFilter<"StyleProfile"> | string
     platform?: EnumPostTypeFilter<"StyleProfile"> | $Enums.PostType
     source_url?: StringNullableFilter<"StyleProfile"> | string | null
@@ -20969,8 +20529,7 @@ export namespace Prisma {
     last_analyzed_at?: DateTimeNullableFilter<"StyleProfile"> | Date | string | null
     created_at?: DateTimeFilter<"StyleProfile"> | Date | string
     updated_at?: DateTimeFilter<"StyleProfile"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     projects?: ProjectStyleProfileListRelationFilter
     generation_runs?: GenerationRunListRelationFilter
     automations?: AutomationListRelationFilter
@@ -20979,8 +20538,7 @@ export namespace Prisma {
 
   export type StyleProfileOrderByWithAggregationInput = {
     id?: SortOrder
-    user_id?: SortOrderInput | SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     name?: SortOrder
     platform?: SortOrder
     source_url?: SortOrderInput | SortOrder
@@ -21009,8 +20567,7 @@ export namespace Prisma {
     OR?: StyleProfileScalarWhereWithAggregatesInput[]
     NOT?: StyleProfileScalarWhereWithAggregatesInput | StyleProfileScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"StyleProfile"> | string
-    user_id?: StringNullableWithAggregatesFilter<"StyleProfile"> | string | null
-    organisation_id?: StringNullableWithAggregatesFilter<"StyleProfile"> | string | null
+    organisation_id?: StringWithAggregatesFilter<"StyleProfile"> | string
     name?: StringWithAggregatesFilter<"StyleProfile"> | string
     platform?: EnumPostTypeWithAggregatesFilter<"StyleProfile"> | $Enums.PostType
     source_url?: StringNullableWithAggregatesFilter<"StyleProfile"> | string | null
@@ -21034,8 +20591,7 @@ export namespace Prisma {
     OR?: ProjectWhereInput[]
     NOT?: ProjectWhereInput | ProjectWhereInput[]
     id?: StringFilter<"Project"> | string
-    user_id?: StringNullableFilter<"Project"> | string | null
-    organisation_id?: StringNullableFilter<"Project"> | string | null
+    organisation_id?: StringFilter<"Project"> | string
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
@@ -21045,8 +20601,7 @@ export namespace Prisma {
     is_archived?: BoolFilter<"Project"> | boolean
     created_at?: DateTimeFilter<"Project"> | Date | string
     updated_at?: DateTimeFilter<"Project"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     style_profiles?: ProjectStyleProfileListRelationFilter
     posts?: PostListRelationFilter
     generation_runs?: GenerationRunListRelationFilter
@@ -21055,8 +20610,7 @@ export namespace Prisma {
 
   export type ProjectOrderByWithRelationInput = {
     id?: SortOrder
-    user_id?: SortOrderInput | SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     platform?: SortOrder
@@ -21066,7 +20620,6 @@ export namespace Prisma {
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    user?: UserOrderByWithRelationInput
     organisation?: OrganisationOrderByWithRelationInput
     style_profiles?: ProjectStyleProfileOrderByRelationAggregateInput
     posts?: PostOrderByRelationAggregateInput
@@ -21079,8 +20632,7 @@ export namespace Prisma {
     AND?: ProjectWhereInput | ProjectWhereInput[]
     OR?: ProjectWhereInput[]
     NOT?: ProjectWhereInput | ProjectWhereInput[]
-    user_id?: StringNullableFilter<"Project"> | string | null
-    organisation_id?: StringNullableFilter<"Project"> | string | null
+    organisation_id?: StringFilter<"Project"> | string
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
@@ -21090,8 +20642,7 @@ export namespace Prisma {
     is_archived?: BoolFilter<"Project"> | boolean
     created_at?: DateTimeFilter<"Project"> | Date | string
     updated_at?: DateTimeFilter<"Project"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     style_profiles?: ProjectStyleProfileListRelationFilter
     posts?: PostListRelationFilter
     generation_runs?: GenerationRunListRelationFilter
@@ -21100,8 +20651,7 @@ export namespace Prisma {
 
   export type ProjectOrderByWithAggregationInput = {
     id?: SortOrder
-    user_id?: SortOrderInput | SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     platform?: SortOrder
@@ -21121,8 +20671,7 @@ export namespace Prisma {
     OR?: ProjectScalarWhereWithAggregatesInput[]
     NOT?: ProjectScalarWhereWithAggregatesInput | ProjectScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Project"> | string
-    user_id?: StringNullableWithAggregatesFilter<"Project"> | string | null
-    organisation_id?: StringNullableWithAggregatesFilter<"Project"> | string | null
+    organisation_id?: StringWithAggregatesFilter<"Project"> | string
     title?: StringWithAggregatesFilter<"Project"> | string
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
     platform?: EnumPostTypeWithAggregatesFilter<"Project"> | $Enums.PostType
@@ -21388,7 +20937,7 @@ export namespace Prisma {
     NOT?: PostWhereInput | PostWhereInput[]
     id?: StringFilter<"Post"> | string
     user_id?: StringFilter<"Post"> | string
-    organisation_id?: StringNullableFilter<"Post"> | string | null
+    organisation_id?: StringFilter<"Post"> | string
     project_id?: StringNullableFilter<"Post"> | string | null
     style_profile_id?: StringNullableFilter<"Post"> | string | null
     generation_run_id?: StringNullableFilter<"Post"> | string | null
@@ -21410,7 +20959,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Post"> | Date | string
     updated_at?: DateTimeFilter<"Post"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
     generation_run?: XOR<GenerationRunNullableScalarRelationFilter, GenerationRunWhereInput> | null
@@ -21424,7 +20973,7 @@ export namespace Prisma {
   export type PostOrderByWithRelationInput = {
     id?: SortOrder
     user_id?: SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     project_id?: SortOrderInput | SortOrder
     style_profile_id?: SortOrderInput | SortOrder
     generation_run_id?: SortOrderInput | SortOrder
@@ -21463,7 +21012,7 @@ export namespace Prisma {
     OR?: PostWhereInput[]
     NOT?: PostWhereInput | PostWhereInput[]
     user_id?: StringFilter<"Post"> | string
-    organisation_id?: StringNullableFilter<"Post"> | string | null
+    organisation_id?: StringFilter<"Post"> | string
     project_id?: StringNullableFilter<"Post"> | string | null
     style_profile_id?: StringNullableFilter<"Post"> | string | null
     generation_run_id?: StringNullableFilter<"Post"> | string | null
@@ -21485,7 +21034,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Post"> | Date | string
     updated_at?: DateTimeFilter<"Post"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
     generation_run?: XOR<GenerationRunNullableScalarRelationFilter, GenerationRunWhereInput> | null
@@ -21499,7 +21048,7 @@ export namespace Prisma {
   export type PostOrderByWithAggregationInput = {
     id?: SortOrder
     user_id?: SortOrder
-    organisation_id?: SortOrderInput | SortOrder
+    organisation_id?: SortOrder
     project_id?: SortOrderInput | SortOrder
     style_profile_id?: SortOrderInput | SortOrder
     generation_run_id?: SortOrderInput | SortOrder
@@ -21531,7 +21080,7 @@ export namespace Prisma {
     NOT?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Post"> | string
     user_id?: StringWithAggregatesFilter<"Post"> | string
-    organisation_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    organisation_id?: StringWithAggregatesFilter<"Post"> | string
     project_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     style_profile_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     generation_run_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
@@ -21709,13 +21258,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    documents?: DocumentCreateNestedManyWithoutUserInput
     organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
     authored_posts?: PostCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileCreateNestedManyWithoutUserInput
-    projects?: ProjectCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -21728,13 +21273,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
     organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
     authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutUserInput
-    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -21747,13 +21288,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    documents?: DocumentUpdateManyWithoutUserNestedInput
     organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
     authored_posts?: PostUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUpdateManyWithoutUserNestedInput
-    projects?: ProjectUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -21766,13 +21303,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
     organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUncheckedUpdateManyWithoutUserNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -21879,16 +21412,14 @@ export namespace Prisma {
     path: string
     type?: $Enums.DocumentType
     created_at?: Date | string
-    user?: UserCreateNestedOneWithoutDocumentsInput
-    organisation?: OrganisationCreateNestedOneWithoutDocumentsInput
+    organisation: OrganisationCreateNestedOneWithoutDocumentsInput
     post_attachments?: PostAttachmentCreateNestedManyWithoutDocumentInput
     cover_of_posts?: PostCreateNestedManyWithoutCover_documentInput
   }
 
   export type DocumentUncheckedCreateInput = {
     id?: string
-    user_uuid?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     filename: string
     mimetype: string
     size: number
@@ -21909,16 +21440,14 @@ export namespace Prisma {
     path?: StringFieldUpdateOperationsInput | string
     type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutDocumentsNestedInput
-    organisation?: OrganisationUpdateOneWithoutDocumentsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutDocumentsNestedInput
     post_attachments?: PostAttachmentUpdateManyWithoutDocumentNestedInput
     cover_of_posts?: PostUpdateManyWithoutCover_documentNestedInput
   }
 
   export type DocumentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -21932,8 +21461,7 @@ export namespace Prisma {
 
   export type DocumentCreateManyInput = {
     id?: string
-    user_uuid?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     filename: string
     mimetype: string
     size: number
@@ -21956,8 +21484,7 @@ export namespace Prisma {
 
   export type DocumentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -22125,15 +21652,13 @@ export namespace Prisma {
     token_expires_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutChannel_connectionsInput
-    organisation?: OrganisationCreateNestedOneWithoutChannel_connectionsInput
+    organisation: OrganisationCreateNestedOneWithoutChannel_connectionsInput
     post_channels?: PostChannelCreateNestedManyWithoutChannel_connectionInput
   }
 
   export type SocialChannelConnectionUncheckedCreateInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     channel: $Enums.SocialChannel
     status?: $Enums.SocialChannelConnectionStatus
     external_account_id: string
@@ -22157,15 +21682,13 @@ export namespace Prisma {
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutChannel_connectionsNestedInput
-    organisation?: OrganisationUpdateOneWithoutChannel_connectionsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutChannel_connectionsNestedInput
     post_channels?: PostChannelUpdateManyWithoutChannel_connectionNestedInput
   }
 
   export type SocialChannelConnectionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
     status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
     external_account_id?: StringFieldUpdateOperationsInput | string
@@ -22180,8 +21703,7 @@ export namespace Prisma {
 
   export type SocialChannelConnectionCreateManyInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     channel: $Enums.SocialChannel
     status?: $Enums.SocialChannelConnectionStatus
     external_account_id: string
@@ -22208,8 +21730,7 @@ export namespace Prisma {
 
   export type SocialChannelConnectionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
     status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
     external_account_id?: StringFieldUpdateOperationsInput | string
@@ -22239,8 +21760,7 @@ export namespace Prisma {
     last_analyzed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutStyle_profilesInput
-    organisation?: OrganisationCreateNestedOneWithoutStyle_profilesInput
+    organisation: OrganisationCreateNestedOneWithoutStyle_profilesInput
     projects?: ProjectStyleProfileCreateNestedManyWithoutStyle_profileInput
     generation_runs?: GenerationRunCreateNestedManyWithoutStyle_profileInput
     automations?: AutomationCreateNestedManyWithoutStyle_profileInput
@@ -22249,8 +21769,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedCreateInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     name: string
     platform: $Enums.PostType
     source_url?: string | null
@@ -22291,8 +21810,7 @@ export namespace Prisma {
     last_analyzed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutStyle_profilesNestedInput
-    organisation?: OrganisationUpdateOneWithoutStyle_profilesNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutStyle_profilesNestedInput
     projects?: ProjectStyleProfileUpdateManyWithoutStyle_profileNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutStyle_profileNestedInput
     automations?: AutomationUpdateManyWithoutStyle_profileNestedInput
@@ -22301,8 +21819,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     source_url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22327,8 +21844,7 @@ export namespace Prisma {
 
   export type StyleProfileCreateManyInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     name: string
     platform: $Enums.PostType
     source_url?: string | null
@@ -22369,8 +21885,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     source_url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22400,8 +21915,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutProjectsInput
-    organisation?: OrganisationCreateNestedOneWithoutProjectsInput
+    organisation: OrganisationCreateNestedOneWithoutProjectsInput
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
     posts?: PostCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
@@ -22410,8 +21924,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedCreateInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     title: string
     description?: string | null
     platform: $Enums.PostType
@@ -22438,8 +21951,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProjectsNestedInput
-    organisation?: OrganisationUpdateOneWithoutProjectsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
@@ -22448,8 +21960,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -22467,8 +21978,7 @@ export namespace Prisma {
 
   export type ProjectCreateManyInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     title: string
     description?: string | null
     platform: $Enums.PostType
@@ -22495,8 +22005,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -22779,7 +22288,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutAuthored_postsInput
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
@@ -22793,7 +22302,7 @@ export namespace Prisma {
   export type PostUncheckedCreateInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -22837,7 +22346,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
@@ -22851,7 +22360,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22880,7 +22389,7 @@ export namespace Prisma {
   export type PostCreateManyInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -22925,7 +22434,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23145,12 +22654,6 @@ export namespace Prisma {
     none?: PasswordResetTokenWhereInput
   }
 
-  export type DocumentListRelationFilter = {
-    every?: DocumentWhereInput
-    some?: DocumentWhereInput
-    none?: DocumentWhereInput
-  }
-
   export type OrganisationListRelationFilter = {
     every?: OrganisationWhereInput
     some?: OrganisationWhereInput
@@ -23169,34 +22672,12 @@ export namespace Prisma {
     none?: PostWhereInput
   }
 
-  export type SocialChannelConnectionListRelationFilter = {
-    every?: SocialChannelConnectionWhereInput
-    some?: SocialChannelConnectionWhereInput
-    none?: SocialChannelConnectionWhereInput
-  }
-
-  export type StyleProfileListRelationFilter = {
-    every?: StyleProfileWhereInput
-    some?: StyleProfileWhereInput
-    none?: StyleProfileWhereInput
-  }
-
-  export type ProjectListRelationFilter = {
-    every?: ProjectWhereInput
-    some?: ProjectWhereInput
-    none?: ProjectWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type PasswordResetTokenOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DocumentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23209,18 +22690,6 @@ export namespace Prisma {
   }
 
   export type PostOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SocialChannelConnectionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type StyleProfileOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ProjectOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23392,14 +22861,9 @@ export namespace Prisma {
     not?: NestedEnumDocumentTypeFilter<$PrismaModel> | $Enums.DocumentType
   }
 
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
-  }
-
-  export type OrganisationNullableScalarRelationFilter = {
-    is?: OrganisationWhereInput | null
-    isNot?: OrganisationWhereInput | null
+  export type OrganisationScalarRelationFilter = {
+    is?: OrganisationWhereInput
+    isNot?: OrganisationWhereInput
   }
 
   export type PostAttachmentListRelationFilter = {
@@ -23414,7 +22878,6 @@ export namespace Prisma {
 
   export type DocumentCountOrderByAggregateInput = {
     id?: SortOrder
-    user_uuid?: SortOrder
     organisation_id?: SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
@@ -23431,7 +22894,6 @@ export namespace Prisma {
 
   export type DocumentMaxOrderByAggregateInput = {
     id?: SortOrder
-    user_uuid?: SortOrder
     organisation_id?: SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
@@ -23444,7 +22906,6 @@ export namespace Prisma {
 
   export type DocumentMinOrderByAggregateInput = {
     id?: SortOrder
-    user_uuid?: SortOrder
     organisation_id?: SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
@@ -23485,6 +22946,46 @@ export namespace Prisma {
     _max?: NestedEnumDocumentTypeFilter<$PrismaModel>
   }
 
+  export type DocumentListRelationFilter = {
+    every?: DocumentWhereInput
+    some?: DocumentWhereInput
+    none?: DocumentWhereInput
+  }
+
+  export type SocialChannelConnectionListRelationFilter = {
+    every?: SocialChannelConnectionWhereInput
+    some?: SocialChannelConnectionWhereInput
+    none?: SocialChannelConnectionWhereInput
+  }
+
+  export type StyleProfileListRelationFilter = {
+    every?: StyleProfileWhereInput
+    some?: StyleProfileWhereInput
+    none?: StyleProfileWhereInput
+  }
+
+  export type ProjectListRelationFilter = {
+    every?: ProjectWhereInput
+    some?: ProjectWhereInput
+    none?: ProjectWhereInput
+  }
+
+  export type DocumentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SocialChannelConnectionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StyleProfileOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProjectOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type OrganisationCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -23517,11 +23018,6 @@ export namespace Prisma {
     in?: $Enums.OrganisationRole[] | ListEnumOrganisationRoleFieldRefInput<$PrismaModel>
     notIn?: $Enums.OrganisationRole[] | ListEnumOrganisationRoleFieldRefInput<$PrismaModel>
     not?: NestedEnumOrganisationRoleFilter<$PrismaModel> | $Enums.OrganisationRole
-  }
-
-  export type OrganisationScalarRelationFilter = {
-    is?: OrganisationWhereInput
-    isNot?: OrganisationWhereInput
   }
 
   export type OrganisationMemberOrganisation_idUser_idCompoundUniqueInput = {
@@ -23597,7 +23093,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionCountOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
     organisation_id?: SortOrder
     channel?: SortOrder
     status?: SortOrder
@@ -23612,7 +23107,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionMaxOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
     organisation_id?: SortOrder
     channel?: SortOrder
     status?: SortOrder
@@ -23627,7 +23121,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionMinOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
     organisation_id?: SortOrder
     channel?: SortOrder
     status?: SortOrder
@@ -23718,7 +23211,6 @@ export namespace Prisma {
 
   export type StyleProfileCountOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
     organisation_id?: SortOrder
     name?: SortOrder
     platform?: SortOrder
@@ -23749,7 +23241,6 @@ export namespace Prisma {
 
   export type StyleProfileMaxOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
     organisation_id?: SortOrder
     name?: SortOrder
     platform?: SortOrder
@@ -23769,7 +23260,6 @@ export namespace Prisma {
 
   export type StyleProfileMinOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
     organisation_id?: SortOrder
     name?: SortOrder
     platform?: SortOrder
@@ -23829,7 +23319,6 @@ export namespace Prisma {
 
   export type ProjectCountOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
     organisation_id?: SortOrder
     title?: SortOrder
     description?: SortOrder
@@ -23844,7 +23333,6 @@ export namespace Prisma {
 
   export type ProjectMaxOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
     organisation_id?: SortOrder
     title?: SortOrder
     description?: SortOrder
@@ -23856,7 +23344,6 @@ export namespace Prisma {
 
   export type ProjectMinOrderByAggregateInput = {
     id?: SortOrder
-    user_id?: SortOrder
     organisation_id?: SortOrder
     title?: SortOrder
     description?: SortOrder
@@ -24347,13 +23834,6 @@ export namespace Prisma {
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
   }
 
-  export type DocumentCreateNestedManyWithoutUserInput = {
-    create?: XOR<DocumentCreateWithoutUserInput, DocumentUncheckedCreateWithoutUserInput> | DocumentCreateWithoutUserInput[] | DocumentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DocumentCreateOrConnectWithoutUserInput | DocumentCreateOrConnectWithoutUserInput[]
-    createMany?: DocumentCreateManyUserInputEnvelope
-    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-  }
-
   export type OrganisationCreateNestedManyWithoutCreated_byInput = {
     create?: XOR<OrganisationCreateWithoutCreated_byInput, OrganisationUncheckedCreateWithoutCreated_byInput> | OrganisationCreateWithoutCreated_byInput[] | OrganisationUncheckedCreateWithoutCreated_byInput[]
     connectOrCreate?: OrganisationCreateOrConnectWithoutCreated_byInput | OrganisationCreateOrConnectWithoutCreated_byInput[]
@@ -24375,39 +23855,11 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
-  export type SocialChannelConnectionCreateNestedManyWithoutUserInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutUserInput, SocialChannelConnectionUncheckedCreateWithoutUserInput> | SocialChannelConnectionCreateWithoutUserInput[] | SocialChannelConnectionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutUserInput | SocialChannelConnectionCreateOrConnectWithoutUserInput[]
-    createMany?: SocialChannelConnectionCreateManyUserInputEnvelope
-    connect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-  }
-
-  export type StyleProfileCreateNestedManyWithoutUserInput = {
-    create?: XOR<StyleProfileCreateWithoutUserInput, StyleProfileUncheckedCreateWithoutUserInput> | StyleProfileCreateWithoutUserInput[] | StyleProfileUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: StyleProfileCreateOrConnectWithoutUserInput | StyleProfileCreateOrConnectWithoutUserInput[]
-    createMany?: StyleProfileCreateManyUserInputEnvelope
-    connect?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-  }
-
-  export type ProjectCreateNestedManyWithoutUserInput = {
-    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
-    createMany?: ProjectCreateManyUserInputEnvelope
-    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
-  }
-
   export type PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
     createMany?: PasswordResetTokenCreateManyUserInputEnvelope
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
-  }
-
-  export type DocumentUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<DocumentCreateWithoutUserInput, DocumentUncheckedCreateWithoutUserInput> | DocumentCreateWithoutUserInput[] | DocumentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DocumentCreateOrConnectWithoutUserInput | DocumentCreateOrConnectWithoutUserInput[]
-    createMany?: DocumentCreateManyUserInputEnvelope
-    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
   }
 
   export type OrganisationUncheckedCreateNestedManyWithoutCreated_byInput = {
@@ -24429,27 +23881,6 @@ export namespace Prisma {
     connectOrCreate?: PostCreateOrConnectWithoutUserInput | PostCreateOrConnectWithoutUserInput[]
     createMany?: PostCreateManyUserInputEnvelope
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
-  }
-
-  export type SocialChannelConnectionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutUserInput, SocialChannelConnectionUncheckedCreateWithoutUserInput> | SocialChannelConnectionCreateWithoutUserInput[] | SocialChannelConnectionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutUserInput | SocialChannelConnectionCreateOrConnectWithoutUserInput[]
-    createMany?: SocialChannelConnectionCreateManyUserInputEnvelope
-    connect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-  }
-
-  export type StyleProfileUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<StyleProfileCreateWithoutUserInput, StyleProfileUncheckedCreateWithoutUserInput> | StyleProfileCreateWithoutUserInput[] | StyleProfileUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: StyleProfileCreateOrConnectWithoutUserInput | StyleProfileCreateOrConnectWithoutUserInput[]
-    createMany?: StyleProfileCreateManyUserInputEnvelope
-    connect?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-  }
-
-  export type ProjectUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
-    createMany?: ProjectCreateManyUserInputEnvelope
-    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -24480,20 +23911,6 @@ export namespace Prisma {
     update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
-  }
-
-  export type DocumentUpdateManyWithoutUserNestedInput = {
-    create?: XOR<DocumentCreateWithoutUserInput, DocumentUncheckedCreateWithoutUserInput> | DocumentCreateWithoutUserInput[] | DocumentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DocumentCreateOrConnectWithoutUserInput | DocumentCreateOrConnectWithoutUserInput[]
-    upsert?: DocumentUpsertWithWhereUniqueWithoutUserInput | DocumentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: DocumentCreateManyUserInputEnvelope
-    set?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    disconnect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    delete?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    update?: DocumentUpdateWithWhereUniqueWithoutUserInput | DocumentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: DocumentUpdateManyWithWhereWithoutUserInput | DocumentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
   }
 
   export type OrganisationUpdateManyWithoutCreated_byNestedInput = {
@@ -24538,48 +23955,6 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
-  export type SocialChannelConnectionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutUserInput, SocialChannelConnectionUncheckedCreateWithoutUserInput> | SocialChannelConnectionCreateWithoutUserInput[] | SocialChannelConnectionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutUserInput | SocialChannelConnectionCreateOrConnectWithoutUserInput[]
-    upsert?: SocialChannelConnectionUpsertWithWhereUniqueWithoutUserInput | SocialChannelConnectionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SocialChannelConnectionCreateManyUserInputEnvelope
-    set?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    disconnect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    delete?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    connect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    update?: SocialChannelConnectionUpdateWithWhereUniqueWithoutUserInput | SocialChannelConnectionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SocialChannelConnectionUpdateManyWithWhereWithoutUserInput | SocialChannelConnectionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
-  }
-
-  export type StyleProfileUpdateManyWithoutUserNestedInput = {
-    create?: XOR<StyleProfileCreateWithoutUserInput, StyleProfileUncheckedCreateWithoutUserInput> | StyleProfileCreateWithoutUserInput[] | StyleProfileUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: StyleProfileCreateOrConnectWithoutUserInput | StyleProfileCreateOrConnectWithoutUserInput[]
-    upsert?: StyleProfileUpsertWithWhereUniqueWithoutUserInput | StyleProfileUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: StyleProfileCreateManyUserInputEnvelope
-    set?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-    disconnect?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-    delete?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-    connect?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-    update?: StyleProfileUpdateWithWhereUniqueWithoutUserInput | StyleProfileUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: StyleProfileUpdateManyWithWhereWithoutUserInput | StyleProfileUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: StyleProfileScalarWhereInput | StyleProfileScalarWhereInput[]
-  }
-
-  export type ProjectUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
-    upsert?: ProjectUpsertWithWhereUniqueWithoutUserInput | ProjectUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ProjectCreateManyUserInputEnvelope
-    set?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
-    disconnect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
-    delete?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
-    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
-    update?: ProjectUpdateWithWhereUniqueWithoutUserInput | ProjectUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ProjectUpdateManyWithWhereWithoutUserInput | ProjectUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
-  }
-
   export type PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -24592,20 +23967,6 @@ export namespace Prisma {
     update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
-  }
-
-  export type DocumentUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<DocumentCreateWithoutUserInput, DocumentUncheckedCreateWithoutUserInput> | DocumentCreateWithoutUserInput[] | DocumentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DocumentCreateOrConnectWithoutUserInput | DocumentCreateOrConnectWithoutUserInput[]
-    upsert?: DocumentUpsertWithWhereUniqueWithoutUserInput | DocumentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: DocumentCreateManyUserInputEnvelope
-    set?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    disconnect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    delete?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    update?: DocumentUpdateWithWhereUniqueWithoutUserInput | DocumentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: DocumentUpdateManyWithWhereWithoutUserInput | DocumentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
   }
 
   export type OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput = {
@@ -24650,48 +24011,6 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
-  export type SocialChannelConnectionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutUserInput, SocialChannelConnectionUncheckedCreateWithoutUserInput> | SocialChannelConnectionCreateWithoutUserInput[] | SocialChannelConnectionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutUserInput | SocialChannelConnectionCreateOrConnectWithoutUserInput[]
-    upsert?: SocialChannelConnectionUpsertWithWhereUniqueWithoutUserInput | SocialChannelConnectionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SocialChannelConnectionCreateManyUserInputEnvelope
-    set?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    disconnect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    delete?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    connect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    update?: SocialChannelConnectionUpdateWithWhereUniqueWithoutUserInput | SocialChannelConnectionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SocialChannelConnectionUpdateManyWithWhereWithoutUserInput | SocialChannelConnectionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
-  }
-
-  export type StyleProfileUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<StyleProfileCreateWithoutUserInput, StyleProfileUncheckedCreateWithoutUserInput> | StyleProfileCreateWithoutUserInput[] | StyleProfileUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: StyleProfileCreateOrConnectWithoutUserInput | StyleProfileCreateOrConnectWithoutUserInput[]
-    upsert?: StyleProfileUpsertWithWhereUniqueWithoutUserInput | StyleProfileUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: StyleProfileCreateManyUserInputEnvelope
-    set?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-    disconnect?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-    delete?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-    connect?: StyleProfileWhereUniqueInput | StyleProfileWhereUniqueInput[]
-    update?: StyleProfileUpdateWithWhereUniqueWithoutUserInput | StyleProfileUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: StyleProfileUpdateManyWithWhereWithoutUserInput | StyleProfileUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: StyleProfileScalarWhereInput | StyleProfileScalarWhereInput[]
-  }
-
-  export type ProjectUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
-    upsert?: ProjectUpsertWithWhereUniqueWithoutUserInput | ProjectUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ProjectCreateManyUserInputEnvelope
-    set?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
-    disconnect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
-    delete?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
-    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
-    update?: ProjectUpdateWithWhereUniqueWithoutUserInput | ProjectUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ProjectUpdateManyWithWhereWithoutUserInput | ProjectUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
-  }
-
   export type UserCreateNestedOneWithoutPassword_reset_tokensInput = {
     create?: XOR<UserCreateWithoutPassword_reset_tokensInput, UserUncheckedCreateWithoutPassword_reset_tokensInput>
     connectOrCreate?: UserCreateOrConnectWithoutPassword_reset_tokensInput
@@ -24708,12 +24027,6 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutPassword_reset_tokensInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPassword_reset_tokensInput, UserUpdateWithoutPassword_reset_tokensInput>, UserUncheckedUpdateWithoutPassword_reset_tokensInput>
-  }
-
-  export type UserCreateNestedOneWithoutDocumentsInput = {
-    create?: XOR<UserCreateWithoutDocumentsInput, UserUncheckedCreateWithoutDocumentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDocumentsInput
-    connect?: UserWhereUniqueInput
   }
 
   export type OrganisationCreateNestedOneWithoutDocumentsInput = {
@@ -24762,22 +24075,10 @@ export namespace Prisma {
     set?: $Enums.DocumentType
   }
 
-  export type UserUpdateOneWithoutDocumentsNestedInput = {
-    create?: XOR<UserCreateWithoutDocumentsInput, UserUncheckedCreateWithoutDocumentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDocumentsInput
-    upsert?: UserUpsertWithoutDocumentsInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDocumentsInput, UserUpdateWithoutDocumentsInput>, UserUncheckedUpdateWithoutDocumentsInput>
-  }
-
-  export type OrganisationUpdateOneWithoutDocumentsNestedInput = {
+  export type OrganisationUpdateOneRequiredWithoutDocumentsNestedInput = {
     create?: XOR<OrganisationCreateWithoutDocumentsInput, OrganisationUncheckedCreateWithoutDocumentsInput>
     connectOrCreate?: OrganisationCreateOrConnectWithoutDocumentsInput
     upsert?: OrganisationUpsertWithoutDocumentsInput
-    disconnect?: OrganisationWhereInput | boolean
-    delete?: OrganisationWhereInput | boolean
     connect?: OrganisationWhereUniqueInput
     update?: XOR<XOR<OrganisationUpdateToOneWithWhereWithoutDocumentsInput, OrganisationUpdateWithoutDocumentsInput>, OrganisationUncheckedUpdateWithoutDocumentsInput>
   }
@@ -25136,12 +24437,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrganisation_membershipsInput, UserUpdateWithoutOrganisation_membershipsInput>, UserUncheckedUpdateWithoutOrganisation_membershipsInput>
   }
 
-  export type UserCreateNestedOneWithoutChannel_connectionsInput = {
-    create?: XOR<UserCreateWithoutChannel_connectionsInput, UserUncheckedCreateWithoutChannel_connectionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutChannel_connectionsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type OrganisationCreateNestedOneWithoutChannel_connectionsInput = {
     create?: XOR<OrganisationCreateWithoutChannel_connectionsInput, OrganisationUncheckedCreateWithoutChannel_connectionsInput>
     connectOrCreate?: OrganisationCreateOrConnectWithoutChannel_connectionsInput
@@ -25170,22 +24465,10 @@ export namespace Prisma {
     set?: $Enums.SocialChannelConnectionStatus
   }
 
-  export type UserUpdateOneWithoutChannel_connectionsNestedInput = {
-    create?: XOR<UserCreateWithoutChannel_connectionsInput, UserUncheckedCreateWithoutChannel_connectionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutChannel_connectionsInput
-    upsert?: UserUpsertWithoutChannel_connectionsInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutChannel_connectionsInput, UserUpdateWithoutChannel_connectionsInput>, UserUncheckedUpdateWithoutChannel_connectionsInput>
-  }
-
-  export type OrganisationUpdateOneWithoutChannel_connectionsNestedInput = {
+  export type OrganisationUpdateOneRequiredWithoutChannel_connectionsNestedInput = {
     create?: XOR<OrganisationCreateWithoutChannel_connectionsInput, OrganisationUncheckedCreateWithoutChannel_connectionsInput>
     connectOrCreate?: OrganisationCreateOrConnectWithoutChannel_connectionsInput
     upsert?: OrganisationUpsertWithoutChannel_connectionsInput
-    disconnect?: OrganisationWhereInput | boolean
-    delete?: OrganisationWhereInput | boolean
     connect?: OrganisationWhereUniqueInput
     update?: XOR<XOR<OrganisationUpdateToOneWithWhereWithoutChannel_connectionsInput, OrganisationUpdateWithoutChannel_connectionsInput>, OrganisationUncheckedUpdateWithoutChannel_connectionsInput>
   }
@@ -25224,12 +24507,6 @@ export namespace Prisma {
 
   export type StyleProfileCreatepillarsInput = {
     set: string[]
-  }
-
-  export type UserCreateNestedOneWithoutStyle_profilesInput = {
-    create?: XOR<UserCreateWithoutStyle_profilesInput, UserUncheckedCreateWithoutStyle_profilesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutStyle_profilesInput
-    connect?: UserWhereUniqueInput
   }
 
   export type OrganisationCreateNestedOneWithoutStyle_profilesInput = {
@@ -25316,22 +24593,10 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type UserUpdateOneWithoutStyle_profilesNestedInput = {
-    create?: XOR<UserCreateWithoutStyle_profilesInput, UserUncheckedCreateWithoutStyle_profilesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutStyle_profilesInput
-    upsert?: UserUpsertWithoutStyle_profilesInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStyle_profilesInput, UserUpdateWithoutStyle_profilesInput>, UserUncheckedUpdateWithoutStyle_profilesInput>
-  }
-
-  export type OrganisationUpdateOneWithoutStyle_profilesNestedInput = {
+  export type OrganisationUpdateOneRequiredWithoutStyle_profilesNestedInput = {
     create?: XOR<OrganisationCreateWithoutStyle_profilesInput, OrganisationUncheckedCreateWithoutStyle_profilesInput>
     connectOrCreate?: OrganisationCreateOrConnectWithoutStyle_profilesInput
     upsert?: OrganisationUpsertWithoutStyle_profilesInput
-    disconnect?: OrganisationWhereInput | boolean
-    delete?: OrganisationWhereInput | boolean
     connect?: OrganisationWhereUniqueInput
     update?: XOR<XOR<OrganisationUpdateToOneWithWhereWithoutStyle_profilesInput, OrganisationUpdateWithoutStyle_profilesInput>, OrganisationUncheckedUpdateWithoutStyle_profilesInput>
   }
@@ -25460,12 +24725,6 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type UserCreateNestedOneWithoutProjectsInput = {
-    create?: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutProjectsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type OrganisationCreateNestedOneWithoutProjectsInput = {
     create?: XOR<OrganisationCreateWithoutProjectsInput, OrganisationUncheckedCreateWithoutProjectsInput>
     connectOrCreate?: OrganisationCreateOrConnectWithoutProjectsInput
@@ -25547,22 +24806,10 @@ export namespace Prisma {
     set?: boolean
   }
 
-  export type UserUpdateOneWithoutProjectsNestedInput = {
-    create?: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutProjectsInput
-    upsert?: UserUpsertWithoutProjectsInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProjectsInput, UserUpdateWithoutProjectsInput>, UserUncheckedUpdateWithoutProjectsInput>
-  }
-
-  export type OrganisationUpdateOneWithoutProjectsNestedInput = {
+  export type OrganisationUpdateOneRequiredWithoutProjectsNestedInput = {
     create?: XOR<OrganisationCreateWithoutProjectsInput, OrganisationUncheckedCreateWithoutProjectsInput>
     connectOrCreate?: OrganisationCreateOrConnectWithoutProjectsInput
     upsert?: OrganisationUpsertWithoutProjectsInput
-    disconnect?: OrganisationWhereInput | boolean
-    delete?: OrganisationWhereInput | boolean
     connect?: OrganisationWhereUniqueInput
     update?: XOR<XOR<OrganisationUpdateToOneWithWhereWithoutProjectsInput, OrganisationUpdateWithoutProjectsInput>, OrganisationUncheckedUpdateWithoutProjectsInput>
   }
@@ -25980,12 +25227,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuthored_postsInput, UserUpdateWithoutAuthored_postsInput>, UserUncheckedUpdateWithoutAuthored_postsInput>
   }
 
-  export type OrganisationUpdateOneWithoutPostsNestedInput = {
+  export type OrganisationUpdateOneRequiredWithoutPostsNestedInput = {
     create?: XOR<OrganisationCreateWithoutPostsInput, OrganisationUncheckedCreateWithoutPostsInput>
     connectOrCreate?: OrganisationCreateOrConnectWithoutPostsInput
     upsert?: OrganisationUpsertWithoutPostsInput
-    disconnect?: OrganisationWhereInput | boolean
-    delete?: OrganisationWhereInput | boolean
     connect?: OrganisationWhereUniqueInput
     update?: XOR<XOR<OrganisationUpdateToOneWithWhereWithoutPostsInput, OrganisationUpdateWithoutPostsInput>, OrganisationUncheckedUpdateWithoutPostsInput>
   }
@@ -26604,44 +25849,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type DocumentCreateWithoutUserInput = {
-    id?: string
-    filename: string
-    mimetype: string
-    size: number
-    url: string
-    path: string
-    type?: $Enums.DocumentType
-    created_at?: Date | string
-    organisation?: OrganisationCreateNestedOneWithoutDocumentsInput
-    post_attachments?: PostAttachmentCreateNestedManyWithoutDocumentInput
-    cover_of_posts?: PostCreateNestedManyWithoutCover_documentInput
-  }
-
-  export type DocumentUncheckedCreateWithoutUserInput = {
-    id?: string
-    organisation_id?: string | null
-    filename: string
-    mimetype: string
-    size: number
-    url: string
-    path: string
-    type?: $Enums.DocumentType
-    created_at?: Date | string
-    post_attachments?: PostAttachmentUncheckedCreateNestedManyWithoutDocumentInput
-    cover_of_posts?: PostUncheckedCreateNestedManyWithoutCover_documentInput
-  }
-
-  export type DocumentCreateOrConnectWithoutUserInput = {
-    where: DocumentWhereUniqueInput
-    create: XOR<DocumentCreateWithoutUserInput, DocumentUncheckedCreateWithoutUserInput>
-  }
-
-  export type DocumentCreateManyUserInputEnvelope = {
-    data: DocumentCreateManyUserInput | DocumentCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type OrganisationCreateWithoutCreated_byInput = {
     id?: string
     name: string
@@ -26723,7 +25930,7 @@ export namespace Prisma {
     failed_reason?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
@@ -26736,7 +25943,7 @@ export namespace Prisma {
 
   export type PostUncheckedCreateWithoutUserInput = {
     id?: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -26772,152 +25979,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SocialChannelConnectionCreateWithoutUserInput = {
-    id?: string
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
-    external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
-    token_expires_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    organisation?: OrganisationCreateNestedOneWithoutChannel_connectionsInput
-    post_channels?: PostChannelCreateNestedManyWithoutChannel_connectionInput
-  }
-
-  export type SocialChannelConnectionUncheckedCreateWithoutUserInput = {
-    id?: string
-    organisation_id?: string | null
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
-    external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
-    token_expires_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    post_channels?: PostChannelUncheckedCreateNestedManyWithoutChannel_connectionInput
-  }
-
-  export type SocialChannelConnectionCreateOrConnectWithoutUserInput = {
-    where: SocialChannelConnectionWhereUniqueInput
-    create: XOR<SocialChannelConnectionCreateWithoutUserInput, SocialChannelConnectionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SocialChannelConnectionCreateManyUserInputEnvelope = {
-    data: SocialChannelConnectionCreateManyUserInput | SocialChannelConnectionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type StyleProfileCreateWithoutUserInput = {
-    id?: string
-    name: string
-    platform: $Enums.PostType
-    source_url?: string | null
-    posts_analyzed?: number
-    tone_score?: number | null
-    structure_score?: number | null
-    hooks_score?: number | null
-    vocabulary_score?: number | null
-    rhythm_score?: number | null
-    tone_description?: string | null
-    dominant_hook?: string | null
-    vocabulary?: StyleProfileCreatevocabularyInput | string[]
-    pillars?: StyleProfileCreatepillarsInput | string[]
-    last_analyzed_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    organisation?: OrganisationCreateNestedOneWithoutStyle_profilesInput
-    projects?: ProjectStyleProfileCreateNestedManyWithoutStyle_profileInput
-    generation_runs?: GenerationRunCreateNestedManyWithoutStyle_profileInput
-    automations?: AutomationCreateNestedManyWithoutStyle_profileInput
-    posts?: PostCreateNestedManyWithoutStyle_profileInput
-  }
-
-  export type StyleProfileUncheckedCreateWithoutUserInput = {
-    id?: string
-    organisation_id?: string | null
-    name: string
-    platform: $Enums.PostType
-    source_url?: string | null
-    posts_analyzed?: number
-    tone_score?: number | null
-    structure_score?: number | null
-    hooks_score?: number | null
-    vocabulary_score?: number | null
-    rhythm_score?: number | null
-    tone_description?: string | null
-    dominant_hook?: string | null
-    vocabulary?: StyleProfileCreatevocabularyInput | string[]
-    pillars?: StyleProfileCreatepillarsInput | string[]
-    last_analyzed_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    projects?: ProjectStyleProfileUncheckedCreateNestedManyWithoutStyle_profileInput
-    generation_runs?: GenerationRunUncheckedCreateNestedManyWithoutStyle_profileInput
-    automations?: AutomationUncheckedCreateNestedManyWithoutStyle_profileInput
-    posts?: PostUncheckedCreateNestedManyWithoutStyle_profileInput
-  }
-
-  export type StyleProfileCreateOrConnectWithoutUserInput = {
-    where: StyleProfileWhereUniqueInput
-    create: XOR<StyleProfileCreateWithoutUserInput, StyleProfileUncheckedCreateWithoutUserInput>
-  }
-
-  export type StyleProfileCreateManyUserInputEnvelope = {
-    data: StyleProfileCreateManyUserInput | StyleProfileCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ProjectCreateWithoutUserInput = {
-    id?: string
-    title: string
-    description?: string | null
-    platform: $Enums.PostType
-    pillars?: ProjectCreatepillarsInput | string[]
-    ideas?: ProjectCreateideasInput | string[]
-    instructions?: ProjectCreateinstructionsInput | string[]
-    is_archived?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    organisation?: OrganisationCreateNestedOneWithoutProjectsInput
-    style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
-    posts?: PostCreateNestedManyWithoutProjectInput
-    generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
-    automations?: AutomationCreateNestedManyWithoutProjectInput
-  }
-
-  export type ProjectUncheckedCreateWithoutUserInput = {
-    id?: string
-    organisation_id?: string | null
-    title: string
-    description?: string | null
-    platform: $Enums.PostType
-    pillars?: ProjectCreatepillarsInput | string[]
-    ideas?: ProjectCreateideasInput | string[]
-    instructions?: ProjectCreateinstructionsInput | string[]
-    is_archived?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    style_profiles?: ProjectStyleProfileUncheckedCreateNestedManyWithoutProjectInput
-    posts?: PostUncheckedCreateNestedManyWithoutProjectInput
-    generation_runs?: GenerationRunUncheckedCreateNestedManyWithoutProjectInput
-    automations?: AutomationUncheckedCreateNestedManyWithoutProjectInput
-  }
-
-  export type ProjectCreateOrConnectWithoutUserInput = {
-    where: ProjectWhereUniqueInput
-    create: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput>
-  }
-
-  export type ProjectCreateManyUserInputEnvelope = {
-    data: ProjectCreateManyUserInput | ProjectCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput = {
     where: PasswordResetTokenWhereUniqueInput
     update: XOR<PasswordResetTokenUpdateWithoutUserInput, PasswordResetTokenUncheckedUpdateWithoutUserInput>
@@ -26944,38 +26005,6 @@ export namespace Prisma {
     expires_at?: DateTimeFilter<"PasswordResetToken"> | Date | string
     used_at?: DateTimeNullableFilter<"PasswordResetToken"> | Date | string | null
     created_at?: DateTimeFilter<"PasswordResetToken"> | Date | string
-  }
-
-  export type DocumentUpsertWithWhereUniqueWithoutUserInput = {
-    where: DocumentWhereUniqueInput
-    update: XOR<DocumentUpdateWithoutUserInput, DocumentUncheckedUpdateWithoutUserInput>
-    create: XOR<DocumentCreateWithoutUserInput, DocumentUncheckedCreateWithoutUserInput>
-  }
-
-  export type DocumentUpdateWithWhereUniqueWithoutUserInput = {
-    where: DocumentWhereUniqueInput
-    data: XOR<DocumentUpdateWithoutUserInput, DocumentUncheckedUpdateWithoutUserInput>
-  }
-
-  export type DocumentUpdateManyWithWhereWithoutUserInput = {
-    where: DocumentScalarWhereInput
-    data: XOR<DocumentUpdateManyMutationInput, DocumentUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type DocumentScalarWhereInput = {
-    AND?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-    OR?: DocumentScalarWhereInput[]
-    NOT?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-    id?: StringFilter<"Document"> | string
-    user_uuid?: StringNullableFilter<"Document"> | string | null
-    organisation_id?: StringNullableFilter<"Document"> | string | null
-    filename?: StringFilter<"Document"> | string
-    mimetype?: StringFilter<"Document"> | string
-    size?: IntFilter<"Document"> | number
-    url?: StringFilter<"Document"> | string
-    path?: StringFilter<"Document"> | string
-    type?: EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
-    created_at?: DateTimeFilter<"Document"> | Date | string
   }
 
   export type OrganisationUpsertWithWhereUniqueWithoutCreated_byInput = {
@@ -27056,7 +26085,7 @@ export namespace Prisma {
     NOT?: PostScalarWhereInput | PostScalarWhereInput[]
     id?: StringFilter<"Post"> | string
     user_id?: StringFilter<"Post"> | string
-    organisation_id?: StringNullableFilter<"Post"> | string | null
+    organisation_id?: StringFilter<"Post"> | string
     project_id?: StringNullableFilter<"Post"> | string | null
     style_profile_id?: StringNullableFilter<"Post"> | string | null
     generation_run_id?: StringNullableFilter<"Post"> | string | null
@@ -27079,115 +26108,6 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"Post"> | Date | string
   }
 
-  export type SocialChannelConnectionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SocialChannelConnectionWhereUniqueInput
-    update: XOR<SocialChannelConnectionUpdateWithoutUserInput, SocialChannelConnectionUncheckedUpdateWithoutUserInput>
-    create: XOR<SocialChannelConnectionCreateWithoutUserInput, SocialChannelConnectionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SocialChannelConnectionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SocialChannelConnectionWhereUniqueInput
-    data: XOR<SocialChannelConnectionUpdateWithoutUserInput, SocialChannelConnectionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SocialChannelConnectionUpdateManyWithWhereWithoutUserInput = {
-    where: SocialChannelConnectionScalarWhereInput
-    data: XOR<SocialChannelConnectionUpdateManyMutationInput, SocialChannelConnectionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type SocialChannelConnectionScalarWhereInput = {
-    AND?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
-    OR?: SocialChannelConnectionScalarWhereInput[]
-    NOT?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
-    id?: StringFilter<"SocialChannelConnection"> | string
-    user_id?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    organisation_id?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    channel?: EnumSocialChannelFilter<"SocialChannelConnection"> | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFilter<"SocialChannelConnection"> | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFilter<"SocialChannelConnection"> | string
-    external_account_name?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    access_token?: StringFilter<"SocialChannelConnection"> | string
-    refresh_token?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    token_expires_at?: DateTimeNullableFilter<"SocialChannelConnection"> | Date | string | null
-    created_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
-    updated_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
-  }
-
-  export type StyleProfileUpsertWithWhereUniqueWithoutUserInput = {
-    where: StyleProfileWhereUniqueInput
-    update: XOR<StyleProfileUpdateWithoutUserInput, StyleProfileUncheckedUpdateWithoutUserInput>
-    create: XOR<StyleProfileCreateWithoutUserInput, StyleProfileUncheckedCreateWithoutUserInput>
-  }
-
-  export type StyleProfileUpdateWithWhereUniqueWithoutUserInput = {
-    where: StyleProfileWhereUniqueInput
-    data: XOR<StyleProfileUpdateWithoutUserInput, StyleProfileUncheckedUpdateWithoutUserInput>
-  }
-
-  export type StyleProfileUpdateManyWithWhereWithoutUserInput = {
-    where: StyleProfileScalarWhereInput
-    data: XOR<StyleProfileUpdateManyMutationInput, StyleProfileUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type StyleProfileScalarWhereInput = {
-    AND?: StyleProfileScalarWhereInput | StyleProfileScalarWhereInput[]
-    OR?: StyleProfileScalarWhereInput[]
-    NOT?: StyleProfileScalarWhereInput | StyleProfileScalarWhereInput[]
-    id?: StringFilter<"StyleProfile"> | string
-    user_id?: StringNullableFilter<"StyleProfile"> | string | null
-    organisation_id?: StringNullableFilter<"StyleProfile"> | string | null
-    name?: StringFilter<"StyleProfile"> | string
-    platform?: EnumPostTypeFilter<"StyleProfile"> | $Enums.PostType
-    source_url?: StringNullableFilter<"StyleProfile"> | string | null
-    posts_analyzed?: IntFilter<"StyleProfile"> | number
-    tone_score?: IntNullableFilter<"StyleProfile"> | number | null
-    structure_score?: IntNullableFilter<"StyleProfile"> | number | null
-    hooks_score?: IntNullableFilter<"StyleProfile"> | number | null
-    vocabulary_score?: IntNullableFilter<"StyleProfile"> | number | null
-    rhythm_score?: IntNullableFilter<"StyleProfile"> | number | null
-    tone_description?: StringNullableFilter<"StyleProfile"> | string | null
-    dominant_hook?: StringNullableFilter<"StyleProfile"> | string | null
-    vocabulary?: StringNullableListFilter<"StyleProfile">
-    pillars?: StringNullableListFilter<"StyleProfile">
-    last_analyzed_at?: DateTimeNullableFilter<"StyleProfile"> | Date | string | null
-    created_at?: DateTimeFilter<"StyleProfile"> | Date | string
-    updated_at?: DateTimeFilter<"StyleProfile"> | Date | string
-  }
-
-  export type ProjectUpsertWithWhereUniqueWithoutUserInput = {
-    where: ProjectWhereUniqueInput
-    update: XOR<ProjectUpdateWithoutUserInput, ProjectUncheckedUpdateWithoutUserInput>
-    create: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput>
-  }
-
-  export type ProjectUpdateWithWhereUniqueWithoutUserInput = {
-    where: ProjectWhereUniqueInput
-    data: XOR<ProjectUpdateWithoutUserInput, ProjectUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ProjectUpdateManyWithWhereWithoutUserInput = {
-    where: ProjectScalarWhereInput
-    data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type ProjectScalarWhereInput = {
-    AND?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
-    OR?: ProjectScalarWhereInput[]
-    NOT?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
-    id?: StringFilter<"Project"> | string
-    user_id?: StringNullableFilter<"Project"> | string | null
-    organisation_id?: StringNullableFilter<"Project"> | string | null
-    title?: StringFilter<"Project"> | string
-    description?: StringNullableFilter<"Project"> | string | null
-    platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
-    pillars?: StringNullableListFilter<"Project">
-    ideas?: StringNullableListFilter<"Project">
-    instructions?: StringNullableListFilter<"Project">
-    is_archived?: BoolFilter<"Project"> | boolean
-    created_at?: DateTimeFilter<"Project"> | Date | string
-    updated_at?: DateTimeFilter<"Project"> | Date | string
-  }
-
   export type UserCreateWithoutPassword_reset_tokensInput = {
     id?: string
     name: string
@@ -27197,13 +26117,9 @@ export namespace Prisma {
     role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    documents?: DocumentCreateNestedManyWithoutUserInput
     organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
     authored_posts?: PostCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileCreateNestedManyWithoutUserInput
-    projects?: ProjectCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPassword_reset_tokensInput = {
@@ -27215,13 +26131,9 @@ export namespace Prisma {
     role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
     organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
     authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutUserInput
-    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPassword_reset_tokensInput = {
@@ -27249,13 +26161,9 @@ export namespace Prisma {
     role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    documents?: DocumentUpdateManyWithoutUserNestedInput
     organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
     authored_posts?: PostUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUpdateManyWithoutUserNestedInput
-    projects?: ProjectUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPassword_reset_tokensInput = {
@@ -27267,54 +26175,9 @@ export namespace Prisma {
     role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
     organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUncheckedUpdateManyWithoutUserNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutDocumentsInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    password: string
-    role: $Enums.AuthRole
-    created_at?: Date | string
-    updated_at?: Date | string
-    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
-    organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
-    authored_posts?: PostCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileCreateNestedManyWithoutUserInput
-    projects?: ProjectCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutDocumentsInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    password: string
-    role: $Enums.AuthRole
-    created_at?: Date | string
-    updated_at?: Date | string
-    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
-    organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
-    authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutUserInput
-    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutDocumentsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDocumentsInput, UserUncheckedCreateWithoutDocumentsInput>
   }
 
   export type OrganisationCreateWithoutDocumentsInput = {
@@ -27392,7 +26255,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutAuthored_postsInput
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
@@ -27405,7 +26268,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutCover_documentInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -27438,53 +26301,6 @@ export namespace Prisma {
   export type PostCreateManyCover_documentInputEnvelope = {
     data: PostCreateManyCover_documentInput | PostCreateManyCover_documentInput[]
     skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutDocumentsInput = {
-    update: XOR<UserUpdateWithoutDocumentsInput, UserUncheckedUpdateWithoutDocumentsInput>
-    create: XOR<UserCreateWithoutDocumentsInput, UserUncheckedCreateWithoutDocumentsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutDocumentsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutDocumentsInput, UserUncheckedUpdateWithoutDocumentsInput>
-  }
-
-  export type UserUpdateWithoutDocumentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
-    organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
-    authored_posts?: PostUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUpdateManyWithoutUserNestedInput
-    projects?: ProjectUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutDocumentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
-    organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
-    authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUncheckedUpdateManyWithoutUserNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationUpsertWithoutDocumentsInput = {
@@ -27579,12 +26395,8 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    documents?: DocumentCreateNestedManyWithoutUserInput
     organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
     authored_posts?: PostCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileCreateNestedManyWithoutUserInput
-    projects?: ProjectCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrganisations_createdInput = {
@@ -27597,12 +26409,8 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
     organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
     authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutUserInput
-    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrganisations_createdInput = {
@@ -27645,14 +26453,12 @@ export namespace Prisma {
     path: string
     type?: $Enums.DocumentType
     created_at?: Date | string
-    user?: UserCreateNestedOneWithoutDocumentsInput
     post_attachments?: PostAttachmentCreateNestedManyWithoutDocumentInput
     cover_of_posts?: PostCreateNestedManyWithoutCover_documentInput
   }
 
   export type DocumentUncheckedCreateWithoutOrganisationInput = {
     id?: string
-    user_uuid?: string | null
     filename: string
     mimetype: string
     size: number
@@ -27751,13 +26557,11 @@ export namespace Prisma {
     token_expires_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutChannel_connectionsInput
     post_channels?: PostChannelCreateNestedManyWithoutChannel_connectionInput
   }
 
   export type SocialChannelConnectionUncheckedCreateWithoutOrganisationInput = {
     id?: string
-    user_id?: string | null
     channel: $Enums.SocialChannel
     status?: $Enums.SocialChannelConnectionStatus
     external_account_id: string
@@ -27798,7 +26602,6 @@ export namespace Prisma {
     last_analyzed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutStyle_profilesInput
     projects?: ProjectStyleProfileCreateNestedManyWithoutStyle_profileInput
     generation_runs?: GenerationRunCreateNestedManyWithoutStyle_profileInput
     automations?: AutomationCreateNestedManyWithoutStyle_profileInput
@@ -27807,7 +26610,6 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedCreateWithoutOrganisationInput = {
     id?: string
-    user_id?: string | null
     name: string
     platform: $Enums.PostType
     source_url?: string | null
@@ -27851,7 +26653,6 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutProjectsInput
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
     posts?: PostCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
@@ -27860,7 +26661,6 @@ export namespace Prisma {
 
   export type ProjectUncheckedCreateWithoutOrganisationInput = {
     id?: string
-    user_id?: string | null
     title: string
     description?: string | null
     platform: $Enums.PostType
@@ -27907,12 +26707,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    documents?: DocumentUpdateManyWithoutUserNestedInput
     organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
     authored_posts?: PostUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUpdateManyWithoutUserNestedInput
-    projects?: ProjectUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrganisations_createdInput = {
@@ -27925,12 +26721,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
     organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUncheckedUpdateManyWithoutUserNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationMemberUpsertWithWhereUniqueWithoutOrganisationInput = {
@@ -27965,6 +26757,21 @@ export namespace Prisma {
     data: XOR<DocumentUpdateManyMutationInput, DocumentUncheckedUpdateManyWithoutOrganisationInput>
   }
 
+  export type DocumentScalarWhereInput = {
+    AND?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+    OR?: DocumentScalarWhereInput[]
+    NOT?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+    id?: StringFilter<"Document"> | string
+    organisation_id?: StringFilter<"Document"> | string
+    filename?: StringFilter<"Document"> | string
+    mimetype?: StringFilter<"Document"> | string
+    size?: IntFilter<"Document"> | number
+    url?: StringFilter<"Document"> | string
+    path?: StringFilter<"Document"> | string
+    type?: EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
+    created_at?: DateTimeFilter<"Document"> | Date | string
+  }
+
   export type PostUpsertWithWhereUniqueWithoutOrganisationInput = {
     where: PostWhereUniqueInput
     update: XOR<PostUpdateWithoutOrganisationInput, PostUncheckedUpdateWithoutOrganisationInput>
@@ -27997,6 +26804,23 @@ export namespace Prisma {
     data: XOR<SocialChannelConnectionUpdateManyMutationInput, SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationInput>
   }
 
+  export type SocialChannelConnectionScalarWhereInput = {
+    AND?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
+    OR?: SocialChannelConnectionScalarWhereInput[]
+    NOT?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
+    id?: StringFilter<"SocialChannelConnection"> | string
+    organisation_id?: StringFilter<"SocialChannelConnection"> | string
+    channel?: EnumSocialChannelFilter<"SocialChannelConnection"> | $Enums.SocialChannel
+    status?: EnumSocialChannelConnectionStatusFilter<"SocialChannelConnection"> | $Enums.SocialChannelConnectionStatus
+    external_account_id?: StringFilter<"SocialChannelConnection"> | string
+    external_account_name?: StringNullableFilter<"SocialChannelConnection"> | string | null
+    access_token?: StringFilter<"SocialChannelConnection"> | string
+    refresh_token?: StringNullableFilter<"SocialChannelConnection"> | string | null
+    token_expires_at?: DateTimeNullableFilter<"SocialChannelConnection"> | Date | string | null
+    created_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
+    updated_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
+  }
+
   export type StyleProfileUpsertWithWhereUniqueWithoutOrganisationInput = {
     where: StyleProfileWhereUniqueInput
     update: XOR<StyleProfileUpdateWithoutOrganisationInput, StyleProfileUncheckedUpdateWithoutOrganisationInput>
@@ -28013,6 +26837,30 @@ export namespace Prisma {
     data: XOR<StyleProfileUpdateManyMutationInput, StyleProfileUncheckedUpdateManyWithoutOrganisationInput>
   }
 
+  export type StyleProfileScalarWhereInput = {
+    AND?: StyleProfileScalarWhereInput | StyleProfileScalarWhereInput[]
+    OR?: StyleProfileScalarWhereInput[]
+    NOT?: StyleProfileScalarWhereInput | StyleProfileScalarWhereInput[]
+    id?: StringFilter<"StyleProfile"> | string
+    organisation_id?: StringFilter<"StyleProfile"> | string
+    name?: StringFilter<"StyleProfile"> | string
+    platform?: EnumPostTypeFilter<"StyleProfile"> | $Enums.PostType
+    source_url?: StringNullableFilter<"StyleProfile"> | string | null
+    posts_analyzed?: IntFilter<"StyleProfile"> | number
+    tone_score?: IntNullableFilter<"StyleProfile"> | number | null
+    structure_score?: IntNullableFilter<"StyleProfile"> | number | null
+    hooks_score?: IntNullableFilter<"StyleProfile"> | number | null
+    vocabulary_score?: IntNullableFilter<"StyleProfile"> | number | null
+    rhythm_score?: IntNullableFilter<"StyleProfile"> | number | null
+    tone_description?: StringNullableFilter<"StyleProfile"> | string | null
+    dominant_hook?: StringNullableFilter<"StyleProfile"> | string | null
+    vocabulary?: StringNullableListFilter<"StyleProfile">
+    pillars?: StringNullableListFilter<"StyleProfile">
+    last_analyzed_at?: DateTimeNullableFilter<"StyleProfile"> | Date | string | null
+    created_at?: DateTimeFilter<"StyleProfile"> | Date | string
+    updated_at?: DateTimeFilter<"StyleProfile"> | Date | string
+  }
+
   export type ProjectUpsertWithWhereUniqueWithoutOrganisationInput = {
     where: ProjectWhereUniqueInput
     update: XOR<ProjectUpdateWithoutOrganisationInput, ProjectUncheckedUpdateWithoutOrganisationInput>
@@ -28027,6 +26875,23 @@ export namespace Prisma {
   export type ProjectUpdateManyWithWhereWithoutOrganisationInput = {
     where: ProjectScalarWhereInput
     data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyWithoutOrganisationInput>
+  }
+
+  export type ProjectScalarWhereInput = {
+    AND?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+    OR?: ProjectScalarWhereInput[]
+    NOT?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+    id?: StringFilter<"Project"> | string
+    organisation_id?: StringFilter<"Project"> | string
+    title?: StringFilter<"Project"> | string
+    description?: StringNullableFilter<"Project"> | string | null
+    platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
+    pillars?: StringNullableListFilter<"Project">
+    ideas?: StringNullableListFilter<"Project">
+    instructions?: StringNullableListFilter<"Project">
+    is_archived?: BoolFilter<"Project"> | boolean
+    created_at?: DateTimeFilter<"Project"> | Date | string
+    updated_at?: DateTimeFilter<"Project"> | Date | string
   }
 
   export type OrganisationCreateWithoutMembersInput = {
@@ -28072,12 +26937,8 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    documents?: DocumentCreateNestedManyWithoutUserInput
     organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
     authored_posts?: PostCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileCreateNestedManyWithoutUserInput
-    projects?: ProjectCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrganisation_membershipsInput = {
@@ -28090,12 +26951,8 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
     organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
     authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutUserInput
-    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrganisation_membershipsInput = {
@@ -28163,12 +27020,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    documents?: DocumentUpdateManyWithoutUserNestedInput
     organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
     authored_posts?: PostUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUpdateManyWithoutUserNestedInput
-    projects?: ProjectUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrganisation_membershipsInput = {
@@ -28181,53 +27034,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
     organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUncheckedUpdateManyWithoutUserNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutChannel_connectionsInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    password: string
-    role: $Enums.AuthRole
-    created_at?: Date | string
-    updated_at?: Date | string
-    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    documents?: DocumentCreateNestedManyWithoutUserInput
-    organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
-    organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
-    authored_posts?: PostCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileCreateNestedManyWithoutUserInput
-    projects?: ProjectCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutChannel_connectionsInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    password: string
-    role: $Enums.AuthRole
-    created_at?: Date | string
-    updated_at?: Date | string
-    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
-    organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
-    organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
-    authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutUserInput
-    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutChannel_connectionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutChannel_connectionsInput, UserUncheckedCreateWithoutChannel_connectionsInput>
   }
 
   export type OrganisationCreateWithoutChannel_connectionsInput = {
@@ -28295,53 +27103,6 @@ export namespace Prisma {
   export type PostChannelCreateManyChannel_connectionInputEnvelope = {
     data: PostChannelCreateManyChannel_connectionInput | PostChannelCreateManyChannel_connectionInput[]
     skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutChannel_connectionsInput = {
-    update: XOR<UserUpdateWithoutChannel_connectionsInput, UserUncheckedUpdateWithoutChannel_connectionsInput>
-    create: XOR<UserCreateWithoutChannel_connectionsInput, UserUncheckedCreateWithoutChannel_connectionsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutChannel_connectionsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutChannel_connectionsInput, UserUncheckedUpdateWithoutChannel_connectionsInput>
-  }
-
-  export type UserUpdateWithoutChannel_connectionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    documents?: DocumentUpdateManyWithoutUserNestedInput
-    organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
-    organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
-    authored_posts?: PostUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUpdateManyWithoutUserNestedInput
-    projects?: ProjectUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutChannel_connectionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
-    organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
-    organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
-    authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUncheckedUpdateManyWithoutUserNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationUpsertWithoutChannel_connectionsInput = {
@@ -28413,47 +27174,6 @@ export namespace Prisma {
     failed_reason?: StringNullableFilter<"PostChannel"> | string | null
     created_at?: DateTimeFilter<"PostChannel"> | Date | string
     updated_at?: DateTimeFilter<"PostChannel"> | Date | string
-  }
-
-  export type UserCreateWithoutStyle_profilesInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    password: string
-    role: $Enums.AuthRole
-    created_at?: Date | string
-    updated_at?: Date | string
-    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    documents?: DocumentCreateNestedManyWithoutUserInput
-    organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
-    organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
-    authored_posts?: PostCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutUserInput
-    projects?: ProjectCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutStyle_profilesInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    password: string
-    role: $Enums.AuthRole
-    created_at?: Date | string
-    updated_at?: Date | string
-    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
-    organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
-    organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
-    authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutUserInput
-    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutStyle_profilesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutStyle_profilesInput, UserUncheckedCreateWithoutStyle_profilesInput>
   }
 
   export type OrganisationCreateWithoutStyle_profilesInput = {
@@ -28607,7 +27327,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutAuthored_postsInput
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
@@ -28620,7 +27340,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutStyle_profileInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
@@ -28653,53 +27373,6 @@ export namespace Prisma {
   export type PostCreateManyStyle_profileInputEnvelope = {
     data: PostCreateManyStyle_profileInput | PostCreateManyStyle_profileInput[]
     skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutStyle_profilesInput = {
-    update: XOR<UserUpdateWithoutStyle_profilesInput, UserUncheckedUpdateWithoutStyle_profilesInput>
-    create: XOR<UserCreateWithoutStyle_profilesInput, UserUncheckedCreateWithoutStyle_profilesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutStyle_profilesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutStyle_profilesInput, UserUncheckedUpdateWithoutStyle_profilesInput>
-  }
-
-  export type UserUpdateWithoutStyle_profilesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    documents?: DocumentUpdateManyWithoutUserNestedInput
-    organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
-    organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
-    authored_posts?: PostUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutUserNestedInput
-    projects?: ProjectUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutStyle_profilesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
-    organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
-    organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
-    authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutUserNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationUpsertWithoutStyle_profilesInput = {
@@ -28850,47 +27523,6 @@ export namespace Prisma {
     data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutStyle_profileInput>
   }
 
-  export type UserCreateWithoutProjectsInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    password: string
-    role: $Enums.AuthRole
-    created_at?: Date | string
-    updated_at?: Date | string
-    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    documents?: DocumentCreateNestedManyWithoutUserInput
-    organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
-    organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
-    authored_posts?: PostCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutProjectsInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    password: string
-    role: $Enums.AuthRole
-    created_at?: Date | string
-    updated_at?: Date | string
-    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
-    organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
-    organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
-    authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutProjectsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
-  }
-
   export type OrganisationCreateWithoutProjectsInput = {
     id?: string
     name: string
@@ -28964,7 +27596,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutAuthored_postsInput
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
@@ -28977,7 +27609,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutProjectInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
@@ -29088,53 +27720,6 @@ export namespace Prisma {
   export type AutomationCreateManyProjectInputEnvelope = {
     data: AutomationCreateManyProjectInput | AutomationCreateManyProjectInput[]
     skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutProjectsInput = {
-    update: XOR<UserUpdateWithoutProjectsInput, UserUncheckedUpdateWithoutProjectsInput>
-    create: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutProjectsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutProjectsInput, UserUncheckedUpdateWithoutProjectsInput>
-  }
-
-  export type UserUpdateWithoutProjectsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    documents?: DocumentUpdateManyWithoutUserNestedInput
-    organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
-    organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
-    authored_posts?: PostUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutProjectsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
-    organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
-    organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
-    authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationUpsertWithoutProjectsInput = {
@@ -29251,8 +27836,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutProjectsInput
-    organisation?: OrganisationCreateNestedOneWithoutProjectsInput
+    organisation: OrganisationCreateNestedOneWithoutProjectsInput
     posts?: PostCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
     automations?: AutomationCreateNestedManyWithoutProjectInput
@@ -29260,8 +27844,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedCreateWithoutStyle_profilesInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     title: string
     description?: string | null
     platform: $Enums.PostType
@@ -29299,8 +27882,7 @@ export namespace Prisma {
     last_analyzed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutStyle_profilesInput
-    organisation?: OrganisationCreateNestedOneWithoutStyle_profilesInput
+    organisation: OrganisationCreateNestedOneWithoutStyle_profilesInput
     generation_runs?: GenerationRunCreateNestedManyWithoutStyle_profileInput
     automations?: AutomationCreateNestedManyWithoutStyle_profileInput
     posts?: PostCreateNestedManyWithoutStyle_profileInput
@@ -29308,8 +27890,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedCreateWithoutProjectsInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     name: string
     platform: $Enums.PostType
     source_url?: string | null
@@ -29358,8 +27939,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProjectsNestedInput
-    organisation?: OrganisationUpdateOneWithoutProjectsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
     automations?: AutomationUpdateManyWithoutProjectNestedInput
@@ -29367,8 +27947,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateWithoutStyle_profilesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -29412,8 +27991,7 @@ export namespace Prisma {
     last_analyzed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutStyle_profilesNestedInput
-    organisation?: OrganisationUpdateOneWithoutStyle_profilesNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutStyle_profilesNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutStyle_profileNestedInput
     automations?: AutomationUpdateManyWithoutStyle_profileNestedInput
     posts?: PostUpdateManyWithoutStyle_profileNestedInput
@@ -29421,8 +27999,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedUpdateWithoutProjectsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     source_url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29455,8 +28032,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutProjectsInput
-    organisation?: OrganisationCreateNestedOneWithoutProjectsInput
+    organisation: OrganisationCreateNestedOneWithoutProjectsInput
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
     posts?: PostCreateNestedManyWithoutProjectInput
     automations?: AutomationCreateNestedManyWithoutProjectInput
@@ -29464,8 +28040,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedCreateWithoutGeneration_runsInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     title: string
     description?: string | null
     platform: $Enums.PostType
@@ -29503,8 +28078,7 @@ export namespace Prisma {
     last_analyzed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutStyle_profilesInput
-    organisation?: OrganisationCreateNestedOneWithoutStyle_profilesInput
+    organisation: OrganisationCreateNestedOneWithoutStyle_profilesInput
     projects?: ProjectStyleProfileCreateNestedManyWithoutStyle_profileInput
     automations?: AutomationCreateNestedManyWithoutStyle_profileInput
     posts?: PostCreateNestedManyWithoutStyle_profileInput
@@ -29512,8 +28086,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedCreateWithoutGeneration_runsInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     name: string
     platform: $Enums.PostType
     source_url?: string | null
@@ -29599,7 +28172,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutAuthored_postsInput
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
@@ -29612,7 +28185,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutGeneration_runInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     source_post_id?: string | null
@@ -29669,8 +28242,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProjectsNestedInput
-    organisation?: OrganisationUpdateOneWithoutProjectsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     automations?: AutomationUpdateManyWithoutProjectNestedInput
@@ -29678,8 +28250,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateWithoutGeneration_runsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -29723,8 +28294,7 @@ export namespace Prisma {
     last_analyzed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutStyle_profilesNestedInput
-    organisation?: OrganisationUpdateOneWithoutStyle_profilesNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutStyle_profilesNestedInput
     projects?: ProjectStyleProfileUpdateManyWithoutStyle_profileNestedInput
     automations?: AutomationUpdateManyWithoutStyle_profileNestedInput
     posts?: PostUpdateManyWithoutStyle_profileNestedInput
@@ -29732,8 +28302,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedUpdateWithoutGeneration_runsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     source_url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29829,8 +28398,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutProjectsInput
-    organisation?: OrganisationCreateNestedOneWithoutProjectsInput
+    organisation: OrganisationCreateNestedOneWithoutProjectsInput
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
     posts?: PostCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
@@ -29838,8 +28406,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedCreateWithoutAutomationsInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     title: string
     description?: string | null
     platform: $Enums.PostType
@@ -29877,8 +28444,7 @@ export namespace Prisma {
     last_analyzed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutStyle_profilesInput
-    organisation?: OrganisationCreateNestedOneWithoutStyle_profilesInput
+    organisation: OrganisationCreateNestedOneWithoutStyle_profilesInput
     projects?: ProjectStyleProfileCreateNestedManyWithoutStyle_profileInput
     generation_runs?: GenerationRunCreateNestedManyWithoutStyle_profileInput
     posts?: PostCreateNestedManyWithoutStyle_profileInput
@@ -29886,8 +28452,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedCreateWithoutAutomationsInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     name: string
     platform: $Enums.PostType
     source_url?: string | null
@@ -29968,8 +28533,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProjectsNestedInput
-    organisation?: OrganisationUpdateOneWithoutProjectsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
@@ -29977,8 +28541,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateWithoutAutomationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -30022,8 +28585,7 @@ export namespace Prisma {
     last_analyzed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutStyle_profilesNestedInput
-    organisation?: OrganisationUpdateOneWithoutStyle_profilesNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutStyle_profilesNestedInput
     projects?: ProjectStyleProfileUpdateManyWithoutStyle_profileNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutStyle_profileNestedInput
     posts?: PostUpdateManyWithoutStyle_profileNestedInput
@@ -30031,8 +28593,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedUpdateWithoutAutomationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     source_url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30080,12 +28641,8 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    documents?: DocumentCreateNestedManyWithoutUserInput
     organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileCreateNestedManyWithoutUserInput
-    projects?: ProjectCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuthored_postsInput = {
@@ -30098,12 +28655,8 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutUserInput
     organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutUserInput
-    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutUserInput
-    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuthored_postsInput = {
@@ -30155,8 +28708,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutProjectsInput
-    organisation?: OrganisationCreateNestedOneWithoutProjectsInput
+    organisation: OrganisationCreateNestedOneWithoutProjectsInput
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
     automations?: AutomationCreateNestedManyWithoutProjectInput
@@ -30164,8 +28716,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedCreateWithoutPostsInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     title: string
     description?: string | null
     platform: $Enums.PostType
@@ -30203,8 +28754,7 @@ export namespace Prisma {
     last_analyzed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutStyle_profilesInput
-    organisation?: OrganisationCreateNestedOneWithoutStyle_profilesInput
+    organisation: OrganisationCreateNestedOneWithoutStyle_profilesInput
     projects?: ProjectStyleProfileCreateNestedManyWithoutStyle_profileInput
     generation_runs?: GenerationRunCreateNestedManyWithoutStyle_profileInput
     automations?: AutomationCreateNestedManyWithoutStyle_profileInput
@@ -30212,8 +28762,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedCreateWithoutPostsInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     name: string
     platform: $Enums.PostType
     source_url?: string | null
@@ -30276,15 +28825,13 @@ export namespace Prisma {
     path: string
     type?: $Enums.DocumentType
     created_at?: Date | string
-    user?: UserCreateNestedOneWithoutDocumentsInput
-    organisation?: OrganisationCreateNestedOneWithoutDocumentsInput
+    organisation: OrganisationCreateNestedOneWithoutDocumentsInput
     post_attachments?: PostAttachmentCreateNestedManyWithoutDocumentInput
   }
 
   export type DocumentUncheckedCreateWithoutCover_of_postsInput = {
     id?: string
-    user_uuid?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     filename: string
     mimetype: string
     size: number
@@ -30318,7 +28865,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutAuthored_postsInput
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
@@ -30331,7 +28878,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutRepurposed_postsInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -30379,7 +28926,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutAuthored_postsInput
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
@@ -30392,7 +28939,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutSource_postInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -30506,12 +29053,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    documents?: DocumentUpdateManyWithoutUserNestedInput
     organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUpdateManyWithoutUserNestedInput
-    projects?: ProjectUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuthored_postsInput = {
@@ -30524,12 +29067,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutUserNestedInput
     organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutUserNestedInput
-    style_profiles?: StyleProfileUncheckedUpdateManyWithoutUserNestedInput
-    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationUpsertWithoutPostsInput = {
@@ -30593,8 +29132,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProjectsNestedInput
-    organisation?: OrganisationUpdateOneWithoutProjectsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
     automations?: AutomationUpdateManyWithoutProjectNestedInput
@@ -30602,8 +29140,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateWithoutPostsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -30647,8 +29184,7 @@ export namespace Prisma {
     last_analyzed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutStyle_profilesNestedInput
-    organisation?: OrganisationUpdateOneWithoutStyle_profilesNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutStyle_profilesNestedInput
     projects?: ProjectStyleProfileUpdateManyWithoutStyle_profileNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutStyle_profileNestedInput
     automations?: AutomationUpdateManyWithoutStyle_profileNestedInput
@@ -30656,8 +29192,7 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedUpdateWithoutPostsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     source_url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30732,15 +29267,13 @@ export namespace Prisma {
     path?: StringFieldUpdateOperationsInput | string
     type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutDocumentsNestedInput
-    organisation?: OrganisationUpdateOneWithoutDocumentsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutDocumentsNestedInput
     post_attachments?: PostAttachmentUpdateManyWithoutDocumentNestedInput
   }
 
   export type DocumentUncheckedUpdateWithoutCover_of_postsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -30780,7 +29313,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
@@ -30793,7 +29326,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutRepurposed_postsInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30884,7 +29417,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutAuthored_postsInput
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
@@ -30897,7 +29430,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutAttachmentsInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -30936,15 +29469,13 @@ export namespace Prisma {
     path: string
     type?: $Enums.DocumentType
     created_at?: Date | string
-    user?: UserCreateNestedOneWithoutDocumentsInput
-    organisation?: OrganisationCreateNestedOneWithoutDocumentsInput
+    organisation: OrganisationCreateNestedOneWithoutDocumentsInput
     cover_of_posts?: PostCreateNestedManyWithoutCover_documentInput
   }
 
   export type DocumentUncheckedCreateWithoutPost_attachmentsInput = {
     id?: string
-    user_uuid?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     filename: string
     mimetype: string
     size: number
@@ -30989,7 +29520,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
@@ -31002,7 +29533,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutAttachmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31047,15 +29578,13 @@ export namespace Prisma {
     path?: StringFieldUpdateOperationsInput | string
     type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutDocumentsNestedInput
-    organisation?: OrganisationUpdateOneWithoutDocumentsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutDocumentsNestedInput
     cover_of_posts?: PostUpdateManyWithoutCover_documentNestedInput
   }
 
   export type DocumentUncheckedUpdateWithoutPost_attachmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -31084,7 +29613,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutAuthored_postsInput
-    organisation?: OrganisationCreateNestedOneWithoutPostsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
@@ -31097,7 +29626,7 @@ export namespace Prisma {
   export type PostUncheckedCreateWithoutChannelsInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -31138,14 +29667,12 @@ export namespace Prisma {
     token_expires_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    user?: UserCreateNestedOneWithoutChannel_connectionsInput
-    organisation?: OrganisationCreateNestedOneWithoutChannel_connectionsInput
+    organisation: OrganisationCreateNestedOneWithoutChannel_connectionsInput
   }
 
   export type SocialChannelConnectionUncheckedCreateWithoutPost_channelsInput = {
     id?: string
-    user_id?: string | null
-    organisation_id?: string | null
+    organisation_id: string
     channel: $Enums.SocialChannel
     status?: $Enums.SocialChannelConnectionStatus
     external_account_id: string
@@ -31191,7 +29718,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
@@ -31204,7 +29731,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutChannelsInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31251,14 +29778,12 @@ export namespace Prisma {
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutChannel_connectionsNestedInput
-    organisation?: OrganisationUpdateOneWithoutChannel_connectionsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutChannel_connectionsNestedInput
   }
 
   export type SocialChannelConnectionUncheckedUpdateWithoutPost_channelsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
     status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
     external_account_id?: StringFieldUpdateOperationsInput | string
@@ -31275,18 +29800,6 @@ export namespace Prisma {
     token_hash: string
     expires_at: Date | string
     used_at?: Date | string | null
-    created_at?: Date | string
-  }
-
-  export type DocumentCreateManyUserInput = {
-    id?: string
-    organisation_id?: string | null
-    filename: string
-    mimetype: string
-    size: number
-    url: string
-    path: string
-    type?: $Enums.DocumentType
     created_at?: Date | string
   }
 
@@ -31308,7 +29821,7 @@ export namespace Prisma {
 
   export type PostCreateManyUserInput = {
     id?: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -31327,55 +29840,6 @@ export namespace Prisma {
     scheduled_at?: Date | string | null
     published_at?: Date | string | null
     failed_reason?: string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type SocialChannelConnectionCreateManyUserInput = {
-    id?: string
-    organisation_id?: string | null
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
-    external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
-    token_expires_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type StyleProfileCreateManyUserInput = {
-    id?: string
-    organisation_id?: string | null
-    name: string
-    platform: $Enums.PostType
-    source_url?: string | null
-    posts_analyzed?: number
-    tone_score?: number | null
-    structure_score?: number | null
-    hooks_score?: number | null
-    vocabulary_score?: number | null
-    rhythm_score?: number | null
-    tone_description?: string | null
-    dominant_hook?: string | null
-    vocabulary?: StyleProfileCreatevocabularyInput | string[]
-    pillars?: StyleProfileCreatepillarsInput | string[]
-    last_analyzed_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type ProjectCreateManyUserInput = {
-    id?: string
-    organisation_id?: string | null
-    title: string
-    description?: string | null
-    platform: $Enums.PostType
-    pillars?: ProjectCreatepillarsInput | string[]
-    ideas?: ProjectCreateideasInput | string[]
-    instructions?: ProjectCreateinstructionsInput | string[]
-    is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -31401,46 +29865,6 @@ export namespace Prisma {
     token_hash?: StringFieldUpdateOperationsInput | string
     expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
     used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DocumentUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    filename?: StringFieldUpdateOperationsInput | string
-    mimetype?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organisation?: OrganisationUpdateOneWithoutDocumentsNestedInput
-    post_attachments?: PostAttachmentUpdateManyWithoutDocumentNestedInput
-    cover_of_posts?: PostUpdateManyWithoutCover_documentNestedInput
-  }
-
-  export type DocumentUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    mimetype?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    post_attachments?: PostAttachmentUncheckedUpdateManyWithoutDocumentNestedInput
-    cover_of_posts?: PostUncheckedUpdateManyWithoutCover_documentNestedInput
-  }
-
-  export type DocumentUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    mimetype?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31521,7 +29945,7 @@ export namespace Prisma {
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
@@ -31534,7 +29958,7 @@ export namespace Prisma {
 
   export type PostUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31562,7 +29986,7 @@ export namespace Prisma {
 
   export type PostUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31585,171 +30009,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SocialChannelConnectionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
-    external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organisation?: OrganisationUpdateOneWithoutChannel_connectionsNestedInput
-    post_channels?: PostChannelUpdateManyWithoutChannel_connectionNestedInput
-  }
-
-  export type SocialChannelConnectionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
-    external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    post_channels?: PostChannelUncheckedUpdateManyWithoutChannel_connectionNestedInput
-  }
-
-  export type SocialChannelConnectionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
-    external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type StyleProfileUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    source_url?: NullableStringFieldUpdateOperationsInput | string | null
-    posts_analyzed?: IntFieldUpdateOperationsInput | number
-    tone_score?: NullableIntFieldUpdateOperationsInput | number | null
-    structure_score?: NullableIntFieldUpdateOperationsInput | number | null
-    hooks_score?: NullableIntFieldUpdateOperationsInput | number | null
-    vocabulary_score?: NullableIntFieldUpdateOperationsInput | number | null
-    rhythm_score?: NullableIntFieldUpdateOperationsInput | number | null
-    tone_description?: NullableStringFieldUpdateOperationsInput | string | null
-    dominant_hook?: NullableStringFieldUpdateOperationsInput | string | null
-    vocabulary?: StyleProfileUpdatevocabularyInput | string[]
-    pillars?: StyleProfileUpdatepillarsInput | string[]
-    last_analyzed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organisation?: OrganisationUpdateOneWithoutStyle_profilesNestedInput
-    projects?: ProjectStyleProfileUpdateManyWithoutStyle_profileNestedInput
-    generation_runs?: GenerationRunUpdateManyWithoutStyle_profileNestedInput
-    automations?: AutomationUpdateManyWithoutStyle_profileNestedInput
-    posts?: PostUpdateManyWithoutStyle_profileNestedInput
-  }
-
-  export type StyleProfileUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    source_url?: NullableStringFieldUpdateOperationsInput | string | null
-    posts_analyzed?: IntFieldUpdateOperationsInput | number
-    tone_score?: NullableIntFieldUpdateOperationsInput | number | null
-    structure_score?: NullableIntFieldUpdateOperationsInput | number | null
-    hooks_score?: NullableIntFieldUpdateOperationsInput | number | null
-    vocabulary_score?: NullableIntFieldUpdateOperationsInput | number | null
-    rhythm_score?: NullableIntFieldUpdateOperationsInput | number | null
-    tone_description?: NullableStringFieldUpdateOperationsInput | string | null
-    dominant_hook?: NullableStringFieldUpdateOperationsInput | string | null
-    vocabulary?: StyleProfileUpdatevocabularyInput | string[]
-    pillars?: StyleProfileUpdatepillarsInput | string[]
-    last_analyzed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    projects?: ProjectStyleProfileUncheckedUpdateManyWithoutStyle_profileNestedInput
-    generation_runs?: GenerationRunUncheckedUpdateManyWithoutStyle_profileNestedInput
-    automations?: AutomationUncheckedUpdateManyWithoutStyle_profileNestedInput
-    posts?: PostUncheckedUpdateManyWithoutStyle_profileNestedInput
-  }
-
-  export type StyleProfileUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    source_url?: NullableStringFieldUpdateOperationsInput | string | null
-    posts_analyzed?: IntFieldUpdateOperationsInput | number
-    tone_score?: NullableIntFieldUpdateOperationsInput | number | null
-    structure_score?: NullableIntFieldUpdateOperationsInput | number | null
-    hooks_score?: NullableIntFieldUpdateOperationsInput | number | null
-    vocabulary_score?: NullableIntFieldUpdateOperationsInput | number | null
-    rhythm_score?: NullableIntFieldUpdateOperationsInput | number | null
-    tone_description?: NullableStringFieldUpdateOperationsInput | string | null
-    dominant_hook?: NullableStringFieldUpdateOperationsInput | string | null
-    vocabulary?: StyleProfileUpdatevocabularyInput | string[]
-    pillars?: StyleProfileUpdatepillarsInput | string[]
-    last_analyzed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ProjectUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    pillars?: ProjectUpdatepillarsInput | string[]
-    ideas?: ProjectUpdateideasInput | string[]
-    instructions?: ProjectUpdateinstructionsInput | string[]
-    is_archived?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organisation?: OrganisationUpdateOneWithoutProjectsNestedInput
-    style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
-    posts?: PostUpdateManyWithoutProjectNestedInput
-    generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
-    automations?: AutomationUpdateManyWithoutProjectNestedInput
-  }
-
-  export type ProjectUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    pillars?: ProjectUpdatepillarsInput | string[]
-    ideas?: ProjectUpdateideasInput | string[]
-    instructions?: ProjectUpdateinstructionsInput | string[]
-    is_archived?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    style_profiles?: ProjectStyleProfileUncheckedUpdateManyWithoutProjectNestedInput
-    posts?: PostUncheckedUpdateManyWithoutProjectNestedInput
-    generation_runs?: GenerationRunUncheckedUpdateManyWithoutProjectNestedInput
-    automations?: AutomationUncheckedUpdateManyWithoutProjectNestedInput
-  }
-
-  export type ProjectUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    pillars?: ProjectUpdatepillarsInput | string[]
-    ideas?: ProjectUpdateideasInput | string[]
-    instructions?: ProjectUpdateinstructionsInput | string[]
-    is_archived?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type PostAttachmentCreateManyDocumentInput = {
     id?: string
     post_id: string
@@ -31760,7 +30019,7 @@ export namespace Prisma {
   export type PostCreateManyCover_documentInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -31821,7 +30080,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
@@ -31834,7 +30093,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutCover_documentInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31862,7 +30121,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyWithoutCover_documentInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31894,7 +30153,6 @@ export namespace Prisma {
 
   export type DocumentCreateManyOrganisationInput = {
     id?: string
-    user_uuid?: string | null
     filename: string
     mimetype: string
     size: number
@@ -31931,7 +30189,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionCreateManyOrganisationInput = {
     id?: string
-    user_id?: string | null
     channel: $Enums.SocialChannel
     status?: $Enums.SocialChannelConnectionStatus
     external_account_id: string
@@ -31945,7 +30202,6 @@ export namespace Prisma {
 
   export type StyleProfileCreateManyOrganisationInput = {
     id?: string
-    user_id?: string | null
     name: string
     platform: $Enums.PostType
     source_url?: string | null
@@ -31966,7 +30222,6 @@ export namespace Prisma {
 
   export type ProjectCreateManyOrganisationInput = {
     id?: string
-    user_id?: string | null
     title: string
     description?: string | null
     platform: $Enums.PostType
@@ -32011,14 +30266,12 @@ export namespace Prisma {
     path?: StringFieldUpdateOperationsInput | string
     type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutDocumentsNestedInput
     post_attachments?: PostAttachmentUpdateManyWithoutDocumentNestedInput
     cover_of_posts?: PostUpdateManyWithoutCover_documentNestedInput
   }
 
   export type DocumentUncheckedUpdateWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -32032,7 +30285,6 @@ export namespace Prisma {
 
   export type DocumentUncheckedUpdateManyWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -32134,13 +30386,11 @@ export namespace Prisma {
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutChannel_connectionsNestedInput
     post_channels?: PostChannelUpdateManyWithoutChannel_connectionNestedInput
   }
 
   export type SocialChannelConnectionUncheckedUpdateWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
     status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
     external_account_id?: StringFieldUpdateOperationsInput | string
@@ -32155,7 +30405,6 @@ export namespace Prisma {
 
   export type SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
     status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
     external_account_id?: StringFieldUpdateOperationsInput | string
@@ -32185,7 +30434,6 @@ export namespace Prisma {
     last_analyzed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutStyle_profilesNestedInput
     projects?: ProjectStyleProfileUpdateManyWithoutStyle_profileNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutStyle_profileNestedInput
     automations?: AutomationUpdateManyWithoutStyle_profileNestedInput
@@ -32194,7 +30442,6 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedUpdateWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     source_url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32219,7 +30466,6 @@ export namespace Prisma {
 
   export type StyleProfileUncheckedUpdateManyWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     source_url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32249,7 +30495,6 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProjectsNestedInput
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
@@ -32258,7 +30503,6 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -32276,7 +30520,6 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateManyWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -32372,7 +30615,7 @@ export namespace Prisma {
   export type PostCreateManyStyle_profileInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
@@ -32515,7 +30758,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
@@ -32528,7 +30771,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutStyle_profileInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32556,7 +30799,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyWithoutStyle_profileInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32587,7 +30830,7 @@ export namespace Prisma {
   export type PostCreateManyProjectInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
@@ -32672,7 +30915,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
@@ -32685,7 +30928,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32713,7 +30956,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32823,7 +31066,7 @@ export namespace Prisma {
   export type PostCreateManyGeneration_runInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     source_post_id?: string | null
@@ -32863,7 +31106,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
@@ -32876,7 +31119,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutGeneration_runInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32904,7 +31147,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyWithoutGeneration_runInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32971,7 +31214,7 @@ export namespace Prisma {
   export type PostCreateManySource_postInput = {
     id?: string
     user_id: string
-    organisation_id?: string | null
+    organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
@@ -33030,7 +31273,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
-    organisation?: OrganisationUpdateOneWithoutPostsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
@@ -33043,7 +31286,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateWithoutSource_postInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33071,7 +31314,7 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyWithoutSource_postInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null

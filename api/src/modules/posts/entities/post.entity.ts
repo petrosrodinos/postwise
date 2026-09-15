@@ -8,8 +8,8 @@ export class PostEntity {
   @ApiProperty()
   user_id: string;
 
-  @ApiProperty({ required: false, nullable: true })
-  organisation_id?: string | null;
+  @ApiProperty()
+  organisation_id: string;
 
   @ApiProperty({ required: false, nullable: true })
   project_id?: string | null;

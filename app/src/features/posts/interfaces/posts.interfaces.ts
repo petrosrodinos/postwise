@@ -30,7 +30,7 @@ export type PostChannelStatus = (typeof PostChannelStatuses)[keyof typeof PostCh
 export interface Post {
   id: string;
   user_id: string;
-  organisation_id?: string | null;
+  organisation_id: string;
   project_id?: string | null;
   style_profile_id?: string | null;
   generation_run_id?: string | null;
@@ -78,7 +78,7 @@ export interface PostChannel {
 
 export interface CreatePostDto {
   type: PostType;
-  organisation_id?: string;
+  organisation_id: string;
   project_id?: string;
   style_profile_id?: string;
   hook?: string;
@@ -117,7 +117,7 @@ export interface AddPostChannelDto {
 export interface PostsQueryType {
   page?: number;
   limit?: number;
-  organisation_id?: string;
+  organisation_id: string;
   project_id?: string;
   status?: PostStatus;
   type?: PostType;

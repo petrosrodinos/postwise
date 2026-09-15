@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Routes } from "@/routes/routes";
@@ -18,19 +17,8 @@ export default function SettingsPage() {
   if (!activeOrganisationId) {
     return (
       <div className="flex flex-col gap-4">
-        <Link to={Routes.dashboard.root} className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" />
-          Back to dashboard
-        </Link>
-        <div className="rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground">
-          <h3 className="text-base font-semibold text-foreground">No organisation selected</h3>
-          <p className="mx-auto mt-2 max-w-sm text-sm">
-            You're on your personal account. Switch to an organisation from the sidebar to manage its settings, or create one from the workspace menu.
-          </p>
-          <Button className="mt-4" asChild>
-            <Link to={Routes.dashboard.root}>Back to dashboard</Link>
-          </Button>
-        </div>
+        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-4 w-80" />
       </div>
     );
   }

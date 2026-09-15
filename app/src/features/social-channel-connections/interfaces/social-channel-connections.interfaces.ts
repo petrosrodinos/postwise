@@ -14,8 +14,7 @@ export type SocialChannelConnectionStatus = (typeof SocialChannelConnectionStatu
 
 export interface SocialChannelConnection {
   id: string;
-  user_id?: string | null;
-  organisation_id?: string | null;
+  organisation_id: string;
   channel: SocialChannel;
   status: SocialChannelConnectionStatus;
   external_account_id: string;
@@ -31,7 +30,7 @@ export interface CreateSocialChannelConnectionDto {
   access_token: string;
   refresh_token?: string;
   token_expires_at?: string;
-  organisation_id?: string;
+  organisation_id: string;
 }
 
 export type UpdateSocialChannelConnectionDto = Partial<Omit<CreateSocialChannelConnectionDto, "channel" | "organisation_id">> & {
@@ -41,6 +40,6 @@ export type UpdateSocialChannelConnectionDto = Partial<Omit<CreateSocialChannelC
 export interface SocialChannelConnectionsQueryType {
   page?: number;
   limit?: number;
-  organisation_id?: string;
+  organisation_id: string;
   channel?: SocialChannel;
 }

@@ -96,8 +96,7 @@ ${
   }
 
   // Entry point used by the Automations cron — no interactive user is
-  // available, so the author defaults to the project owner (personal) or the
-  // organisation's creator (org-owned project).
+  // available, so the author defaults to the organisation's creator.
   async runForAutomation(automation: Automation & { project: Project }) {
     const project = automation.project;
 
@@ -110,13 +109,9 @@ ${
     const language = DEFAULT_GENERATION_LANGUAGE;
     const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
 
-    const authorUserId = project.user_id
-      ? project.user_id
-      : (
-          await this.prisma.organisation.findUniqueOrThrow({
-            where: { id: project.organisation_id! },
-          })
-        ).created_by_user_id;
+    const { created_by_user_id: authorUserId } = await this.prisma.organisation.findUniqueOrThrow({
+      where: { id: project.organisation_id },
+    });
 
     return this.persistRun({
       project,

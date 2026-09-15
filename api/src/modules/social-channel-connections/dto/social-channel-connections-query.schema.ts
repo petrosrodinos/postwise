@@ -3,7 +3,7 @@ import { PaginationSchema } from '@/shared/schemas/pagination.schema';
 import { SocialChannel } from 'generated/prisma';
 
 export const SocialChannelConnectionsQuerySchema = PaginationSchema.extend({
-  organisation_id: z.string().optional(),
+  organisation_id: z.string(),
   channel: z.nativeEnum(SocialChannel).optional(),
 });
 

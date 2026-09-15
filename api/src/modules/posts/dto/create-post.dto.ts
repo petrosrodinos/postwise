@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsObject, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsObject, IsOptional, IsString, IsUrl } from 'class-validator';
 import { PostType } from 'generated/prisma';
 
 export class CreatePostDto {
@@ -7,14 +7,10 @@ export class CreatePostDto {
   @IsEnum(PostType)
   type: PostType;
 
-  @ApiProperty({
-    required: false,
-    description:
-      'Organisation workspace to own this post. Omit to own it under the personal account.',
-  })
-  @IsOptional()
+  @ApiProperty({ description: 'Organisation workspace that owns this post' })
+  @IsNotEmpty()
   @IsString()
-  organisation_id?: string;
+  organisation_id: string;
 
   @ApiProperty({ required: false })
   @IsOptional()

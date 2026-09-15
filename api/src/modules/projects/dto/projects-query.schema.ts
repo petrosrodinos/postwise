@@ -3,7 +3,7 @@ import { PaginationSchema } from '@/shared/schemas/pagination.schema';
 import { PostType } from 'generated/prisma';
 
 export const ProjectsQuerySchema = PaginationSchema.extend({
-  organisation_id: z.string().optional(),
+  organisation_id: z.string(),
   platform: z.nativeEnum(PostType).optional(),
   is_archived: z
     .string()

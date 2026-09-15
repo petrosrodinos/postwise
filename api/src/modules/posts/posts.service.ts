@@ -46,16 +46,11 @@ export class PostsService {
     private readonly aiService: AiService,
   ) {}
 
-  private async assertSameOwnerContext(
-    resourceOwner: { organisation_id?: string | null; user_id?: string | null; user_uuid?: string | null },
-    context: { organisation_id?: string; user_id?: string },
+  private assertSameOrganisation(
+    resource: { organisation_id: string },
+    organisationId: string,
   ) {
-    const resourceUserId = resourceOwner.user_id ?? resourceOwner.user_uuid ?? null;
-    const matches = context.organisation_id
-      ? resourceOwner.organisation_id === context.organisation_id
-      : resourceUserId === context.user_id;
-
-    if (!matches) {
+    if (resource.organisation_id !== organisationId) {
       throw new BadRequestException({
         message: 'Resource must belong to the same owner context as the post',
         code: ErrorCodes.Posts.INVALID_OWNER_CONTEXT,
@@ -69,7 +64,7 @@ export class PostsService {
     if (dto.project_id) {
       const project = await this.prisma.project.findUnique({ where: { id: dto.project_id } });
       if (!project) throw new NotFoundException('Project not found');
-      await this.assertSameOwnerContext(project, context);
+      this.assertSameOrganisation(project, context.organisation_id);
     }
 
     if (dto.style_profile_id) {
@@ -77,7 +72,7 @@ export class PostsService {
         where: { id: dto.style_profile_id },
       });
       if (!styleProfile) throw new NotFoundException('Style profile not found');
-      await this.assertSameOwnerContext(styleProfile, context);
+      this.assertSameOrganisation(styleProfile, context.organisation_id);
     }
 
     return this.prisma.post.create({
@@ -101,14 +96,10 @@ export class PostsService {
   }
 
   async findAll(userId: string, query: PostsQueryType) {
-    if (query.organisation_id) {
-      await this.ownershipService.resolveContext(userId, query.organisation_id);
-    }
+    await this.ownershipService.resolveContext(userId, query.organisation_id);
 
     const where = {
-      ...(query.organisation_id
-        ? { organisation_id: query.organisation_id }
-        : { user_id: userId }),
+      organisation_id: query.organisation_id,
       ...(query.project_id && { project_id: query.project_id }),
       ...(query.status && { status: query.status }),
       ...(query.type && { type: query.type }),
@@ -136,23 +127,17 @@ export class PostsService {
     });
     if (!post) throw new NotFoundException('Post not found');
 
-    let role: OrganisationRole | undefined;
-    if (post.organisation_id) {
-      const context = await this.ownershipService.resolveContext(userId, post.organisation_id);
-      role = context.role;
-    } else if (post.user_id !== userId) {
-      throw new ForbiddenException('You do not have access to this post');
-    }
+    const context = await this.ownershipService.resolveContext(userId, post.organisation_id);
 
-    return { post, role };
+    return { post, role: context.role };
   }
 
-  private canManage(post: { user_id: string; organisation_id?: string | null }, userId: string, role?: OrganisationRole) {
+  private canManage(post: { user_id: string; organisation_id: string }, userId: string, role?: OrganisationRole) {
     if (post.user_id === userId) return true;
-    return !!post.organisation_id && !!role && MANAGE_ROLES.includes(role);
+    return !!role && MANAGE_ROLES.includes(role);
   }
 
-  private assertCanManage(post: { user_id: string; organisation_id?: string | null }, userId: string, role?: OrganisationRole) {
+  private assertCanManage(post: { user_id: string; organisation_id: string }, userId: string, role?: OrganisationRole) {
     if (!this.canManage(post, userId, role)) {
       throw new ForbiddenException('You do not have permission to modify this post');
     }
@@ -206,14 +191,12 @@ export class PostsService {
         });
       }
 
-      const context = { organisation_id: post.organisation_id ?? undefined, user_id: post.user_id };
-
       for (const connectionId of dto.channel_connection_ids) {
         const connection = await this.prisma.socialChannelConnection.findUnique({
           where: { id: connectionId },
         });
         if (!connection) throw new NotFoundException(`Channel connection ${connectionId} not found`);
-        await this.assertSameOwnerContext(connection, context);
+        this.assertSameOrganisation(connection, post.organisation_id);
 
         if (String(connection.channel) !== String(post.type)) {
           throw new BadRequestException(
@@ -335,10 +318,7 @@ export class PostsService {
 
     const document = await this.prisma.document.findUnique({ where: { id: dto.document_id } });
     if (!document) throw new NotFoundException('Document not found');
-    await this.assertSameOwnerContext(document, {
-      organisation_id: post.organisation_id ?? undefined,
-      user_id: post.user_id,
-    });
+    this.assertSameOrganisation(document, post.organisation_id);
 
     return this.prisma.postAttachment.create({
       data: { post_id: id, document_id: dto.document_id, order: dto.order ?? 0 },
@@ -368,10 +348,7 @@ export class PostsService {
       where: { id: dto.channel_connection_id },
     });
     if (!connection) throw new NotFoundException('Channel connection not found');
-    await this.assertSameOwnerContext(connection, {
-      organisation_id: post.organisation_id ?? undefined,
-      user_id: post.user_id,
-    });
+    this.assertSameOrganisation(connection, post.organisation_id);
 
     if (String(connection.channel) !== String(post.type)) {
       throw new BadRequestException("This channel connection does not match the post's content type");

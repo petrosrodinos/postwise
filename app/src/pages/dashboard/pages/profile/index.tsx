@@ -5,15 +5,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Routes } from "@/routes/routes";
 import { useMe } from "@/features/user/hooks/use-user";
-import { useWorkspaceStore } from "@/stores/workspace";
 import { generateInitials } from "@/features/auth/utils/auth.utils";
 import { PersonalInfoForm } from "./components/personal-info-form";
 import { ChangePasswordForm } from "./components/change-password-form";
-import { ChannelConnectionsCard } from "@/pages/dashboard/components/channel-connections-card";
 
 export default function ProfilePage() {
   const { data: user, isPending } = useMe();
-  const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
 
   return (
     <div className="flex flex-col gap-6">
@@ -77,17 +74,13 @@ export default function ProfilePage() {
             <ChangePasswordForm />
           </TabsContent>
           <TabsContent value="channels" className="max-w-lg">
-            {activeOrganisationId ? (
-              <p className="text-sm text-muted-foreground">
-                You're viewing this app as an organisation. Channels for that workspace are managed from{" "}
-                <Link to={Routes.dashboard.settings} className="font-semibold text-brass-ink hover:underline">
-                  Organisation settings
-                </Link>
-                .
-              </p>
-            ) : (
-              <ChannelConnectionsCard title="Connected channels" description="Social accounts for your personal account." />
-            )}
+            <p className="text-sm text-muted-foreground">
+              Channels are managed per organisation from{" "}
+              <Link to={Routes.dashboard.settings} className="font-semibold text-brass-ink hover:underline">
+                Organisation settings
+              </Link>
+              .
+            </p>
           </TabsContent>
         </Tabs>
       )}

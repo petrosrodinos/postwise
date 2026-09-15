@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 import { PostType } from 'generated/prisma';
 
 export class CreateStyleProfileDto {
@@ -16,12 +16,8 @@ export class CreateStyleProfileDto {
   @IsUrl()
   source_url?: string;
 
-  @ApiProperty({
-    required: false,
-    description:
-      'Organisation workspace to own this profile. Omit to own it under the personal account.',
-  })
-  @IsOptional()
+  @ApiProperty({ description: 'Organisation workspace that owns this profile' })
+  @IsNotEmpty()
   @IsString()
-  organisation_id?: string;
+  organisation_id: string;
 }

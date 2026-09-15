@@ -7,16 +7,8 @@ import { OwnerContext } from './ownership.interface';
 export class OwnershipService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // Resolves whether a request acts under the user's personal account or an
-  // Organisation workspace, verifying membership when an organisation is given.
-  async resolveContext(
-    userId: string,
-    organisationId?: string | null,
-  ): Promise<OwnerContext> {
-    if (!organisationId) {
-      return { user_id: userId };
-    }
-
+  // Verifies the user is a member of the organisation and returns their role.
+  async resolveContext(userId: string, organisationId: string): Promise<OwnerContext> {
     const member = await this.prisma.organisationMember.findUnique({
       where: {
         organisation_id_user_id: {
@@ -33,21 +25,15 @@ export class OwnershipService {
     return { organisation_id: organisationId, role: member.role };
   }
 
-  // Personal-account contexts always pass — role restrictions only apply
-  // inside an Organisation workspace.
   assertRole(context: OwnerContext, allowed: OrganisationRole[]) {
-    if (!context.organisation_id) return;
-
-    if (!context.role || !allowed.includes(context.role)) {
+    if (!allowed.includes(context.role)) {
       throw new ForbiddenException(
         'Insufficient organisation role for this action',
       );
     }
   }
 
-  toWhere(context: OwnerContext): { user_id?: string; organisation_id?: string } {
-    return context.organisation_id
-      ? { organisation_id: context.organisation_id }
-      : { user_id: context.user_id };
+  toWhere(context: OwnerContext): { organisation_id: string } {
+    return { organisation_id: context.organisation_id };
   }
 }

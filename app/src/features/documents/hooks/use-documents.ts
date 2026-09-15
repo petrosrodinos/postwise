@@ -8,11 +8,12 @@ const DOCUMENTS_KEY = "documents";
 
 export const useDocuments = (query?: Omit<DocumentsQueryType, "organisation_id">) => {
   const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
-  const resolvedQuery = { ...query, organisation_id: activeOrganisationId ?? undefined };
+  const resolvedQuery = { ...query, organisation_id: activeOrganisationId! };
 
   return useQuery({
     queryKey: [DOCUMENTS_KEY, resolvedQuery],
     queryFn: () => getDocuments(resolvedQuery),
+    enabled: !!activeOrganisationId,
   });
 };
 
@@ -30,7 +31,7 @@ export const useUploadDocument = () => {
 
   return useMutation({
     mutationFn: (dto: Omit<CreateDocumentDto, "organisation_id">) =>
-      uploadDocument({ ...dto, organisation_id: activeOrganisationId ?? undefined }),
+      uploadDocument({ ...dto, organisation_id: activeOrganisationId! }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [DOCUMENTS_KEY] });
       toast({ title: "File uploaded", description: "Your document is ready to use.", duration: 2000 });

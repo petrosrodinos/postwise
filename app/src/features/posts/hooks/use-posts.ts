@@ -29,11 +29,12 @@ const POSTS_KEY = "posts";
 
 export const usePosts = (query?: Omit<PostsQueryType, "organisation_id">) => {
   const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
-  const resolvedQuery = { ...query, organisation_id: activeOrganisationId ?? undefined };
+  const resolvedQuery = { ...query, organisation_id: activeOrganisationId! };
 
   return useQuery({
     queryKey: [POSTS_KEY, resolvedQuery],
     queryFn: () => getPosts(resolvedQuery),
+    enabled: !!activeOrganisationId,
   });
 };
 
@@ -51,7 +52,7 @@ export const useCreatePost = () => {
 
   return useMutation({
     mutationFn: (dto: Omit<CreatePostDto, "organisation_id">) =>
-      createPost({ ...dto, organisation_id: activeOrganisationId ?? undefined }),
+      createPost({ ...dto, organisation_id: activeOrganisationId! }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [POSTS_KEY] });
       toast({ title: "Post created", description: "Your draft has been created.", duration: 2000 });
