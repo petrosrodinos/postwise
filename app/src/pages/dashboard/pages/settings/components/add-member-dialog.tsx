@@ -1,0 +1,144 @@
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useAddOrganisationMember } from "@/features/organisations/hooks/use-organisations";
+import { OrganisationRoles } from "@/features/organisations/interfaces/organisations.interfaces";
+import { OrganisationRoleFormOptions } from "@/config/constants/dropdowns/organisations/organisation-role-form.options";
+import { getOrganisationRoleDescription } from "@/config/constants/dropdowns/organisations/organisation-role-description.options";
+import { addMemberSchema, type AddMemberFormData } from "../validation-schemas/organisation.schema";
+
+const CREATABLE_ROLES = OrganisationRoleFormOptions.filter((option) => option.id !== OrganisationRoles.OWNER);
+
+interface AddMemberDialogProps {
+  organisationId: string;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function AddMemberDialog({ organisationId, isOpen, onClose }: AddMemberDialogProps) {
+  const { mutate, isPending } = useAddOrganisationMember();
+
+  const form = useForm<AddMemberFormData>({
+    resolver: zodResolver(addMemberSchema),
+    defaultValues: { name: "", email: "", password: "", role: OrganisationRoles.MEMBER },
+  });
+
+  function handleClose() {
+    if (isPending) return;
+    form.reset();
+    onClose();
+  }
+
+  function onSubmit(data: AddMemberFormData) {
+    mutate(
+      { organisationId, dto: data },
+      {
+        onSuccess: () => {
+          form.reset();
+          onClose();
+        },
+      },
+    );
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add member</DialogTitle>
+          <DialogDescription>Creates the account immediately with the email and password below — no invite email is sent. Share the password with them directly.</DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <PasswordInput {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <FormControl>
+                    <div className="grid gap-2">
+                      {CREATABLE_ROLES.map((option) => (
+                        <label
+                          key={option.id}
+                          className={cn(
+                            "flex cursor-pointer items-start gap-2.5 rounded-md border border-input p-3",
+                            field.value === option.id && "border-primary bg-primary/5",
+                          )}
+                        >
+                          <input
+                            type="radio"
+                            className="mt-1 accent-primary"
+                            checked={field.value === option.id}
+                            onChange={() => field.onChange(option.id)}
+                          />
+                          <span>
+                            <span className="block text-sm font-medium">{option.label}</span>
+                            <span className="block text-xs text-muted-foreground">{getOrganisationRoleDescription(option.id)}</span>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={handleClose} disabled={isPending}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isPending} loading={isPending}>
+                Add member
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+}

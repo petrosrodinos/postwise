@@ -9,12 +9,12 @@ export const generateInitials = (value: string) => {
 
 export const formatAuthUser = (data: any): LoggedInUser => {
     return {
-        user_uuid: data.user.uuid,
+        user_uuid: data.user.id,
         email: data.user.email,
         access_token: data.access_token,
         expires_in: data.expires_in,
-        avatar: data?.user?.avatar?.url ?? null,
-        full_name: data?.user?.full_name ?? data?.user?.email?.split("@")[0] ?? "A/N",
+        avatar: null,
+        full_name: data?.user?.name ?? data?.user?.email?.split("@")[0] ?? "A/N",
         role: data?.user?.role ?? null,
     };
 };

@@ -37,4 +37,10 @@ export class ProjectEntity {
 
   @ApiProperty()
   updated_at: Date;
+
+  @ApiProperty({
+    required: false,
+    description: 'Count of posts by status, keyed by PostStatus (list/detail responses only)',
+  })
+  post_status_counts?: Record<string, number>;
 }

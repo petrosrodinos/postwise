@@ -1,15 +1,12 @@
 import {
-  IconCalendarDue,
-  IconHelp,
   IconLayoutDashboard,
-  IconLockPassword,
   IconUserCircle,
   IconUserCog,
   IconAlertTriangle,
   IconUser,
   IconHeartbeat,
 } from "@tabler/icons-react";
-import { Command, CreditCard } from "lucide-react";
+import { Command } from "lucide-react";
 import { type SidebarData } from "../types";
 import { Routes } from "@/routes/routes";
 import { RoleTypes } from "@/features/user/interfaces/user.interface";
@@ -50,7 +47,7 @@ export const sidebarData: SidebarData = {
       items: [
         {
           title: "Dashboard",
-          url: Routes.dashboard,
+          url: Routes.dashboard.root,
           icon: IconLayoutDashboard,
         },
       ],
@@ -64,38 +61,10 @@ export const sidebarData: SidebarData = {
           items: [
             {
               title: "Profile",
-              url: "#",
+              url: Routes.dashboard.profile,
               icon: IconUserCog,
             },
-
-            {
-              title: "Password",
-              url: "#",
-              icon: IconLockPassword,
-            },
           ],
-        },
-        {
-          title: "Billing",
-          icon: CreditCard,
-          items: [
-            {
-              title: "Subscription",
-              url: "#",
-              icon: IconCalendarDue,
-            },
-          ],
-        },
-
-      ],
-    },
-    {
-      title: "Other",
-      items: [
-        {
-          title: "Help Center",
-          url: "#",
-          icon: IconHelp,
         },
       ],
     },

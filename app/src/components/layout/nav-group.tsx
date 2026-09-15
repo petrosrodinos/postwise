@@ -7,12 +7,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { type NavCollapsible, type NavItem, type NavLink, type NavGroup } from "./types";
 import { Link, useLocation } from "react-router-dom";
 
+const NAV_ITEM_CLASSES =
+  "gap-2.5 rounded-[6px] px-2.5 py-2 text-[13.5px] font-medium text-[#C7CAD3] hover:text-sidebar-accent-foreground data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[active=true]:shadow-[inset_2px_0_0_var(--brass)]";
+
 export function NavGroup({ title, items }: NavGroup) {
   const { state } = useSidebar();
   const location = useLocation();
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>{title}</SidebarGroupLabel>
+    <SidebarGroup className="mt-4 px-2 first:mt-1">
+      <SidebarGroupLabel className="h-auto px-2.5 pb-1.5 text-[11px] font-semibold text-[var(--ink-text-lo)]">{title}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item: any) => {
           const key = `${item.title}-${item.url}`;
@@ -28,15 +31,17 @@ export function NavGroup({ title, items }: NavGroup) {
   );
 }
 
-const NavBadge = ({ children }: { children: ReactNode }) => <Badge className="rounded-full px-1 py-0 text-xs">{children}</Badge>;
+const NavBadge = ({ children }: { children: ReactNode }) => (
+  <Badge className="ml-auto rounded-full border-transparent bg-[var(--ink-line)] px-1.5 py-0 text-[10.5px] font-semibold text-[var(--ink-text-lo)] shadow-none hover:bg-[var(--ink-line)]">{children}</Badge>
+);
 
 const SidebarMenuLink = ({ item, href }: { item: NavLink; href: string }) => {
   const { setOpenMobile } = useSidebar();
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={checkIsActive(href, item)} tooltip={item.title}>
+      <SidebarMenuButton asChild isActive={checkIsActive(href, item)} tooltip={item.title} className={NAV_ITEM_CLASSES}>
         <Link to={item.url} onClick={() => setOpenMobile(false)}>
-          {item.icon && <item.icon />}
+          {item.icon && <item.icon className="opacity-85" />}
           <span>{item.title}</span>
           {item.badge && <NavBadge>{item.badge}</NavBadge>}
         </Link>
@@ -51,20 +56,20 @@ const SidebarMenuCollapsible = ({ item, href }: { item: NavCollapsible; href: st
     <Collapsible asChild defaultOpen={checkIsActive(href, item, true)} className="group/collapsible">
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={item.title}>
-            {item.icon && <item.icon />}
+          <SidebarMenuButton tooltip={item.title} className={NAV_ITEM_CLASSES}>
+            {item.icon && <item.icon className="opacity-85" />}
             <span>{item.title}</span>
             {item.badge && <NavBadge>{item.badge}</NavBadge>}
             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
           </SidebarMenuButton>
         </CollapsibleTrigger>
         <CollapsibleContent className="CollapsibleContent">
-          <SidebarMenuSub>
+          <SidebarMenuSub className="border-sidebar-border">
             {item.items.map((subItem) => (
               <SidebarMenuSubItem key={subItem.title}>
-                <SidebarMenuSubButton asChild isActive={checkIsActive(href, subItem)}>
+                <SidebarMenuSubButton asChild isActive={checkIsActive(href, subItem)} className="rounded-[6px] text-[#C7CAD3] hover:text-sidebar-accent-foreground data-[active=true]:text-sidebar-accent-foreground">
                   <Link to={subItem.url} onClick={() => setOpenMobile(false)}>
-                    {subItem.icon && <subItem.icon />}
+                    {subItem.icon && <subItem.icon className="opacity-85" />}
                     <span>{subItem.title}</span>
                     {subItem.badge && <NavBadge>{subItem.badge}</NavBadge>}
                   </Link>
@@ -83,8 +88,8 @@ const SidebarMenuCollapsedDropdown = ({ item, href }: { item: NavCollapsible; hr
     <SidebarMenuItem>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <SidebarMenuButton tooltip={item.title} isActive={checkIsActive(href, item)}>
-            {item.icon && <item.icon />}
+          <SidebarMenuButton tooltip={item.title} isActive={checkIsActive(href, item)} className={NAV_ITEM_CLASSES}>
+            {item.icon && <item.icon className="opacity-85" />}
             <span>{item.title}</span>
             {item.badge && <NavBadge>{item.badge}</NavBadge>}
             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

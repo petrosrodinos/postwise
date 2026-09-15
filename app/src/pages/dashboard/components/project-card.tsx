@@ -1,0 +1,62 @@
+import { Link } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
+import { Routes } from "@/routes/routes";
+import { PlatformGlyph } from "@/components/ui/platform-glyph";
+import { DnaBadge } from "@/components/ui/dna-badge";
+import { WorkflowBar } from "@/components/ui/workflow-bar";
+import type { Project } from "@/features/projects/interfaces/projects.interfaces";
+
+interface ProjectCardProps {
+  project: Project;
+}
+
+export function ProjectCard({ project }: ProjectCardProps) {
+  const counts = project.post_status_counts ?? {};
+  const totalPosts = Object.values(counts).reduce((sum, value) => sum + (value ?? 0), 0);
+  const scheduled = counts.SCHEDULED ?? 0;
+
+  return (
+    <Link
+      to={Routes.dashboard.project_detail(project.id)}
+      className="flex flex-col gap-3.5 rounded-2xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
+    >
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <PlatformGlyph platform={project.platform} />
+        <span>Updated {formatDistanceToNow(new Date(project.updated_at), { addSuffix: true })}</span>
+      </div>
+
+      <div>
+        <h3 className="text-base font-semibold">{project.title}</h3>
+        {project.description && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{project.description}</p>}
+      </div>
+
+      {project.pillars.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {project.pillars.map((pillar) => (
+            <span key={pillar} className="rounded-full border border-border bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground">
+              {pillar}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {project.style_profiles && project.style_profiles.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {project.style_profiles.map((link) => (
+            <DnaBadge key={link.id} name={link.style_profile.name} traits={link.style_profile} />
+          ))}
+        </div>
+      )}
+
+      <WorkflowBar counts={counts} className="mt-1" />
+
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <span>
+          {totalPosts} post{totalPosts === 1 ? "" : "s"} · {project.style_profiles?.length ?? 0} style profile
+          {project.style_profiles?.length === 1 ? "" : "s"}
+        </span>
+        <span>{scheduled} scheduled</span>
+      </div>
+    </Link>
+  );
+}

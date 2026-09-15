@@ -19,5 +19,10 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Service functions catch and rethrow a human-readable Error without
+      // inspecting the original (per app-code-structure-and-best-practices.mdc)
+      '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'none', ignoreRestSiblings: true }],
+    },
   },
 ])

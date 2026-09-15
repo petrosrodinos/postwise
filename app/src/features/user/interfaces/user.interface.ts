@@ -1,8 +1,9 @@
 
 export interface User {
     id: string;
-    uuid: string;
+    name: string;
     email: string;
+    phone?: string | null;
     role: RoleType;
     created_at: string;
     updated_at: string;
@@ -31,3 +32,14 @@ export const RoleTypes = {
 } as const;
 
 export type RoleType = (typeof RoleTypes)[keyof typeof RoleTypes];
+
+export interface UpdateUserDto {
+    name?: string;
+    email?: string;
+    phone?: string;
+}
+
+export interface UpdatePasswordDto {
+    current_password: string;
+    new_password: string;
+}

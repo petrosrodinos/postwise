@@ -56,15 +56,38 @@ export class ProjectsService {
 
     const { skip, take } = paginate(query.page, query.limit);
 
-    const [data, total] = await Promise.all([
+    const [projects, total] = await Promise.all([
       this.prisma.project.findMany({
         where,
         skip,
         take,
         orderBy: { created_at: 'desc' },
+        include: { style_profiles: { include: { style_profile: true } } },
       }),
       this.prisma.project.count({ where }),
     ]);
+
+    const projectIds = projects.map((project) => project.id);
+    const statusGroups = projectIds.length
+      ? await this.prisma.post.groupBy({
+          by: ['project_id', 'status'],
+          where: { project_id: { in: projectIds } },
+          _count: true,
+        })
+      : [];
+
+    const countsByProject = new Map<string, Record<string, number>>();
+    for (const group of statusGroups) {
+      if (!group.project_id) continue;
+      const counts = countsByProject.get(group.project_id) ?? {};
+      counts[group.status] = group._count;
+      countsByProject.set(group.project_id, counts);
+    }
+
+    const data = projects.map((project) => ({
+      ...project,
+      post_status_counts: countsByProject.get(project.id) ?? {},
+    }));
 
     return { data, pagination: paginationMeta(total, query.page, query.limit) };
   }
@@ -86,7 +109,19 @@ export class ProjectsService {
   }
 
   async findOne(userId: string, id: string) {
-    return this.findOwned(userId, id);
+    const project = await this.findOwned(userId, id);
+
+    const statusGroups = await this.prisma.post.groupBy({
+      by: ['status'],
+      where: { project_id: id },
+      _count: true,
+    });
+    const post_status_counts: Record<string, number> = {};
+    for (const group of statusGroups) {
+      post_status_counts[group.status] = group._count;
+    }
+
+    return { ...project, post_status_counts };
   }
 
   private async assertManage(userId: string, project: { organisation_id?: string | null }) {

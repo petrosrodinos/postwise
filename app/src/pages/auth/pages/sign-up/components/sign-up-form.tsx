@@ -13,6 +13,7 @@ export function SignUpForm() {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       confirm_password: "",
@@ -20,7 +21,7 @@ export function SignUpForm() {
   });
 
   function onSubmit(data: SignUpFormValues) {
-    mutate({ email: data.email, password: data.password });
+    mutate({ name: data.name, email: data.email, password: data.password });
   }
 
   return (
@@ -28,6 +29,19 @@ export function SignUpForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="space-y-1">
+                  <FormLabel>Full name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Jane Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
