@@ -4,6 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 import { MoreVertical } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { StyleDnaStrand, StyleDnaLegend } from "@/components/ui/style-dna-strand";
 import { PlatformChip } from "@/components/ui/platform-glyph";
@@ -92,7 +93,9 @@ export function StyleProfileDrawer({ profile, onClose }: StyleProfileDrawerProps
                       <div>
                         <div className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Signature hook</div>
                         <div className="flex items-center gap-2.5">
-                          <span className="rounded-full bg-coral-soft px-3 py-1 text-sm font-semibold text-coral">{profile.dominant_hook}</span>
+                          <Badge variant="pill" className="bg-coral-soft px-3 py-1 text-sm font-semibold text-coral">
+                            {profile.dominant_hook}
+                          </Badge>
                           <span className="text-sm text-muted-foreground">used to open most high-performing posts</span>
                         </div>
                       </div>
@@ -116,9 +119,9 @@ export function StyleProfileDrawer({ profile, onClose }: StyleProfileDrawerProps
                         <div className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Content pillars observed</div>
                         <div className="flex flex-wrap gap-1.5">
                           {profile.pillars.map((pillar) => (
-                            <span key={pillar} className="rounded-full border border-border bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground">
+                            <Badge key={pillar} variant="pill">
                               {pillar}
-                            </span>
+                            </Badge>
                           ))}
                         </div>
                       </div>

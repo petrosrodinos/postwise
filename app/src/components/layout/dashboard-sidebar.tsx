@@ -1,5 +1,5 @@
-import { PenLine } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
+import { BrandMark } from "@/components/layout/brand-mark";
 import { NavGroup } from "@/components/layout/nav-group";
 import { WorkspaceSwitcher } from "@/components/layout/workspace-switcher";
 import { dashboardSidebarData } from "./data/dashboard-sidebar-data";
@@ -18,9 +18,7 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
     <Sidebar collapsible="icon" className="group-data-[side=left]:border-r-0" {...props}>
       <SidebarHeader className="gap-0 px-2 pb-0 pt-3">
         <div className="mb-1 flex items-center gap-2.5 px-2 pb-4 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-          <div className="flex h-[30px] w-[30px] flex-none items-center justify-center rounded-[8px] bg-brass">
-            <PenLine className="h-4 w-4 text-[#2A1C05]" strokeWidth={2.25} />
-          </div>
+          <BrandMark size={30} />
           <div className="font-display text-lg font-semibold text-sidebar-foreground group-data-[collapsible=icon]:hidden">
             {environments.APP_NAME}
             <span className="text-brass">.</span>

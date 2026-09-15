@@ -3,6 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { MoreHorizontal, Repeat2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 import { DnaBadge } from "@/components/ui/dna-badge";
 import { Button } from "@/components/ui/button";
 import ConfirmationDialog from "@/components/ui/confirmation-dialog";
@@ -77,11 +78,11 @@ export function AutomationCard({ automation, project, onEdit }: AutomationCardPr
       </div>
 
       <div className="flex flex-wrap gap-1.5">
-        <span className="rounded-full border border-border bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground">{project.title}</span>
+        <Badge variant="pill">{project.title}</Badge>
         {styleProfile && <DnaBadge name={styleProfile.name} traits={styleProfile} />}
-        <span className={cn("rounded-full px-2.5 py-1 text-xs font-semibold", OUTPUT_STAGE_STYLE[automation.output_stage])}>
+        <Badge variant="pill" className={OUTPUT_STAGE_STYLE[automation.output_stage]}>
           {getAutomationOutputStageLabel(automation.output_stage)}
-        </span>
+        </Badge>
       </div>
 
       <div className="flex items-center justify-between text-xs text-muted-foreground">

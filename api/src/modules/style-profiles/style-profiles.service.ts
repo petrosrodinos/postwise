@@ -218,12 +218,12 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
     });
 
     return posts
-      .filter((post) => post.text?.trim())
+      .filter((post) => post.content?.trim())
       .map((post, index) => ({
-        id: post.id ?? post.urn ?? post.url ?? `${id}-${index}`,
-        url: post.url,
-        text: post.text!.trim(),
-        posted_at: post.postedAt,
+        id: post.id ?? post.linkedinUrl ?? `${id}-${index}`,
+        url: post.linkedinUrl,
+        text: post.content!.trim(),
+        posted_at: post.postedAt?.date,
         author_name: post.author?.name,
         likes: post.engagement?.likes,
         comments: post.engagement?.comments,

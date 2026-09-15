@@ -1,6 +1,7 @@
 import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PlatformGlyph } from "@/components/ui/platform-glyph";
 import { getDropdownOptionLabel } from "@/lib/dropdown-option-label.utils";
@@ -40,7 +41,7 @@ export function GenerationContextCard({
       </div>
 
       <div>
-        <label className="mb-1.5 block text-xs font-semibold text-foreground">Project</label>
+        <Label className="mb-1.5 block text-xs font-semibold text-foreground">Project</Label>
         <div className="flex h-9 items-center justify-between rounded-md border border-input bg-muted px-3 text-sm font-semibold">
           {project.title}
           <PlatformGlyph platform={project.platform} />
@@ -48,7 +49,7 @@ export function GenerationContextCard({
       </div>
 
       <div>
-        <label className="mb-1.5 block text-xs font-semibold text-foreground">Style profile</label>
+        <Label className="mb-1.5 block text-xs font-semibold text-foreground">Style profile</Label>
         <Select value={styleProfileId || NONE_VALUE} onValueChange={(value) => onStyleProfileChange(value === NONE_VALUE ? "" : value)}>
           <SelectTrigger>
             <SelectValue placeholder="No style profile" />
@@ -66,7 +67,7 @@ export function GenerationContextCard({
 
       {!isExistingRun && (
         <div>
-          <label className="mb-1.5 block text-xs font-semibold text-foreground">Number of posts</label>
+          <Label className="mb-1.5 block text-xs font-semibold text-foreground">Number of posts</Label>
           <Input
             type="number"
             min={1}
@@ -78,7 +79,7 @@ export function GenerationContextCard({
       )}
 
       <div>
-        <label className="mb-1.5 block text-xs font-semibold text-foreground">Platform</label>
+        <Label className="mb-1.5 block text-xs font-semibold text-foreground">Platform</Label>
         <div className="flex h-9 items-center rounded-md border border-input bg-muted px-3 text-sm text-muted-foreground">
           {getDropdownOptionLabel(PostTypeFormOptions, project.platform)}
         </div>

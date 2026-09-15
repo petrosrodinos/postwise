@@ -5,6 +5,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useAddOrganisationMember } from "@/features/organisations/hooks/use-organisations";
 import { OrganisationRoles } from "@/features/organisations/interfaces/organisations.interfaces";
@@ -101,28 +103,24 @@ export function AddMemberDialog({ organisationId, isOpen, onClose }: AddMemberDi
                 <FormItem>
                   <FormLabel>Role</FormLabel>
                   <FormControl>
-                    <div className="grid gap-2">
+                    <RadioGroup value={field.value} onValueChange={field.onChange} className="grid gap-2">
                       {CREATABLE_ROLES.map((option) => (
-                        <label
+                        <Label
                           key={option.id}
+                          htmlFor={`role-${option.id}`}
                           className={cn(
-                            "flex cursor-pointer items-start gap-2.5 rounded-md border border-input p-3",
+                            "flex cursor-pointer items-start gap-2.5 rounded-md border border-input p-3 font-normal",
                             field.value === option.id && "border-primary bg-primary/5",
                           )}
                         >
-                          <input
-                            type="radio"
-                            className="mt-1 accent-primary"
-                            checked={field.value === option.id}
-                            onChange={() => field.onChange(option.id)}
-                          />
+                          <RadioGroupItem value={option.id} id={`role-${option.id}`} className="mt-1" />
                           <span>
                             <span className="block text-sm font-medium">{option.label}</span>
                             <span className="block text-xs text-muted-foreground">{getOrganisationRoleDescription(option.id)}</span>
                           </span>
-                        </label>
+                        </Label>
                       ))}
-                    </div>
+                    </RadioGroup>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

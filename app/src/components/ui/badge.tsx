@@ -10,6 +10,7 @@ const badgeVariants = cva("inline-flex items-center rounded-md border px-2.5 py-
       destructive: "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
       success: "border-transparent bg-green-600 text-white shadow hover:bg-green-600/80",
       outline: "text-foreground",
+      pill: "rounded-full bg-secondary py-1 font-medium text-secondary-foreground",
     },
   },
   defaultVariants: {

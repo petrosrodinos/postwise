@@ -36,30 +36,37 @@ export interface LinkedInScraperInput {
 
 export interface LinkedInScrapedPostAuthor {
   name?: string;
-  publicId?: string;
-  urn?: string;
-  url?: string;
+  publicIdentifier?: string;
+  linkedinUrl?: string;
   [key: string]: unknown;
 }
 
 export interface LinkedInScrapedPostEngagement {
   likes?: number;
   comments?: number;
-  reposts?: number;
+  shares?: number;
+  [key: string]: unknown;
+}
+
+export interface LinkedInScrapedPostPostedAt {
+  timestamp?: number;
+  date?: string;
+  postedAgoShort?: string;
+  postedAgoText?: string;
   [key: string]: unknown;
 }
 
 /**
  * Shape inferred from the harvestapi/linkedin-profile-posts dataset output, which Apify
  * does not formally document — treat unlisted fields via the index signature as best-effort.
+ * Note: the post text is in `content` (not `text`) and the post URL is `linkedinUrl` (not `url`).
  */
 export interface LinkedInScrapedPost {
   id?: string;
-  urn?: string;
-  url?: string;
+  linkedinUrl?: string;
   type?: string;
-  text?: string;
-  postedAt?: string;
+  content?: string;
+  postedAt?: LinkedInScrapedPostPostedAt;
   author?: LinkedInScrapedPostAuthor;
   engagement?: LinkedInScrapedPostEngagement;
   [key: string]: unknown;

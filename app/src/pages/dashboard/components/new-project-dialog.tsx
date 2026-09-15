@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { TagInput } from "@/components/ui/tag-input";
 import { PostTypeFormOptions } from "@/config/constants/dropdowns/posts/post-type-form.options";
 import { useAttachStyleProfile, useCreateProject } from "@/features/projects/hooks/use-projects";
@@ -139,7 +140,7 @@ export function NewProjectDialog({ isOpen, onClose }: NewProjectDialogProps) {
                       {styleProfiles.map((profile) => {
                         const checked = field.value.includes(profile.id);
                         return (
-                          <label key={profile.id} className="flex cursor-pointer items-center gap-2 text-sm">
+                          <Label key={profile.id} className="flex cursor-pointer items-center gap-2 text-sm font-normal">
                             <Checkbox
                               checked={checked}
                               onCheckedChange={(value) =>
@@ -147,7 +148,7 @@ export function NewProjectDialog({ isOpen, onClose }: NewProjectDialogProps) {
                               }
                             />
                             {profile.name}
-                          </label>
+                          </Label>
                         );
                       })}
                     </div>

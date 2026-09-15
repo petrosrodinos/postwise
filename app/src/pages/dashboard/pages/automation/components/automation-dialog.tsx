@@ -6,6 +6,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { AutomationFrequencies, AutomationOutputStages, type Automation } from "@/features/automations/interfaces/automations.interfaces";
 import { useCreateAutomation, useUpdateAutomation } from "@/features/automations/hooks/use-automations";
@@ -263,28 +265,24 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>When posts are generated</FormLabel>
-                  <div className="flex flex-col gap-2">
+                  <RadioGroup value={field.value} onValueChange={field.onChange} className="flex flex-col gap-2">
                     {AutomationOutputStageFormOptions.map((option) => (
-                      <label
+                      <Label
                         key={option.id}
+                        htmlFor={`output-stage-${option.id}`}
                         className={cn(
-                          "flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors",
+                          "flex cursor-pointer items-start gap-3 rounded-lg border p-3 font-normal transition-colors",
                           field.value === option.id ? "border-brass bg-brass-soft" : "border-input",
                         )}
                       >
-                        <input
-                          type="radio"
-                          className="mt-1 accent-brass"
-                          checked={field.value === option.id}
-                          onChange={() => field.onChange(option.id)}
-                        />
+                        <RadioGroupItem value={option.id} id={`output-stage-${option.id}`} className="mt-1" />
                         <span>
                           <span className="block text-sm font-semibold">{option.label}</span>
                           <span className="block text-xs text-muted-foreground">{option.description}</span>
                         </span>
-                      </label>
+                      </Label>
                     ))}
-                  </div>
+                  </RadioGroup>
                 </FormItem>
               )}
             />

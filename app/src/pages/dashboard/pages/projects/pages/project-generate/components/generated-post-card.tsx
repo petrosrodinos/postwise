@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 import { DnaBadge } from "@/components/ui/dna-badge";
 import { PostStatusTag } from "@/components/ui/post-status-tag";
 import { getPostStatusLabel } from "@/config/constants/dropdowns/posts/post-status-filter.options";
@@ -68,7 +69,11 @@ export function GeneratedPostCard({ post, platform, styleProfiles }: GeneratedPo
     <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
         {styleProfile ? <DnaBadge name={styleProfile.name} traits={styleProfile} /> : <span />}
-        {!isBlog && post.hook && <span className="rounded-full bg-coral-soft px-2.5 py-1 text-xs font-semibold text-coral">{post.hook}</span>}
+        {!isBlog && post.hook && (
+          <Badge variant="pill" className="bg-coral-soft font-semibold text-coral">
+            {post.hook}
+          </Badge>
+        )}
       </div>
 
       {isBlog && (

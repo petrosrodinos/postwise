@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { WorkflowBar } from "@/components/ui/workflow-bar";
 import { PostStatusTag } from "@/components/ui/post-status-tag";
@@ -47,9 +48,9 @@ export function OverviewTab({ project, onViewAllPosts }: OverviewTabProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0">
             <CardTitle className="text-base">Recent generated posts</CardTitle>
-            <button type="button" onClick={onViewAllPosts} className="text-xs font-semibold text-brass-ink hover:underline">
+            <Button type="button" variant="link" onClick={onViewAllPosts} className="h-auto p-0 text-xs font-semibold text-brass-ink">
               View all →
-            </button>
+            </Button>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             {isPending ? (
@@ -79,9 +80,9 @@ export function OverviewTab({ project, onViewAllPosts }: OverviewTabProps) {
             ) : (
               <div className="flex flex-wrap gap-1.5">
                 {project.pillars.map((pillar) => (
-                  <span key={pillar} className="rounded-full border border-border bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground">
+                  <Badge key={pillar} variant="pill">
                     {pillar}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             )}

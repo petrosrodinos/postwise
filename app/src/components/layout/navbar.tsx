@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuthStore } from "@/stores/auth";
-import Logo from "@/assets/favicon.ico";
 import { Suspense } from "react";
 import { ThemeSwitch } from "../ui/theme-switch";
+import { BrandMark } from "@/components/layout/brand-mark";
 import { environments } from "@/config/environments";
 
 interface MenuItem {
@@ -20,8 +20,6 @@ interface MenuItem {
 interface Navbar1Props {
   logo?: {
     url: string;
-    src: any;
-    alt: string;
     title: string;
   };
   menu?: MenuItem[];
@@ -52,8 +50,6 @@ export const Navbar = () => {
 const NavbarContent = ({
   logo = {
     url: "/",
-    src: Logo,
-    alt: "logo",
     title: environments.APP_NAME,
   },
   menu = [
@@ -89,7 +85,7 @@ const NavbarContent = ({
         <nav className="hidden justify-between items-center h-16 lg:flex">
           <div className="flex items-center">
             <a href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} className="size-7" alt="logo" />
+              <BrandMark size={28} />
 
               <span className="text-lg font-semibold tracking-tighter">{logo.title}</span>
             </a>
@@ -124,7 +120,7 @@ const NavbarContent = ({
         <div className="block lg:hidden">
           <div className="flex items-center justify-between h-16">
             <a href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} width={32} height={32} className="max-h-8" alt={logo.alt} />
+              <BrandMark size={32} />
             </a>
             <div className="flex items-center gap-2">
               <ThemeSwitch />
@@ -138,7 +134,7 @@ const NavbarContent = ({
                   <SheetHeader>
                     <SheetTitle>
                       <a href={logo.url} className="flex items-center gap-2">
-                        <img src={logo.src} width={32} height={32} className="max-h-8" alt={logo.alt} />
+                        <BrandMark size={32} />
                       </a>
                     </SheetTitle>
                   </SheetHeader>

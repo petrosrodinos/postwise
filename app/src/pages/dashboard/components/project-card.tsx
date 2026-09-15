@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { Routes } from "@/routes/routes";
 import { PlatformGlyph } from "@/components/ui/platform-glyph";
+import { Badge } from "@/components/ui/badge";
 import { DnaBadge } from "@/components/ui/dna-badge";
 import { WorkflowBar } from "@/components/ui/workflow-bar";
 import type { Project } from "@/features/projects/interfaces/projects.interfaces";
@@ -33,9 +34,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
       {project.pillars.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {project.pillars.map((pillar) => (
-            <span key={pillar} className="rounded-full border border-border bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground">
+            <Badge key={pillar} variant="pill">
               {pillar}
-            </span>
+            </Badge>
           ))}
         </div>
       )}
