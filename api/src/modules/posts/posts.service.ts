@@ -39,6 +39,8 @@ const RepurposeDraftSchema = z.object({
   body: z.string(),
   title: z.string().optional(),
   excerpt: z.string().optional(),
+  seo_title: z.string().optional(),
+  seo_description: z.string().optional(),
 });
 
 const ReviseDraftSchema = z.object({
@@ -560,13 +562,16 @@ export class PostsService {
 
     const created = await Promise.all(
       dto.target_types.map(async (targetType) => {
-        const shape =
-          targetType === PostType.BLOG
-            ? '{ "title": string, "excerpt": string, "body": string }'
-            : '{ "hook": string, "body": string }';
+        const isTargetBlog = targetType === PostType.BLOG;
+        const shape = isTargetBlog
+          ? '{ "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }'
+          : '{ "hook": string, "body": string }';
+        const seoGuidance = isTargetBlog
+          ? ' Also write "seo_title" (a search-optimized title, ideally under 60 characters) and "seo_description" (a compelling meta description, ideally under 160 characters).'
+          : '';
 
         const { response } = await this.aiService.generateText({
-          prompt: `Repurpose the following content into a single ${targetType} post. Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.\n\nSource content:\n${source}`,
+          prompt: `Repurpose the following content into a single ${targetType} post. Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${seoGuidance}\n\nSource content:\n${source}`,
           system: 'You are an expert content repurposing assistant.',
           temperature: 0.7,
         });
@@ -586,6 +591,8 @@ export class PostsService {
             body: draft.body,
             title: draft.title,
             excerpt: draft.excerpt,
+            seo_title: draft.seo_title,
+            seo_description: draft.seo_description,
           },
         });
       }),

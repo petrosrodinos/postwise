@@ -51,11 +51,15 @@ export class GenerationRunsService {
   ) {
     const shape =
       project.platform === PostType.BLOG
-        ? '{ "title": string, "excerpt": string, "body": string }'
+        ? '{ "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }'
         : '{ "hook": string, "body": string }';
     const languageName = GENERATION_LANGUAGES[language] ?? GENERATION_LANGUAGES[DEFAULT_GENERATION_LANGUAGE];
+    const seoGuidance =
+      project.platform === PostType.BLOG
+        ? ' For each post also write "seo_title" (a search-optimized title, ideally under 60 characters) and "seo_description" (a compelling meta description, ideally under 160 characters).'
+        : '';
 
-    return `Generate ${postsRequested} distinct ${project.platform} post drafts for the following project. Return ONLY a raw JSON array (no markdown) of ${postsRequested} objects, each shaped exactly like ${shape}. Write every field in ${languageName}.
+    return `Generate ${postsRequested} distinct ${project.platform} post drafts for the following project. Return ONLY a raw JSON array (no markdown) of ${postsRequested} objects, each shaped exactly like ${shape}. Write every field in ${languageName}.${seoGuidance}
 
 Project title: ${project.title}
 Project description: ${project.description ?? 'n/a'}
@@ -78,7 +82,7 @@ ${
     const languageName = GENERATION_LANGUAGES[language] ?? GENERATION_LANGUAGES[DEFAULT_GENERATION_LANGUAGE];
     const sourceText = item.content || item.summary || 'n/a';
 
-    return `Write a full, original BLOG post inspired by the following source article. Do not copy it verbatim — rewrite and expand on it in your own words. Return ONLY a raw JSON object (no markdown) shaped exactly like { "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }. Write every field in ${languageName}.
+    return `Write a full, original BLOG post inspired by the following source article. Do not copy it verbatim — rewrite and expand on it in your own words. Return ONLY a raw JSON object (no markdown) shaped exactly like { "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }. Write every field in ${languageName}. "seo_title" should be a search-optimized title (ideally under 60 characters) and "seo_description" a compelling meta description (ideally under 160 characters).
 
 Source title: ${item.title}
 Source URL: ${item.link ?? 'n/a'}
