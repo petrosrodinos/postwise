@@ -22,12 +22,20 @@ export class RssService {
     const title = item.title?.trim() || 'Untitled';
     const publishedAt = this.parseDate(item.isoDate ?? item.pubDate);
 
+    // rss-parser has an easy-to-miss quirk: `<content:encoded>` (the full
+    // article body many blog feeds provide) is NOT copied onto `item.content`
+    // — it's stashed under the literal key `content:encoded`. `item.content`
+    // is always just the `<description>` excerpt instead, even when a fuller
+    // body is also present. Read the encoded field explicitly so feeds that
+    // provide it aren't silently downgraded to their short excerpt.
+    const encodedContent = (item as unknown as Record<string, string | undefined>)['content:encoded'];
+
     return {
       guid: item.guid?.trim() || this.fallbackGuid(item.link, title, item.pubDate),
       title,
       link: item.link,
-      summary: item.summary ?? item.contentSnippet,
-      content: item.content,
+      summary: (item.summary ?? item.contentSnippet)?.trim(),
+      content: (encodedContent ?? item.content)?.trim(),
       published_at: publishedAt,
     };
   }

@@ -123,6 +123,19 @@ export const useOrganisationMembers = (organisationId?: string) => {
   });
 };
 
+// The viewer's own role within the currently active organisation — derived
+// from the member list rather than a dedicated endpoint, since that's the
+// only place this data currently lives.
+export const useActiveOrganisationRole = () => {
+  const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
+  const userUuid = useAuthStore((state) => state.user_uuid);
+  const { data: members, isPending } = useOrganisationMembers(activeOrganisationId ?? undefined);
+
+  const role = members?.find((member) => member.user_id === userUuid)?.role;
+
+  return { role, isPending };
+};
+
 export const useAddOrganisationMember = () => {
   const queryClient = useQueryClient();
   return useMutation({

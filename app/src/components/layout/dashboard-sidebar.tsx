@@ -4,6 +4,9 @@ import { NavGroup } from "@/components/layout/nav-group";
 import { WorkspaceSwitcher } from "@/components/layout/workspace-switcher";
 import { dashboardSidebarData } from "./data/dashboard-sidebar-data";
 import { environments } from "@/config/environments";
+import { useActiveOrganisationRole } from "@/features/organisations/hooks/use-organisations";
+import { OrganisationRoles } from "@/features/organisations/interfaces/organisations.interfaces";
+import { Routes } from "@/routes/routes";
 
 const CONNECTED_PLATFORMS = [
   { label: "LinkedIn", glyph: "in", active: true },
@@ -14,6 +17,14 @@ const CONNECTED_PLATFORMS = [
 ];
 
 export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { role } = useActiveOrganisationRole();
+  const isOrgMember = role === OrganisationRoles.MEMBER;
+
+  const navGroups = dashboardSidebarData.navGroups.map((group) => ({
+    ...group,
+    items: group.items.filter((item) => !(isOrgMember && "url" in item && item.url === Routes.dashboard.settings)),
+  }));
+
   return (
     <Sidebar collapsible="icon" className="group-data-[side=left]:border-r-0" {...props}>
       <SidebarHeader className="gap-0 px-2 pb-0 pt-3">
@@ -26,7 +37,7 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
         </div>
       </SidebarHeader>
       <SidebarContent className="gap-0">
-        {dashboardSidebarData.navGroups.map((group) => (
+        {navGroups.map((group) => (
           <NavGroup key={group.title} {...group} />
         ))}
       </SidebarContent>

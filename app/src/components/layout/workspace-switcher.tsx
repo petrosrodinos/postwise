@@ -13,7 +13,8 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuthStore } from "@/stores/auth";
 import { useWorkspaceStore } from "@/stores/workspace";
-import { useOrganisations } from "@/features/organisations/hooks/use-organisations";
+import { useActiveOrganisationRole, useOrganisations } from "@/features/organisations/hooks/use-organisations";
+import { OrganisationRoles } from "@/features/organisations/interfaces/organisations.interfaces";
 import { generateInitials } from "@/features/auth/utils/auth.utils";
 import { Routes } from "@/routes/routes";
 import { CreateOrganisationDialog } from "./create-organisation-dialog";
@@ -26,6 +27,8 @@ export function WorkspaceSwitcher() {
   const { logout } = useAuthStore();
   const { data: organisations = [] } = useOrganisations();
   const { active_organisation_id, active_organisation_name, setActiveWorkspace } = useWorkspaceStore();
+  const { role } = useActiveOrganisationRole();
+  const isOrgMember = role === OrganisationRoles.MEMBER;
 
   const activeName = active_organisation_name ?? "Loading…";
   const activeKind = "Organisation";
@@ -62,9 +65,11 @@ export function WorkspaceSwitcher() {
             <DropdownMenuItem className={MENU_ITEM_CLASSES} onClick={() => navigate(Routes.dashboard.profile)}>
               My profile
             </DropdownMenuItem>
-            <DropdownMenuItem className={MENU_ITEM_CLASSES} onClick={() => navigate(Routes.dashboard.settings)}>
-              Organisation settings
-            </DropdownMenuItem>
+            {!isOrgMember && (
+              <DropdownMenuItem className={MENU_ITEM_CLASSES} onClick={() => navigate(Routes.dashboard.settings)}>
+                Organisation settings
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem className={MENU_ITEM_CLASSES} onClick={() => setIsCreateOpen(true)}>
               <Plus />
               New organisation

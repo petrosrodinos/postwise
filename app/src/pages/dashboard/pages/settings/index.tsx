@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Routes } from "@/routes/routes";
 import { useWorkspaceStore } from "@/stores/workspace";
-import { useOrganisation } from "@/features/organisations/hooks/use-organisations";
+import { useActiveOrganisationRole, useOrganisation } from "@/features/organisations/hooks/use-organisations";
+import { OrganisationRoles } from "@/features/organisations/interfaces/organisations.interfaces";
 import { GeneralTab } from "./components/general-tab";
 import { MembersTab } from "./components/members-tab";
 import { ChannelConnectionsCard } from "@/pages/dashboard/components/channel-connections-card";
@@ -13,6 +14,7 @@ import { ChannelConnectionsCard } from "@/pages/dashboard/components/channel-con
 export default function SettingsPage() {
   const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
   const { data: organisation, isPending } = useOrganisation(activeOrganisationId ?? undefined);
+  const { role, isPending: isRolePending } = useActiveOrganisationRole();
 
   if (!activeOrganisationId) {
     return (
@@ -21,6 +23,10 @@ export default function SettingsPage() {
         <Skeleton className="h-4 w-80" />
       </div>
     );
+  }
+
+  if (!isRolePending && role === OrganisationRoles.MEMBER) {
+    return <Navigate to={Routes.dashboard.root} replace />;
   }
 
   return (
