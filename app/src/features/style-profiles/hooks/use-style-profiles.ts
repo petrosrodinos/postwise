@@ -7,13 +7,13 @@ import {
   deleteStyleProfile,
   getStyleProfile,
   getStyleProfiles,
-  scrapeLinkedInPosts,
+  scrapePosts,
   updateStyleProfile,
 } from "../services/style-profiles.services";
 import type {
   AnalyzeStyleProfileDto,
   CreateStyleProfileDto,
-  ScrapeLinkedInPostsDto,
+  ScrapePostsDto,
   StyleProfilesQueryType,
   UpdateStyleProfileDto,
 } from "../interfaces/style-profiles.interfaces";
@@ -98,11 +98,11 @@ export const useAnalyzeStyleProfile = () => {
   });
 };
 
-export const useScrapeLinkedInPosts = () => {
+export const useScrapePosts = () => {
   return useMutation({
-    mutationFn: ({ id, dto }: { id: string; dto: ScrapeLinkedInPostsDto }) => scrapeLinkedInPosts(id, dto),
+    mutationFn: ({ id, dto }: { id: string; dto: ScrapePostsDto }) => scrapePosts(id, dto),
     onError: (error: Error) => {
-      toast({ title: "Could not fetch LinkedIn posts", description: error.message, variant: "error" });
+      toast({ title: "Could not fetch posts", description: error.message, variant: "error" });
     },
   });
 };

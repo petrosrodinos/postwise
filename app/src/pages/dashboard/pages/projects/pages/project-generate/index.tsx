@@ -9,7 +9,7 @@ import { useAddPostsToGenerationRun, useCreateGenerationRun, useGenerationRun } 
 import { DEFAULT_LANGUAGE } from "@/config/constants/dropdowns/generation-runs/language-form.options";
 import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import { GenerationContextCard } from "./components/generation-context-card";
-import { GeneratedPostCard } from "./components/generated-post-card";
+import { GenerationItemCard } from "./components/generation-item-card";
 import { RssItemPickerCard } from "./components/rss-item-picker-card";
 
 type GenerationSource = "ideas" | "rss";
@@ -109,7 +109,8 @@ export default function ProjectGeneratePage() {
     );
   }
 
-  const posts = run?.posts ?? [];
+  const items = run?.items ?? [];
+  const totalPosts = items.reduce((count, item) => count + item.posts.length, 0);
 
   function handleGenerate() {
     if (run) {
@@ -214,26 +215,26 @@ export default function ProjectGeneratePage() {
             <span className="text-sm text-muted-foreground">
               {run
                 ? `Created ${formatDistanceToNow(new Date(run.created_at), { addSuffix: true })}`
-                : posts.length > 0
-                  ? `${posts.length} posts in this batch`
+                : totalPosts > 0
+                  ? `${totalPosts} posts in this batch`
                   : ""}
             </span>
           </div>
 
-          {posts.length === 0 && !isGenerating ? (
+          {items.length === 0 && !isGenerating ? (
             <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
               <h3 className="text-base font-semibold text-foreground">No generation yet</h3>
               <p className="mx-auto mt-2 max-w-sm text-sm">Choose a style profile and a batch size, then generate this project's first drafts.</p>
             </div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
-              {posts.map((post) => (
-                <GeneratedPostCard
-                  key={post.id}
-                  post={post}
+              {items.map((item) => (
+                <GenerationItemCard
+                  key={item.id}
+                  item={item}
                   platform={project.platform}
                   styleProfiles={project.style_profiles ?? []}
-                  highlighted={post.id === highlightedPostId}
+                  highlightedPostId={highlightedPostId}
                 />
               ))}
               {isGenerating &&

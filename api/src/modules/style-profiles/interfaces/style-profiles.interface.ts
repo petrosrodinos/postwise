@@ -1,4 +1,4 @@
-export interface ScrapedLinkedInPost {
+export interface ScrapedPost {
   id: string;
   url?: string;
   text: string;

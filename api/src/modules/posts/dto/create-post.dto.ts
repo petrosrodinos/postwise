@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsObject, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsObject, IsOptional, IsString, IsUrl, ValidateIf } from 'class-validator';
 import { PostType } from 'generated/prisma';
 
 export class CreatePostDto {
@@ -59,6 +59,7 @@ export class CreatePostDto {
 
   @ApiProperty({ required: false })
   @IsOptional()
+  @ValidateIf((o) => o.canonical_url !== '')
   @IsUrl()
   canonical_url?: string;
 

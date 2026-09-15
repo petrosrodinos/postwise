@@ -48,15 +48,19 @@ export interface AnalyzeStyleProfileDto {
 
 export type PostedLimit = "any" | "1h" | "24h" | "week" | "month" | "3months" | "6months" | "year";
 
-export interface ScrapeLinkedInPostsDto {
+export interface ScrapePostsDto {
   source_url?: string;
+  // LinkedIn-only
   max_posts?: number;
   posted_limit?: PostedLimit;
   include_reposts?: boolean;
   include_quote_posts?: boolean;
+  // Twitter/X-only
+  results_limit?: number;
+  skip_pinned_posts?: boolean;
 }
 
-export interface ScrapedLinkedInPost {
+export interface ScrapedPost {
   id: string;
   url?: string;
   text: string;

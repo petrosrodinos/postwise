@@ -19,14 +19,34 @@ import {
   PostType,
   Project,
   RssFeedItem,
+  SocialChannel,
   StyleProfile,
 } from 'generated/prisma';
 import { AddPostsToGenerationRunDto } from './dto/add-posts-to-generation-run.dto';
 import { CreateGenerationRunDto } from './dto/create-generation-run.dto';
 import { CreateRssGenerationRunDto } from './dto/create-rss-generation-run.dto';
 import { GenerationRunsQueryType } from './dto/generation-runs-query.schema';
-import { Draft, DraftSchema, DraftsSchema } from './interfaces/draft.interface';
+import {
+  buildMultiChannelDraftsSchema,
+  Draft,
+  DraftSchema,
+  DraftsSchema,
+  MultiChannelDraft,
+} from './interfaces/draft.interface';
 import { DEFAULT_GENERATION_LANGUAGE, GENERATION_LANGUAGES } from './constants/languages.constant';
+
+// PostType and SocialChannel share the LINKEDIN/TWITTER members but are
+// distinct Prisma enums (PostType also has BLOG) — these convert between
+// them wherever a channel needs to become a Post.type or vice versa.
+function toPostType(channel: SocialChannel): PostType {
+  return channel === SocialChannel.LINKEDIN ? PostType.LINKEDIN : PostType.TWITTER;
+}
+
+function toSocialChannel(type: PostType): SocialChannel {
+  return type === PostType.LINKEDIN ? SocialChannel.LINKEDIN : SocialChannel.TWITTER;
+}
+
+type OwnedProject = Awaited<ReturnType<ProjectsService['findOwned']>>;
 
 @Injectable()
 export class GenerationRunsService {
@@ -74,6 +94,39 @@ ${
 }`;
   }
 
+  // Same batch of `postsRequested` ideas as buildPrompt, but each idea is
+  // asked for once per target channel in a single AI call, e.g.
+  // { "topic": string, "LINKEDIN": { "hook", "body" }, "TWITTER": { "hook", "body" } }.
+  private buildMultiChannelPrompt(
+    project: Pick<Project, 'title' | 'description' | 'pillars' | 'ideas' | 'instructions' | 'ai_directions'>,
+    channels: SocialChannel[],
+    styleProfiles: Partial<Record<SocialChannel, StyleProfile | null>>,
+    postsRequested: number,
+    language: string,
+  ) {
+    const languageName = GENERATION_LANGUAGES[language] ?? GENERATION_LANGUAGES[DEFAULT_GENERATION_LANGUAGE];
+    const channelShape = channels.map((channel) => `"${channel}": { "hook": string, "body": string }`).join(', ');
+    const shape = `{ "topic": string, ${channelShape} }`;
+    const voiceGuidance = channels
+      .map((channel) => {
+        const profile = styleProfiles[channel];
+        return profile
+          ? `For ${channel}, emulate this voice: ${profile.tone_description ?? 'n/a'}. Dominant hook style: ${profile.dominant_hook ?? 'n/a'}. Signature vocabulary: ${profile.vocabulary.join(', ') || 'n/a'}.`
+          : `For ${channel}, use a clear, engaging, professional tone.`;
+      })
+      .join('\n');
+
+    return `Generate ${postsRequested} distinct post ideas for the following project. Write each idea once for every one of these channels: ${channels.join(', ')} — keep the same underlying idea across channels but tailor length, tone and formatting to each channel's conventions (e.g. concise and punchy for TWITTER, more narrative for LINKEDIN). Return ONLY a raw JSON array (no markdown) of ${postsRequested} objects, each shaped exactly like ${shape}. Write every field in ${languageName}.
+
+Project title: ${project.title}
+Project description: ${project.description ?? 'n/a'}
+Content pillars: ${project.pillars.join(', ') || 'n/a'}
+Ideas to draw from: ${project.ideas.join('; ') || 'n/a'}
+Instructions the AI must follow: ${project.instructions.join('; ') || 'n/a'}
+Additional directions from the user: ${project.ai_directions ?? 'n/a'}
+${voiceGuidance}`;
+  }
+
   private buildRssPrompt(
     item: Pick<RssFeedItem, 'title' | 'link' | 'summary' | 'content'>,
     styleProfile: StyleProfile | null,
@@ -114,6 +167,24 @@ ${
     return parseAiJson(response, DraftsSchema);
   }
 
+  private async generateMultiChannelDrafts(
+    project: Pick<Project, 'title' | 'description' | 'pillars' | 'ideas' | 'instructions' | 'ai_directions'>,
+    channels: SocialChannel[],
+    styleProfiles: Partial<Record<SocialChannel, StyleProfile | null>>,
+    postsRequested: number,
+    language: string,
+  ): Promise<MultiChannelDraft[]> {
+    const prompt = this.buildMultiChannelPrompt(project, channels, styleProfiles, postsRequested, language);
+
+    const { response } = await this.aiService.generateText({
+      prompt,
+      system: 'You are an expert social media ghostwriter who adapts one idea across multiple platforms.',
+      temperature: 0.8,
+    });
+
+    return parseAiJson(response, buildMultiChannelDraftsSchema(channels)) as unknown as MultiChannelDraft[];
+  }
+
   private async generateRssDraft(
     item: Pick<RssFeedItem, 'title' | 'link' | 'summary' | 'content'>,
     styleProfile: StyleProfile | null,
@@ -130,35 +201,53 @@ ${
     return parseAiJson(response, DraftSchema);
   }
 
-  private buildImagePrompt(draft: Draft, project: Pick<Project, 'title'>): string {
-    const subject = draft.title ?? draft.hook ?? draft.body.slice(0, 160);
+  // For each channel a project targets, finds the project's attached style
+  // profile trained for that channel's platform, if any (auto-match — no
+  // manual per-channel selection today).
+  private resolveChannelStyleProfiles(
+    project: OwnedProject,
+    channels: SocialChannel[],
+  ): Partial<Record<SocialChannel, StyleProfile | null>> {
+    const result: Partial<Record<SocialChannel, StyleProfile | null>> = {};
+    for (const channel of channels) {
+      const link = project.style_profiles.find(
+        (link) => link.style_profile.platform === toPostType(channel),
+      );
+      result[channel] = link?.style_profile ?? null;
+    }
+    return result;
+  }
+
+  private buildImagePrompt(subject: string, project: Pick<Project, 'title'>): string {
     return `A professional, high-quality cover image representing a post titled "${subject}" for "${project.title}". No text overlay, no watermarks, no logos.`;
   }
 
-  // Generates cover-image candidates for every draft that needs them and
+  // Generates cover-image candidates for every idea that needs them and
   // persists them as Documents ahead of time — external I/O (AI image calls,
   // GCS uploads) must not happen inside the persistRun $transaction.
-  // Returns, per draft, the list of created Document ids (empty if none).
-  private async generateImagesForDrafts(
-    drafts: Draft[],
+  // Returns, per idea (by index), the list of created Document ids (empty if
+  // none) — shared across every channel-variant Post created for that idea.
+  private async generateImagesForIdeas(
+    count: number,
+    subjectFor: (index: number) => string,
     project: Pick<Project, 'title' | 'organisation_id'>,
     generateImages: boolean | undefined,
     imageCount: number | undefined,
   ): Promise<string[][]> {
     if (!generateImages) return [];
-    const count = imageCount ?? 1;
+    const imagesPerIdea = imageCount ?? 1;
 
     return Promise.all(
-      drafts.map(async (draft) => {
-        const prompt = this.buildImagePrompt(draft, project);
-        const images = await this.aiImageService.generateImages({ prompt, count });
+      Array.from({ length: count }, async (_, index) => {
+        const prompt = this.buildImagePrompt(subjectFor(index), project);
+        const images = await this.aiImageService.generateImages({ prompt, count: imagesPerIdea });
 
         const documents = await Promise.all(
-          images.map((image, index) =>
+          images.map((image, imageIndex) =>
             this.documentsService.createFromGenerated({
               organisationId: project.organisation_id,
               base64Data: image.base64,
-              filename: `cover-${randomUUID()}-${index + 1}.png`,
+              filename: `cover-${randomUUID()}-${imageIndex + 1}.png`,
               mimetype: image.mimeType,
               type: DocumentType.IMAGE,
             }),
@@ -170,23 +259,57 @@ ${
     );
   }
 
+  private draftSubject(draft: Draft): string {
+    return draft.title ?? draft.hook ?? draft.body.slice(0, 160);
+  }
+
+  private multiChannelDraftSubject(draft: MultiChannelDraft, channels: SocialChannel[]): string {
+    if (draft.topic) return draft.topic;
+    const firstVariant = channels.map((channel) => draft[channel]).find((variant) => variant);
+    return firstVariant?.hook ?? firstVariant?.body.slice(0, 160) ?? 'Untitled idea';
+  }
+
   async create(userId: string, dto: CreateGenerationRunDto) {
     const project = await this.projectsService.findOwned(userId, dto.project_id);
-
-    const styleProfileId =
-      dto.style_profile_id ?? project.style_profiles[0]?.style_profile_id ?? null;
-
-    const styleProfile = styleProfileId
-      ? await this.prisma.styleProfile.findUnique({ where: { id: styleProfileId } })
-      : null;
-    if (styleProfileId && !styleProfile) throw new NotFoundException('Style profile not found');
-
     const postsRequested = dto.posts_requested ?? 3;
     const language = dto.language ?? DEFAULT_GENERATION_LANGUAGE;
-    const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
 
-    const draftDocumentIds = await this.generateImagesForDrafts(
-      drafts,
+    if (project.platform === PostType.BLOG) {
+      const styleProfileId = dto.style_profile_id ?? project.style_profiles[0]?.style_profile_id ?? null;
+      const styleProfile = styleProfileId
+        ? await this.prisma.styleProfile.findUnique({ where: { id: styleProfileId } })
+        : null;
+      if (styleProfileId && !styleProfile) throw new NotFoundException('Style profile not found');
+
+      const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
+      const draftDocumentIds = await this.generateImagesForIdeas(
+        drafts.length,
+        (index) => this.draftSubject(drafts[index]),
+        project,
+        dto.generate_images,
+        dto.image_count,
+      );
+
+      return this.persistRun({
+        project,
+        channels: [],
+        styleProfileId,
+        automationId: null,
+        label: dto.label,
+        postsRequested,
+        language,
+        authorUserId: userId,
+        drafts,
+        draftDocumentIds,
+      });
+    }
+
+    const channels = project.channels.length ? project.channels : [toSocialChannel(project.platform)];
+    const channelStyleProfiles = this.resolveChannelStyleProfiles(project, channels);
+    const drafts = await this.generateMultiChannelDrafts(project, channels, channelStyleProfiles, postsRequested, language);
+    const draftDocumentIds = await this.generateImagesForIdeas(
+      drafts.length,
+      (index) => this.multiChannelDraftSubject(drafts[index], channels),
       project,
       dto.generate_images,
       dto.image_count,
@@ -194,7 +317,9 @@ ${
 
     return this.persistRun({
       project,
-      styleProfileId,
+      channels,
+      channelStyleProfiles,
+      styleProfileId: null,
       automationId: null,
       label: dto.label,
       postsRequested,
@@ -241,8 +366,9 @@ ${
       items.map((item) => this.generateRssDraft(item, styleProfile, language)),
     );
 
-    const draftDocumentIds = await this.generateImagesForDrafts(
-      drafts,
+    const draftDocumentIds = await this.generateImagesForIdeas(
+      drafts.length,
+      (index) => this.draftSubject(drafts[index]),
       project,
       dto.generate_images,
       dto.image_count,
@@ -250,6 +376,7 @@ ${
 
     return this.persistRun({
       project,
+      channels: [],
       styleProfileId,
       automationId: null,
       label: dto.label,
@@ -270,20 +397,47 @@ ${
     if (!run) throw new NotFoundException('Generation run not found');
 
     const project = await this.projectsService.findOwned(userId, run.project_id);
-
-    const styleProfileId =
-      dto.style_profile_id ?? run.style_profile_id ?? project.style_profiles[0]?.style_profile_id ?? null;
-    const styleProfile = styleProfileId
-      ? await this.prisma.styleProfile.findUnique({ where: { id: styleProfileId } })
-      : null;
-    if (styleProfileId && !styleProfile) throw new NotFoundException('Style profile not found');
-
     const postsRequested = dto.posts_requested ?? 3;
     const language = dto.language ?? run.language;
-    const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
 
-    const draftDocumentIds = await this.generateImagesForDrafts(
-      drafts,
+    if (project.platform === PostType.BLOG) {
+      const styleProfileId =
+        dto.style_profile_id ?? run.style_profile_id ?? project.style_profiles[0]?.style_profile_id ?? null;
+      const styleProfile = styleProfileId
+        ? await this.prisma.styleProfile.findUnique({ where: { id: styleProfileId } })
+        : null;
+      if (styleProfileId && !styleProfile) throw new NotFoundException('Style profile not found');
+
+      const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
+      const draftDocumentIds = await this.generateImagesForIdeas(
+        drafts.length,
+        (index) => this.draftSubject(drafts[index]),
+        project,
+        dto.generate_images,
+        dto.image_count,
+      );
+
+      return this.persistRun({
+        project,
+        channels: [],
+        styleProfileId,
+        automationId: run.automation_id,
+        label: run.label,
+        postsRequested: (run.posts_requested ?? 0) + postsRequested,
+        language,
+        authorUserId: userId,
+        drafts,
+        draftDocumentIds,
+        existingRunId: run.id,
+      });
+    }
+
+    const channels = project.channels.length ? project.channels : [toSocialChannel(project.platform)];
+    const channelStyleProfiles = this.resolveChannelStyleProfiles(project, channels);
+    const drafts = await this.generateMultiChannelDrafts(project, channels, channelStyleProfiles, postsRequested, language);
+    const draftDocumentIds = await this.generateImagesForIdeas(
+      drafts.length,
+      (index) => this.multiChannelDraftSubject(drafts[index], channels),
       project,
       dto.generate_images,
       dto.image_count,
@@ -291,7 +445,9 @@ ${
 
     return this.persistRun({
       project,
-      styleProfileId,
+      channels,
+      channelStyleProfiles,
+      styleProfileId: null,
       automationId: run.automation_id,
       label: run.label,
       postsRequested: (run.posts_requested ?? 0) + postsRequested,
@@ -311,30 +467,66 @@ ${
     }
 
     const project = automation.project;
-
-    const styleProfileId = automation.style_profile_id ?? null;
-    const styleProfile = styleProfileId
-      ? await this.prisma.styleProfile.findUnique({ where: { id: styleProfileId } })
-      : null;
-
     const postsRequested = automation.posts_per_run;
     const language = DEFAULT_GENERATION_LANGUAGE;
-    const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
-
-    const draftDocumentIds = await this.generateImagesForDrafts(
-      drafts,
-      project,
-      automation.generate_images,
-      automation.image_count,
-    );
+    const status =
+      automation.output_stage === AutomationOutputStage.PUBLISH
+        ? PostStatus.READY
+        : automation.output_stage === AutomationOutputStage.REVIEW
+          ? PostStatus.REVIEW
+          : PostStatus.DRAFT;
 
     const { created_by_user_id: authorUserId } = await this.prisma.organisation.findUniqueOrThrow({
       where: { id: project.organisation_id },
     });
 
+    if (project.platform === PostType.BLOG) {
+      const styleProfileId = automation.style_profile_id ?? null;
+      const styleProfile = styleProfileId
+        ? await this.prisma.styleProfile.findUnique({ where: { id: styleProfileId } })
+        : null;
+
+      const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
+      const draftDocumentIds = await this.generateImagesForIdeas(
+        drafts.length,
+        (index) => this.draftSubject(drafts[index]),
+        project,
+        automation.generate_images,
+        automation.image_count,
+      );
+
+      return this.persistRun({
+        project,
+        channels: [],
+        styleProfileId,
+        automationId: automation.id,
+        label: `Automation: ${automation.name}`,
+        postsRequested,
+        language,
+        authorUserId,
+        drafts,
+        draftDocumentIds,
+        status,
+      });
+    }
+
+    const ownedProject = await this.projectsService.findOwned(authorUserId, project.id);
+    const channels = ownedProject.channels.length ? ownedProject.channels : [toSocialChannel(project.platform)];
+    const channelStyleProfiles = this.resolveChannelStyleProfiles(ownedProject, channels);
+    const drafts = await this.generateMultiChannelDrafts(project, channels, channelStyleProfiles, postsRequested, language);
+    const draftDocumentIds = await this.generateImagesForIdeas(
+      drafts.length,
+      (index) => this.multiChannelDraftSubject(drafts[index], channels),
+      project,
+      automation.generate_images,
+      automation.image_count,
+    );
+
     return this.persistRun({
       project,
-      styleProfileId,
+      channels,
+      channelStyleProfiles,
+      styleProfileId: null,
       automationId: automation.id,
       label: `Automation: ${automation.name}`,
       postsRequested,
@@ -342,12 +534,7 @@ ${
       authorUserId,
       drafts,
       draftDocumentIds,
-      status:
-        automation.output_stage === AutomationOutputStage.PUBLISH
-          ? PostStatus.READY
-          : automation.output_stage === AutomationOutputStage.REVIEW
-            ? PostStatus.REVIEW
-            : PostStatus.DRAFT,
+      status,
     });
   }
 
@@ -377,8 +564,9 @@ ${
       items.map((item) => this.generateRssDraft(item, styleProfile, language)),
     );
 
-    const draftDocumentIds = await this.generateImagesForDrafts(
-      drafts,
+    const draftDocumentIds = await this.generateImagesForIdeas(
+      drafts.length,
+      (index) => this.draftSubject(drafts[index]),
       project,
       automation.generate_images,
       automation.image_count,
@@ -390,6 +578,7 @@ ${
 
     return this.persistRun({
       project,
+      channels: [],
       styleProfileId,
       automationId: automation.id,
       label: `Automation: ${automation.name}`,
@@ -410,13 +599,15 @@ ${
 
   private async persistRun(params: {
     project: Project;
-    styleProfileId: string | null;
+    channels: SocialChannel[]; // [] means BLOG (single post per idea); non-empty means one post per idea per channel
+    channelStyleProfiles?: Partial<Record<SocialChannel, StyleProfile | null>>;
+    styleProfileId: string | null; // BLOG only — social posts' style_profile_id is resolved per channel
     automationId: string | null;
     label?: string | null;
     postsRequested: number;
     language: string;
     authorUserId: string;
-    drafts: Draft[];
+    drafts: (Draft | MultiChannelDraft)[];
     status?: PostStatus;
     draftDocumentIds?: string[][];
     rssFeedItemIds?: string[];
@@ -424,6 +615,8 @@ ${
   }) {
     const {
       project,
+      channels,
+      channelStyleProfiles,
       styleProfileId,
       automationId,
       label,
@@ -436,6 +629,7 @@ ${
       rssFeedItemIds,
       existingRunId,
     } = params;
+    const isSocial = channels.length > 0;
 
     return this.prisma.$transaction(async (tx) => {
       const run = existingRunId
@@ -454,42 +648,94 @@ ${
             },
           });
 
-      const posts = await Promise.all(
+      const postsPerIdea = await Promise.all(
         drafts.map(async (draft, index) => {
-          const post = await tx.post.create({
+          const item = await tx.generationItem.create({
             data: {
-              user_id: authorUserId,
-              organisation_id: project.organisation_id,
-              project_id: project.id,
-              style_profile_id: styleProfileId,
               generation_run_id: run.id,
-              rss_feed_item_id: rssFeedItemIds?.[index] ?? null,
-              automation_id: automationId,
-              type: project.platform,
-              status: status ?? PostStatus.DRAFT,
-              hook: draft.hook,
-              body: draft.body,
-              title: draft.title,
-              excerpt: draft.excerpt,
-              seo_title: draft.seo_title,
-              seo_description: draft.seo_description,
+              order: index,
+              topic: isSocial ? ((draft as MultiChannelDraft).topic ?? null) : null,
             },
           });
 
           const documentIds = draftDocumentIds?.[index] ?? [];
-          if (documentIds.length) {
-            await tx.postAttachment.createMany({
-              data: documentIds.map((documentId, order) => ({
-                post_id: post.id,
-                document_id: documentId,
-                order,
-              })),
+
+          const createPost = async (data: {
+            type: PostType;
+            style_profile_id: string | null;
+            hook?: string;
+            body?: string;
+            title?: string;
+            excerpt?: string;
+            seo_title?: string;
+            seo_description?: string;
+          }) => {
+            const post = await tx.post.create({
+              data: {
+                user_id: authorUserId,
+                organisation_id: project.organisation_id,
+                project_id: project.id,
+                style_profile_id: data.style_profile_id,
+                generation_run_id: run.id,
+                generation_item_id: item.id,
+                rss_feed_item_id: rssFeedItemIds?.[index] ?? null,
+                automation_id: automationId,
+                type: data.type,
+                status: status ?? PostStatus.DRAFT,
+                hook: data.hook,
+                body: data.body,
+                title: data.title,
+                excerpt: data.excerpt,
+                seo_title: data.seo_title,
+                seo_description: data.seo_description,
+              },
             });
+
+            if (documentIds.length) {
+              await tx.postAttachment.createMany({
+                data: documentIds.map((documentId, order) => ({
+                  post_id: post.id,
+                  document_id: documentId,
+                  order,
+                })),
+              });
+            }
+
+            return post;
+          };
+
+          if (!isSocial) {
+            const blogDraft = draft as Draft;
+            return [
+              await createPost({
+                type: PostType.BLOG,
+                style_profile_id: styleProfileId,
+                hook: blogDraft.hook,
+                body: blogDraft.body,
+                title: blogDraft.title,
+                excerpt: blogDraft.excerpt,
+                seo_title: blogDraft.seo_title,
+                seo_description: blogDraft.seo_description,
+              }),
+            ];
           }
 
-          return post;
+          const multiDraft = draft as MultiChannelDraft;
+          return Promise.all(
+            channels.map((channel) => {
+              const variant = multiDraft[channel];
+              return createPost({
+                type: toPostType(channel),
+                style_profile_id: channelStyleProfiles?.[channel]?.id ?? null,
+                hook: variant?.hook,
+                body: variant?.body,
+              });
+            }),
+          );
         }),
       );
+
+      const posts = postsPerIdea.flat();
 
       if (rssFeedItemIds?.length) {
         await tx.rssFeedItem.updateMany({
@@ -542,7 +788,12 @@ ${
     const run = await this.prisma.generationRun.findUnique({
       where: { id },
       include: {
-        posts: { include: { attachments: { include: { document: true } } } },
+        items: {
+          orderBy: { order: 'asc' },
+          include: {
+            posts: { include: { attachments: { include: { document: true } } } },
+          },
+        },
       },
     });
     if (!run) throw new NotFoundException('Generation run not found');

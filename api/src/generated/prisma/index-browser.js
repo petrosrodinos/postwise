@@ -222,6 +222,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   title: 'title',
   description: 'description',
   platform: 'platform',
+  channels: 'channels',
   pillars: 'pillars',
   ideas: 'ideas',
   instructions: 'instructions',
@@ -280,6 +281,14 @@ exports.Prisma.GenerationRunScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.GenerationItemScalarFieldEnum = {
+  id: 'id',
+  generation_run_id: 'generation_run_id',
+  order: 'order',
+  topic: 'topic',
+  created_at: 'created_at'
+};
+
 exports.Prisma.AutomationScalarFieldEnum = {
   id: 'id',
   project_id: 'project_id',
@@ -308,6 +317,7 @@ exports.Prisma.PostScalarFieldEnum = {
   project_id: 'project_id',
   style_profile_id: 'style_profile_id',
   generation_run_id: 'generation_run_id',
+  generation_item_id: 'generation_item_id',
   source_post_id: 'source_post_id',
   rss_feed_item_id: 'rss_feed_item_id',
   automation_id: 'automation_id',
@@ -547,6 +557,7 @@ exports.Prisma.ModelName = {
   RssFeedItem: 'RssFeedItem',
   ProjectStyleProfile: 'ProjectStyleProfile',
   GenerationRun: 'GenerationRun',
+  GenerationItem: 'GenerationItem',
   Automation: 'Automation',
   Post: 'Post',
   PostAttachment: 'PostAttachment',

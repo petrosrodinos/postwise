@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TagInput } from "@/components/ui/tag-input";
 import { ChipListEditor } from "@/components/ui/chip-list-editor";
-import { PlatformPicker } from "@/components/ui/platform-picker";
+import { ChannelMultiPicker } from "@/components/ui/platform-picker";
 import { cn } from "@/lib/utils";
 import { useGenerateProjectDetails } from "@/features/projects/hooks/use-projects";
-import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
+import { PostTypes, type PostType } from "@/features/posts/interfaces/posts.interfaces";
+import { SocialChannels, type SocialChannel } from "@/features/social-channel-connections/interfaces/social-channel-connections.interfaces";
 import type { StyleProfile } from "@/features/style-profiles/interfaces/style-profiles.interfaces";
 import type { RssFeed } from "@/features/rss-feeds/interfaces/rss-feeds.interfaces";
 import type { CreateProjectFormData } from "@/pages/dashboard/validation-schemas/project.schema";
@@ -32,11 +33,32 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
   const title = form.watch("title");
   const description = form.watch("description");
   const platform = form.watch("platform");
+  const channels = form.watch("channels");
   const pillars = form.watch("pillars");
   const ideas = form.watch("ideas");
   const instructions = form.watch("instructions");
   const aiDirections = form.watch("ai_directions");
   const styleProfileIds = form.watch("style_profile_ids");
+
+  const isBlogContent = platform === PostTypes.BLOG;
+
+  function handleContentTypeChange(type: "blog" | "social") {
+    if (type === "blog") {
+      form.setValue("platform", PostTypes.BLOG, { shouldDirty: true });
+      form.setValue("channels", [], { shouldDirty: true });
+      return;
+    }
+    const nextChannels = channels.length ? channels : [SocialChannels.LINKEDIN];
+    form.setValue("channels", nextChannels, { shouldDirty: true });
+    form.setValue("platform", nextChannels[0] as PostType, { shouldDirty: true });
+  }
+
+  function handleChannelsChange(next: SocialChannel[]) {
+    form.setValue("channels", next, { shouldDirty: true, shouldValidate: true });
+    if (next.length) {
+      form.setValue("platform", next[0] as PostType, { shouldDirty: true });
+    }
+  }
 
   async function handleGenerateWithAi() {
     const titleValid = await form.trigger("title");
@@ -90,19 +112,49 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="platform"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Platform</FormLabel>
-                    <FormControl>
-                      <PlatformPicker value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <FormItem>
+                <FormLabel>Content type</FormLabel>
+                <FormControl>
+                  <div className="inline-flex rounded-lg border border-input p-1">
+                    {(
+                      [
+                        { id: "social", label: "Social posts" },
+                        { id: "blog", label: "Blog" },
+                      ] as const
+                    ).map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        className={cn(
+                          "flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+                          (option.id === "blog") === isBlogContent
+                            ? "bg-foreground text-background"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                        onClick={() => handleContentTypeChange(option.id)}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </FormControl>
+              </FormItem>
+
+              {!isBlogContent && (
+                <FormField
+                  control={form.control}
+                  name="channels"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel>Channels</FormLabel>
+                      <FormControl>
+                        <ChannelMultiPicker value={channels} onChange={handleChannelsChange} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
             </CardContent>
           </Card>
 
@@ -277,6 +329,7 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
         <ProjectPreviewCard
           title={title}
           platform={platform}
+          channels={channels}
           pillars={pillars}
           ideasCount={ideas.length}
           instructionsCount={instructions.length}

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { AiService } from '@/integrations/ai/services/ai.service';
 import { LinkedInScraperService } from '@/integrations/apify/linkedin-scraper/services/linkedin-scraper.service';
+import { TwitterScraperService } from '@/integrations/apify/twitter-scraper/services/twitter-scraper.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
 import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
@@ -11,10 +12,10 @@ import { ActivityLogAction, ActivityLogEntityType, OrganisationRole, PostType } 
 import { CreateStyleProfileDto } from './dto/create-style-profile.dto';
 import { UpdateStyleProfileDto } from './dto/update-style-profile.dto';
 import { AnalyzeStyleProfileDto } from './dto/analyze-style-profile.dto';
-import { ScrapeLinkedInPostsDto } from './dto/scrape-linkedin-posts.dto';
+import { ScrapePostsDto } from './dto/scrape-posts.dto';
 import { StyleProfilesQueryType } from './dto/style-profiles-query.schema';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
-import { ScrapedLinkedInPost } from './interfaces/style-profiles.interface';
+import { ScrapedPost } from './interfaces/style-profiles.interface';
 
 const MANAGE_ROLES: OrganisationRole[] = [
   OrganisationRole.OWNER,
@@ -39,6 +40,7 @@ export class StyleProfilesService {
     private readonly prisma: PrismaService,
     private readonly aiService: AiService,
     private readonly linkedInScraperService: LinkedInScraperService,
+    private readonly twitterScraperService: TwitterScraperService,
     private readonly ownershipService: OwnershipService,
     private readonly activityLogsService: ActivityLogsService,
   ) {}
@@ -245,20 +247,30 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
     return updated;
   }
 
-  async scrapeLinkedInPosts(
+  async scrapePosts(
     userId: string,
     id: string,
-    dto: ScrapeLinkedInPostsDto,
-  ): Promise<ScrapedLinkedInPost[]> {
+    dto: ScrapePostsDto,
+  ): Promise<ScrapedPost[]> {
     const profile = await this.findOwned(userId, id);
     await this.assertManage(userId, profile);
 
-    if (profile.platform !== PostType.LINKEDIN) {
-      throw new BadRequestException(
-        'Scraping is only supported for LinkedIn style profiles',
-      );
+    switch (profile.platform) {
+      case PostType.LINKEDIN:
+        return this.scrapeLinkedInPosts(profile, dto);
+      case PostType.TWITTER:
+        return this.scrapeTwitterPosts(profile, dto);
+      default:
+        throw new BadRequestException(
+          `Scraping is not supported for ${profile.platform} style profiles`,
+        );
     }
+  }
 
+  private async scrapeLinkedInPosts(
+    profile: { id: string; source_url: string | null },
+    dto: ScrapePostsDto,
+  ): Promise<ScrapedPost[]> {
     const sourceUrl = dto.source_url ?? profile.source_url;
     if (!sourceUrl) {
       throw new BadRequestException(
@@ -277,13 +289,43 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
     return posts
       .filter((post) => post.content?.trim())
       .map((post, index) => ({
-        id: post.id ?? post.linkedinUrl ?? `${id}-${index}`,
+        id: post.id ?? post.linkedinUrl ?? `${profile.id}-${index}`,
         url: post.linkedinUrl,
         text: post.content!.trim(),
         posted_at: post.postedAt?.date,
         author_name: post.author?.name,
         likes: post.engagement?.likes,
         comments: post.engagement?.comments,
+      }));
+  }
+
+  private async scrapeTwitterPosts(
+    profile: { id: string; source_url: string | null },
+    dto: ScrapePostsDto,
+  ): Promise<ScrapedPost[]> {
+    const sourceUrl = dto.source_url ?? profile.source_url;
+    if (!sourceUrl) {
+      throw new BadRequestException(
+        'Provide a source_url to scrape posts from',
+      );
+    }
+
+    const posts = await this.twitterScraperService.scrapeProfilePosts({
+      profileUrls: [sourceUrl],
+      resultsLimit: dto.results_limit ?? 30,
+      skipPinnedPosts: dto.skip_pinned_posts,
+    });
+
+    return posts
+      .filter((post) => post.text?.trim())
+      .map((post, index) => ({
+        id: post.id ?? post.url ?? `${profile.id}-${index}`,
+        url: post.url,
+        text: post.text!.trim(),
+        posted_at: post.createdAt,
+        author_name: post.author?.name,
+        likes: post.engagement?.likeCount,
+        comments: post.engagement?.replyCount,
       }));
   }
 }

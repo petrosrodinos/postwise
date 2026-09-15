@@ -12,10 +12,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PostTypeFormOptions } from "@/config/constants/dropdowns/posts/post-type-form.options";
+import { PlatformPicker, PLATFORM_META } from "@/components/ui/platform-picker";
 import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
-import { useCreateStyleProfile, useAnalyzeStyleProfile, useScrapeLinkedInPosts } from "@/features/style-profiles/hooks/use-style-profiles";
-import type { PostedLimit, ScrapedLinkedInPost } from "@/features/style-profiles/interfaces/style-profiles.interfaces";
+import { useCreateStyleProfile, useAnalyzeStyleProfile, useScrapePosts } from "@/features/style-profiles/hooks/use-style-profiles";
+import type { PostedLimit, ScrapedPost } from "@/features/style-profiles/interfaces/style-profiles.interfaces";
 import { Routes } from "@/routes/routes";
 import { analyzeStyleProfileSchema, samplePostsToArray, type AnalyzeStyleProfileFormData } from "../validation-schemas/style-profile.schema";
 
@@ -60,6 +60,8 @@ interface FetchSettings {
   postedLimit: PostedLimit;
   includeReposts: boolean;
   includeQuotePosts: boolean;
+  resultsLimit: number;
+  skipPinnedPosts: boolean;
 }
 
 interface FetchSettingsFieldsProps {
@@ -67,7 +69,7 @@ interface FetchSettingsFieldsProps {
   onChange: (settings: FetchSettings) => void;
 }
 
-function FetchSettingsFields({ settings, onChange }: FetchSettingsFieldsProps) {
+function LinkedInFetchSettingsFields({ settings, onChange }: FetchSettingsFieldsProps) {
   return (
     <div className="grid gap-3">
       <div className="grid grid-cols-2 gap-3">
@@ -117,16 +119,40 @@ function FetchSettingsFields({ settings, onChange }: FetchSettingsFieldsProps) {
   );
 }
 
+function TwitterFetchSettingsFields({ settings, onChange }: FetchSettingsFieldsProps) {
+  return (
+    <div className="grid gap-3">
+      <div className="grid gap-1.5">
+        <label className="text-xs font-medium text-muted-foreground">Posts to fetch</label>
+        <Input
+          type="number"
+          min={1}
+          max={100}
+          value={settings.resultsLimit}
+          onChange={(e) => onChange({ ...settings, resultsLimit: clamp(Number(e.target.value) || 1, 1, 100) })}
+        />
+      </div>
+      <label className="flex items-center gap-2 text-sm">
+        <Checkbox
+          checked={settings.skipPinnedPosts}
+          onCheckedChange={(checked) => onChange({ ...settings, skipPinnedPosts: checked === true })}
+        />
+        Skip pinned posts
+      </label>
+    </div>
+  );
+}
+
 export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogProps) {
   const navigate = useNavigate();
   const { mutateAsync: createStyleProfile, isPending: isCreating } = useCreateStyleProfile();
   const { mutateAsync: analyzeStyleProfile, isPending: isAnalyzing } = useAnalyzeStyleProfile();
-  const { mutateAsync: scrapeLinkedInPosts, isPending: isFetchingPosts } = useScrapeLinkedInPosts();
+  const { mutateAsync: scrapePosts, isPending: isFetchingPosts } = useScrapePosts();
   const isPending = isCreating || isAnalyzing || isFetchingPosts;
 
   const [step, setStep] = useState<DialogStep>("details");
   const [profileId, setProfileId] = useState<string | null>(null);
-  const [scrapedPosts, setScrapedPosts] = useState<ScrapedLinkedInPost[]>([]);
+  const [scrapedPosts, setScrapedPosts] = useState<ScrapedPost[]>([]);
   const [manualPostsText, setManualPostsText] = useState("");
   const [sort, setSort] = useState<SortOption>("newest");
   const [minLikes, setMinLikes] = useState(0);
@@ -135,6 +161,8 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
     postedLimit: "any",
     includeReposts: true,
     includeQuotePosts: true,
+    resultsLimit: 30,
+    skipPinnedPosts: false,
   });
 
   const form = useForm<AnalyzeStyleProfileFormData>({
@@ -142,7 +170,11 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
     defaultValues: { name: "", platform: undefined, source_url: "", sample_posts: "" },
   });
 
-  const isLinkedIn = form.watch("platform") === PostTypes.LINKEDIN;
+  const platform = form.watch("platform");
+  const isLinkedIn = platform === PostTypes.LINKEDIN;
+  const isTwitter = platform === PostTypes.TWITTER;
+  const isScrapable = isLinkedIn || isTwitter;
+  const platformLabel = platform ? PLATFORM_META[platform]?.label : undefined;
 
   const visiblePosts = useMemo(
     () => scrapedPosts.filter((post) => (post.likes ?? 0) >= minLikes),
@@ -176,7 +208,14 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
     setManualPostsText("");
     setSort("newest");
     setMinLikes(0);
-    setFetchSettings({ maxPosts: 20, postedLimit: "any", includeReposts: true, includeQuotePosts: true });
+    setFetchSettings({
+      maxPosts: 20,
+      postedLimit: "any",
+      includeReposts: true,
+      includeQuotePosts: true,
+      resultsLimit: 30,
+      skipPinnedPosts: false,
+    });
   }
 
   function handleClose() {
@@ -187,6 +226,22 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
 
   function handleDiscard(id: string) {
     setScrapedPosts((prev) => prev.filter((post) => post.id !== id));
+  }
+
+  function buildScrapeDto(sourceUrl?: string) {
+    return isLinkedIn
+      ? {
+          source_url: sourceUrl,
+          max_posts: fetchSettings.maxPosts,
+          posted_limit: fetchSettings.postedLimit,
+          include_reposts: fetchSettings.includeReposts,
+          include_quote_posts: fetchSettings.includeQuotePosts,
+        }
+      : {
+          source_url: sourceUrl,
+          results_limit: fetchSettings.resultsLimit,
+          skip_pinned_posts: fetchSettings.skipPinnedPosts,
+        };
   }
 
   async function handleFetchPosts(data: AnalyzeStyleProfileFormData) {
@@ -201,16 +256,7 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
       setProfileId(id);
     }
 
-    const posts = await scrapeLinkedInPosts({
-      id,
-      dto: {
-        source_url: data.source_url,
-        max_posts: fetchSettings.maxPosts,
-        posted_limit: fetchSettings.postedLimit,
-        include_reposts: fetchSettings.includeReposts,
-        include_quote_posts: fetchSettings.includeQuotePosts,
-      },
-    });
+    const posts = await scrapePosts({ id, dto: buildScrapeDto(data.source_url) });
 
     setScrapedPosts(posts);
     setStep("review");
@@ -220,16 +266,7 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
     const sourceUrl = form.getValues("source_url");
     if (!profileId || !sourceUrl) return;
 
-    const posts = await scrapeLinkedInPosts({
-      id: profileId,
-      dto: {
-        source_url: sourceUrl,
-        max_posts: fetchSettings.maxPosts,
-        posted_limit: fetchSettings.postedLimit,
-        include_reposts: fetchSettings.includeReposts,
-        include_quote_posts: fetchSettings.includeQuotePosts,
-      },
-    });
+    const posts = await scrapePosts({ id: profileId, dto: buildScrapeDto(sourceUrl) });
 
     setScrapedPosts(posts);
   }
@@ -246,9 +283,9 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
   }
 
   async function onSubmit(data: AnalyzeStyleProfileFormData) {
-    if (isLinkedIn) {
+    if (isScrapable) {
       if (!data.source_url) {
-        form.setError("source_url", { message: "Enter a LinkedIn profile or company URL to fetch posts" });
+        form.setError("source_url", { message: `Enter a ${platformLabel ?? "profile"} URL to fetch posts` });
         return;
       }
       await handleFetchPosts(data);
@@ -280,8 +317,8 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
           <DialogDescription>
             {step === "review"
               ? "Discard anything that doesn't fit, then run the analysis."
-              : isLinkedIn
-                ? "We'll fetch this creator's recent LinkedIn posts for you to review before analyzing."
+              : isScrapable
+                ? `We'll fetch this creator's recent ${platformLabel} posts for you to review before analyzing.`
                 : "Build a reusable Style DNA profile from a creator's own writing."}
           </DialogDescription>
         </DialogHeader>
@@ -296,7 +333,7 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
                   <FormItem>
                     <FormLabel>Profile name</FormLabel>
                     <FormControl>
-                      <Input placeholder="My LinkedIn voice" {...field} />
+                      <Input placeholder="My creator voice" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -308,20 +345,9 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Platform</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Choose a platform" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {PostTypeFormOptions.map((option) => (
-                          <SelectItem key={option.id} value={option.id}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <PlatformPicker value={field.value} onChange={field.onChange} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -331,19 +357,23 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
                 name="source_url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Source URL{isLinkedIn ? "" : " (optional)"}</FormLabel>
+                    <FormLabel>Source URL{isScrapable ? "" : " (optional)"}</FormLabel>
                     <FormControl>
-                      <Input placeholder="linkedin.com/in/username" {...field} />
+                      <Input placeholder={isTwitter ? "x.com/username" : "linkedin.com/in/username"} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {isLinkedIn ? (
+              {isScrapable ? (
                 <div className="grid gap-2 rounded-lg border border-border p-3">
                   <p className="text-xs font-medium text-muted-foreground">Fetch settings</p>
-                  <FetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
+                  {isLinkedIn ? (
+                    <LinkedInFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
+                  ) : (
+                    <TwitterFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
+                  )}
                 </div>
               ) : (
                 <FormField
@@ -374,7 +404,7 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
                   Cancel
                 </Button>
                 <Button type="submit" disabled={isPending} loading={isPending}>
-                  {isLinkedIn ? "Fetch posts" : "Analyze creator"}
+                  {isScrapable ? "Fetch posts" : "Analyze creator"}
                 </Button>
               </DialogFooter>
             </form>
@@ -388,7 +418,11 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
                   Re-fetch
                 </Button>
               </div>
-              <FetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
+              {isLinkedIn ? (
+                <LinkedInFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
+              ) : (
+                <TwitterFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
+              )}
               <p className="text-xs text-muted-foreground">Re-fetching replaces the list below.</p>
             </div>
 

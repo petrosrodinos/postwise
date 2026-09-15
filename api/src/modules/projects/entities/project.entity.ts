@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PostType } from 'generated/prisma';
+import { PostType, SocialChannel } from 'generated/prisma';
 
 export class ProjectEntity {
   @ApiProperty()
@@ -16,6 +16,9 @@ export class ProjectEntity {
 
   @ApiProperty({ enum: PostType })
   platform: PostType;
+
+  @ApiProperty({ enum: SocialChannel, isArray: true })
+  channels: SocialChannel[];
 
   @ApiProperty({ type: [String] })
   pillars: string[];

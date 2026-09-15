@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { GenerationItemEntity } from './generation-item.entity';
 
 export class GenerationRunEntity {
   @ApiProperty()
@@ -24,4 +25,7 @@ export class GenerationRunEntity {
 
   @ApiProperty()
   created_at: Date;
+
+  @ApiProperty({ type: [GenerationItemEntity], required: false })
+  items?: GenerationItemEntity[];
 }

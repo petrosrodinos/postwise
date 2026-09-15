@@ -84,6 +84,11 @@ export type ProjectStyleProfile = $Result.DefaultSelection<Prisma.$ProjectStyleP
  */
 export type GenerationRun = $Result.DefaultSelection<Prisma.$GenerationRunPayload>
 /**
+ * Model GenerationItem
+ * 
+ */
+export type GenerationItem = $Result.DefaultSelection<Prisma.$GenerationItemPayload>
+/**
  * Model Automation
  * 
  */
@@ -608,6 +613,16 @@ export class PrismaClient<
   get generationRun(): Prisma.GenerationRunDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.generationItem`: Exposes CRUD operations for the **GenerationItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GenerationItems
+    * const generationItems = await prisma.generationItem.findMany()
+    * ```
+    */
+  get generationItem(): Prisma.GenerationItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.automation`: Exposes CRUD operations for the **Automation** model.
     * Example usage:
     * ```ts
@@ -1104,6 +1119,7 @@ export namespace Prisma {
     RssFeedItem: 'RssFeedItem',
     ProjectStyleProfile: 'ProjectStyleProfile',
     GenerationRun: 'GenerationRun',
+    GenerationItem: 'GenerationItem',
     Automation: 'Automation',
     Post: 'Post',
     PostAttachment: 'PostAttachment',
@@ -1124,7 +1140,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "passwordResetToken" | "document" | "organisation" | "organisationMember" | "organisationInviteToken" | "socialChannelConnection" | "styleProfile" | "project" | "rssFeed" | "projectRssFeed" | "rssFeedItem" | "projectStyleProfile" | "generationRun" | "automation" | "post" | "postAttachment" | "postChannel" | "activityLog"
+      modelProps: "user" | "passwordResetToken" | "document" | "organisation" | "organisationMember" | "organisationInviteToken" | "socialChannelConnection" | "styleProfile" | "project" | "rssFeed" | "projectRssFeed" | "rssFeedItem" | "projectStyleProfile" | "generationRun" | "generationItem" | "automation" | "post" | "postAttachment" | "postChannel" | "activityLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2164,6 +2180,80 @@ export namespace Prisma {
           }
         }
       }
+      GenerationItem: {
+        payload: Prisma.$GenerationItemPayload<ExtArgs>
+        fields: Prisma.GenerationItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GenerationItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GenerationItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload>
+          }
+          findFirst: {
+            args: Prisma.GenerationItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GenerationItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload>
+          }
+          findMany: {
+            args: Prisma.GenerationItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload>[]
+          }
+          create: {
+            args: Prisma.GenerationItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload>
+          }
+          createMany: {
+            args: Prisma.GenerationItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GenerationItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload>[]
+          }
+          delete: {
+            args: Prisma.GenerationItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload>
+          }
+          update: {
+            args: Prisma.GenerationItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.GenerationItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GenerationItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GenerationItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.GenerationItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenerationItemPayload>
+          }
+          aggregate: {
+            args: Prisma.GenerationItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGenerationItem>
+          }
+          groupBy: {
+            args: Prisma.GenerationItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GenerationItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GenerationItemCountArgs<ExtArgs>
+            result: $Utils.Optional<GenerationItemCountAggregateOutputType> | number
+          }
+        }
+      }
       Automation: {
         payload: Prisma.$AutomationPayload<ExtArgs>
         fields: Prisma.AutomationFieldRefs
@@ -2656,6 +2746,7 @@ export namespace Prisma {
     rssFeedItem?: RssFeedItemOmit
     projectStyleProfile?: ProjectStyleProfileOmit
     generationRun?: GenerationRunOmit
+    generationItem?: GenerationItemOmit
     automation?: AutomationOmit
     post?: PostOmit
     postAttachment?: PostAttachmentOmit
@@ -3210,10 +3301,12 @@ export namespace Prisma {
 
   export type GenerationRunCountOutputType = {
     posts: number
+    items: number
   }
 
   export type GenerationRunCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | GenerationRunCountOutputTypeCountPostsArgs
+    items?: boolean | GenerationRunCountOutputTypeCountItemsArgs
   }
 
   // Custom InputTypes
@@ -3231,6 +3324,44 @@ export namespace Prisma {
    * GenerationRunCountOutputType without action
    */
   export type GenerationRunCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostWhereInput
+  }
+
+  /**
+   * GenerationRunCountOutputType without action
+   */
+  export type GenerationRunCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GenerationItemWhereInput
+  }
+
+
+  /**
+   * Count Type GenerationItemCountOutputType
+   */
+
+  export type GenerationItemCountOutputType = {
+    posts: number
+  }
+
+  export type GenerationItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    posts?: boolean | GenerationItemCountOutputTypeCountPostsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * GenerationItemCountOutputType without action
+   */
+  export type GenerationItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItemCountOutputType
+     */
+    select?: GenerationItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GenerationItemCountOutputType without action
+   */
+  export type GenerationItemCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
   }
 
@@ -12918,6 +13049,7 @@ export namespace Prisma {
     title: number
     description: number
     platform: number
+    channels: number
     pillars: number
     ideas: number
     instructions: number
@@ -12959,6 +13091,7 @@ export namespace Prisma {
     title?: true
     description?: true
     platform?: true
+    channels?: true
     pillars?: true
     ideas?: true
     instructions?: true
@@ -13047,6 +13180,7 @@ export namespace Prisma {
     title: string
     description: string | null
     platform: $Enums.PostType
+    channels: $Enums.SocialChannel[]
     pillars: string[]
     ideas: string[]
     instructions: string[]
@@ -13079,6 +13213,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     platform?: boolean
+    channels?: boolean
     pillars?: boolean
     ideas?: boolean
     instructions?: boolean
@@ -13101,6 +13236,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     platform?: boolean
+    channels?: boolean
     pillars?: boolean
     ideas?: boolean
     instructions?: boolean
@@ -13117,6 +13253,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     platform?: boolean
+    channels?: boolean
     pillars?: boolean
     ideas?: boolean
     instructions?: boolean
@@ -13133,6 +13270,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     platform?: boolean
+    channels?: boolean
     pillars?: boolean
     ideas?: boolean
     instructions?: boolean
@@ -13142,7 +13280,7 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "title" | "description" | "platform" | "pillars" | "ideas" | "instructions" | "ai_directions" | "is_archived" | "created_at" | "updated_at", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "title" | "description" | "platform" | "channels" | "pillars" | "ideas" | "instructions" | "ai_directions" | "is_archived" | "created_at" | "updated_at", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     style_profiles?: boolean | Project$style_profilesArgs<ExtArgs>
@@ -13175,6 +13313,7 @@ export namespace Prisma {
       title: string
       description: string | null
       platform: $Enums.PostType
+      channels: $Enums.SocialChannel[]
       pillars: string[]
       ideas: string[]
       instructions: string[]
@@ -13616,6 +13755,7 @@ export namespace Prisma {
     readonly title: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
     readonly platform: FieldRef<"Project", 'PostType'>
+    readonly channels: FieldRef<"Project", 'SocialChannel[]'>
     readonly pillars: FieldRef<"Project", 'String[]'>
     readonly ideas: FieldRef<"Project", 'String[]'>
     readonly instructions: FieldRef<"Project", 'String[]'>
@@ -18825,6 +18965,7 @@ export namespace Prisma {
     style_profile?: boolean | GenerationRun$style_profileArgs<ExtArgs>
     automation?: boolean | GenerationRun$automationArgs<ExtArgs>
     posts?: boolean | GenerationRun$postsArgs<ExtArgs>
+    items?: boolean | GenerationRun$itemsArgs<ExtArgs>
     _count?: boolean | GenerationRunCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["generationRun"]>
 
@@ -18873,6 +19014,7 @@ export namespace Prisma {
     style_profile?: boolean | GenerationRun$style_profileArgs<ExtArgs>
     automation?: boolean | GenerationRun$automationArgs<ExtArgs>
     posts?: boolean | GenerationRun$postsArgs<ExtArgs>
+    items?: boolean | GenerationRun$itemsArgs<ExtArgs>
     _count?: boolean | GenerationRunCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GenerationRunIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18893,6 +19035,7 @@ export namespace Prisma {
       style_profile: Prisma.$StyleProfilePayload<ExtArgs> | null
       automation: Prisma.$AutomationPayload<ExtArgs> | null
       posts: Prisma.$PostPayload<ExtArgs>[]
+      items: Prisma.$GenerationItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19301,6 +19444,7 @@ export namespace Prisma {
     style_profile<T extends GenerationRun$style_profileArgs<ExtArgs> = {}>(args?: Subset<T, GenerationRun$style_profileArgs<ExtArgs>>): Prisma__StyleProfileClient<$Result.GetResult<Prisma.$StyleProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     automation<T extends GenerationRun$automationArgs<ExtArgs> = {}>(args?: Subset<T, GenerationRun$automationArgs<ExtArgs>>): Prisma__AutomationClient<$Result.GetResult<Prisma.$AutomationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     posts<T extends GenerationRun$postsArgs<ExtArgs> = {}>(args?: Subset<T, GenerationRun$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    items<T extends GenerationRun$itemsArgs<ExtArgs> = {}>(args?: Subset<T, GenerationRun$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19796,6 +19940,30 @@ export namespace Prisma {
   }
 
   /**
+   * GenerationRun.items
+   */
+  export type GenerationRun$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    where?: GenerationItemWhereInput
+    orderBy?: GenerationItemOrderByWithRelationInput | GenerationItemOrderByWithRelationInput[]
+    cursor?: GenerationItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GenerationItemScalarFieldEnum | GenerationItemScalarFieldEnum[]
+  }
+
+  /**
    * GenerationRun without action
    */
   export type GenerationRunDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19811,6 +19979,1128 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: GenerationRunInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GenerationItem
+   */
+
+  export type AggregateGenerationItem = {
+    _count: GenerationItemCountAggregateOutputType | null
+    _avg: GenerationItemAvgAggregateOutputType | null
+    _sum: GenerationItemSumAggregateOutputType | null
+    _min: GenerationItemMinAggregateOutputType | null
+    _max: GenerationItemMaxAggregateOutputType | null
+  }
+
+  export type GenerationItemAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type GenerationItemSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type GenerationItemMinAggregateOutputType = {
+    id: string | null
+    generation_run_id: string | null
+    order: number | null
+    topic: string | null
+    created_at: Date | null
+  }
+
+  export type GenerationItemMaxAggregateOutputType = {
+    id: string | null
+    generation_run_id: string | null
+    order: number | null
+    topic: string | null
+    created_at: Date | null
+  }
+
+  export type GenerationItemCountAggregateOutputType = {
+    id: number
+    generation_run_id: number
+    order: number
+    topic: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type GenerationItemAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type GenerationItemSumAggregateInputType = {
+    order?: true
+  }
+
+  export type GenerationItemMinAggregateInputType = {
+    id?: true
+    generation_run_id?: true
+    order?: true
+    topic?: true
+    created_at?: true
+  }
+
+  export type GenerationItemMaxAggregateInputType = {
+    id?: true
+    generation_run_id?: true
+    order?: true
+    topic?: true
+    created_at?: true
+  }
+
+  export type GenerationItemCountAggregateInputType = {
+    id?: true
+    generation_run_id?: true
+    order?: true
+    topic?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type GenerationItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GenerationItem to aggregate.
+     */
+    where?: GenerationItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenerationItems to fetch.
+     */
+    orderBy?: GenerationItemOrderByWithRelationInput | GenerationItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GenerationItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenerationItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenerationItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GenerationItems
+    **/
+    _count?: true | GenerationItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GenerationItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GenerationItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GenerationItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GenerationItemMaxAggregateInputType
+  }
+
+  export type GetGenerationItemAggregateType<T extends GenerationItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateGenerationItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGenerationItem[P]>
+      : GetScalarType<T[P], AggregateGenerationItem[P]>
+  }
+
+
+
+
+  export type GenerationItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GenerationItemWhereInput
+    orderBy?: GenerationItemOrderByWithAggregationInput | GenerationItemOrderByWithAggregationInput[]
+    by: GenerationItemScalarFieldEnum[] | GenerationItemScalarFieldEnum
+    having?: GenerationItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GenerationItemCountAggregateInputType | true
+    _avg?: GenerationItemAvgAggregateInputType
+    _sum?: GenerationItemSumAggregateInputType
+    _min?: GenerationItemMinAggregateInputType
+    _max?: GenerationItemMaxAggregateInputType
+  }
+
+  export type GenerationItemGroupByOutputType = {
+    id: string
+    generation_run_id: string
+    order: number
+    topic: string | null
+    created_at: Date
+    _count: GenerationItemCountAggregateOutputType | null
+    _avg: GenerationItemAvgAggregateOutputType | null
+    _sum: GenerationItemSumAggregateOutputType | null
+    _min: GenerationItemMinAggregateOutputType | null
+    _max: GenerationItemMaxAggregateOutputType | null
+  }
+
+  type GetGenerationItemGroupByPayload<T extends GenerationItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GenerationItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GenerationItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GenerationItemGroupByOutputType[P]>
+            : GetScalarType<T[P], GenerationItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GenerationItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    generation_run_id?: boolean
+    order?: boolean
+    topic?: boolean
+    created_at?: boolean
+    generation_run?: boolean | GenerationRunDefaultArgs<ExtArgs>
+    posts?: boolean | GenerationItem$postsArgs<ExtArgs>
+    _count?: boolean | GenerationItemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["generationItem"]>
+
+  export type GenerationItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    generation_run_id?: boolean
+    order?: boolean
+    topic?: boolean
+    created_at?: boolean
+    generation_run?: boolean | GenerationRunDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["generationItem"]>
+
+  export type GenerationItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    generation_run_id?: boolean
+    order?: boolean
+    topic?: boolean
+    created_at?: boolean
+    generation_run?: boolean | GenerationRunDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["generationItem"]>
+
+  export type GenerationItemSelectScalar = {
+    id?: boolean
+    generation_run_id?: boolean
+    order?: boolean
+    topic?: boolean
+    created_at?: boolean
+  }
+
+  export type GenerationItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "generation_run_id" | "order" | "topic" | "created_at", ExtArgs["result"]["generationItem"]>
+  export type GenerationItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    generation_run?: boolean | GenerationRunDefaultArgs<ExtArgs>
+    posts?: boolean | GenerationItem$postsArgs<ExtArgs>
+    _count?: boolean | GenerationItemCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type GenerationItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    generation_run?: boolean | GenerationRunDefaultArgs<ExtArgs>
+  }
+  export type GenerationItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    generation_run?: boolean | GenerationRunDefaultArgs<ExtArgs>
+  }
+
+  export type $GenerationItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GenerationItem"
+    objects: {
+      generation_run: Prisma.$GenerationRunPayload<ExtArgs>
+      posts: Prisma.$PostPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      generation_run_id: string
+      order: number
+      topic: string | null
+      created_at: Date
+    }, ExtArgs["result"]["generationItem"]>
+    composites: {}
+  }
+
+  type GenerationItemGetPayload<S extends boolean | null | undefined | GenerationItemDefaultArgs> = $Result.GetResult<Prisma.$GenerationItemPayload, S>
+
+  type GenerationItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GenerationItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GenerationItemCountAggregateInputType | true
+    }
+
+  export interface GenerationItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GenerationItem'], meta: { name: 'GenerationItem' } }
+    /**
+     * Find zero or one GenerationItem that matches the filter.
+     * @param {GenerationItemFindUniqueArgs} args - Arguments to find a GenerationItem
+     * @example
+     * // Get one GenerationItem
+     * const generationItem = await prisma.generationItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GenerationItemFindUniqueArgs>(args: SelectSubset<T, GenerationItemFindUniqueArgs<ExtArgs>>): Prisma__GenerationItemClient<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GenerationItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GenerationItemFindUniqueOrThrowArgs} args - Arguments to find a GenerationItem
+     * @example
+     * // Get one GenerationItem
+     * const generationItem = await prisma.generationItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GenerationItemFindUniqueOrThrowArgs>(args: SelectSubset<T, GenerationItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GenerationItemClient<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GenerationItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationItemFindFirstArgs} args - Arguments to find a GenerationItem
+     * @example
+     * // Get one GenerationItem
+     * const generationItem = await prisma.generationItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GenerationItemFindFirstArgs>(args?: SelectSubset<T, GenerationItemFindFirstArgs<ExtArgs>>): Prisma__GenerationItemClient<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GenerationItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationItemFindFirstOrThrowArgs} args - Arguments to find a GenerationItem
+     * @example
+     * // Get one GenerationItem
+     * const generationItem = await prisma.generationItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GenerationItemFindFirstOrThrowArgs>(args?: SelectSubset<T, GenerationItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__GenerationItemClient<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GenerationItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GenerationItems
+     * const generationItems = await prisma.generationItem.findMany()
+     * 
+     * // Get first 10 GenerationItems
+     * const generationItems = await prisma.generationItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const generationItemWithIdOnly = await prisma.generationItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GenerationItemFindManyArgs>(args?: SelectSubset<T, GenerationItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GenerationItem.
+     * @param {GenerationItemCreateArgs} args - Arguments to create a GenerationItem.
+     * @example
+     * // Create one GenerationItem
+     * const GenerationItem = await prisma.generationItem.create({
+     *   data: {
+     *     // ... data to create a GenerationItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends GenerationItemCreateArgs>(args: SelectSubset<T, GenerationItemCreateArgs<ExtArgs>>): Prisma__GenerationItemClient<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GenerationItems.
+     * @param {GenerationItemCreateManyArgs} args - Arguments to create many GenerationItems.
+     * @example
+     * // Create many GenerationItems
+     * const generationItem = await prisma.generationItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GenerationItemCreateManyArgs>(args?: SelectSubset<T, GenerationItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GenerationItems and returns the data saved in the database.
+     * @param {GenerationItemCreateManyAndReturnArgs} args - Arguments to create many GenerationItems.
+     * @example
+     * // Create many GenerationItems
+     * const generationItem = await prisma.generationItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GenerationItems and only return the `id`
+     * const generationItemWithIdOnly = await prisma.generationItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GenerationItemCreateManyAndReturnArgs>(args?: SelectSubset<T, GenerationItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GenerationItem.
+     * @param {GenerationItemDeleteArgs} args - Arguments to delete one GenerationItem.
+     * @example
+     * // Delete one GenerationItem
+     * const GenerationItem = await prisma.generationItem.delete({
+     *   where: {
+     *     // ... filter to delete one GenerationItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GenerationItemDeleteArgs>(args: SelectSubset<T, GenerationItemDeleteArgs<ExtArgs>>): Prisma__GenerationItemClient<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GenerationItem.
+     * @param {GenerationItemUpdateArgs} args - Arguments to update one GenerationItem.
+     * @example
+     * // Update one GenerationItem
+     * const generationItem = await prisma.generationItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GenerationItemUpdateArgs>(args: SelectSubset<T, GenerationItemUpdateArgs<ExtArgs>>): Prisma__GenerationItemClient<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GenerationItems.
+     * @param {GenerationItemDeleteManyArgs} args - Arguments to filter GenerationItems to delete.
+     * @example
+     * // Delete a few GenerationItems
+     * const { count } = await prisma.generationItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GenerationItemDeleteManyArgs>(args?: SelectSubset<T, GenerationItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GenerationItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GenerationItems
+     * const generationItem = await prisma.generationItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GenerationItemUpdateManyArgs>(args: SelectSubset<T, GenerationItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GenerationItems and returns the data updated in the database.
+     * @param {GenerationItemUpdateManyAndReturnArgs} args - Arguments to update many GenerationItems.
+     * @example
+     * // Update many GenerationItems
+     * const generationItem = await prisma.generationItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GenerationItems and only return the `id`
+     * const generationItemWithIdOnly = await prisma.generationItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GenerationItemUpdateManyAndReturnArgs>(args: SelectSubset<T, GenerationItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GenerationItem.
+     * @param {GenerationItemUpsertArgs} args - Arguments to update or create a GenerationItem.
+     * @example
+     * // Update or create a GenerationItem
+     * const generationItem = await prisma.generationItem.upsert({
+     *   create: {
+     *     // ... data to create a GenerationItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GenerationItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GenerationItemUpsertArgs>(args: SelectSubset<T, GenerationItemUpsertArgs<ExtArgs>>): Prisma__GenerationItemClient<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GenerationItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationItemCountArgs} args - Arguments to filter GenerationItems to count.
+     * @example
+     * // Count the number of GenerationItems
+     * const count = await prisma.generationItem.count({
+     *   where: {
+     *     // ... the filter for the GenerationItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends GenerationItemCountArgs>(
+      args?: Subset<T, GenerationItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GenerationItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GenerationItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GenerationItemAggregateArgs>(args: Subset<T, GenerationItemAggregateArgs>): Prisma.PrismaPromise<GetGenerationItemAggregateType<T>>
+
+    /**
+     * Group by GenerationItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenerationItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GenerationItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GenerationItemGroupByArgs['orderBy'] }
+        : { orderBy?: GenerationItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GenerationItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGenerationItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GenerationItem model
+   */
+  readonly fields: GenerationItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GenerationItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GenerationItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    generation_run<T extends GenerationRunDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GenerationRunDefaultArgs<ExtArgs>>): Prisma__GenerationRunClient<$Result.GetResult<Prisma.$GenerationRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    posts<T extends GenerationItem$postsArgs<ExtArgs> = {}>(args?: Subset<T, GenerationItem$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GenerationItem model
+   */
+  interface GenerationItemFieldRefs {
+    readonly id: FieldRef<"GenerationItem", 'String'>
+    readonly generation_run_id: FieldRef<"GenerationItem", 'String'>
+    readonly order: FieldRef<"GenerationItem", 'Int'>
+    readonly topic: FieldRef<"GenerationItem", 'String'>
+    readonly created_at: FieldRef<"GenerationItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GenerationItem findUnique
+   */
+  export type GenerationItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationItem to fetch.
+     */
+    where: GenerationItemWhereUniqueInput
+  }
+
+  /**
+   * GenerationItem findUniqueOrThrow
+   */
+  export type GenerationItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationItem to fetch.
+     */
+    where: GenerationItemWhereUniqueInput
+  }
+
+  /**
+   * GenerationItem findFirst
+   */
+  export type GenerationItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationItem to fetch.
+     */
+    where?: GenerationItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenerationItems to fetch.
+     */
+    orderBy?: GenerationItemOrderByWithRelationInput | GenerationItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GenerationItems.
+     */
+    cursor?: GenerationItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenerationItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenerationItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GenerationItems.
+     */
+    distinct?: GenerationItemScalarFieldEnum | GenerationItemScalarFieldEnum[]
+  }
+
+  /**
+   * GenerationItem findFirstOrThrow
+   */
+  export type GenerationItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationItem to fetch.
+     */
+    where?: GenerationItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenerationItems to fetch.
+     */
+    orderBy?: GenerationItemOrderByWithRelationInput | GenerationItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GenerationItems.
+     */
+    cursor?: GenerationItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenerationItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenerationItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GenerationItems.
+     */
+    distinct?: GenerationItemScalarFieldEnum | GenerationItemScalarFieldEnum[]
+  }
+
+  /**
+   * GenerationItem findMany
+   */
+  export type GenerationItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GenerationItems to fetch.
+     */
+    where?: GenerationItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenerationItems to fetch.
+     */
+    orderBy?: GenerationItemOrderByWithRelationInput | GenerationItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GenerationItems.
+     */
+    cursor?: GenerationItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenerationItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenerationItems.
+     */
+    skip?: number
+    distinct?: GenerationItemScalarFieldEnum | GenerationItemScalarFieldEnum[]
+  }
+
+  /**
+   * GenerationItem create
+   */
+  export type GenerationItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GenerationItem.
+     */
+    data: XOR<GenerationItemCreateInput, GenerationItemUncheckedCreateInput>
+  }
+
+  /**
+   * GenerationItem createMany
+   */
+  export type GenerationItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GenerationItems.
+     */
+    data: GenerationItemCreateManyInput | GenerationItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GenerationItem createManyAndReturn
+   */
+  export type GenerationItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many GenerationItems.
+     */
+    data: GenerationItemCreateManyInput | GenerationItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GenerationItem update
+   */
+  export type GenerationItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GenerationItem.
+     */
+    data: XOR<GenerationItemUpdateInput, GenerationItemUncheckedUpdateInput>
+    /**
+     * Choose, which GenerationItem to update.
+     */
+    where: GenerationItemWhereUniqueInput
+  }
+
+  /**
+   * GenerationItem updateMany
+   */
+  export type GenerationItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GenerationItems.
+     */
+    data: XOR<GenerationItemUpdateManyMutationInput, GenerationItemUncheckedUpdateManyInput>
+    /**
+     * Filter which GenerationItems to update
+     */
+    where?: GenerationItemWhereInput
+    /**
+     * Limit how many GenerationItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GenerationItem updateManyAndReturn
+   */
+  export type GenerationItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * The data used to update GenerationItems.
+     */
+    data: XOR<GenerationItemUpdateManyMutationInput, GenerationItemUncheckedUpdateManyInput>
+    /**
+     * Filter which GenerationItems to update
+     */
+    where?: GenerationItemWhereInput
+    /**
+     * Limit how many GenerationItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GenerationItem upsert
+   */
+  export type GenerationItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GenerationItem to update in case it exists.
+     */
+    where: GenerationItemWhereUniqueInput
+    /**
+     * In case the GenerationItem found by the `where` argument doesn't exist, create a new GenerationItem with this data.
+     */
+    create: XOR<GenerationItemCreateInput, GenerationItemUncheckedCreateInput>
+    /**
+     * In case the GenerationItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GenerationItemUpdateInput, GenerationItemUncheckedUpdateInput>
+  }
+
+  /**
+   * GenerationItem delete
+   */
+  export type GenerationItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    /**
+     * Filter which GenerationItem to delete.
+     */
+    where: GenerationItemWhereUniqueInput
+  }
+
+  /**
+   * GenerationItem deleteMany
+   */
+  export type GenerationItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GenerationItems to delete
+     */
+    where?: GenerationItemWhereInput
+    /**
+     * Limit how many GenerationItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GenerationItem.posts
+   */
+  export type GenerationItem$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    cursor?: PostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * GenerationItem without action
+   */
+  export type GenerationItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
   }
 
 
@@ -21208,6 +22498,7 @@ export namespace Prisma {
     project_id: string | null
     style_profile_id: string | null
     generation_run_id: string | null
+    generation_item_id: string | null
     source_post_id: string | null
     rss_feed_item_id: string | null
     automation_id: string | null
@@ -21235,6 +22526,7 @@ export namespace Prisma {
     project_id: string | null
     style_profile_id: string | null
     generation_run_id: string | null
+    generation_item_id: string | null
     source_post_id: string | null
     rss_feed_item_id: string | null
     automation_id: string | null
@@ -21262,6 +22554,7 @@ export namespace Prisma {
     project_id: number
     style_profile_id: number
     generation_run_id: number
+    generation_item_id: number
     source_post_id: number
     rss_feed_item_id: number
     automation_id: number
@@ -21292,6 +22585,7 @@ export namespace Prisma {
     project_id?: true
     style_profile_id?: true
     generation_run_id?: true
+    generation_item_id?: true
     source_post_id?: true
     rss_feed_item_id?: true
     automation_id?: true
@@ -21319,6 +22613,7 @@ export namespace Prisma {
     project_id?: true
     style_profile_id?: true
     generation_run_id?: true
+    generation_item_id?: true
     source_post_id?: true
     rss_feed_item_id?: true
     automation_id?: true
@@ -21346,6 +22641,7 @@ export namespace Prisma {
     project_id?: true
     style_profile_id?: true
     generation_run_id?: true
+    generation_item_id?: true
     source_post_id?: true
     rss_feed_item_id?: true
     automation_id?: true
@@ -21447,6 +22743,7 @@ export namespace Prisma {
     project_id: string | null
     style_profile_id: string | null
     generation_run_id: string | null
+    generation_item_id: string | null
     source_post_id: string | null
     rss_feed_item_id: string | null
     automation_id: string | null
@@ -21492,6 +22789,7 @@ export namespace Prisma {
     project_id?: boolean
     style_profile_id?: boolean
     generation_run_id?: boolean
+    generation_item_id?: boolean
     source_post_id?: boolean
     rss_feed_item_id?: boolean
     automation_id?: boolean
@@ -21516,6 +22814,7 @@ export namespace Prisma {
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
+    generation_item?: boolean | Post$generation_itemArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
     rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     automation?: boolean | Post$automationArgs<ExtArgs>
@@ -21533,6 +22832,7 @@ export namespace Prisma {
     project_id?: boolean
     style_profile_id?: boolean
     generation_run_id?: boolean
+    generation_item_id?: boolean
     source_post_id?: boolean
     rss_feed_item_id?: boolean
     automation_id?: boolean
@@ -21557,6 +22857,7 @@ export namespace Prisma {
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
+    generation_item?: boolean | Post$generation_itemArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
     rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     automation?: boolean | Post$automationArgs<ExtArgs>
@@ -21570,6 +22871,7 @@ export namespace Prisma {
     project_id?: boolean
     style_profile_id?: boolean
     generation_run_id?: boolean
+    generation_item_id?: boolean
     source_post_id?: boolean
     rss_feed_item_id?: boolean
     automation_id?: boolean
@@ -21594,6 +22896,7 @@ export namespace Prisma {
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
+    generation_item?: boolean | Post$generation_itemArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
     rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     automation?: boolean | Post$automationArgs<ExtArgs>
@@ -21607,6 +22910,7 @@ export namespace Prisma {
     project_id?: boolean
     style_profile_id?: boolean
     generation_run_id?: boolean
+    generation_item_id?: boolean
     source_post_id?: boolean
     rss_feed_item_id?: boolean
     automation_id?: boolean
@@ -21628,13 +22932,14 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "organisation_id" | "project_id" | "style_profile_id" | "generation_run_id" | "source_post_id" | "rss_feed_item_id" | "automation_id" | "type" | "status" | "hook" | "body" | "metadata" | "title" | "excerpt" | "cover_document_id" | "seo_title" | "seo_description" | "canonical_url" | "scheduled_at" | "published_at" | "failed_reason" | "created_at" | "updated_at", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "organisation_id" | "project_id" | "style_profile_id" | "generation_run_id" | "generation_item_id" | "source_post_id" | "rss_feed_item_id" | "automation_id" | "type" | "status" | "hook" | "body" | "metadata" | "title" | "excerpt" | "cover_document_id" | "seo_title" | "seo_description" | "canonical_url" | "scheduled_at" | "published_at" | "failed_reason" | "created_at" | "updated_at", ExtArgs["result"]["post"]>
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
+    generation_item?: boolean | Post$generation_itemArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
     rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     automation?: boolean | Post$automationArgs<ExtArgs>
@@ -21650,6 +22955,7 @@ export namespace Prisma {
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
+    generation_item?: boolean | Post$generation_itemArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
     rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     automation?: boolean | Post$automationArgs<ExtArgs>
@@ -21661,6 +22967,7 @@ export namespace Prisma {
     project?: boolean | Post$projectArgs<ExtArgs>
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
+    generation_item?: boolean | Post$generation_itemArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
     rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     automation?: boolean | Post$automationArgs<ExtArgs>
@@ -21675,6 +22982,7 @@ export namespace Prisma {
       project: Prisma.$ProjectPayload<ExtArgs> | null
       style_profile: Prisma.$StyleProfilePayload<ExtArgs> | null
       generation_run: Prisma.$GenerationRunPayload<ExtArgs> | null
+      generation_item: Prisma.$GenerationItemPayload<ExtArgs> | null
       cover_document: Prisma.$DocumentPayload<ExtArgs> | null
       rss_feed_item: Prisma.$RssFeedItemPayload<ExtArgs> | null
       automation: Prisma.$AutomationPayload<ExtArgs> | null
@@ -21690,6 +22998,7 @@ export namespace Prisma {
       project_id: string | null
       style_profile_id: string | null
       generation_run_id: string | null
+      generation_item_id: string | null
       source_post_id: string | null
       rss_feed_item_id: string | null
       automation_id: string | null
@@ -22108,6 +23417,7 @@ export namespace Prisma {
     project<T extends Post$projectArgs<ExtArgs> = {}>(args?: Subset<T, Post$projectArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     style_profile<T extends Post$style_profileArgs<ExtArgs> = {}>(args?: Subset<T, Post$style_profileArgs<ExtArgs>>): Prisma__StyleProfileClient<$Result.GetResult<Prisma.$StyleProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     generation_run<T extends Post$generation_runArgs<ExtArgs> = {}>(args?: Subset<T, Post$generation_runArgs<ExtArgs>>): Prisma__GenerationRunClient<$Result.GetResult<Prisma.$GenerationRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    generation_item<T extends Post$generation_itemArgs<ExtArgs> = {}>(args?: Subset<T, Post$generation_itemArgs<ExtArgs>>): Prisma__GenerationItemClient<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     cover_document<T extends Post$cover_documentArgs<ExtArgs> = {}>(args?: Subset<T, Post$cover_documentArgs<ExtArgs>>): Prisma__DocumentClient<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     rss_feed_item<T extends Post$rss_feed_itemArgs<ExtArgs> = {}>(args?: Subset<T, Post$rss_feed_itemArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     automation<T extends Post$automationArgs<ExtArgs> = {}>(args?: Subset<T, Post$automationArgs<ExtArgs>>): Prisma__AutomationClient<$Result.GetResult<Prisma.$AutomationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -22150,6 +23460,7 @@ export namespace Prisma {
     readonly project_id: FieldRef<"Post", 'String'>
     readonly style_profile_id: FieldRef<"Post", 'String'>
     readonly generation_run_id: FieldRef<"Post", 'String'>
+    readonly generation_item_id: FieldRef<"Post", 'String'>
     readonly source_post_id: FieldRef<"Post", 'String'>
     readonly rss_feed_item_id: FieldRef<"Post", 'String'>
     readonly automation_id: FieldRef<"Post", 'String'>
@@ -22619,6 +23930,25 @@ export namespace Prisma {
      */
     include?: GenerationRunInclude<ExtArgs> | null
     where?: GenerationRunWhereInput
+  }
+
+  /**
+   * Post.generation_item
+   */
+  export type Post$generation_itemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationItem
+     */
+    select?: GenerationItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationItem
+     */
+    omit?: GenerationItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationItemInclude<ExtArgs> | null
+    where?: GenerationItemWhereInput
   }
 
   /**
@@ -26311,6 +27641,7 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     platform: 'platform',
+    channels: 'channels',
     pillars: 'pillars',
     ideas: 'ideas',
     instructions: 'instructions',
@@ -26387,6 +27718,17 @@ export namespace Prisma {
   export type GenerationRunScalarFieldEnum = (typeof GenerationRunScalarFieldEnum)[keyof typeof GenerationRunScalarFieldEnum]
 
 
+  export const GenerationItemScalarFieldEnum: {
+    id: 'id',
+    generation_run_id: 'generation_run_id',
+    order: 'order',
+    topic: 'topic',
+    created_at: 'created_at'
+  };
+
+  export type GenerationItemScalarFieldEnum = (typeof GenerationItemScalarFieldEnum)[keyof typeof GenerationItemScalarFieldEnum]
+
+
   export const AutomationScalarFieldEnum: {
     id: 'id',
     project_id: 'project_id',
@@ -26418,6 +27760,7 @@ export namespace Prisma {
     project_id: 'project_id',
     style_profile_id: 'style_profile_id',
     generation_run_id: 'generation_run_id',
+    generation_item_id: 'generation_item_id',
     source_post_id: 'source_post_id',
     rss_feed_item_id: 'rss_feed_item_id',
     automation_id: 'automation_id',
@@ -27470,6 +28813,7 @@ export namespace Prisma {
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
+    channels?: EnumSocialChannelNullableListFilter<"Project">
     pillars?: StringNullableListFilter<"Project">
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
@@ -27491,6 +28835,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     platform?: SortOrder
+    channels?: SortOrder
     pillars?: SortOrder
     ideas?: SortOrder
     instructions?: SortOrder
@@ -27515,6 +28860,7 @@ export namespace Prisma {
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
+    channels?: EnumSocialChannelNullableListFilter<"Project">
     pillars?: StringNullableListFilter<"Project">
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
@@ -27536,6 +28882,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     platform?: SortOrder
+    channels?: SortOrder
     pillars?: SortOrder
     ideas?: SortOrder
     instructions?: SortOrder
@@ -27557,6 +28904,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Project"> | string
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
     platform?: EnumPostTypeWithAggregatesFilter<"Project"> | $Enums.PostType
+    channels?: EnumSocialChannelNullableListFilter<"Project">
     pillars?: StringNullableListFilter<"Project">
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
@@ -27853,6 +29201,7 @@ export namespace Prisma {
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
     automation?: XOR<AutomationNullableScalarRelationFilter, AutomationWhereInput> | null
     posts?: PostListRelationFilter
+    items?: GenerationItemListRelationFilter
   }
 
   export type GenerationRunOrderByWithRelationInput = {
@@ -27868,6 +29217,7 @@ export namespace Prisma {
     style_profile?: StyleProfileOrderByWithRelationInput
     automation?: AutomationOrderByWithRelationInput
     posts?: PostOrderByRelationAggregateInput
+    items?: GenerationItemOrderByRelationAggregateInput
   }
 
   export type GenerationRunWhereUniqueInput = Prisma.AtLeast<{
@@ -27886,6 +29236,7 @@ export namespace Prisma {
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
     automation?: XOR<AutomationNullableScalarRelationFilter, AutomationWhereInput> | null
     posts?: PostListRelationFilter
+    items?: GenerationItemListRelationFilter
   }, "id">
 
   export type GenerationRunOrderByWithAggregationInput = {
@@ -27916,6 +29267,66 @@ export namespace Prisma {
     posts_requested?: IntNullableWithAggregatesFilter<"GenerationRun"> | number | null
     language?: StringWithAggregatesFilter<"GenerationRun"> | string
     created_at?: DateTimeWithAggregatesFilter<"GenerationRun"> | Date | string
+  }
+
+  export type GenerationItemWhereInput = {
+    AND?: GenerationItemWhereInput | GenerationItemWhereInput[]
+    OR?: GenerationItemWhereInput[]
+    NOT?: GenerationItemWhereInput | GenerationItemWhereInput[]
+    id?: StringFilter<"GenerationItem"> | string
+    generation_run_id?: StringFilter<"GenerationItem"> | string
+    order?: IntFilter<"GenerationItem"> | number
+    topic?: StringNullableFilter<"GenerationItem"> | string | null
+    created_at?: DateTimeFilter<"GenerationItem"> | Date | string
+    generation_run?: XOR<GenerationRunScalarRelationFilter, GenerationRunWhereInput>
+    posts?: PostListRelationFilter
+  }
+
+  export type GenerationItemOrderByWithRelationInput = {
+    id?: SortOrder
+    generation_run_id?: SortOrder
+    order?: SortOrder
+    topic?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    generation_run?: GenerationRunOrderByWithRelationInput
+    posts?: PostOrderByRelationAggregateInput
+  }
+
+  export type GenerationItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: GenerationItemWhereInput | GenerationItemWhereInput[]
+    OR?: GenerationItemWhereInput[]
+    NOT?: GenerationItemWhereInput | GenerationItemWhereInput[]
+    generation_run_id?: StringFilter<"GenerationItem"> | string
+    order?: IntFilter<"GenerationItem"> | number
+    topic?: StringNullableFilter<"GenerationItem"> | string | null
+    created_at?: DateTimeFilter<"GenerationItem"> | Date | string
+    generation_run?: XOR<GenerationRunScalarRelationFilter, GenerationRunWhereInput>
+    posts?: PostListRelationFilter
+  }, "id">
+
+  export type GenerationItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    generation_run_id?: SortOrder
+    order?: SortOrder
+    topic?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    _count?: GenerationItemCountOrderByAggregateInput
+    _avg?: GenerationItemAvgOrderByAggregateInput
+    _max?: GenerationItemMaxOrderByAggregateInput
+    _min?: GenerationItemMinOrderByAggregateInput
+    _sum?: GenerationItemSumOrderByAggregateInput
+  }
+
+  export type GenerationItemScalarWhereWithAggregatesInput = {
+    AND?: GenerationItemScalarWhereWithAggregatesInput | GenerationItemScalarWhereWithAggregatesInput[]
+    OR?: GenerationItemScalarWhereWithAggregatesInput[]
+    NOT?: GenerationItemScalarWhereWithAggregatesInput | GenerationItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GenerationItem"> | string
+    generation_run_id?: StringWithAggregatesFilter<"GenerationItem"> | string
+    order?: IntWithAggregatesFilter<"GenerationItem"> | number
+    topic?: StringNullableWithAggregatesFilter<"GenerationItem"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"GenerationItem"> | Date | string
   }
 
   export type AutomationWhereInput = {
@@ -28062,6 +29473,7 @@ export namespace Prisma {
     project_id?: StringNullableFilter<"Post"> | string | null
     style_profile_id?: StringNullableFilter<"Post"> | string | null
     generation_run_id?: StringNullableFilter<"Post"> | string | null
+    generation_item_id?: StringNullableFilter<"Post"> | string | null
     source_post_id?: StringNullableFilter<"Post"> | string | null
     rss_feed_item_id?: StringNullableFilter<"Post"> | string | null
     automation_id?: StringNullableFilter<"Post"> | string | null
@@ -28086,6 +29498,7 @@ export namespace Prisma {
     project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
     generation_run?: XOR<GenerationRunNullableScalarRelationFilter, GenerationRunWhereInput> | null
+    generation_item?: XOR<GenerationItemNullableScalarRelationFilter, GenerationItemWhereInput> | null
     cover_document?: XOR<DocumentNullableScalarRelationFilter, DocumentWhereInput> | null
     rss_feed_item?: XOR<RssFeedItemNullableScalarRelationFilter, RssFeedItemWhereInput> | null
     automation?: XOR<AutomationNullableScalarRelationFilter, AutomationWhereInput> | null
@@ -28102,6 +29515,7 @@ export namespace Prisma {
     project_id?: SortOrderInput | SortOrder
     style_profile_id?: SortOrderInput | SortOrder
     generation_run_id?: SortOrderInput | SortOrder
+    generation_item_id?: SortOrderInput | SortOrder
     source_post_id?: SortOrderInput | SortOrder
     rss_feed_item_id?: SortOrderInput | SortOrder
     automation_id?: SortOrderInput | SortOrder
@@ -28126,6 +29540,7 @@ export namespace Prisma {
     project?: ProjectOrderByWithRelationInput
     style_profile?: StyleProfileOrderByWithRelationInput
     generation_run?: GenerationRunOrderByWithRelationInput
+    generation_item?: GenerationItemOrderByWithRelationInput
     cover_document?: DocumentOrderByWithRelationInput
     rss_feed_item?: RssFeedItemOrderByWithRelationInput
     automation?: AutomationOrderByWithRelationInput
@@ -28145,6 +29560,7 @@ export namespace Prisma {
     project_id?: StringNullableFilter<"Post"> | string | null
     style_profile_id?: StringNullableFilter<"Post"> | string | null
     generation_run_id?: StringNullableFilter<"Post"> | string | null
+    generation_item_id?: StringNullableFilter<"Post"> | string | null
     source_post_id?: StringNullableFilter<"Post"> | string | null
     rss_feed_item_id?: StringNullableFilter<"Post"> | string | null
     automation_id?: StringNullableFilter<"Post"> | string | null
@@ -28169,6 +29585,7 @@ export namespace Prisma {
     project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
     generation_run?: XOR<GenerationRunNullableScalarRelationFilter, GenerationRunWhereInput> | null
+    generation_item?: XOR<GenerationItemNullableScalarRelationFilter, GenerationItemWhereInput> | null
     cover_document?: XOR<DocumentNullableScalarRelationFilter, DocumentWhereInput> | null
     rss_feed_item?: XOR<RssFeedItemNullableScalarRelationFilter, RssFeedItemWhereInput> | null
     automation?: XOR<AutomationNullableScalarRelationFilter, AutomationWhereInput> | null
@@ -28185,6 +29602,7 @@ export namespace Prisma {
     project_id?: SortOrderInput | SortOrder
     style_profile_id?: SortOrderInput | SortOrder
     generation_run_id?: SortOrderInput | SortOrder
+    generation_item_id?: SortOrderInput | SortOrder
     source_post_id?: SortOrderInput | SortOrder
     rss_feed_item_id?: SortOrderInput | SortOrder
     automation_id?: SortOrderInput | SortOrder
@@ -28219,6 +29637,7 @@ export namespace Prisma {
     project_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     style_profile_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     generation_run_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    generation_item_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     source_post_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     rss_feed_item_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     automation_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
@@ -29216,6 +30635,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -29237,6 +30657,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -29256,6 +30677,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -29277,6 +30699,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -29297,6 +30720,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -29311,6 +30735,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -29326,6 +30751,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -29621,6 +31047,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
     posts?: PostCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateInput = {
@@ -29633,6 +31060,7 @@ export namespace Prisma {
     language?: string
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUpdateInput = {
@@ -29645,6 +31073,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
     posts?: PostUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateInput = {
@@ -29657,6 +31086,7 @@ export namespace Prisma {
     language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunCreateManyInput = {
@@ -29686,6 +31116,65 @@ export namespace Prisma {
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
     language?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GenerationItemCreateInput = {
+    id?: string
+    order: number
+    topic?: string | null
+    created_at?: Date | string
+    generation_run: GenerationRunCreateNestedOneWithoutItemsInput
+    posts?: PostCreateNestedManyWithoutGeneration_itemInput
+  }
+
+  export type GenerationItemUncheckedCreateInput = {
+    id?: string
+    generation_run_id: string
+    order: number
+    topic?: string | null
+    created_at?: Date | string
+    posts?: PostUncheckedCreateNestedManyWithoutGeneration_itemInput
+  }
+
+  export type GenerationItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    topic?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    generation_run?: GenerationRunUpdateOneRequiredWithoutItemsNestedInput
+    posts?: PostUpdateManyWithoutGeneration_itemNestedInput
+  }
+
+  export type GenerationItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    generation_run_id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    topic?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUncheckedUpdateManyWithoutGeneration_itemNestedInput
+  }
+
+  export type GenerationItemCreateManyInput = {
+    id?: string
+    generation_run_id: string
+    order: number
+    topic?: string | null
+    created_at?: Date | string
+  }
+
+  export type GenerationItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    topic?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GenerationItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    generation_run_id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    topic?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -29863,6 +31352,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -29879,6 +31369,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -29925,6 +31416,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -29941,6 +31433,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29972,6 +31465,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -30019,6 +31513,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31062,6 +32557,14 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type EnumSocialChannelNullableListFilter<$PrismaModel = never> = {
+    equals?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel> | null
+    has?: $Enums.SocialChannel | EnumSocialChannelFieldRefInput<$PrismaModel> | null
+    hasEvery?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
+    hasSome?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -31083,6 +32586,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     platform?: SortOrder
+    channels?: SortOrder
     pillars?: SortOrder
     ideas?: SortOrder
     instructions?: SortOrder
@@ -31288,6 +32792,16 @@ export namespace Prisma {
     isNot?: AutomationWhereInput | null
   }
 
+  export type GenerationItemListRelationFilter = {
+    every?: GenerationItemWhereInput
+    some?: GenerationItemWhereInput
+    none?: GenerationItemWhereInput
+  }
+
+  export type GenerationItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type GenerationRunCountOrderByAggregateInput = {
     id?: SortOrder
     project_id?: SortOrder
@@ -31327,6 +32841,43 @@ export namespace Prisma {
 
   export type GenerationRunSumOrderByAggregateInput = {
     posts_requested?: SortOrder
+  }
+
+  export type GenerationRunScalarRelationFilter = {
+    is?: GenerationRunWhereInput
+    isNot?: GenerationRunWhereInput
+  }
+
+  export type GenerationItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    generation_run_id?: SortOrder
+    order?: SortOrder
+    topic?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type GenerationItemAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type GenerationItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    generation_run_id?: SortOrder
+    order?: SortOrder
+    topic?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type GenerationItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    generation_run_id?: SortOrder
+    order?: SortOrder
+    topic?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type GenerationItemSumOrderByAggregateInput = {
+    order?: SortOrder
   }
 
   export type EnumAutomationFrequencyFilter<$PrismaModel = never> = {
@@ -31489,6 +33040,11 @@ export namespace Prisma {
     isNot?: GenerationRunWhereInput | null
   }
 
+  export type GenerationItemNullableScalarRelationFilter = {
+    is?: GenerationItemWhereInput | null
+    isNot?: GenerationItemWhereInput | null
+  }
+
   export type DocumentNullableScalarRelationFilter = {
     is?: DocumentWhereInput | null
     isNot?: DocumentWhereInput | null
@@ -31511,6 +33067,7 @@ export namespace Prisma {
     project_id?: SortOrder
     style_profile_id?: SortOrder
     generation_run_id?: SortOrder
+    generation_item_id?: SortOrder
     source_post_id?: SortOrder
     rss_feed_item_id?: SortOrder
     automation_id?: SortOrder
@@ -31539,6 +33096,7 @@ export namespace Prisma {
     project_id?: SortOrder
     style_profile_id?: SortOrder
     generation_run_id?: SortOrder
+    generation_item_id?: SortOrder
     source_post_id?: SortOrder
     rss_feed_item_id?: SortOrder
     automation_id?: SortOrder
@@ -31566,6 +33124,7 @@ export namespace Prisma {
     project_id?: SortOrder
     style_profile_id?: SortOrder
     generation_run_id?: SortOrder
+    generation_item_id?: SortOrder
     source_post_id?: SortOrder
     rss_feed_item_id?: SortOrder
     automation_id?: SortOrder
@@ -32885,6 +34444,10 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
+  export type ProjectCreatechannelsInput = {
+    set: $Enums.SocialChannel[]
+  }
+
   export type ProjectCreatepillarsInput = {
     set: string[]
   }
@@ -32971,6 +34534,11 @@ export namespace Prisma {
     connectOrCreate?: AutomationCreateOrConnectWithoutProjectInput | AutomationCreateOrConnectWithoutProjectInput[]
     createMany?: AutomationCreateManyProjectInputEnvelope
     connect?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+  }
+
+  export type ProjectUpdatechannelsInput = {
+    set?: $Enums.SocialChannel[]
+    push?: $Enums.SocialChannel | $Enums.SocialChannel[]
   }
 
   export type ProjectUpdatepillarsInput = {
@@ -33417,11 +34985,25 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
+  export type GenerationItemCreateNestedManyWithoutGeneration_runInput = {
+    create?: XOR<GenerationItemCreateWithoutGeneration_runInput, GenerationItemUncheckedCreateWithoutGeneration_runInput> | GenerationItemCreateWithoutGeneration_runInput[] | GenerationItemUncheckedCreateWithoutGeneration_runInput[]
+    connectOrCreate?: GenerationItemCreateOrConnectWithoutGeneration_runInput | GenerationItemCreateOrConnectWithoutGeneration_runInput[]
+    createMany?: GenerationItemCreateManyGeneration_runInputEnvelope
+    connect?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+  }
+
   export type PostUncheckedCreateNestedManyWithoutGeneration_runInput = {
     create?: XOR<PostCreateWithoutGeneration_runInput, PostUncheckedCreateWithoutGeneration_runInput> | PostCreateWithoutGeneration_runInput[] | PostUncheckedCreateWithoutGeneration_runInput[]
     connectOrCreate?: PostCreateOrConnectWithoutGeneration_runInput | PostCreateOrConnectWithoutGeneration_runInput[]
     createMany?: PostCreateManyGeneration_runInputEnvelope
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput = {
+    create?: XOR<GenerationItemCreateWithoutGeneration_runInput, GenerationItemUncheckedCreateWithoutGeneration_runInput> | GenerationItemCreateWithoutGeneration_runInput[] | GenerationItemUncheckedCreateWithoutGeneration_runInput[]
+    connectOrCreate?: GenerationItemCreateOrConnectWithoutGeneration_runInput | GenerationItemCreateOrConnectWithoutGeneration_runInput[]
+    createMany?: GenerationItemCreateManyGeneration_runInputEnvelope
+    connect?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
   }
 
   export type ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput = {
@@ -33466,6 +35048,20 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
+  export type GenerationItemUpdateManyWithoutGeneration_runNestedInput = {
+    create?: XOR<GenerationItemCreateWithoutGeneration_runInput, GenerationItemUncheckedCreateWithoutGeneration_runInput> | GenerationItemCreateWithoutGeneration_runInput[] | GenerationItemUncheckedCreateWithoutGeneration_runInput[]
+    connectOrCreate?: GenerationItemCreateOrConnectWithoutGeneration_runInput | GenerationItemCreateOrConnectWithoutGeneration_runInput[]
+    upsert?: GenerationItemUpsertWithWhereUniqueWithoutGeneration_runInput | GenerationItemUpsertWithWhereUniqueWithoutGeneration_runInput[]
+    createMany?: GenerationItemCreateManyGeneration_runInputEnvelope
+    set?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+    disconnect?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+    delete?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+    connect?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+    update?: GenerationItemUpdateWithWhereUniqueWithoutGeneration_runInput | GenerationItemUpdateWithWhereUniqueWithoutGeneration_runInput[]
+    updateMany?: GenerationItemUpdateManyWithWhereWithoutGeneration_runInput | GenerationItemUpdateManyWithWhereWithoutGeneration_runInput[]
+    deleteMany?: GenerationItemScalarWhereInput | GenerationItemScalarWhereInput[]
+  }
+
   export type PostUncheckedUpdateManyWithoutGeneration_runNestedInput = {
     create?: XOR<PostCreateWithoutGeneration_runInput, PostUncheckedCreateWithoutGeneration_runInput> | PostCreateWithoutGeneration_runInput[] | PostUncheckedCreateWithoutGeneration_runInput[]
     connectOrCreate?: PostCreateOrConnectWithoutGeneration_runInput | PostCreateOrConnectWithoutGeneration_runInput[]
@@ -33477,6 +35073,76 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
     update?: PostUpdateWithWhereUniqueWithoutGeneration_runInput | PostUpdateWithWhereUniqueWithoutGeneration_runInput[]
     updateMany?: PostUpdateManyWithWhereWithoutGeneration_runInput | PostUpdateManyWithWhereWithoutGeneration_runInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput = {
+    create?: XOR<GenerationItemCreateWithoutGeneration_runInput, GenerationItemUncheckedCreateWithoutGeneration_runInput> | GenerationItemCreateWithoutGeneration_runInput[] | GenerationItemUncheckedCreateWithoutGeneration_runInput[]
+    connectOrCreate?: GenerationItemCreateOrConnectWithoutGeneration_runInput | GenerationItemCreateOrConnectWithoutGeneration_runInput[]
+    upsert?: GenerationItemUpsertWithWhereUniqueWithoutGeneration_runInput | GenerationItemUpsertWithWhereUniqueWithoutGeneration_runInput[]
+    createMany?: GenerationItemCreateManyGeneration_runInputEnvelope
+    set?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+    disconnect?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+    delete?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+    connect?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+    update?: GenerationItemUpdateWithWhereUniqueWithoutGeneration_runInput | GenerationItemUpdateWithWhereUniqueWithoutGeneration_runInput[]
+    updateMany?: GenerationItemUpdateManyWithWhereWithoutGeneration_runInput | GenerationItemUpdateManyWithWhereWithoutGeneration_runInput[]
+    deleteMany?: GenerationItemScalarWhereInput | GenerationItemScalarWhereInput[]
+  }
+
+  export type GenerationRunCreateNestedOneWithoutItemsInput = {
+    create?: XOR<GenerationRunCreateWithoutItemsInput, GenerationRunUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: GenerationRunCreateOrConnectWithoutItemsInput
+    connect?: GenerationRunWhereUniqueInput
+  }
+
+  export type PostCreateNestedManyWithoutGeneration_itemInput = {
+    create?: XOR<PostCreateWithoutGeneration_itemInput, PostUncheckedCreateWithoutGeneration_itemInput> | PostCreateWithoutGeneration_itemInput[] | PostUncheckedCreateWithoutGeneration_itemInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutGeneration_itemInput | PostCreateOrConnectWithoutGeneration_itemInput[]
+    createMany?: PostCreateManyGeneration_itemInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type PostUncheckedCreateNestedManyWithoutGeneration_itemInput = {
+    create?: XOR<PostCreateWithoutGeneration_itemInput, PostUncheckedCreateWithoutGeneration_itemInput> | PostCreateWithoutGeneration_itemInput[] | PostUncheckedCreateWithoutGeneration_itemInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutGeneration_itemInput | PostCreateOrConnectWithoutGeneration_itemInput[]
+    createMany?: PostCreateManyGeneration_itemInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type GenerationRunUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<GenerationRunCreateWithoutItemsInput, GenerationRunUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: GenerationRunCreateOrConnectWithoutItemsInput
+    upsert?: GenerationRunUpsertWithoutItemsInput
+    connect?: GenerationRunWhereUniqueInput
+    update?: XOR<XOR<GenerationRunUpdateToOneWithWhereWithoutItemsInput, GenerationRunUpdateWithoutItemsInput>, GenerationRunUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type PostUpdateManyWithoutGeneration_itemNestedInput = {
+    create?: XOR<PostCreateWithoutGeneration_itemInput, PostUncheckedCreateWithoutGeneration_itemInput> | PostCreateWithoutGeneration_itemInput[] | PostUncheckedCreateWithoutGeneration_itemInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutGeneration_itemInput | PostCreateOrConnectWithoutGeneration_itemInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutGeneration_itemInput | PostUpsertWithWhereUniqueWithoutGeneration_itemInput[]
+    createMany?: PostCreateManyGeneration_itemInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutGeneration_itemInput | PostUpdateWithWhereUniqueWithoutGeneration_itemInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutGeneration_itemInput | PostUpdateManyWithWhereWithoutGeneration_itemInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type PostUncheckedUpdateManyWithoutGeneration_itemNestedInput = {
+    create?: XOR<PostCreateWithoutGeneration_itemInput, PostUncheckedCreateWithoutGeneration_itemInput> | PostCreateWithoutGeneration_itemInput[] | PostUncheckedCreateWithoutGeneration_itemInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutGeneration_itemInput | PostCreateOrConnectWithoutGeneration_itemInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutGeneration_itemInput | PostUpsertWithWhereUniqueWithoutGeneration_itemInput[]
+    createMany?: PostCreateManyGeneration_itemInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutGeneration_itemInput | PostUpdateWithWhereUniqueWithoutGeneration_itemInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutGeneration_itemInput | PostUpdateManyWithWhereWithoutGeneration_itemInput[]
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
@@ -33657,6 +35323,12 @@ export namespace Prisma {
     connect?: GenerationRunWhereUniqueInput
   }
 
+  export type GenerationItemCreateNestedOneWithoutPostsInput = {
+    create?: XOR<GenerationItemCreateWithoutPostsInput, GenerationItemUncheckedCreateWithoutPostsInput>
+    connectOrCreate?: GenerationItemCreateOrConnectWithoutPostsInput
+    connect?: GenerationItemWhereUniqueInput
+  }
+
   export type DocumentCreateNestedOneWithoutCover_of_postsInput = {
     create?: XOR<DocumentCreateWithoutCover_of_postsInput, DocumentUncheckedCreateWithoutCover_of_postsInput>
     connectOrCreate?: DocumentCreateOrConnectWithoutCover_of_postsInput
@@ -33771,6 +35443,16 @@ export namespace Prisma {
     delete?: GenerationRunWhereInput | boolean
     connect?: GenerationRunWhereUniqueInput
     update?: XOR<XOR<GenerationRunUpdateToOneWithWhereWithoutPostsInput, GenerationRunUpdateWithoutPostsInput>, GenerationRunUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type GenerationItemUpdateOneWithoutPostsNestedInput = {
+    create?: XOR<GenerationItemCreateWithoutPostsInput, GenerationItemUncheckedCreateWithoutPostsInput>
+    connectOrCreate?: GenerationItemCreateOrConnectWithoutPostsInput
+    upsert?: GenerationItemUpsertWithoutPostsInput
+    disconnect?: GenerationItemWhereInput | boolean
+    delete?: GenerationItemWhereInput | boolean
+    connect?: GenerationItemWhereUniqueInput
+    update?: XOR<XOR<GenerationItemUpdateToOneWithWhereWithoutPostsInput, GenerationItemUpdateWithoutPostsInput>, GenerationItemUncheckedUpdateWithoutPostsInput>
   }
 
   export type DocumentUpdateOneWithoutCover_of_postsNestedInput = {
@@ -34561,6 +36243,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -34576,6 +36259,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -34753,6 +36437,7 @@ export namespace Prisma {
     project_id?: StringNullableFilter<"Post"> | string | null
     style_profile_id?: StringNullableFilter<"Post"> | string | null
     generation_run_id?: StringNullableFilter<"Post"> | string | null
+    generation_item_id?: StringNullableFilter<"Post"> | string | null
     source_post_id?: StringNullableFilter<"Post"> | string | null
     rss_feed_item_id?: StringNullableFilter<"Post"> | string | null
     automation_id?: StringNullableFilter<"Post"> | string | null
@@ -34964,6 +36649,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
@@ -34979,6 +36665,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -35220,6 +36907,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -35235,6 +36923,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -35370,6 +37059,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -35389,6 +37079,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -35683,6 +37374,7 @@ export namespace Prisma {
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
+    channels?: EnumSocialChannelNullableListFilter<"Project">
     pillars?: StringNullableListFilter<"Project">
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
@@ -36221,6 +37913,7 @@ export namespace Prisma {
     project: ProjectCreateNestedOneWithoutGeneration_runsInput
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
     posts?: PostCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateWithoutStyle_profileInput = {
@@ -36232,6 +37925,7 @@ export namespace Prisma {
     language?: string
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunCreateOrConnectWithoutStyle_profileInput = {
@@ -36319,6 +38013,7 @@ export namespace Prisma {
     organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -36334,6 +38029,7 @@ export namespace Prisma {
     organisation_id: string
     project_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -36625,6 +38321,7 @@ export namespace Prisma {
     organisation: OrganisationCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -36640,6 +38337,7 @@ export namespace Prisma {
     organisation_id: string
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -36683,6 +38381,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
     posts?: PostCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateWithoutProjectInput = {
@@ -36694,6 +38393,7 @@ export namespace Prisma {
     language?: string
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunCreateOrConnectWithoutProjectInput = {
@@ -37154,6 +38854,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -37174,6 +38875,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -37239,6 +38941,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -37259,6 +38962,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -37362,6 +39066,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
@@ -37377,6 +39082,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     automation_id?: string | null
     type: $Enums.PostType
@@ -37468,6 +39174,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -37488,6 +39195,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -37575,6 +39283,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -37595,6 +39304,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -37672,6 +39382,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -37692,6 +39403,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -37833,6 +39545,7 @@ export namespace Prisma {
     organisation: OrganisationCreateNestedOneWithoutPostsInput
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -37848,6 +39561,7 @@ export namespace Prisma {
     organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -37882,6 +39596,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GenerationItemCreateWithoutGeneration_runInput = {
+    id?: string
+    order: number
+    topic?: string | null
+    created_at?: Date | string
+    posts?: PostCreateNestedManyWithoutGeneration_itemInput
+  }
+
+  export type GenerationItemUncheckedCreateWithoutGeneration_runInput = {
+    id?: string
+    order: number
+    topic?: string | null
+    created_at?: Date | string
+    posts?: PostUncheckedCreateNestedManyWithoutGeneration_itemInput
+  }
+
+  export type GenerationItemCreateOrConnectWithoutGeneration_runInput = {
+    where: GenerationItemWhereUniqueInput
+    create: XOR<GenerationItemCreateWithoutGeneration_runInput, GenerationItemUncheckedCreateWithoutGeneration_runInput>
+  }
+
+  export type GenerationItemCreateManyGeneration_runInputEnvelope = {
+    data: GenerationItemCreateManyGeneration_runInput | GenerationItemCreateManyGeneration_runInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ProjectUpsertWithoutGeneration_runsInput = {
     update: XOR<ProjectUpdateWithoutGeneration_runsInput, ProjectUncheckedUpdateWithoutGeneration_runsInput>
     create: XOR<ProjectCreateWithoutGeneration_runsInput, ProjectUncheckedCreateWithoutGeneration_runsInput>
@@ -37898,6 +39638,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -37918,6 +39659,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -38061,11 +39803,191 @@ export namespace Prisma {
     data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutGeneration_runInput>
   }
 
+  export type GenerationItemUpsertWithWhereUniqueWithoutGeneration_runInput = {
+    where: GenerationItemWhereUniqueInput
+    update: XOR<GenerationItemUpdateWithoutGeneration_runInput, GenerationItemUncheckedUpdateWithoutGeneration_runInput>
+    create: XOR<GenerationItemCreateWithoutGeneration_runInput, GenerationItemUncheckedCreateWithoutGeneration_runInput>
+  }
+
+  export type GenerationItemUpdateWithWhereUniqueWithoutGeneration_runInput = {
+    where: GenerationItemWhereUniqueInput
+    data: XOR<GenerationItemUpdateWithoutGeneration_runInput, GenerationItemUncheckedUpdateWithoutGeneration_runInput>
+  }
+
+  export type GenerationItemUpdateManyWithWhereWithoutGeneration_runInput = {
+    where: GenerationItemScalarWhereInput
+    data: XOR<GenerationItemUpdateManyMutationInput, GenerationItemUncheckedUpdateManyWithoutGeneration_runInput>
+  }
+
+  export type GenerationItemScalarWhereInput = {
+    AND?: GenerationItemScalarWhereInput | GenerationItemScalarWhereInput[]
+    OR?: GenerationItemScalarWhereInput[]
+    NOT?: GenerationItemScalarWhereInput | GenerationItemScalarWhereInput[]
+    id?: StringFilter<"GenerationItem"> | string
+    generation_run_id?: StringFilter<"GenerationItem"> | string
+    order?: IntFilter<"GenerationItem"> | number
+    topic?: StringNullableFilter<"GenerationItem"> | string | null
+    created_at?: DateTimeFilter<"GenerationItem"> | Date | string
+  }
+
+  export type GenerationRunCreateWithoutItemsInput = {
+    id?: string
+    label?: string | null
+    posts_requested?: number | null
+    language?: string
+    created_at?: Date | string
+    project: ProjectCreateNestedOneWithoutGeneration_runsInput
+    style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
+    automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
+    posts?: PostCreateNestedManyWithoutGeneration_runInput
+  }
+
+  export type GenerationRunUncheckedCreateWithoutItemsInput = {
+    id?: string
+    project_id: string
+    style_profile_id?: string | null
+    automation_id?: string | null
+    label?: string | null
+    posts_requested?: number | null
+    language?: string
+    created_at?: Date | string
+    posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
+  }
+
+  export type GenerationRunCreateOrConnectWithoutItemsInput = {
+    where: GenerationRunWhereUniqueInput
+    create: XOR<GenerationRunCreateWithoutItemsInput, GenerationRunUncheckedCreateWithoutItemsInput>
+  }
+
+  export type PostCreateWithoutGeneration_itemInput = {
+    id?: string
+    type: $Enums.PostType
+    status?: $Enums.PostStatus
+    hook?: string | null
+    body?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: string | null
+    excerpt?: string | null
+    seo_title?: string | null
+    seo_description?: string | null
+    canonical_url?: string | null
+    scheduled_at?: Date | string | null
+    published_at?: Date | string | null
+    failed_reason?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutAuthored_postsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
+    project?: ProjectCreateNestedOneWithoutPostsInput
+    style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
+    generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
+    automation?: AutomationCreateNestedOneWithoutPostsInput
+    source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
+    repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
+    attachments?: PostAttachmentCreateNestedManyWithoutPostInput
+    channels?: PostChannelCreateNestedManyWithoutPostInput
+  }
+
+  export type PostUncheckedCreateWithoutGeneration_itemInput = {
+    id?: string
+    user_id: string
+    organisation_id: string
+    project_id?: string | null
+    style_profile_id?: string | null
+    generation_run_id?: string | null
+    source_post_id?: string | null
+    rss_feed_item_id?: string | null
+    automation_id?: string | null
+    type: $Enums.PostType
+    status?: $Enums.PostStatus
+    hook?: string | null
+    body?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: string | null
+    excerpt?: string | null
+    cover_document_id?: string | null
+    seo_title?: string | null
+    seo_description?: string | null
+    canonical_url?: string | null
+    scheduled_at?: Date | string | null
+    published_at?: Date | string | null
+    failed_reason?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
+    attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
+    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+  }
+
+  export type PostCreateOrConnectWithoutGeneration_itemInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutGeneration_itemInput, PostUncheckedCreateWithoutGeneration_itemInput>
+  }
+
+  export type PostCreateManyGeneration_itemInputEnvelope = {
+    data: PostCreateManyGeneration_itemInput | PostCreateManyGeneration_itemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GenerationRunUpsertWithoutItemsInput = {
+    update: XOR<GenerationRunUpdateWithoutItemsInput, GenerationRunUncheckedUpdateWithoutItemsInput>
+    create: XOR<GenerationRunCreateWithoutItemsInput, GenerationRunUncheckedCreateWithoutItemsInput>
+    where?: GenerationRunWhereInput
+  }
+
+  export type GenerationRunUpdateToOneWithWhereWithoutItemsInput = {
+    where?: GenerationRunWhereInput
+    data: XOR<GenerationRunUpdateWithoutItemsInput, GenerationRunUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type GenerationRunUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    label?: NullableStringFieldUpdateOperationsInput | string | null
+    posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput
+    style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
+    automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
+    posts?: PostUpdateManyWithoutGeneration_runNestedInput
+  }
+
+  export type GenerationRunUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
+    style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    automation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    label?: NullableStringFieldUpdateOperationsInput | string | null
+    posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
+  }
+
+  export type PostUpsertWithWhereUniqueWithoutGeneration_itemInput = {
+    where: PostWhereUniqueInput
+    update: XOR<PostUpdateWithoutGeneration_itemInput, PostUncheckedUpdateWithoutGeneration_itemInput>
+    create: XOR<PostCreateWithoutGeneration_itemInput, PostUncheckedCreateWithoutGeneration_itemInput>
+  }
+
+  export type PostUpdateWithWhereUniqueWithoutGeneration_itemInput = {
+    where: PostWhereUniqueInput
+    data: XOR<PostUpdateWithoutGeneration_itemInput, PostUncheckedUpdateWithoutGeneration_itemInput>
+  }
+
+  export type PostUpdateManyWithWhereWithoutGeneration_itemInput = {
+    where: PostScalarWhereInput
+    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutGeneration_itemInput>
+  }
+
   export type ProjectCreateWithoutAutomationsInput = {
     id?: string
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -38086,6 +40008,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -38197,6 +40120,7 @@ export namespace Prisma {
     project: ProjectCreateNestedOneWithoutGeneration_runsInput
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
     posts?: PostCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateWithoutAutomationInput = {
@@ -38208,6 +40132,7 @@ export namespace Prisma {
     language?: string
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunCreateOrConnectWithoutAutomationInput = {
@@ -38242,6 +40167,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
@@ -38257,6 +40183,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     type: $Enums.PostType
@@ -38306,6 +40233,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -38326,6 +40254,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -38544,6 +40473,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -38564,6 +40494,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -38644,6 +40575,7 @@ export namespace Prisma {
     project: ProjectCreateNestedOneWithoutGeneration_runsInput
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
+    items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateWithoutPostsInput = {
@@ -38655,11 +40587,33 @@ export namespace Prisma {
     posts_requested?: number | null
     language?: string
     created_at?: Date | string
+    items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunCreateOrConnectWithoutPostsInput = {
     where: GenerationRunWhereUniqueInput
     create: XOR<GenerationRunCreateWithoutPostsInput, GenerationRunUncheckedCreateWithoutPostsInput>
+  }
+
+  export type GenerationItemCreateWithoutPostsInput = {
+    id?: string
+    order: number
+    topic?: string | null
+    created_at?: Date | string
+    generation_run: GenerationRunCreateNestedOneWithoutItemsInput
+  }
+
+  export type GenerationItemUncheckedCreateWithoutPostsInput = {
+    id?: string
+    generation_run_id: string
+    order: number
+    topic?: string | null
+    created_at?: Date | string
+  }
+
+  export type GenerationItemCreateOrConnectWithoutPostsInput = {
+    where: GenerationItemWhereUniqueInput
+    create: XOR<GenerationItemCreateWithoutPostsInput, GenerationItemUncheckedCreateWithoutPostsInput>
   }
 
   export type DocumentCreateWithoutCover_of_postsInput = {
@@ -38795,6 +40749,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -38810,6 +40765,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -38860,6 +40816,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -38875,6 +40832,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
     type: $Enums.PostType
@@ -39066,6 +41024,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -39086,6 +41045,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -39178,6 +41138,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
+    items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateWithoutPostsInput = {
@@ -39188,6 +41149,34 @@ export namespace Prisma {
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
     language?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
+  }
+
+  export type GenerationItemUpsertWithoutPostsInput = {
+    update: XOR<GenerationItemUpdateWithoutPostsInput, GenerationItemUncheckedUpdateWithoutPostsInput>
+    create: XOR<GenerationItemCreateWithoutPostsInput, GenerationItemUncheckedCreateWithoutPostsInput>
+    where?: GenerationItemWhereInput
+  }
+
+  export type GenerationItemUpdateToOneWithWhereWithoutPostsInput = {
+    where?: GenerationItemWhereInput
+    data: XOR<GenerationItemUpdateWithoutPostsInput, GenerationItemUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type GenerationItemUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    topic?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    generation_run?: GenerationRunUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type GenerationItemUncheckedUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    generation_run_id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    topic?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -39353,6 +41342,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -39368,6 +41358,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39461,6 +41452,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -39476,6 +41468,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -39568,6 +41561,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -39583,6 +41577,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39665,6 +41660,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
     rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     automation?: AutomationCreateNestedOneWithoutPostsInput
@@ -39680,6 +41676,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -39774,6 +41771,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -39789,6 +41787,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40038,6 +42037,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -40184,6 +42184,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -40199,6 +42200,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40229,6 +42231,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40297,6 +42300,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -40360,6 +42364,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
@@ -40375,6 +42380,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40405,6 +42411,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40451,6 +42458,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -40510,6 +42518,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
+    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -40627,6 +42636,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -40642,6 +42652,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40672,6 +42683,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40807,6 +42819,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -40826,6 +42839,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -40845,6 +42859,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -41049,6 +43064,7 @@ export namespace Prisma {
     organisation_id: string
     project_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -41097,6 +43113,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
     posts?: PostUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateWithoutStyle_profileInput = {
@@ -41108,6 +43125,7 @@ export namespace Prisma {
     language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateManyWithoutStyle_profileInput = {
@@ -41205,6 +43223,7 @@ export namespace Prisma {
     organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -41220,6 +43239,7 @@ export namespace Prisma {
     organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41250,6 +43270,7 @@ export namespace Prisma {
     organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41289,6 +43310,7 @@ export namespace Prisma {
     organisation_id: string
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -41397,6 +43419,7 @@ export namespace Prisma {
     organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -41412,6 +43435,7 @@ export namespace Prisma {
     organisation_id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41442,6 +43466,7 @@ export namespace Prisma {
     organisation_id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41472,6 +43497,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
     posts?: PostUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateWithoutProjectInput = {
@@ -41483,6 +43509,7 @@ export namespace Prisma {
     language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateManyWithoutProjectInput = {
@@ -41724,6 +43751,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     automation_id?: string | null
     type: $Enums.PostType
@@ -41766,6 +43794,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
@@ -41781,6 +43810,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -41811,6 +43841,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -41837,6 +43868,7 @@ export namespace Prisma {
     organisation_id: string
     project_id?: string | null
     style_profile_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
@@ -41856,6 +43888,13 @@ export namespace Prisma {
     failed_reason?: string | null
     created_at?: Date | string
     updated_at?: Date | string
+  }
+
+  export type GenerationItemCreateManyGeneration_runInput = {
+    id?: string
+    order: number
+    topic?: string | null
+    created_at?: Date | string
   }
 
   export type PostUpdateWithoutGeneration_runInput = {
@@ -41879,6 +43918,7 @@ export namespace Prisma {
     organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -41894,6 +43934,7 @@ export namespace Prisma {
     organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41924,6 +43965,148 @@ export namespace Prisma {
     organisation_id?: StringFieldUpdateOperationsInput | string
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
+    source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
+    automation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
+    hook?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    excerpt?: NullableStringFieldUpdateOperationsInput | string | null
+    cover_document_id?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_title?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_description?: NullableStringFieldUpdateOperationsInput | string | null
+    canonical_url?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduled_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GenerationItemUpdateWithoutGeneration_runInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    topic?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUpdateManyWithoutGeneration_itemNestedInput
+  }
+
+  export type GenerationItemUncheckedUpdateWithoutGeneration_runInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    topic?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUncheckedUpdateManyWithoutGeneration_itemNestedInput
+  }
+
+  export type GenerationItemUncheckedUpdateManyWithoutGeneration_runInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    topic?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PostCreateManyGeneration_itemInput = {
+    id?: string
+    user_id: string
+    organisation_id: string
+    project_id?: string | null
+    style_profile_id?: string | null
+    generation_run_id?: string | null
+    source_post_id?: string | null
+    rss_feed_item_id?: string | null
+    automation_id?: string | null
+    type: $Enums.PostType
+    status?: $Enums.PostStatus
+    hook?: string | null
+    body?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: string | null
+    excerpt?: string | null
+    cover_document_id?: string | null
+    seo_title?: string | null
+    seo_description?: string | null
+    canonical_url?: string | null
+    scheduled_at?: Date | string | null
+    published_at?: Date | string | null
+    failed_reason?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type PostUpdateWithoutGeneration_itemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
+    hook?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    excerpt?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_title?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_description?: NullableStringFieldUpdateOperationsInput | string | null
+    canonical_url?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduled_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
+    project?: ProjectUpdateOneWithoutPostsNestedInput
+    style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
+    generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
+    automation?: AutomationUpdateOneWithoutPostsNestedInput
+    source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
+    repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
+    attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
+    channels?: PostChannelUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutGeneration_itemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
+    automation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
+    hook?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    excerpt?: NullableStringFieldUpdateOperationsInput | string | null
+    cover_document_id?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_title?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_description?: NullableStringFieldUpdateOperationsInput | string | null
+    canonical_url?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduled_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
+    attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
+    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateManyWithoutGeneration_itemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41962,6 +44145,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     source_post_id?: string | null
     rss_feed_item_id?: string | null
     type: $Enums.PostType
@@ -41991,6 +44175,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
     posts?: PostUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateWithoutAutomationInput = {
@@ -42002,6 +44187,7 @@ export namespace Prisma {
     language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateManyWithoutAutomationInput = {
@@ -42036,6 +44222,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
@@ -42051,6 +44238,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -42081,6 +44269,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -42108,6 +44297,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    generation_item_id?: string | null
     rss_feed_item_id?: string | null
     automation_id?: string | null
     type: $Enums.PostType
@@ -42169,6 +44359,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
     rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     automation?: AutomationUpdateOneWithoutPostsNestedInput
@@ -42184,6 +44375,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -42214,6 +44406,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType

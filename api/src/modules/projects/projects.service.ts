@@ -10,7 +10,13 @@ import { AiService } from '@/integrations/ai/services/ai.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
 import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
 import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
-import { ActivityLogAction, ActivityLogEntityType, OrganisationRole } from 'generated/prisma';
+import {
+  ActivityLogAction,
+  ActivityLogEntityType,
+  OrganisationRole,
+  PostType,
+  SocialChannel,
+} from 'generated/prisma';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AttachStyleProfileDto } from './dto/attach-style-profile.dto';
@@ -53,6 +59,15 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
     return parseAiJson(response, ProjectAiSuggestionsSchema);
   }
 
+  // BLOG projects don't target social channels; social projects always have
+  // at least one — default to the (legacy) single `platform` field when the
+  // caller doesn't specify channels explicitly, so older clients keep working.
+  private resolveChannels(platform: PostType, channels?: SocialChannel[]): SocialChannel[] {
+    if (platform === PostType.BLOG) return [];
+    if (channels?.length) return channels;
+    return [platform === PostType.LINKEDIN ? SocialChannel.LINKEDIN : SocialChannel.TWITTER];
+  }
+
   async create(userId: string, dto: CreateProjectDto) {
     const context = await this.ownershipService.resolveContext(userId, dto.organisation_id);
     this.ownershipService.assertRole(context, MANAGE_ROLES);
@@ -63,6 +78,7 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
         title: dto.title,
         description: dto.description,
         platform: dto.platform,
+        channels: this.resolveChannels(dto.platform, dto.channels),
         pillars: dto.pillars ?? [],
         ideas: dto.ideas ?? [],
         instructions: dto.instructions ?? [],
@@ -172,12 +188,17 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
     const project = await this.findOwned(userId, id);
     await this.assertManage(userId, project);
 
+    const platform = dto.platform ?? project.platform;
     const updated = await this.prisma.project.update({
       where: { id },
       data: {
         title: dto.title,
         description: dto.description,
         platform: dto.platform,
+        channels:
+          dto.platform !== undefined || dto.channels !== undefined
+            ? this.resolveChannels(platform, dto.channels ?? (platform === project.platform ? project.channels : undefined))
+            : undefined,
         pillars: dto.pillars,
         ideas: dto.ideas,
         instructions: dto.instructions,
@@ -198,6 +219,7 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
           'title',
           'description',
           'platform',
+          'channels',
           'pillars',
           'ideas',
           'instructions',

@@ -5,8 +5,8 @@ import type { PaginatedResponse } from "@/interfaces/pagination.interfaces";
 import type {
   AnalyzeStyleProfileDto,
   CreateStyleProfileDto,
-  ScrapeLinkedInPostsDto,
-  ScrapedLinkedInPost,
+  ScrapePostsDto,
+  ScrapedPost,
   StyleProfile,
   StyleProfilesQueryType,
   UpdateStyleProfileDto,
@@ -66,14 +66,14 @@ export const analyzeStyleProfile = async (id: string, dto: AnalyzeStyleProfileDt
   }
 };
 
-export const scrapeLinkedInPosts = async (
+export const scrapePosts = async (
   id: string,
-  dto: ScrapeLinkedInPostsDto,
-): Promise<ScrapedLinkedInPost[]> => {
+  dto: ScrapePostsDto,
+): Promise<ScrapedPost[]> => {
   try {
     const response = await axiosInstance.post(ApiRoutes.style_profiles.scrape_posts(id), dto);
     return response.data;
   } catch (error) {
-    throw new Error(getApiErrorMessage(error, "Failed to fetch LinkedIn posts. Please try again."));
+    throw new Error(getApiErrorMessage(error, "Failed to fetch posts. Please try again."));
   }
 };

@@ -44,6 +44,7 @@ export interface Post {
   project_id?: string | null;
   style_profile_id?: string | null;
   generation_run_id?: string | null;
+  generation_item_id?: string | null;
   source_post_id?: string | null;
   rss_feed_item_id?: string | null;
   automation_id?: string | null;

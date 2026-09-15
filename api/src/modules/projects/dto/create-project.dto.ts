@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { PostType } from 'generated/prisma';
+import { ArrayMinSize, IsArray, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { PostType, SocialChannel } from 'generated/prisma';
 
 export class CreateProjectDto {
   @ApiProperty({ description: 'Project title', example: 'Q1 Product Launch' })
@@ -15,6 +15,19 @@ export class CreateProjectDto {
   @ApiProperty({ enum: PostType, example: PostType.LINKEDIN })
   @IsEnum(PostType)
   platform: PostType;
+
+  @ApiProperty({
+    enum: SocialChannel,
+    isArray: true,
+    required: false,
+    description:
+      'Target social channels to generate/publish for (ignored for BLOG projects). Defaults to [platform] when omitted.',
+  })
+  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsEnum(SocialChannel, { each: true })
+  channels?: SocialChannel[];
 
   @ApiProperty({ type: [String], required: false, description: 'Content pillars/themes' })
   @IsOptional()

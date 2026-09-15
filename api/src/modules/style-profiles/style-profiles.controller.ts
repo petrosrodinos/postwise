@@ -23,7 +23,7 @@ import { StyleProfilesService } from './style-profiles.service';
 import { CreateStyleProfileDto } from './dto/create-style-profile.dto';
 import { UpdateStyleProfileDto } from './dto/update-style-profile.dto';
 import { AnalyzeStyleProfileDto } from './dto/analyze-style-profile.dto';
-import { ScrapeLinkedInPostsDto } from './dto/scrape-linkedin-posts.dto';
+import { ScrapePostsDto } from './dto/scrape-posts.dto';
 import {
   StyleProfilesQuerySchema,
   StyleProfilesQueryType,
@@ -101,14 +101,14 @@ export class StyleProfilesController {
   @Post(':id/scrape-posts')
   @ApiOperation({
     summary:
-      "Scrape a LinkedIn style profile's recent posts for review before analysis",
+      "Scrape a style profile's recent posts for review before analysis",
   })
   @ApiResponse({ status: 200 })
   scrapePosts(
     @CurrentUser('id') userId: string,
     @Param('id') id: string,
-    @Body() dto: ScrapeLinkedInPostsDto,
+    @Body() dto: ScrapePostsDto,
   ) {
-    return this.styleProfilesService.scrapeLinkedInPosts(userId, id, dto);
+    return this.styleProfilesService.scrapePosts(userId, id, dto);
   }
 }

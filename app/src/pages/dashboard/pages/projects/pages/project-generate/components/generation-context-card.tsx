@@ -4,9 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PlatformGlyph } from "@/components/ui/platform-glyph";
-import { getDropdownOptionLabel } from "@/lib/dropdown-option-label.utils";
-import { PostTypeFormOptions } from "@/config/constants/dropdowns/posts/post-type-form.options";
+import { PlatformGlyph, PlatformChip } from "@/components/ui/platform-glyph";
+import { PLATFORM_META } from "@/components/ui/platform-picker";
 import { LanguageFormOptions } from "@/config/constants/dropdowns/generation-runs/language-form.options";
 import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import type { Project } from "@/features/projects/interfaces/projects.interfaces";
@@ -48,6 +47,7 @@ export function GenerationContextCard({
 }: GenerationContextCardProps) {
   const styleProfiles = project.style_profiles ?? [];
   const isBlog = project.platform === PostTypes.BLOG;
+  const channels = isBlog ? [] : project.channels?.length ? project.channels : [project.platform];
 
   return (
     <div className="sticky top-20 flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -64,22 +64,39 @@ export function GenerationContextCard({
         </div>
       </div>
 
-      <div>
-        <Label className="mb-1.5 block text-xs font-semibold text-foreground">Style profile</Label>
-        <Select value={styleProfileId || NONE_VALUE} onValueChange={(value) => onStyleProfileChange(value === NONE_VALUE ? "" : value)}>
-          <SelectTrigger>
-            <SelectValue placeholder="No style profile" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={NONE_VALUE}>No style profile</SelectItem>
-            {styleProfiles.map((link) => (
-              <SelectItem key={link.style_profile_id} value={link.style_profile_id}>
-                {link.style_profile.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      {isBlog ? (
+        <div>
+          <Label className="mb-1.5 block text-xs font-semibold text-foreground">Style profile</Label>
+          <Select value={styleProfileId || NONE_VALUE} onValueChange={(value) => onStyleProfileChange(value === NONE_VALUE ? "" : value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="No style profile" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={NONE_VALUE}>No style profile</SelectItem>
+              {styleProfiles.map((link) => (
+                <SelectItem key={link.style_profile_id} value={link.style_profile_id}>
+                  {link.style_profile.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      ) : (
+        <div>
+          <Label className="mb-1.5 block text-xs font-semibold text-foreground">Generating for</Label>
+          <div className="flex flex-col gap-1.5 rounded-lg border border-input bg-muted/50 p-2.5">
+            {channels.map((channel) => {
+              const matchedProfile = styleProfiles.find((link) => link.style_profile.platform === channel)?.style_profile;
+              return (
+                <div key={channel} className="flex items-center justify-between gap-2 text-xs">
+                  <PlatformChip platform={channel} label={PLATFORM_META[channel].label} />
+                  <span className="truncate text-muted-foreground">{matchedProfile ? matchedProfile.name : "No style profile"}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div>
         <Label className="mb-1.5 block text-xs font-semibold text-foreground">{isExistingRun ? "Posts to add" : "Number of posts"}</Label>
@@ -134,13 +151,6 @@ export function GenerationContextCard({
           )}
         </div>
       )}
-
-      <div>
-        <Label className="mb-1.5 block text-xs font-semibold text-foreground">Platform</Label>
-        <div className="flex h-9 items-center rounded-md border border-input bg-muted px-3 text-sm text-muted-foreground">
-          {getDropdownOptionLabel(PostTypeFormOptions, project.platform)}
-        </div>
-      </div>
 
       <Button className="mt-1 w-full" onClick={onGenerate} disabled={isGenerating} loading={isGenerating}>
         <Sparkles className="h-4 w-4" />
