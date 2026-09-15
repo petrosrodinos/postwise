@@ -14,5 +14,13 @@ export const EmailConfig = {
             subject: 'Reset your password',
             template_id: EmailTemplates.PASSWORD_RESET,
         },
+        organisation_invite: {
+            subject: "You're invited to join a Postwise workspace",
+            template_id: EmailTemplates.ORGANISATION_INVITE,
+        },
+        organisation_member_added: {
+            subject: 'You now have access to a Postwise workspace',
+            template_id: EmailTemplates.ORGANISATION_MEMBER_ADDED,
+        },
     }
 }

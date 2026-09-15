@@ -2,6 +2,9 @@ export const AppUrls = {
     billing: `${process.env.APP_URL}/dashboard/billing/account`,
     resetPassword: (token: string) =>
         `${process.env.APP_URL}/auth/reset-password?token=${encodeURIComponent(token)}`,
+    acceptOrganisationInvite: (token: string) =>
+        `${process.env.APP_URL}/auth/accept-invite?token=${encodeURIComponent(token)}`,
+    signIn: `${process.env.APP_URL}/auth/sign-in`,
 } as const;
 
 export const ApiUrls = {

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsString, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsEnum, IsOptional, IsString, MinLength, ValidateIf } from 'class-validator';
 import { OrganisationRole } from 'generated/prisma';
 
 export class AddOrganisationMemberDto {
@@ -14,12 +14,24 @@ export class AddOrganisationMemberDto {
 
   @ApiProperty({
     description:
-      'Password for the new account. Ignored if a user with this email already exists.',
+      'Whether to send an invitation email so the new member can set their own password. Defaults to true. Ignored if a user with this email already exists (they are added as Active and notified instead).',
+    required: false,
+    default: true,
+  })
+  @IsOptional()
+  @IsBoolean()
+  send_invite?: boolean;
+
+  @ApiProperty({
+    description:
+      'Password for the new account. Required only when send_invite is false. Ignored if a user with this email already exists.',
+    required: false,
     minLength: 6,
   })
+  @ValidateIf((o) => o.send_invite === false)
   @IsString()
   @MinLength(6)
-  password: string;
+  password?: string;
 
   @ApiProperty({ enum: OrganisationRole, example: OrganisationRole.MEMBER })
   @IsEnum(OrganisationRole)

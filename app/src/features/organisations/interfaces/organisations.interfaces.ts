@@ -5,6 +5,12 @@ export const OrganisationRoles = {
 } as const;
 export type OrganisationRole = (typeof OrganisationRoles)[keyof typeof OrganisationRoles];
 
+export const OrganisationMemberStatuses = {
+  PENDING: "PENDING",
+  ACTIVE: "ACTIVE",
+} as const;
+export type OrganisationMemberStatus = (typeof OrganisationMemberStatuses)[keyof typeof OrganisationMemberStatuses];
+
 export interface Organisation {
   id: string;
   name: string;
@@ -19,6 +25,7 @@ export interface OrganisationMember {
   organisation_id: string;
   user_id: string;
   role: OrganisationRole;
+  status: OrganisationMemberStatus;
   created_at: string;
   updated_at: string;
   user: {
@@ -39,10 +46,23 @@ export type UpdateOrganisationDto = Partial<CreateOrganisationDto>;
 export interface AddOrganisationMemberDto {
   name: string;
   email: string;
-  password: string;
+  password?: string;
+  send_invite?: boolean;
   role: OrganisationRole;
 }
 
 export interface UpdateOrganisationMemberDto {
   role: OrganisationRole;
+}
+
+export interface InvitationDetails {
+  name: string;
+  email: string;
+  organisation_name: string;
+}
+
+export interface AcceptInvitationDto {
+  token: string;
+  password: string;
+  name?: string;
 }

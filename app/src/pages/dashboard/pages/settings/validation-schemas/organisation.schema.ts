@@ -10,11 +10,17 @@ export const organisationGeneralSchema = z.object({
 
 export type OrganisationGeneralFormData = z.infer<typeof organisationGeneralSchema>;
 
-export const addMemberSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().min(1, "Email is required").email("Enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["ADMIN", "MEMBER"]),
-});
+export const addMemberSchema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().min(1, "Email is required").email("Enter a valid email"),
+    send_invite: z.boolean(),
+    password: z.string().optional(),
+    role: z.enum(["ADMIN", "MEMBER"]),
+  })
+  .refine((data) => data.send_invite || (data.password && data.password.length >= 6), {
+    message: "Password must be at least 6 characters",
+    path: ["password"],
+  });
 
 export type AddMemberFormData = z.infer<typeof addMemberSchema>;

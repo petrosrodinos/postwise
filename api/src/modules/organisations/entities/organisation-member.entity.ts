@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { OrganisationRole } from 'generated/prisma';
+import { OrganisationMemberStatus, OrganisationRole } from 'generated/prisma';
 
 export class OrganisationMemberEntity {
   @ApiProperty()
@@ -13,6 +13,9 @@ export class OrganisationMemberEntity {
 
   @ApiProperty({ enum: OrganisationRole })
   role: OrganisationRole;
+
+  @ApiProperty({ enum: OrganisationMemberStatus })
+  status: OrganisationMemberStatus;
 
   @ApiProperty()
   created_at: Date;

@@ -2,6 +2,7 @@ export const Routes = {
   auth: {
     sign_in: "/auth/sign-in",
     sign_up: "/auth/sign-up",
+    accept_invite: "/auth/accept-invite",
   },
   admin: {
     health: "/admin/health",
@@ -16,6 +17,7 @@ export const Routes = {
     project_edit: (id: string) => `/dashboard/projects/${id}/edit`,
     project_generate: (id: string) => `/dashboard/projects/${id}/generate`,
     style_profiles: "/dashboard/style-profiles",
+    rss_feeds: "/dashboard/rss-feeds",
     automation: "/dashboard/automation",
     settings: "/dashboard/settings",
     profile: "/dashboard/profile",

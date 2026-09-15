@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -11,9 +12,15 @@ import { useAuthStore } from "@/stores/auth";
 import {
   useOrganisationMembers,
   useRemoveOrganisationMember,
+  useResendOrganisationInvitation,
   useUpdateOrganisationMemberRole,
 } from "@/features/organisations/hooks/use-organisations";
-import { OrganisationRoles, type OrganisationMember, type OrganisationRole } from "@/features/organisations/interfaces/organisations.interfaces";
+import {
+  OrganisationMemberStatuses,
+  OrganisationRoles,
+  type OrganisationMember,
+  type OrganisationRole,
+} from "@/features/organisations/interfaces/organisations.interfaces";
 import { OrganisationRoleFormOptions } from "@/config/constants/dropdowns/organisations/organisation-role-form.options";
 import { AddMemberDialog } from "./add-member-dialog";
 
@@ -29,12 +36,13 @@ export function MembersTab({ organisationId }: MembersTabProps) {
   const { data: members, isPending } = useOrganisationMembers(organisationId);
   const { mutate: updateRole } = useUpdateOrganisationMemberRole();
   const { mutate: removeMember, isPending: isRemoving } = useRemoveOrganisationMember();
+  const { mutate: resendInvitation, isPending: isResending } = useResendOrganisationInvitation();
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="max-w-lg text-sm text-muted-foreground">
-          Everyone with access to this organisation. Add a member directly with an email, name and password — no invite step.
+          Everyone with access to this organisation. New members are invited by email by default, or can be added directly with a password.
         </p>
         <Button onClick={() => setIsAddOpen(true)}>Add member</Button>
       </div>
@@ -45,6 +53,7 @@ export function MembersTab({ organisationId }: MembersTabProps) {
             <TableRow>
               <TableHead>Member</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Joined</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -65,6 +74,9 @@ export function MembersTab({ organisationId }: MembersTabProps) {
                   <Skeleton className="h-9 w-32 rounded-md" />
                 </TableCell>
                 <TableCell>
+                  <Skeleton className="h-5 w-16 rounded-md" />
+                </TableCell>
+                <TableCell>
                   <Skeleton className="h-3.5 w-20" />
                 </TableCell>
                 <TableCell className="text-right">
@@ -80,6 +92,7 @@ export function MembersTab({ organisationId }: MembersTabProps) {
             <TableRow>
               <TableHead>Member</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Joined</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -88,6 +101,7 @@ export function MembersTab({ organisationId }: MembersTabProps) {
             {(members ?? []).map((member) => {
               const isOwner = member.role === OrganisationRoles.OWNER;
               const isMe = member.user.email === myEmail;
+              const isPending = member.status === OrganisationMemberStatuses.PENDING;
               return (
                 <TableRow key={member.id}>
                   <TableCell>
@@ -122,13 +136,28 @@ export function MembersTab({ organisationId }: MembersTabProps) {
                       </SelectContent>
                     </Select>
                   </TableCell>
+                  <TableCell>
+                    <Badge variant={isPending ? "secondary" : "success"}>{isPending ? "Invited" : "Active"}</Badge>
+                  </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{format(new Date(member.created_at), "MMM d, yyyy")}</TableCell>
                   <TableCell className="text-right">
-                    {!isOwner && (
-                      <Button variant="ghost" size="sm" onClick={() => setRemoveTarget(member)}>
-                        Remove
-                      </Button>
-                    )}
+                    <div className="flex items-center justify-end gap-1">
+                      {isPending && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          disabled={isResending}
+                          onClick={() => resendInvitation({ organisationId, memberId: member.id })}
+                        >
+                          Resend invitation
+                        </Button>
+                      )}
+                      {!isOwner && (
+                        <Button variant="ghost" size="sm" onClick={() => setRemoveTarget(member)}>
+                          Remove
+                        </Button>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               );

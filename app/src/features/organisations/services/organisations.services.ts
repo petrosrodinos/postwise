@@ -1,9 +1,13 @@
 import axiosInstance from "@/config/api/axios";
 import { ApiRoutes } from "@/config/api/routes";
 import { getApiErrorMessage } from "@/lib/api-error.utils";
+import { formatAuthUser } from "@/features/auth/utils/auth.utils";
+import type { LoggedInUser } from "@/features/user/interfaces/user.interface";
 import type {
+  AcceptInvitationDto,
   AddOrganisationMemberDto,
   CreateOrganisationDto,
+  InvitationDetails,
   Organisation,
   OrganisationMember,
   UpdateOrganisationDto,
@@ -92,5 +96,32 @@ export const removeOrganisationMember = async (organisationId: string, memberId:
     return response.data;
   } catch (error) {
     throw new Error(getApiErrorMessage(error, "Failed to remove member. Please try again."));
+  }
+};
+
+export const resendOrganisationInvitation = async (organisationId: string, memberId: string): Promise<{ message: string }> => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.organisations.resend_invitation(organisationId, memberId));
+    return response.data;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "Failed to resend invitation. Please try again."));
+  }
+};
+
+export const getInvitationDetails = async (token: string): Promise<InvitationDetails> => {
+  try {
+    const response = await axiosInstance.get(ApiRoutes.organisation_invitations.prefix, { params: { token } });
+    return response.data;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "This invitation link is invalid or has expired."));
+  }
+};
+
+export const acceptOrganisationInvitation = async (dto: AcceptInvitationDto): Promise<LoggedInUser> => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.organisation_invitations.accept, dto);
+    return formatAuthUser(response.data);
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "This invitation link is invalid or has expired."));
   }
 };

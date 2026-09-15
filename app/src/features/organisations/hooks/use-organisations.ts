@@ -11,6 +11,7 @@ import {
   getOrganisationMembers,
   getOrganisations,
   removeOrganisationMember,
+  resendOrganisationInvitation,
   updateOrganisation,
   updateOrganisationMemberRole,
 } from "../services/organisations.services";
@@ -127,9 +128,16 @@ export const useAddOrganisationMember = () => {
   return useMutation({
     mutationFn: ({ organisationId, dto }: { organisationId: string; dto: AddOrganisationMemberDto }) =>
       addOrganisationMember(organisationId, dto),
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: [ORGANISATION_MEMBERS_KEY] });
-      toast({ title: "Member added", description: "Share their password with them directly — no invite email is sent.", duration: 3000 });
+      toast({
+        title: "Member added",
+        description:
+          variables.dto.send_invite === false
+            ? "Share their password with them directly — no invite email was sent."
+            : "An invitation email has been sent so they can set their own password.",
+        duration: 3000,
+      });
     },
     onError: (error: Error) => {
       toast({ title: "Could not add member", description: error.message, variant: "error" });
@@ -155,6 +163,21 @@ export const useUpdateOrganisationMemberRole = () => {
     },
     onError: (error: Error) => {
       toast({ title: "Could not update role", description: error.message, variant: "error" });
+    },
+  });
+};
+
+export const useResendOrganisationInvitation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ organisationId, memberId }: { organisationId: string; memberId: string }) =>
+      resendOrganisationInvitation(organisationId, memberId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ORGANISATION_MEMBERS_KEY] });
+      toast({ title: "Invitation resent", description: "A new invitation email has been sent.", duration: 2500 });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Could not resend invitation", description: error.message, variant: "error" });
     },
   });
 };

@@ -56,6 +56,17 @@ export class OrganisationMembersController {
     return this.membersService.updateRole(userId, organisationId, memberId, dto);
   }
 
+  @Post(':memberId/resend-invitation')
+  @ApiOperation({ summary: 'Resend a pending invitation (Owner/Admin only)' })
+  @ApiResponse({ status: 201 })
+  resendInvitation(
+    @CurrentUser('id') userId: string,
+    @Param('organisationId') organisationId: string,
+    @Param('memberId') memberId: string,
+  ) {
+    return this.membersService.resendInvitation(userId, organisationId, memberId);
+  }
+
   @Delete(':memberId')
   @ApiOperation({ summary: 'Remove a member from an organisation (Owner/Admin only)' })
   @ApiResponse({ status: 200 })

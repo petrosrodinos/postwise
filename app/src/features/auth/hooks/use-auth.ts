@@ -1,11 +1,13 @@
 import { adminLoginToAccount, refreshAccountToken, signIn, signUp } from "../services/auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
 import type { SignInUser, SignUpUser } from "../interfaces/auth.interface";
 import { Routes } from "@/routes/routes";
 import type { LoggedInUser } from "@/features/user/interfaces/user.interface";
 import { toast } from "@/hooks/use-toast";
+import { acceptOrganisationInvitation, getInvitationDetails } from "@/features/organisations/services/organisations.services";
+import type { AcceptInvitationDto } from "@/features/organisations/interfaces/organisations.interfaces";
 
 
 export function useSignin() {
@@ -74,6 +76,44 @@ export function useRefreshAccountToken() {
         mutationFn: () => refreshAccountToken(),
         onSuccess: (data: LoggedInUser) => {
             login({ ...data, isLoggedIn: true });
+        },
+    });
+}
+
+export function useInvitationDetails(token: string | null) {
+    return useQuery({
+        queryKey: ["invitation-details", token],
+        queryFn: () => getInvitationDetails(token!),
+        enabled: !!token,
+        retry: false,
+    });
+}
+
+export function useAcceptInvitation() {
+    const { login } = useAuthStore((state) => state);
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationFn: (dto: AcceptInvitationDto) => acceptOrganisationInvitation(dto),
+        onSuccess: (data: LoggedInUser) => {
+            login({
+                ...data,
+                isLoggedIn: true,
+            });
+            toast({
+                title: "Welcome!",
+                description: "Your password has been set and you're now signed in.",
+                duration: 2000,
+            });
+            navigate(Routes.dashboard.root);
+        },
+        onError: (error: Error) => {
+            toast({
+                title: "Could not accept invitation",
+                description: error?.message || "An unexpected error occurred",
+                duration: 3000,
+                variant: "error",
+            });
         },
     });
 }

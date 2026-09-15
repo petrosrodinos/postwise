@@ -26,17 +26,30 @@ export const ApiRoutes = {
         prefix: "/organisations",
         members: (organisation_id: string) => `/organisations/${organisation_id}/members`,
         member: (organisation_id: string, member_id: string) => `/organisations/${organisation_id}/members/${member_id}`,
+        resend_invitation: (organisation_id: string, member_id: string) =>
+            `/organisations/${organisation_id}/members/${member_id}/resend-invitation`,
+    },
+    organisation_invitations: {
+        prefix: "/organisation-invitations",
+        accept: "/organisation-invitations/accept",
     },
     projects: {
         prefix: "/projects",
         generate_details: "/projects/generate-details",
         style_profiles: (project_id: string) => `/projects/${project_id}/style-profiles`,
         style_profile: (project_id: string, style_profile_id: string) => `/projects/${project_id}/style-profiles/${style_profile_id}`,
+        rss_feeds: (project_id: string) => `/projects/${project_id}/rss-feeds`,
+        rss_feed: (project_id: string, rss_feed_id: string) => `/projects/${project_id}/rss-feeds/${rss_feed_id}`,
     },
     style_profiles: {
         prefix: "/style-profiles",
         analyze: (id: string) => `/style-profiles/${id}/analyze`,
         scrape_posts: (id: string) => `/style-profiles/${id}/scrape-posts`,
+    },
+    rss_feeds: {
+        prefix: "/rss-feeds",
+        fetch_items: (id: string) => `/rss-feeds/${id}/fetch-items`,
+        items: (id: string) => `/rss-feeds/${id}/items`,
     },
     posts: {
         prefix: "/posts",
@@ -50,6 +63,7 @@ export const ApiRoutes = {
     },
     generation_runs: {
         prefix: "/generation-runs",
+        from_rss: "/generation-runs/from-rss",
     },
     automations: {
         prefix: "/automations",

@@ -7,6 +7,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { useAddOrganisationMember } from "@/features/organisations/hooks/use-organisations";
 import { OrganisationRoles } from "@/features/organisations/interfaces/organisations.interfaces";
@@ -27,8 +28,10 @@ export function AddMemberDialog({ organisationId, isOpen, onClose }: AddMemberDi
 
   const form = useForm<AddMemberFormData>({
     resolver: zodResolver(addMemberSchema),
-    defaultValues: { name: "", email: "", password: "", role: OrganisationRoles.MEMBER },
+    defaultValues: { name: "", email: "", send_invite: true, password: "", role: OrganisationRoles.MEMBER },
   });
+
+  const sendInvite = form.watch("send_invite");
 
   function handleClose() {
     if (isPending) return;
@@ -38,7 +41,7 @@ export function AddMemberDialog({ organisationId, isOpen, onClose }: AddMemberDi
 
   function onSubmit(data: AddMemberFormData) {
     mutate(
-      { organisationId, dto: data },
+      { organisationId, dto: { ...data, password: data.send_invite ? undefined : data.password } },
       {
         onSuccess: () => {
           form.reset();
@@ -53,7 +56,7 @@ export function AddMemberDialog({ organisationId, isOpen, onClose }: AddMemberDi
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add member</DialogTitle>
-          <DialogDescription>Creates the account immediately with the email and password below — no invite email is sent. Share the password with them directly.</DialogDescription>
+          <DialogDescription>By default, an invitation email is sent so they can set their own password. Uncheck the box below to set a password for them directly instead.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
@@ -85,17 +88,33 @@ export function AddMemberDialog({ organisationId, isOpen, onClose }: AddMemberDi
             />
             <FormField
               control={form.control}
-              name="password"
+              name="send_invite"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
+                <FormItem className="flex flex-row items-start gap-2.5 space-y-0">
                   <FormControl>
-                    <PasswordInput {...field} />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
-                  <FormMessage />
+                  <div className="space-y-0.5 leading-none">
+                    <FormLabel className="font-normal">Send an invitation email</FormLabel>
+                  </div>
                 </FormItem>
               )}
             />
+            {!sendInvite && (
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="role"

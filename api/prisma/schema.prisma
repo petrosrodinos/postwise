@@ -76,6 +76,11 @@ enum OrganisationRole {
   MEMBER
 }
 
+enum OrganisationMemberStatus {
+  PENDING
+  ACTIVE
+}
+
 enum AutomationFrequency {
   DAILY
   WEEKDAYS
@@ -168,30 +173,56 @@ model Organisation {
   channel_connections SocialChannelConnection[]
   style_profiles      StyleProfile[]
   projects            Project[]
+  rss_feeds           RssFeed[]
 
   @@index([created_by_user_id])
   @@index([slug])
   @@map("organisations")
 }
 
-// Links a User to an Organisation with one of 3 fixed roles (§6.3) — no
-// invite/accept flow: members are created directly by an Owner/Admin.
+// Links a User to an Organisation with one of 3 fixed roles (§6.3). Members
+// can be added directly (Active immediately) or invited by email (Pending
+// until they accept via OrganisationInviteToken and set a password).
 // Removing this row revokes access without touching the User account.
 model OrganisationMember {
-  id              String           @id @default(uuid())
+  id              String                   @id @default(uuid())
   organisation_id String
   user_id         String
   role            OrganisationRole
-  created_at      DateTime         @default(now())
-  updated_at      DateTime         @updatedAt
+  status          OrganisationMemberStatus @default(ACTIVE)
+  created_at      DateTime                 @default(now())
+  updated_at      DateTime                 @updatedAt
 
   organisation Organisation @relation(fields: [organisation_id], references: [id], onDelete: Cascade)
   user         User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  invite_tokens OrganisationInviteToken[]
 
   @@unique([organisation_id, user_id])
   @@index([organisation_id])
   @@index([user_id])
   @@map("organisation_members")
+}
+
+// An opaque, single-use token emailed to an invited member so they can set
+// their own password. Mirrors PasswordResetToken's pattern (hash stored, not
+// the raw token; DB-tracked expiry; used_at marks consumption) but is kept
+// separate since a user's invite lifecycle is independent of their own
+// unrelated password-reset flow.
+model OrganisationInviteToken {
+  id                      String    @id @default(uuid())
+  token_hash              String    @unique
+  organisation_member_id  String
+  invited_by_user_id      String
+  expires_at              DateTime
+  used_at                 DateTime?
+  created_at              DateTime  @default(now())
+
+  organisation_member OrganisationMember @relation(fields: [organisation_member_id], references: [id], onDelete: Cascade)
+
+  @@index([organisation_member_id])
+  @@index([expires_at])
+  @@map("organisation_invite_tokens")
 }
 
 // A social account (Twitter/LinkedIn, etc.) connected for publishing.
@@ -271,12 +302,74 @@ model Project {
   organisation Organisation @relation(fields: [organisation_id], references: [id], onDelete: Cascade)
 
   style_profiles  ProjectStyleProfile[]
+  rss_feeds       ProjectRssFeed[]
   posts           Post[]
   generation_runs GenerationRun[]
   automations     Automation[]
 
   @@index([organisation_id])
   @@map("projects")
+}
+
+// A reusable blog RSS source, organisation-scoped, attachable to many
+// Projects (mirrors StyleProfile/ProjectStyleProfile). Only the feed's own
+// title/summary/content fields are ever used — no full-article scraping.
+model RssFeed {
+  id               String    @id @default(uuid())
+  organisation_id  String
+  name             String
+  url              String
+  last_fetched_at  DateTime?
+  last_fetch_error String?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  organisation Organisation @relation(fields: [organisation_id], references: [id], onDelete: Cascade)
+
+  projects    ProjectRssFeed[]
+  items       RssFeedItem[]
+  automations Automation[]
+
+  @@index([organisation_id])
+  @@map("rss_feeds")
+}
+
+model ProjectRssFeed {
+  id          String   @id @default(uuid())
+  project_id  String
+  rss_feed_id String
+  created_at  DateTime @default(now())
+
+  project  Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  rss_feed RssFeed @relation(fields: [rss_feed_id], references: [id], onDelete: Cascade)
+
+  @@unique([project_id, rss_feed_id])
+  @@index([project_id])
+  @@index([rss_feed_id])
+  @@map("project_rss_feeds")
+}
+
+// One fetched RSS entry, persisted so re-fetches dedupe by guid and
+// "unused only" filtering can exclude items already turned into a Post.
+model RssFeedItem {
+  id           String    @id @default(uuid())
+  rss_feed_id  String
+  guid         String
+  title        String
+  link         String?
+  summary      String?   @db.Text
+  content      String?   @db.Text
+  published_at DateTime?
+  is_used      Boolean   @default(false)
+  fetched_at   DateTime  @default(now())
+
+  rss_feed RssFeed @relation(fields: [rss_feed_id], references: [id], onDelete: Cascade)
+  posts    Post[]
+
+  @@unique([rss_feed_id, guid])
+  @@index([rss_feed_id])
+  @@index([rss_feed_id, is_used])
+  @@map("rss_feed_items")
 }
 
 model ProjectStyleProfile {
@@ -327,6 +420,7 @@ model Automation {
   id               String                @id @default(uuid())
   project_id       String
   style_profile_id String?
+  rss_feed_id      String?
   name             String
   is_active        Boolean               @default(true)
   frequency        AutomationFrequency   @default(WEEKLY)
@@ -335,6 +429,8 @@ model Automation {
   timezone         String                @default("UTC")
   posts_per_run    Int                   @default(1)
   output_stage     AutomationOutputStage @default(DRAFT)
+  generate_images  Boolean               @default(false)
+  image_count      Int                   @default(1)
   last_run_at      DateTime?
   next_run_at      DateTime?
   created_at       DateTime              @default(now())
@@ -342,11 +438,13 @@ model Automation {
 
   project       Project       @relation(fields: [project_id], references: [id], onDelete: Cascade)
   style_profile StyleProfile? @relation(fields: [style_profile_id], references: [id], onDelete: SetNull)
+  rss_feed      RssFeed?      @relation(fields: [rss_feed_id], references: [id], onDelete: SetNull)
 
   generation_runs GenerationRun[]
 
   @@index([project_id])
   @@index([style_profile_id])
+  @@index([rss_feed_id])
   @@map("automations")
 }
 
@@ -362,6 +460,7 @@ model Post {
   style_profile_id  String?
   generation_run_id String?
   source_post_id    String?
+  rss_feed_item_id  String?
   type              PostType
   status            PostStatus @default(DRAFT)
   hook              String?
@@ -392,6 +491,7 @@ model Post {
   style_profile  StyleProfile?  @relation(fields: [style_profile_id], references: [id], onDelete: SetNull)
   generation_run GenerationRun? @relation(fields: [generation_run_id], references: [id], onDelete: SetNull)
   cover_document Document?      @relation(fields: [cover_document_id], references: [id], onDelete: SetNull)
+  rss_feed_item  RssFeedItem?   @relation(fields: [rss_feed_item_id], references: [id], onDelete: SetNull)
 
   // Repurposing lineage: a post generated from another post (e.g. a blog
   // repurposed into a Twitter thread) links back to its source.
@@ -408,6 +508,7 @@ model Post {
   @@index([generation_run_id])
   @@index([source_post_id])
   @@index([cover_document_id])
+  @@index([rss_feed_item_id])
   @@index([status])
   @@index([scheduled_at])
   @@map("posts")

@@ -3,6 +3,7 @@ import { Routes as RoutePaths } from "@/routes/routes";
 import ProtectedRoute from "@/routes/protected-route";
 import SignIn from "@/pages/auth/pages/sign-in";
 import SignUp from "@/pages/auth/pages/sign-up";
+import AcceptInvite from "@/pages/auth/pages/accept-invite";
 import AuthLayout from "@/pages/auth/layout";
 import AdminLayout from "@/pages/admin/layout";
 import AdminHealthPage from "@/pages/admin/pages/health";
@@ -14,6 +15,7 @@ import EditProjectPage from "@/pages/dashboard/pages/projects/pages/edit-project
 import ProjectDetailPage from "@/pages/dashboard/pages/projects/pages/project-detail";
 import ProjectGeneratePage from "@/pages/dashboard/pages/projects/pages/project-generate";
 import StyleProfilesPage from "@/pages/dashboard/pages/style-profiles";
+import RssFeedsPage from "@/pages/dashboard/pages/rss-feeds";
 import AutomationPage from "@/pages/dashboard/pages/automation";
 import SettingsPage from "@/pages/dashboard/pages/settings";
 import ProfilePage from "@/pages/dashboard/pages/profile";
@@ -32,6 +34,7 @@ export default function AppRoutes() {
       >
         <Route path="sign-up" element={<SignUp />} />
         <Route path="sign-in" element={<SignIn />} />
+        <Route path="accept-invite" element={<AcceptInvite />} />
         <Route index element={<Navigate to="/auth/sign-in" replace />} />
       </Route>
 
@@ -62,6 +65,7 @@ export default function AppRoutes() {
         <Route path="projects/:id" element={<ProjectDetailPage />} />
         <Route path="projects/:id/generate" element={<ProjectGeneratePage />} />
         <Route path="style-profiles" element={<StyleProfilesPage />} />
+        <Route path="rss-feeds" element={<RssFeedsPage />} />
         <Route path="automation" element={<AutomationPage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="profile" element={<ProfilePage />} />
