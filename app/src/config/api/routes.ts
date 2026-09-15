@@ -57,6 +57,7 @@ export const ApiRoutes = {
         schedule: (id: string) => `/posts/${id}/schedule`,
         publish: (id: string) => `/posts/${id}/publish`,
         repurpose: (id: string) => `/posts/${id}/repurpose`,
+        revise: (id: string) => `/posts/${id}/revise`,
         attachments: (id: string) => `/posts/${id}/attachments`,
         attachment: (id: string, attachment_id: string) => `/posts/${id}/attachments/${attachment_id}`,
         channels: (id: string) => `/posts/${id}/channels`,

@@ -12,6 +12,7 @@ export const createProjectSchema = z.object({
   pillars: z.array(z.string()),
   ideas: z.array(z.string()),
   instructions: z.array(z.string()),
+  ai_directions: z.string().optional(),
 });
 
 export type CreateProjectFormData = z.infer<typeof createProjectSchema>;

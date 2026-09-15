@@ -8,7 +8,9 @@ import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { AiService } from '@/integrations/ai/services/ai.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
-import { OrganisationRole } from 'generated/prisma';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
+import { ActivityLogAction, ActivityLogEntityType, OrganisationRole } from 'generated/prisma';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AttachStyleProfileDto } from './dto/attach-style-profile.dto';
@@ -26,6 +28,7 @@ export class ProjectsService {
     private readonly prisma: PrismaService,
     private readonly ownershipService: OwnershipService,
     private readonly aiService: AiService,
+    private readonly activityLogsService: ActivityLogsService,
   ) {}
 
   async generateDetails(dto: GenerateProjectDetailsDto) {
@@ -38,7 +41,8 @@ export class ProjectsService {
 
 Project title: ${dto.title}
 Project description: ${dto.description ?? 'n/a'}
-Platform: ${dto.platform ?? 'general social media'}`;
+Platform: ${dto.platform ?? 'general social media'}
+Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
 
     const { response } = await this.aiService.generateText({
       prompt,
@@ -53,7 +57,7 @@ Platform: ${dto.platform ?? 'general social media'}`;
     const context = await this.ownershipService.resolveContext(userId, dto.organisation_id);
     this.ownershipService.assertRole(context, MANAGE_ROLES);
 
-    return this.prisma.project.create({
+    const project = await this.prisma.project.create({
       data: {
         organisation_id: context.organisation_id,
         title: dto.title,
@@ -62,8 +66,20 @@ Platform: ${dto.platform ?? 'general social media'}`;
         pillars: dto.pillars ?? [],
         ideas: dto.ideas ?? [],
         instructions: dto.instructions ?? [],
+        ai_directions: dto.ai_directions,
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: context.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.PROJECT_CREATED,
+      entity_type: ActivityLogEntityType.PROJECT,
+      entity_id: project.id,
+      description: `Created project "${project.title}"`,
+    });
+
+    return project;
   }
 
   async findAll(userId: string, query: ProjectsQueryType) {
@@ -156,7 +172,7 @@ Platform: ${dto.platform ?? 'general social media'}`;
     const project = await this.findOwned(userId, id);
     await this.assertManage(userId, project);
 
-    return this.prisma.project.update({
+    const updated = await this.prisma.project.update({
       where: { id },
       data: {
         title: dto.title,
@@ -165,9 +181,33 @@ Platform: ${dto.platform ?? 'general social media'}`;
         pillars: dto.pillars,
         ideas: dto.ideas,
         instructions: dto.instructions,
+        ai_directions: dto.ai_directions,
         is_archived: dto.is_archived,
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: project.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.PROJECT_UPDATED,
+      entity_type: ActivityLogEntityType.PROJECT,
+      entity_id: project.id,
+      description: `Updated project "${updated.title}"`,
+      metadata: {
+        changes: diffFields(project, updated, [
+          'title',
+          'description',
+          'platform',
+          'pillars',
+          'ideas',
+          'instructions',
+          'ai_directions',
+          'is_archived',
+        ]),
+      },
+    });
+
+    return updated;
   }
 
   async remove(userId: string, id: string) {
@@ -175,6 +215,16 @@ Platform: ${dto.platform ?? 'general social media'}`;
     await this.assertManage(userId, project);
 
     await this.prisma.project.delete({ where: { id } });
+
+    this.activityLogsService.log({
+      organisation_id: project.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.PROJECT_DELETED,
+      entity_type: ActivityLogEntityType.PROJECT,
+      entity_id: project.id,
+      description: `Deleted project "${project.title}"`,
+    });
+
     return { message: 'Project deleted successfully' };
   }
 
@@ -206,10 +256,21 @@ Platform: ${dto.platform ?? 'general social media'}`;
       throw new ConflictException('This style profile is already attached to the project');
     }
 
-    return this.prisma.projectStyleProfile.create({
+    const link = await this.prisma.projectStyleProfile.create({
       data: { project_id: id, style_profile_id: dto.style_profile_id },
       include: { style_profile: true },
     });
+
+    this.activityLogsService.log({
+      organisation_id: project.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.PROJECT_STYLE_PROFILE_ATTACHED,
+      entity_type: ActivityLogEntityType.PROJECT,
+      entity_id: project.id,
+      description: `Attached style profile "${link.style_profile.name}" to "${project.title}"`,
+    });
+
+    return link;
   }
 
   async detachStyleProfile(userId: string, id: string, styleProfileId: string) {
@@ -220,10 +281,21 @@ Platform: ${dto.platform ?? 'general social media'}`;
       where: {
         project_id_style_profile_id: { project_id: id, style_profile_id: styleProfileId },
       },
+      include: { style_profile: true },
     });
     if (!link) throw new NotFoundException('This style profile is not attached to the project');
 
     await this.prisma.projectStyleProfile.delete({ where: { id: link.id } });
+
+    this.activityLogsService.log({
+      organisation_id: project.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.PROJECT_STYLE_PROFILE_DETACHED,
+      entity_type: ActivityLogEntityType.PROJECT,
+      entity_id: project.id,
+      description: `Detached style profile "${link.style_profile.name}" from "${project.title}"`,
+    });
+
     return { message: 'Style profile detached successfully' };
   }
 
@@ -252,10 +324,21 @@ Platform: ${dto.platform ?? 'general social media'}`;
       throw new ConflictException('This RSS feed is already attached to the project');
     }
 
-    return this.prisma.projectRssFeed.create({
+    const link = await this.prisma.projectRssFeed.create({
       data: { project_id: id, rss_feed_id: dto.rss_feed_id },
       include: { rss_feed: true },
     });
+
+    this.activityLogsService.log({
+      organisation_id: project.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.PROJECT_RSS_FEED_ATTACHED,
+      entity_type: ActivityLogEntityType.PROJECT,
+      entity_id: project.id,
+      description: `Attached RSS feed "${link.rss_feed.name}" to "${project.title}"`,
+    });
+
+    return link;
   }
 
   async detachRssFeed(userId: string, id: string, rssFeedId: string) {
@@ -264,10 +347,21 @@ Platform: ${dto.platform ?? 'general social media'}`;
 
     const link = await this.prisma.projectRssFeed.findUnique({
       where: { project_id_rss_feed_id: { project_id: id, rss_feed_id: rssFeedId } },
+      include: { rss_feed: true },
     });
     if (!link) throw new NotFoundException('This RSS feed is not attached to the project');
 
     await this.prisma.projectRssFeed.delete({ where: { id: link.id } });
+
+    this.activityLogsService.log({
+      organisation_id: project.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.PROJECT_RSS_FEED_DETACHED,
+      entity_type: ActivityLogEntityType.PROJECT,
+      entity_id: project.id,
+      description: `Detached RSS feed "${link.rss_feed.name}" from "${project.title}"`,
+    });
+
     return { message: 'RSS feed detached successfully' };
   }
 }

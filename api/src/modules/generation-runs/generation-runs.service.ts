@@ -6,9 +6,12 @@ import { AiImageService } from '@/integrations/ai/services/ai-image.service';
 import { DocumentsService } from '@/modules/documents/documents.service';
 import { RssFeedsService } from '@/modules/rss-feeds/rss-feeds.service';
 import { ProjectsService } from '@/modules/projects/projects.service';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
 import {
+  ActivityLogAction,
+  ActivityLogEntityType,
   Automation,
   AutomationOutputStage,
   DocumentType,
@@ -34,10 +37,14 @@ export class GenerationRunsService {
     private readonly documentsService: DocumentsService,
     private readonly rssFeedsService: RssFeedsService,
     private readonly projectsService: ProjectsService,
+    private readonly activityLogsService: ActivityLogsService,
   ) {}
 
   private buildPrompt(
-    project: Pick<Project, 'title' | 'description' | 'platform' | 'pillars' | 'ideas' | 'instructions'>,
+    project: Pick<
+      Project,
+      'title' | 'description' | 'platform' | 'pillars' | 'ideas' | 'instructions' | 'ai_directions'
+    >,
     styleProfile: StyleProfile | null,
     postsRequested: number,
     language: string,
@@ -55,6 +62,7 @@ Project description: ${project.description ?? 'n/a'}
 Content pillars: ${project.pillars.join(', ') || 'n/a'}
 Ideas to draw from: ${project.ideas.join('; ') || 'n/a'}
 Instructions the AI must follow: ${project.instructions.join('; ') || 'n/a'}
+Additional directions from the user: ${project.ai_directions ?? 'n/a'}
 ${
   styleProfile
     ? `Voice to emulate: ${styleProfile.tone_description ?? 'n/a'}. Dominant hook style: ${styleProfile.dominant_hook ?? 'n/a'}. Signature vocabulary: ${styleProfile.vocabulary.join(', ') || 'n/a'}.`
@@ -83,7 +91,10 @@ ${
   }
 
   private async generateDrafts(
-    project: Pick<Project, 'title' | 'description' | 'platform' | 'pillars' | 'ideas' | 'instructions'>,
+    project: Pick<
+      Project,
+      'title' | 'description' | 'platform' | 'pillars' | 'ideas' | 'instructions' | 'ai_directions'
+    >,
     styleProfile: StyleProfile | null,
     postsRequested: number,
     language: string,
@@ -449,6 +460,7 @@ ${
               style_profile_id: styleProfileId,
               generation_run_id: run.id,
               rss_feed_item_id: rssFeedItemIds?.[index] ?? null,
+              automation_id: automationId,
               type: project.platform,
               status: status ?? PostStatus.DRAFT,
               hook: draft.hook,
@@ -481,6 +493,19 @@ ${
           data: { is_used: true },
         });
       }
+
+      const isAutomationRun = !!automationId;
+      this.activityLogsService.log({
+        organisation_id: project.organisation_id,
+        user_id: isAutomationRun ? null : authorUserId,
+        action: isAutomationRun ? ActivityLogAction.AUTOMATION_RAN : ActivityLogAction.GENERATION_RUN_CREATED,
+        entity_type: ActivityLogEntityType.GENERATION_RUN,
+        entity_id: run.id,
+        description: isAutomationRun
+          ? `${label} — generated ${posts.length} post${posts.length === 1 ? '' : 's'}`
+          : `Generated ${posts.length} post${posts.length === 1 ? '' : 's'} for "${project.title}"`,
+        metadata: { project_id: project.id, posts_requested: postsRequested, posts_created: posts.length },
+      });
 
       return { ...run, posts };
     });

@@ -12,6 +12,7 @@ import {
   removePostAttachment,
   removePostChannel,
   repurposePost,
+  revisePost,
   schedulePost,
   updatePost,
 } from "../services/posts.services";
@@ -21,6 +22,7 @@ import type {
   CreatePostDto,
   PostsQueryType,
   RepurposePostDto,
+  RevisePostDto,
   SchedulePostDto,
   UpdatePostDto,
 } from "../interfaces/posts.interfaces";
@@ -129,6 +131,15 @@ export const useRepurposePost = () => {
     },
     onError: (error: Error) => {
       toast({ title: "Could not repurpose post", description: error.message, variant: "error" });
+    },
+  });
+};
+
+export const useRevisePost = () => {
+  return useMutation({
+    mutationFn: ({ id, dto }: { id: string; dto: RevisePostDto }) => revisePost(id, dto),
+    onError: (error: Error) => {
+      toast({ title: "Could not revise post", description: error.message, variant: "error" });
     },
   });
 };

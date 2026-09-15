@@ -43,6 +43,7 @@ export default function EditProjectPage() {
           pillars: project.pillars,
           ideas: project.ideas,
           instructions: project.instructions,
+          ai_directions: project.ai_directions ?? "",
         }
       : undefined,
   });
@@ -127,6 +128,7 @@ export default function EditProjectPage() {
           pillars: data.pillars,
           ideas: data.ideas,
           instructions: data.instructions,
+          ai_directions: data.ai_directions || undefined,
         },
       },
       {

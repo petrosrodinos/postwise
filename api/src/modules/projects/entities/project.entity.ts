@@ -26,6 +26,9 @@ export class ProjectEntity {
   @ApiProperty({ type: [String] })
   instructions: string[];
 
+  @ApiProperty({ required: false, nullable: true })
+  ai_directions?: string | null;
+
   @ApiProperty()
   is_archived: boolean;
 

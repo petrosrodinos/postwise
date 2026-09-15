@@ -20,6 +20,7 @@ import { SchedulePostDto } from './dto/schedule-post.dto';
 import { AddPostAttachmentDto } from './dto/add-post-attachment.dto';
 import { AddPostChannelDto } from './dto/add-post-channel.dto';
 import { RepurposePostDto } from './dto/repurpose-post.dto';
+import { RevisePostDto } from './dto/revise-post.dto';
 import { PostsQuerySchema, PostsQueryType } from './dto/posts-query.schema';
 import { PostEntity } from './entities/post.entity';
 
@@ -108,6 +109,17 @@ export class PostsController {
     @Body() dto: RepurposePostDto,
   ) {
     return this.postsService.repurpose(userId, id, dto);
+  }
+
+  @Post(':id/revise')
+  @ApiOperation({ summary: 'Use AI to revise a post, returning a draft to review before saving' })
+  @ApiResponse({ status: 201 })
+  revise(
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+    @Body() dto: RevisePostDto,
+  ) {
+    return this.postsService.revise(userId, id, dto);
   }
 
   @Post(':id/attachments')

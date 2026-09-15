@@ -34,6 +34,14 @@ export class CreateProjectDto {
   @IsString({ each: true })
   instructions?: string[];
 
+  @ApiProperty({
+    required: false,
+    description: 'Freeform directions to guide AI generation for this project',
+  })
+  @IsOptional()
+  @IsString()
+  ai_directions?: string;
+
   @ApiProperty({ description: 'Organisation workspace that owns this project' })
   @IsNotEmpty()
   @IsString()

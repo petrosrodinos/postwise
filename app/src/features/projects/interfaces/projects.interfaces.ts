@@ -27,6 +27,7 @@ export interface Project {
   pillars: string[];
   ideas: string[];
   instructions: string[];
+  ai_directions?: string | null;
   is_archived: boolean;
   created_at: string;
   updated_at: string;
@@ -42,6 +43,7 @@ export interface CreateProjectDto {
   pillars?: string[];
   ideas?: string[];
   instructions?: string[];
+  ai_directions?: string;
   organisation_id: string;
 }
 
@@ -61,6 +63,7 @@ export interface GenerateProjectDetailsDto {
   title: string;
   description?: string;
   platform?: PostType;
+  ai_directions?: string;
 }
 
 export interface ProjectAiSuggestions {

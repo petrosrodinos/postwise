@@ -93,6 +93,74 @@ enum AutomationOutputStage {
   PUBLISH
 }
 
+enum ActivityLogAction {
+  USER_REGISTERED
+  USER_LOGGED_IN
+  USER_PROFILE_UPDATED
+  PASSWORD_CHANGED
+  PASSWORD_RESET_COMPLETED
+  ORGANISATION_CREATED
+  ORGANISATION_UPDATED
+  ORGANISATION_DELETED
+  MEMBER_ADDED
+  MEMBER_INVITED
+  MEMBER_INVITATION_RESENT
+  MEMBER_INVITATION_ACCEPTED
+  MEMBER_ROLE_UPDATED
+  MEMBER_REMOVED
+  DOCUMENT_UPLOADED
+  DOCUMENT_UPDATED
+  DOCUMENT_DELETED
+  STYLE_PROFILE_CREATED
+  STYLE_PROFILE_UPDATED
+  STYLE_PROFILE_DELETED
+  STYLE_PROFILE_ANALYZED
+  PROJECT_CREATED
+  PROJECT_UPDATED
+  PROJECT_DELETED
+  PROJECT_STYLE_PROFILE_ATTACHED
+  PROJECT_STYLE_PROFILE_DETACHED
+  PROJECT_RSS_FEED_ATTACHED
+  PROJECT_RSS_FEED_DETACHED
+  RSS_FEED_CREATED
+  RSS_FEED_UPDATED
+  RSS_FEED_DELETED
+  RSS_FEED_ITEMS_FETCHED
+  AUTOMATION_CREATED
+  AUTOMATION_UPDATED
+  AUTOMATION_DELETED
+  AUTOMATION_RAN
+  GENERATION_RUN_CREATED
+  POST_CREATED
+  POST_UPDATED
+  POST_DELETED
+  POST_SCHEDULED
+  POST_PUBLISHED
+  POST_PUBLISH_FAILED
+  POST_REPURPOSED
+  POST_ATTACHMENT_ADDED
+  POST_ATTACHMENT_REMOVED
+  POST_CHANNEL_ADDED
+  POST_CHANNEL_REMOVED
+  CHANNEL_CONNECTION_CREATED
+  CHANNEL_CONNECTION_UPDATED
+  CHANNEL_CONNECTION_REMOVED
+}
+
+enum ActivityLogEntityType {
+  USER
+  ORGANISATION
+  ORGANISATION_MEMBER
+  DOCUMENT
+  STYLE_PROFILE
+  PROJECT
+  RSS_FEED
+  AUTOMATION
+  GENERATION_RUN
+  POST
+  SOCIAL_CHANNEL_CONNECTION
+}
+
 model User {
   id       String  @id @default(uuid())
   name     String
@@ -108,6 +176,7 @@ model User {
   organisations_created    Organisation[]
   organisation_memberships OrganisationMember[]
   authored_posts           Post[]
+  activity_logs            ActivityLog[]
 
   @@index([email])
   @@index([phone])
@@ -174,6 +243,7 @@ model Organisation {
   style_profiles      StyleProfile[]
   projects            Project[]
   rss_feeds           RssFeed[]
+  activity_logs       ActivityLog[]
 
   @@index([created_by_user_id])
   @@index([slug])
@@ -295,6 +365,7 @@ model Project {
   pillars         String[]
   ideas           String[]
   instructions    String[]
+  ai_directions   String?  @db.Text
   is_archived     Boolean  @default(false)
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt
@@ -441,6 +512,7 @@ model Automation {
   rss_feed      RssFeed?      @relation(fields: [rss_feed_id], references: [id], onDelete: SetNull)
 
   generation_runs GenerationRun[]
+  posts           Post[]
 
   @@index([project_id])
   @@index([style_profile_id])
@@ -461,6 +533,7 @@ model Post {
   generation_run_id String?
   source_post_id    String?
   rss_feed_item_id  String?
+  automation_id     String?
   type              PostType
   status            PostStatus @default(DRAFT)
   hook              String?
@@ -492,6 +565,7 @@ model Post {
   generation_run GenerationRun? @relation(fields: [generation_run_id], references: [id], onDelete: SetNull)
   cover_document Document?      @relation(fields: [cover_document_id], references: [id], onDelete: SetNull)
   rss_feed_item  RssFeedItem?   @relation(fields: [rss_feed_item_id], references: [id], onDelete: SetNull)
+  automation     Automation?    @relation(fields: [automation_id], references: [id], onDelete: SetNull)
 
   // Repurposing lineage: a post generated from another post (e.g. a blog
   // repurposed into a Twitter thread) links back to its source.
@@ -509,6 +583,7 @@ model Post {
   @@index([source_post_id])
   @@index([cover_document_id])
   @@index([rss_feed_item_id])
+  @@index([automation_id])
   @@index([status])
   @@index([scheduled_at])
   @@map("posts")
@@ -555,4 +630,29 @@ model PostChannel {
   @@index([post_id])
   @@index([channel_connection_id])
   @@map("post_channels")
+}
+
+// A single recorded action, written fire-and-forget from the service that
+// performed it. `user_id` is null for system/cron-triggered events
+// (scheduled auto-publish, automation runs) so the UI can show "System".
+// `organisation_id` is null for account-level events not scoped to an
+// organisation (login, password change).
+model ActivityLog {
+  id              String                 @id @default(uuid())
+  organisation_id String?
+  user_id         String?
+  action          ActivityLogAction
+  entity_type     ActivityLogEntityType?
+  entity_id       String?
+  description     String
+  metadata        Json?
+  created_at      DateTime               @default(now())
+
+  organisation Organisation? @relation(fields: [organisation_id], references: [id], onDelete: Cascade)
+  user         User?         @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  @@index([organisation_id, created_at])
+  @@index([user_id])
+  @@index([action])
+  @@map("activity_logs")
 }

@@ -16,4 +16,12 @@ export class GenerateProjectDetailsDto {
   @IsOptional()
   @IsEnum(PostType)
   platform?: PostType;
+
+  @ApiProperty({
+    required: false,
+    description: 'Freeform directions to guide the AI while planning this content strategy',
+  })
+  @IsOptional()
+  @IsString()
+  ai_directions?: string;
 }

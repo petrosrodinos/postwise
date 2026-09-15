@@ -120,6 +120,30 @@ export interface RepurposePostDto {
   target_types: PostType[];
 }
 
+export const RevisePresets = {
+  FRIENDLIER: "FRIENDLIER",
+  MORE_FORMAL: "MORE_FORMAL",
+  LESS_FORMAL: "LESS_FORMAL",
+  SHORTER: "SHORTER",
+  LONGER: "LONGER",
+  SIMPLIFY: "SIMPLIFY",
+  PUNCHIER: "PUNCHIER",
+  FIX_GRAMMAR: "FIX_GRAMMAR",
+} as const;
+export type RevisePreset = (typeof RevisePresets)[keyof typeof RevisePresets];
+
+export interface RevisePostDto {
+  preset?: RevisePreset;
+  instructions?: string;
+}
+
+export interface RevisedPostDraft {
+  hook?: string;
+  body: string;
+  title?: string;
+  excerpt?: string;
+}
+
 export interface AddPostAttachmentDto {
   document_id: string;
   order?: number;

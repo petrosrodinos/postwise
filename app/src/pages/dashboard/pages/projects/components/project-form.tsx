@@ -35,6 +35,7 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
   const pillars = form.watch("pillars");
   const ideas = form.watch("ideas");
   const instructions = form.watch("instructions");
+  const aiDirections = form.watch("ai_directions");
   const styleProfileIds = form.watch("style_profile_ids");
 
   async function handleGenerateWithAi() {
@@ -42,7 +43,7 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
     if (!titleValid) return;
 
     generateDetails(
-      { title, description: description || undefined, platform },
+      { title, description: description || undefined, platform, ai_directions: aiDirections || undefined },
       {
         onSuccess: (suggestions) => {
           form.setValue("pillars", suggestions.pillars, { shouldDirty: true });
@@ -203,6 +204,23 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
               </Button>
             </CardHeader>
             <CardContent className="flex flex-col gap-6">
+              <FormField
+                control={form.control}
+                name="ai_directions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>AI directions</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        rows={3}
+                        placeholder="Notes to steer the AI, e.g. audience, tone or things to avoid — used by Generate with AI"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="pillars"

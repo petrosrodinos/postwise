@@ -225,6 +225,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   pillars: 'pillars',
   ideas: 'ideas',
   instructions: 'instructions',
+  ai_directions: 'ai_directions',
   is_archived: 'is_archived',
   created_at: 'created_at',
   updated_at: 'updated_at'
@@ -309,6 +310,7 @@ exports.Prisma.PostScalarFieldEnum = {
   generation_run_id: 'generation_run_id',
   source_post_id: 'source_post_id',
   rss_feed_item_id: 'rss_feed_item_id',
+  automation_id: 'automation_id',
   type: 'type',
   status: 'status',
   hook: 'hook',
@@ -346,6 +348,18 @@ exports.Prisma.PostChannelScalarFieldEnum = {
   failed_reason: 'failed_reason',
   created_at: 'created_at',
   updated_at: 'updated_at'
+};
+
+exports.Prisma.ActivityLogScalarFieldEnum = {
+  id: 'id',
+  organisation_id: 'organisation_id',
+  user_id: 'user_id',
+  action: 'action',
+  entity_type: 'entity_type',
+  entity_id: 'entity_id',
+  description: 'description',
+  metadata: 'metadata',
+  created_at: 'created_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -450,6 +464,74 @@ exports.PostChannelStatus = exports.$Enums.PostChannelStatus = {
   FAILED: 'FAILED'
 };
 
+exports.ActivityLogAction = exports.$Enums.ActivityLogAction = {
+  USER_REGISTERED: 'USER_REGISTERED',
+  USER_LOGGED_IN: 'USER_LOGGED_IN',
+  USER_PROFILE_UPDATED: 'USER_PROFILE_UPDATED',
+  PASSWORD_CHANGED: 'PASSWORD_CHANGED',
+  PASSWORD_RESET_COMPLETED: 'PASSWORD_RESET_COMPLETED',
+  ORGANISATION_CREATED: 'ORGANISATION_CREATED',
+  ORGANISATION_UPDATED: 'ORGANISATION_UPDATED',
+  ORGANISATION_DELETED: 'ORGANISATION_DELETED',
+  MEMBER_ADDED: 'MEMBER_ADDED',
+  MEMBER_INVITED: 'MEMBER_INVITED',
+  MEMBER_INVITATION_RESENT: 'MEMBER_INVITATION_RESENT',
+  MEMBER_INVITATION_ACCEPTED: 'MEMBER_INVITATION_ACCEPTED',
+  MEMBER_ROLE_UPDATED: 'MEMBER_ROLE_UPDATED',
+  MEMBER_REMOVED: 'MEMBER_REMOVED',
+  DOCUMENT_UPLOADED: 'DOCUMENT_UPLOADED',
+  DOCUMENT_UPDATED: 'DOCUMENT_UPDATED',
+  DOCUMENT_DELETED: 'DOCUMENT_DELETED',
+  STYLE_PROFILE_CREATED: 'STYLE_PROFILE_CREATED',
+  STYLE_PROFILE_UPDATED: 'STYLE_PROFILE_UPDATED',
+  STYLE_PROFILE_DELETED: 'STYLE_PROFILE_DELETED',
+  STYLE_PROFILE_ANALYZED: 'STYLE_PROFILE_ANALYZED',
+  PROJECT_CREATED: 'PROJECT_CREATED',
+  PROJECT_UPDATED: 'PROJECT_UPDATED',
+  PROJECT_DELETED: 'PROJECT_DELETED',
+  PROJECT_STYLE_PROFILE_ATTACHED: 'PROJECT_STYLE_PROFILE_ATTACHED',
+  PROJECT_STYLE_PROFILE_DETACHED: 'PROJECT_STYLE_PROFILE_DETACHED',
+  PROJECT_RSS_FEED_ATTACHED: 'PROJECT_RSS_FEED_ATTACHED',
+  PROJECT_RSS_FEED_DETACHED: 'PROJECT_RSS_FEED_DETACHED',
+  RSS_FEED_CREATED: 'RSS_FEED_CREATED',
+  RSS_FEED_UPDATED: 'RSS_FEED_UPDATED',
+  RSS_FEED_DELETED: 'RSS_FEED_DELETED',
+  RSS_FEED_ITEMS_FETCHED: 'RSS_FEED_ITEMS_FETCHED',
+  AUTOMATION_CREATED: 'AUTOMATION_CREATED',
+  AUTOMATION_UPDATED: 'AUTOMATION_UPDATED',
+  AUTOMATION_DELETED: 'AUTOMATION_DELETED',
+  AUTOMATION_RAN: 'AUTOMATION_RAN',
+  GENERATION_RUN_CREATED: 'GENERATION_RUN_CREATED',
+  POST_CREATED: 'POST_CREATED',
+  POST_UPDATED: 'POST_UPDATED',
+  POST_DELETED: 'POST_DELETED',
+  POST_SCHEDULED: 'POST_SCHEDULED',
+  POST_PUBLISHED: 'POST_PUBLISHED',
+  POST_PUBLISH_FAILED: 'POST_PUBLISH_FAILED',
+  POST_REPURPOSED: 'POST_REPURPOSED',
+  POST_ATTACHMENT_ADDED: 'POST_ATTACHMENT_ADDED',
+  POST_ATTACHMENT_REMOVED: 'POST_ATTACHMENT_REMOVED',
+  POST_CHANNEL_ADDED: 'POST_CHANNEL_ADDED',
+  POST_CHANNEL_REMOVED: 'POST_CHANNEL_REMOVED',
+  CHANNEL_CONNECTION_CREATED: 'CHANNEL_CONNECTION_CREATED',
+  CHANNEL_CONNECTION_UPDATED: 'CHANNEL_CONNECTION_UPDATED',
+  CHANNEL_CONNECTION_REMOVED: 'CHANNEL_CONNECTION_REMOVED'
+};
+
+exports.ActivityLogEntityType = exports.$Enums.ActivityLogEntityType = {
+  USER: 'USER',
+  ORGANISATION: 'ORGANISATION',
+  ORGANISATION_MEMBER: 'ORGANISATION_MEMBER',
+  DOCUMENT: 'DOCUMENT',
+  STYLE_PROFILE: 'STYLE_PROFILE',
+  PROJECT: 'PROJECT',
+  RSS_FEED: 'RSS_FEED',
+  AUTOMATION: 'AUTOMATION',
+  GENERATION_RUN: 'GENERATION_RUN',
+  POST: 'POST',
+  SOCIAL_CHANNEL_CONNECTION: 'SOCIAL_CHANNEL_CONNECTION'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
@@ -468,7 +550,8 @@ exports.Prisma.ModelName = {
   Automation: 'Automation',
   Post: 'Post',
   PostAttachment: 'PostAttachment',
-  PostChannel: 'PostChannel'
+  PostChannel: 'PostChannel',
+  ActivityLog: 'ActivityLog'
 };
 
 /**

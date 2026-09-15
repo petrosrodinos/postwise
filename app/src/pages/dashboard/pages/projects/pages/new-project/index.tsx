@@ -30,6 +30,7 @@ export default function NewProjectPage() {
       pillars: [],
       ideas: [],
       instructions: [],
+      ai_directions: "",
     },
   });
 
@@ -42,6 +43,7 @@ export default function NewProjectPage() {
         pillars: data.pillars,
         ideas: data.ideas,
         instructions: data.instructions,
+        ai_directions: data.ai_directions || undefined,
       },
       {
         onSuccess: (project) => {

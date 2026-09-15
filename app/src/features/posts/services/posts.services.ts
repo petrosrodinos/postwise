@@ -11,6 +11,8 @@ import type {
   PostChannel,
   PostsQueryType,
   RepurposePostDto,
+  RevisePostDto,
+  RevisedPostDraft,
   SchedulePostDto,
   UpdatePostDto,
 } from "../interfaces/posts.interfaces";
@@ -84,6 +86,15 @@ export const repurposePost = async (id: string, dto: RepurposePostDto): Promise<
     return response.data;
   } catch (error) {
     throw new Error("Failed to repurpose post. Please try again.");
+  }
+};
+
+export const revisePost = async (id: string, dto: RevisePostDto): Promise<RevisedPostDraft> => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.posts.revise(id), dto);
+    return response.data;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "Failed to revise post. Please try again."));
   }
 };
 
