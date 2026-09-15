@@ -98,7 +98,7 @@ export class OrganisationMembersService {
         try {
           await this.mailService.sendEmail({
             to: existingUser.email,
-            from: EmailConfig.email_addresses.alert,
+            from: EmailConfig.email_addresses.postwise,
             subject: EmailConfig.templates.organisation_member_added.subject,
             template_id: EmailConfig.templates.organisation_member_added.template_id,
             dynamic_template_data: {
@@ -177,7 +177,7 @@ export class OrganisationMembersService {
       try {
         await this.mailService.sendEmail({
           to: newUser.email,
-          from: EmailConfig.email_addresses.alert,
+          from: EmailConfig.email_addresses.postwise,
           subject: EmailConfig.templates.organisation_invite.subject,
           template_id: EmailConfig.templates.organisation_invite.template_id,
           dynamic_template_data: {
@@ -229,7 +229,7 @@ export class OrganisationMembersService {
 
     await this.mailService.sendEmail({
       to: target.user.email,
-      from: EmailConfig.email_addresses.alert,
+      from: EmailConfig.email_addresses.postwise,
       subject: EmailConfig.templates.organisation_invite.subject,
       template_id: EmailConfig.templates.organisation_invite.template_id,
       dynamic_template_data: {

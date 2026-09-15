@@ -39,6 +39,11 @@ export type Organisation = $Result.DefaultSelection<Prisma.$OrganisationPayload>
  */
 export type OrganisationMember = $Result.DefaultSelection<Prisma.$OrganisationMemberPayload>
 /**
+ * Model OrganisationInviteToken
+ * 
+ */
+export type OrganisationInviteToken = $Result.DefaultSelection<Prisma.$OrganisationInviteTokenPayload>
+/**
  * Model SocialChannelConnection
  * 
  */
@@ -53,6 +58,21 @@ export type StyleProfile = $Result.DefaultSelection<Prisma.$StyleProfilePayload>
  * 
  */
 export type Project = $Result.DefaultSelection<Prisma.$ProjectPayload>
+/**
+ * Model RssFeed
+ * 
+ */
+export type RssFeed = $Result.DefaultSelection<Prisma.$RssFeedPayload>
+/**
+ * Model ProjectRssFeed
+ * 
+ */
+export type ProjectRssFeed = $Result.DefaultSelection<Prisma.$ProjectRssFeedPayload>
+/**
+ * Model RssFeedItem
+ * 
+ */
+export type RssFeedItem = $Result.DefaultSelection<Prisma.$RssFeedItemPayload>
 /**
  * Model ProjectStyleProfile
  * 
@@ -172,6 +192,14 @@ export const OrganisationRole: {
 export type OrganisationRole = (typeof OrganisationRole)[keyof typeof OrganisationRole]
 
 
+export const OrganisationMemberStatus: {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE'
+};
+
+export type OrganisationMemberStatus = (typeof OrganisationMemberStatus)[keyof typeof OrganisationMemberStatus]
+
+
 export const AutomationFrequency: {
   DAILY: 'DAILY',
   WEEKDAYS: 'WEEKDAYS',
@@ -222,6 +250,10 @@ export const PostChannelStatus: typeof $Enums.PostChannelStatus
 export type OrganisationRole = $Enums.OrganisationRole
 
 export const OrganisationRole: typeof $Enums.OrganisationRole
+
+export type OrganisationMemberStatus = $Enums.OrganisationMemberStatus
+
+export const OrganisationMemberStatus: typeof $Enums.OrganisationMemberStatus
 
 export type AutomationFrequency = $Enums.AutomationFrequency
 
@@ -399,6 +431,16 @@ export class PrismaClient<
   get organisationMember(): Prisma.OrganisationMemberDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.organisationInviteToken`: Exposes CRUD operations for the **OrganisationInviteToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more OrganisationInviteTokens
+    * const organisationInviteTokens = await prisma.organisationInviteToken.findMany()
+    * ```
+    */
+  get organisationInviteToken(): Prisma.OrganisationInviteTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.socialChannelConnection`: Exposes CRUD operations for the **SocialChannelConnection** model.
     * Example usage:
     * ```ts
@@ -427,6 +469,36 @@ export class PrismaClient<
     * ```
     */
   get project(): Prisma.ProjectDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.rssFeed`: Exposes CRUD operations for the **RssFeed** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RssFeeds
+    * const rssFeeds = await prisma.rssFeed.findMany()
+    * ```
+    */
+  get rssFeed(): Prisma.RssFeedDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.projectRssFeed`: Exposes CRUD operations for the **ProjectRssFeed** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProjectRssFeeds
+    * const projectRssFeeds = await prisma.projectRssFeed.findMany()
+    * ```
+    */
+  get projectRssFeed(): Prisma.ProjectRssFeedDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.rssFeedItem`: Exposes CRUD operations for the **RssFeedItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RssFeedItems
+    * const rssFeedItems = await prisma.rssFeedItem.findMany()
+    * ```
+    */
+  get rssFeedItem(): Prisma.RssFeedItemDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.projectStyleProfile`: Exposes CRUD operations for the **ProjectStyleProfile** model.
@@ -926,9 +998,13 @@ export namespace Prisma {
     Document: 'Document',
     Organisation: 'Organisation',
     OrganisationMember: 'OrganisationMember',
+    OrganisationInviteToken: 'OrganisationInviteToken',
     SocialChannelConnection: 'SocialChannelConnection',
     StyleProfile: 'StyleProfile',
     Project: 'Project',
+    RssFeed: 'RssFeed',
+    ProjectRssFeed: 'ProjectRssFeed',
+    RssFeedItem: 'RssFeedItem',
     ProjectStyleProfile: 'ProjectStyleProfile',
     GenerationRun: 'GenerationRun',
     Automation: 'Automation',
@@ -950,7 +1026,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "passwordResetToken" | "document" | "organisation" | "organisationMember" | "socialChannelConnection" | "styleProfile" | "project" | "projectStyleProfile" | "generationRun" | "automation" | "post" | "postAttachment" | "postChannel"
+      modelProps: "user" | "passwordResetToken" | "document" | "organisation" | "organisationMember" | "organisationInviteToken" | "socialChannelConnection" | "styleProfile" | "project" | "rssFeed" | "projectRssFeed" | "rssFeedItem" | "projectStyleProfile" | "generationRun" | "automation" | "post" | "postAttachment" | "postChannel"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1324,6 +1400,80 @@ export namespace Prisma {
           }
         }
       }
+      OrganisationInviteToken: {
+        payload: Prisma.$OrganisationInviteTokenPayload<ExtArgs>
+        fields: Prisma.OrganisationInviteTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OrganisationInviteTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OrganisationInviteTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.OrganisationInviteTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OrganisationInviteTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload>
+          }
+          findMany: {
+            args: Prisma.OrganisationInviteTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload>[]
+          }
+          create: {
+            args: Prisma.OrganisationInviteTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload>
+          }
+          createMany: {
+            args: Prisma.OrganisationInviteTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.OrganisationInviteTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.OrganisationInviteTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload>
+          }
+          update: {
+            args: Prisma.OrganisationInviteTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.OrganisationInviteTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OrganisationInviteTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.OrganisationInviteTokenUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload>[]
+          }
+          upsert: {
+            args: Prisma.OrganisationInviteTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganisationInviteTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.OrganisationInviteTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOrganisationInviteToken>
+          }
+          groupBy: {
+            args: Prisma.OrganisationInviteTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OrganisationInviteTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.OrganisationInviteTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<OrganisationInviteTokenCountAggregateOutputType> | number
+          }
+        }
+      }
       SocialChannelConnection: {
         payload: Prisma.$SocialChannelConnectionPayload<ExtArgs>
         fields: Prisma.SocialChannelConnectionFieldRefs
@@ -1543,6 +1693,228 @@ export namespace Prisma {
           count: {
             args: Prisma.ProjectCountArgs<ExtArgs>
             result: $Utils.Optional<ProjectCountAggregateOutputType> | number
+          }
+        }
+      }
+      RssFeed: {
+        payload: Prisma.$RssFeedPayload<ExtArgs>
+        fields: Prisma.RssFeedFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RssFeedFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RssFeedFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload>
+          }
+          findFirst: {
+            args: Prisma.RssFeedFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RssFeedFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload>
+          }
+          findMany: {
+            args: Prisma.RssFeedFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload>[]
+          }
+          create: {
+            args: Prisma.RssFeedCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload>
+          }
+          createMany: {
+            args: Prisma.RssFeedCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RssFeedCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload>[]
+          }
+          delete: {
+            args: Prisma.RssFeedDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload>
+          }
+          update: {
+            args: Prisma.RssFeedUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload>
+          }
+          deleteMany: {
+            args: Prisma.RssFeedDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RssFeedUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RssFeedUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload>[]
+          }
+          upsert: {
+            args: Prisma.RssFeedUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedPayload>
+          }
+          aggregate: {
+            args: Prisma.RssFeedAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRssFeed>
+          }
+          groupBy: {
+            args: Prisma.RssFeedGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RssFeedGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RssFeedCountArgs<ExtArgs>
+            result: $Utils.Optional<RssFeedCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProjectRssFeed: {
+        payload: Prisma.$ProjectRssFeedPayload<ExtArgs>
+        fields: Prisma.ProjectRssFeedFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProjectRssFeedFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProjectRssFeedFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload>
+          }
+          findFirst: {
+            args: Prisma.ProjectRssFeedFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProjectRssFeedFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload>
+          }
+          findMany: {
+            args: Prisma.ProjectRssFeedFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload>[]
+          }
+          create: {
+            args: Prisma.ProjectRssFeedCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload>
+          }
+          createMany: {
+            args: Prisma.ProjectRssFeedCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProjectRssFeedCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload>[]
+          }
+          delete: {
+            args: Prisma.ProjectRssFeedDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload>
+          }
+          update: {
+            args: Prisma.ProjectRssFeedUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProjectRssFeedDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProjectRssFeedUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProjectRssFeedUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProjectRssFeedUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectRssFeedPayload>
+          }
+          aggregate: {
+            args: Prisma.ProjectRssFeedAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProjectRssFeed>
+          }
+          groupBy: {
+            args: Prisma.ProjectRssFeedGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProjectRssFeedGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProjectRssFeedCountArgs<ExtArgs>
+            result: $Utils.Optional<ProjectRssFeedCountAggregateOutputType> | number
+          }
+        }
+      }
+      RssFeedItem: {
+        payload: Prisma.$RssFeedItemPayload<ExtArgs>
+        fields: Prisma.RssFeedItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RssFeedItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RssFeedItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload>
+          }
+          findFirst: {
+            args: Prisma.RssFeedItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RssFeedItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload>
+          }
+          findMany: {
+            args: Prisma.RssFeedItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload>[]
+          }
+          create: {
+            args: Prisma.RssFeedItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload>
+          }
+          createMany: {
+            args: Prisma.RssFeedItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RssFeedItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload>[]
+          }
+          delete: {
+            args: Prisma.RssFeedItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload>
+          }
+          update: {
+            args: Prisma.RssFeedItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.RssFeedItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RssFeedItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RssFeedItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.RssFeedItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RssFeedItemPayload>
+          }
+          aggregate: {
+            args: Prisma.RssFeedItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRssFeedItem>
+          }
+          groupBy: {
+            args: Prisma.RssFeedItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RssFeedItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RssFeedItemCountArgs<ExtArgs>
+            result: $Utils.Optional<RssFeedItemCountAggregateOutputType> | number
           }
         }
       }
@@ -2103,9 +2475,13 @@ export namespace Prisma {
     document?: DocumentOmit
     organisation?: OrganisationOmit
     organisationMember?: OrganisationMemberOmit
+    organisationInviteToken?: OrganisationInviteTokenOmit
     socialChannelConnection?: SocialChannelConnectionOmit
     styleProfile?: StyleProfileOmit
     project?: ProjectOmit
+    rssFeed?: RssFeedOmit
+    projectRssFeed?: ProjectRssFeedOmit
+    rssFeedItem?: RssFeedItemOmit
     projectStyleProfile?: ProjectStyleProfileOmit
     generationRun?: GenerationRunOmit
     automation?: AutomationOmit
@@ -2296,6 +2672,7 @@ export namespace Prisma {
     channel_connections: number
     style_profiles: number
     projects: number
+    rss_feeds: number
   }
 
   export type OrganisationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2305,6 +2682,7 @@ export namespace Prisma {
     channel_connections?: boolean | OrganisationCountOutputTypeCountChannel_connectionsArgs
     style_profiles?: boolean | OrganisationCountOutputTypeCountStyle_profilesArgs
     projects?: boolean | OrganisationCountOutputTypeCountProjectsArgs
+    rss_feeds?: boolean | OrganisationCountOutputTypeCountRss_feedsArgs
   }
 
   // Custom InputTypes
@@ -2358,6 +2736,44 @@ export namespace Prisma {
    */
   export type OrganisationCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProjectWhereInput
+  }
+
+  /**
+   * OrganisationCountOutputType without action
+   */
+  export type OrganisationCountOutputTypeCountRss_feedsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RssFeedWhereInput
+  }
+
+
+  /**
+   * Count Type OrganisationMemberCountOutputType
+   */
+
+  export type OrganisationMemberCountOutputType = {
+    invite_tokens: number
+  }
+
+  export type OrganisationMemberCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invite_tokens?: boolean | OrganisationMemberCountOutputTypeCountInvite_tokensArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * OrganisationMemberCountOutputType without action
+   */
+  export type OrganisationMemberCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationMemberCountOutputType
+     */
+    select?: OrganisationMemberCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * OrganisationMemberCountOutputType without action
+   */
+  export type OrganisationMemberCountOutputTypeCountInvite_tokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganisationInviteTokenWhereInput
   }
 
 
@@ -2456,6 +2872,7 @@ export namespace Prisma {
 
   export type ProjectCountOutputType = {
     style_profiles: number
+    rss_feeds: number
     posts: number
     generation_runs: number
     automations: number
@@ -2463,6 +2880,7 @@ export namespace Prisma {
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     style_profiles?: boolean | ProjectCountOutputTypeCountStyle_profilesArgs
+    rss_feeds?: boolean | ProjectCountOutputTypeCountRss_feedsArgs
     posts?: boolean | ProjectCountOutputTypeCountPostsArgs
     generation_runs?: boolean | ProjectCountOutputTypeCountGeneration_runsArgs
     automations?: boolean | ProjectCountOutputTypeCountAutomationsArgs
@@ -2489,6 +2907,13 @@ export namespace Prisma {
   /**
    * ProjectCountOutputType without action
    */
+  export type ProjectCountOutputTypeCountRss_feedsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectRssFeedWhereInput
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
   export type ProjectCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
   }
@@ -2505,6 +2930,86 @@ export namespace Prisma {
    */
   export type ProjectCountOutputTypeCountAutomationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AutomationWhereInput
+  }
+
+
+  /**
+   * Count Type RssFeedCountOutputType
+   */
+
+  export type RssFeedCountOutputType = {
+    projects: number
+    items: number
+    automations: number
+  }
+
+  export type RssFeedCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    projects?: boolean | RssFeedCountOutputTypeCountProjectsArgs
+    items?: boolean | RssFeedCountOutputTypeCountItemsArgs
+    automations?: boolean | RssFeedCountOutputTypeCountAutomationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RssFeedCountOutputType without action
+   */
+  export type RssFeedCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedCountOutputType
+     */
+    select?: RssFeedCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RssFeedCountOutputType without action
+   */
+  export type RssFeedCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectRssFeedWhereInput
+  }
+
+  /**
+   * RssFeedCountOutputType without action
+   */
+  export type RssFeedCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RssFeedItemWhereInput
+  }
+
+  /**
+   * RssFeedCountOutputType without action
+   */
+  export type RssFeedCountOutputTypeCountAutomationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutomationWhereInput
+  }
+
+
+  /**
+   * Count Type RssFeedItemCountOutputType
+   */
+
+  export type RssFeedItemCountOutputType = {
+    posts: number
+  }
+
+  export type RssFeedItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    posts?: boolean | RssFeedItemCountOutputTypeCountPostsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RssFeedItemCountOutputType without action
+   */
+  export type RssFeedItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItemCountOutputType
+     */
+    select?: RssFeedItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RssFeedItemCountOutputType without action
+   */
+  export type RssFeedItemCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostWhereInput
   }
 
 
@@ -6268,6 +6773,7 @@ export namespace Prisma {
     channel_connections?: boolean | Organisation$channel_connectionsArgs<ExtArgs>
     style_profiles?: boolean | Organisation$style_profilesArgs<ExtArgs>
     projects?: boolean | Organisation$projectsArgs<ExtArgs>
+    rss_feeds?: boolean | Organisation$rss_feedsArgs<ExtArgs>
     _count?: boolean | OrganisationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organisation"]>
 
@@ -6309,6 +6815,7 @@ export namespace Prisma {
     channel_connections?: boolean | Organisation$channel_connectionsArgs<ExtArgs>
     style_profiles?: boolean | Organisation$style_profilesArgs<ExtArgs>
     projects?: boolean | Organisation$projectsArgs<ExtArgs>
+    rss_feeds?: boolean | Organisation$rss_feedsArgs<ExtArgs>
     _count?: boolean | OrganisationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrganisationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6328,6 +6835,7 @@ export namespace Prisma {
       channel_connections: Prisma.$SocialChannelConnectionPayload<ExtArgs>[]
       style_profiles: Prisma.$StyleProfilePayload<ExtArgs>[]
       projects: Prisma.$ProjectPayload<ExtArgs>[]
+      rss_feeds: Prisma.$RssFeedPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6737,6 +7245,7 @@ export namespace Prisma {
     channel_connections<T extends Organisation$channel_connectionsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$channel_connectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     style_profiles<T extends Organisation$style_profilesArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$style_profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StyleProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projects<T extends Organisation$projectsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rss_feeds<T extends Organisation$rss_feedsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$rss_feedsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7312,6 +7821,30 @@ export namespace Prisma {
   }
 
   /**
+   * Organisation.rss_feeds
+   */
+  export type Organisation$rss_feedsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    where?: RssFeedWhereInput
+    orderBy?: RssFeedOrderByWithRelationInput | RssFeedOrderByWithRelationInput[]
+    cursor?: RssFeedWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RssFeedScalarFieldEnum | RssFeedScalarFieldEnum[]
+  }
+
+  /**
    * Organisation without action
    */
   export type OrganisationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7345,6 +7878,7 @@ export namespace Prisma {
     organisation_id: string | null
     user_id: string | null
     role: $Enums.OrganisationRole | null
+    status: $Enums.OrganisationMemberStatus | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -7354,6 +7888,7 @@ export namespace Prisma {
     organisation_id: string | null
     user_id: string | null
     role: $Enums.OrganisationRole | null
+    status: $Enums.OrganisationMemberStatus | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -7363,6 +7898,7 @@ export namespace Prisma {
     organisation_id: number
     user_id: number
     role: number
+    status: number
     created_at: number
     updated_at: number
     _all: number
@@ -7374,6 +7910,7 @@ export namespace Prisma {
     organisation_id?: true
     user_id?: true
     role?: true
+    status?: true
     created_at?: true
     updated_at?: true
   }
@@ -7383,6 +7920,7 @@ export namespace Prisma {
     organisation_id?: true
     user_id?: true
     role?: true
+    status?: true
     created_at?: true
     updated_at?: true
   }
@@ -7392,6 +7930,7 @@ export namespace Prisma {
     organisation_id?: true
     user_id?: true
     role?: true
+    status?: true
     created_at?: true
     updated_at?: true
     _all?: true
@@ -7474,6 +8013,7 @@ export namespace Prisma {
     organisation_id: string
     user_id: string
     role: $Enums.OrganisationRole
+    status: $Enums.OrganisationMemberStatus
     created_at: Date
     updated_at: Date
     _count: OrganisationMemberCountAggregateOutputType | null
@@ -7500,10 +8040,13 @@ export namespace Prisma {
     organisation_id?: boolean
     user_id?: boolean
     role?: boolean
+    status?: boolean
     created_at?: boolean
     updated_at?: boolean
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    invite_tokens?: boolean | OrganisationMember$invite_tokensArgs<ExtArgs>
+    _count?: boolean | OrganisationMemberCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organisationMember"]>
 
   export type OrganisationMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7511,6 +8054,7 @@ export namespace Prisma {
     organisation_id?: boolean
     user_id?: boolean
     role?: boolean
+    status?: boolean
     created_at?: boolean
     updated_at?: boolean
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
@@ -7522,6 +8066,7 @@ export namespace Prisma {
     organisation_id?: boolean
     user_id?: boolean
     role?: boolean
+    status?: boolean
     created_at?: boolean
     updated_at?: boolean
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
@@ -7533,14 +8078,17 @@ export namespace Prisma {
     organisation_id?: boolean
     user_id?: boolean
     role?: boolean
+    status?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type OrganisationMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "user_id" | "role" | "created_at" | "updated_at", ExtArgs["result"]["organisationMember"]>
+  export type OrganisationMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "user_id" | "role" | "status" | "created_at" | "updated_at", ExtArgs["result"]["organisationMember"]>
   export type OrganisationMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    invite_tokens?: boolean | OrganisationMember$invite_tokensArgs<ExtArgs>
+    _count?: boolean | OrganisationMemberCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrganisationMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
@@ -7556,12 +8104,14 @@ export namespace Prisma {
     objects: {
       organisation: Prisma.$OrganisationPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
+      invite_tokens: Prisma.$OrganisationInviteTokenPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       organisation_id: string
       user_id: string
       role: $Enums.OrganisationRole
+      status: $Enums.OrganisationMemberStatus
       created_at: Date
       updated_at: Date
     }, ExtArgs["result"]["organisationMember"]>
@@ -7960,6 +8510,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organisation<T extends OrganisationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationDefaultArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    invite_tokens<T extends OrganisationMember$invite_tokensArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationMember$invite_tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7993,6 +8544,7 @@ export namespace Prisma {
     readonly organisation_id: FieldRef<"OrganisationMember", 'String'>
     readonly user_id: FieldRef<"OrganisationMember", 'String'>
     readonly role: FieldRef<"OrganisationMember", 'OrganisationRole'>
+    readonly status: FieldRef<"OrganisationMember", 'OrganisationMemberStatus'>
     readonly created_at: FieldRef<"OrganisationMember", 'DateTime'>
     readonly updated_at: FieldRef<"OrganisationMember", 'DateTime'>
   }
@@ -8391,6 +8943,30 @@ export namespace Prisma {
   }
 
   /**
+   * OrganisationMember.invite_tokens
+   */
+  export type OrganisationMember$invite_tokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    where?: OrganisationInviteTokenWhereInput
+    orderBy?: OrganisationInviteTokenOrderByWithRelationInput | OrganisationInviteTokenOrderByWithRelationInput[]
+    cursor?: OrganisationInviteTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrganisationInviteTokenScalarFieldEnum | OrganisationInviteTokenScalarFieldEnum[]
+  }
+
+  /**
    * OrganisationMember without action
    */
   export type OrganisationMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8406,6 +8982,1090 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OrganisationMemberInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model OrganisationInviteToken
+   */
+
+  export type AggregateOrganisationInviteToken = {
+    _count: OrganisationInviteTokenCountAggregateOutputType | null
+    _min: OrganisationInviteTokenMinAggregateOutputType | null
+    _max: OrganisationInviteTokenMaxAggregateOutputType | null
+  }
+
+  export type OrganisationInviteTokenMinAggregateOutputType = {
+    id: string | null
+    token_hash: string | null
+    organisation_member_id: string | null
+    invited_by_user_id: string | null
+    expires_at: Date | null
+    used_at: Date | null
+    created_at: Date | null
+  }
+
+  export type OrganisationInviteTokenMaxAggregateOutputType = {
+    id: string | null
+    token_hash: string | null
+    organisation_member_id: string | null
+    invited_by_user_id: string | null
+    expires_at: Date | null
+    used_at: Date | null
+    created_at: Date | null
+  }
+
+  export type OrganisationInviteTokenCountAggregateOutputType = {
+    id: number
+    token_hash: number
+    organisation_member_id: number
+    invited_by_user_id: number
+    expires_at: number
+    used_at: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type OrganisationInviteTokenMinAggregateInputType = {
+    id?: true
+    token_hash?: true
+    organisation_member_id?: true
+    invited_by_user_id?: true
+    expires_at?: true
+    used_at?: true
+    created_at?: true
+  }
+
+  export type OrganisationInviteTokenMaxAggregateInputType = {
+    id?: true
+    token_hash?: true
+    organisation_member_id?: true
+    invited_by_user_id?: true
+    expires_at?: true
+    used_at?: true
+    created_at?: true
+  }
+
+  export type OrganisationInviteTokenCountAggregateInputType = {
+    id?: true
+    token_hash?: true
+    organisation_member_id?: true
+    invited_by_user_id?: true
+    expires_at?: true
+    used_at?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type OrganisationInviteTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OrganisationInviteToken to aggregate.
+     */
+    where?: OrganisationInviteTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganisationInviteTokens to fetch.
+     */
+    orderBy?: OrganisationInviteTokenOrderByWithRelationInput | OrganisationInviteTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OrganisationInviteTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganisationInviteTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganisationInviteTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned OrganisationInviteTokens
+    **/
+    _count?: true | OrganisationInviteTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OrganisationInviteTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OrganisationInviteTokenMaxAggregateInputType
+  }
+
+  export type GetOrganisationInviteTokenAggregateType<T extends OrganisationInviteTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregateOrganisationInviteToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOrganisationInviteToken[P]>
+      : GetScalarType<T[P], AggregateOrganisationInviteToken[P]>
+  }
+
+
+
+
+  export type OrganisationInviteTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganisationInviteTokenWhereInput
+    orderBy?: OrganisationInviteTokenOrderByWithAggregationInput | OrganisationInviteTokenOrderByWithAggregationInput[]
+    by: OrganisationInviteTokenScalarFieldEnum[] | OrganisationInviteTokenScalarFieldEnum
+    having?: OrganisationInviteTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OrganisationInviteTokenCountAggregateInputType | true
+    _min?: OrganisationInviteTokenMinAggregateInputType
+    _max?: OrganisationInviteTokenMaxAggregateInputType
+  }
+
+  export type OrganisationInviteTokenGroupByOutputType = {
+    id: string
+    token_hash: string
+    organisation_member_id: string
+    invited_by_user_id: string
+    expires_at: Date
+    used_at: Date | null
+    created_at: Date
+    _count: OrganisationInviteTokenCountAggregateOutputType | null
+    _min: OrganisationInviteTokenMinAggregateOutputType | null
+    _max: OrganisationInviteTokenMaxAggregateOutputType | null
+  }
+
+  type GetOrganisationInviteTokenGroupByPayload<T extends OrganisationInviteTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OrganisationInviteTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OrganisationInviteTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OrganisationInviteTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], OrganisationInviteTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OrganisationInviteTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token_hash?: boolean
+    organisation_member_id?: boolean
+    invited_by_user_id?: boolean
+    expires_at?: boolean
+    used_at?: boolean
+    created_at?: boolean
+    organisation_member?: boolean | OrganisationMemberDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["organisationInviteToken"]>
+
+  export type OrganisationInviteTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token_hash?: boolean
+    organisation_member_id?: boolean
+    invited_by_user_id?: boolean
+    expires_at?: boolean
+    used_at?: boolean
+    created_at?: boolean
+    organisation_member?: boolean | OrganisationMemberDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["organisationInviteToken"]>
+
+  export type OrganisationInviteTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token_hash?: boolean
+    organisation_member_id?: boolean
+    invited_by_user_id?: boolean
+    expires_at?: boolean
+    used_at?: boolean
+    created_at?: boolean
+    organisation_member?: boolean | OrganisationMemberDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["organisationInviteToken"]>
+
+  export type OrganisationInviteTokenSelectScalar = {
+    id?: boolean
+    token_hash?: boolean
+    organisation_member_id?: boolean
+    invited_by_user_id?: boolean
+    expires_at?: boolean
+    used_at?: boolean
+    created_at?: boolean
+  }
+
+  export type OrganisationInviteTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "token_hash" | "organisation_member_id" | "invited_by_user_id" | "expires_at" | "used_at" | "created_at", ExtArgs["result"]["organisationInviteToken"]>
+  export type OrganisationInviteTokenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organisation_member?: boolean | OrganisationMemberDefaultArgs<ExtArgs>
+  }
+  export type OrganisationInviteTokenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organisation_member?: boolean | OrganisationMemberDefaultArgs<ExtArgs>
+  }
+  export type OrganisationInviteTokenIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organisation_member?: boolean | OrganisationMemberDefaultArgs<ExtArgs>
+  }
+
+  export type $OrganisationInviteTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OrganisationInviteToken"
+    objects: {
+      organisation_member: Prisma.$OrganisationMemberPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      token_hash: string
+      organisation_member_id: string
+      invited_by_user_id: string
+      expires_at: Date
+      used_at: Date | null
+      created_at: Date
+    }, ExtArgs["result"]["organisationInviteToken"]>
+    composites: {}
+  }
+
+  type OrganisationInviteTokenGetPayload<S extends boolean | null | undefined | OrganisationInviteTokenDefaultArgs> = $Result.GetResult<Prisma.$OrganisationInviteTokenPayload, S>
+
+  type OrganisationInviteTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OrganisationInviteTokenFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OrganisationInviteTokenCountAggregateInputType | true
+    }
+
+  export interface OrganisationInviteTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OrganisationInviteToken'], meta: { name: 'OrganisationInviteToken' } }
+    /**
+     * Find zero or one OrganisationInviteToken that matches the filter.
+     * @param {OrganisationInviteTokenFindUniqueArgs} args - Arguments to find a OrganisationInviteToken
+     * @example
+     * // Get one OrganisationInviteToken
+     * const organisationInviteToken = await prisma.organisationInviteToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OrganisationInviteTokenFindUniqueArgs>(args: SelectSubset<T, OrganisationInviteTokenFindUniqueArgs<ExtArgs>>): Prisma__OrganisationInviteTokenClient<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one OrganisationInviteToken that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OrganisationInviteTokenFindUniqueOrThrowArgs} args - Arguments to find a OrganisationInviteToken
+     * @example
+     * // Get one OrganisationInviteToken
+     * const organisationInviteToken = await prisma.organisationInviteToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OrganisationInviteTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, OrganisationInviteTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrganisationInviteTokenClient<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OrganisationInviteToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganisationInviteTokenFindFirstArgs} args - Arguments to find a OrganisationInviteToken
+     * @example
+     * // Get one OrganisationInviteToken
+     * const organisationInviteToken = await prisma.organisationInviteToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OrganisationInviteTokenFindFirstArgs>(args?: SelectSubset<T, OrganisationInviteTokenFindFirstArgs<ExtArgs>>): Prisma__OrganisationInviteTokenClient<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OrganisationInviteToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganisationInviteTokenFindFirstOrThrowArgs} args - Arguments to find a OrganisationInviteToken
+     * @example
+     * // Get one OrganisationInviteToken
+     * const organisationInviteToken = await prisma.organisationInviteToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OrganisationInviteTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, OrganisationInviteTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrganisationInviteTokenClient<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OrganisationInviteTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganisationInviteTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all OrganisationInviteTokens
+     * const organisationInviteTokens = await prisma.organisationInviteToken.findMany()
+     * 
+     * // Get first 10 OrganisationInviteTokens
+     * const organisationInviteTokens = await prisma.organisationInviteToken.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const organisationInviteTokenWithIdOnly = await prisma.organisationInviteToken.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OrganisationInviteTokenFindManyArgs>(args?: SelectSubset<T, OrganisationInviteTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a OrganisationInviteToken.
+     * @param {OrganisationInviteTokenCreateArgs} args - Arguments to create a OrganisationInviteToken.
+     * @example
+     * // Create one OrganisationInviteToken
+     * const OrganisationInviteToken = await prisma.organisationInviteToken.create({
+     *   data: {
+     *     // ... data to create a OrganisationInviteToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends OrganisationInviteTokenCreateArgs>(args: SelectSubset<T, OrganisationInviteTokenCreateArgs<ExtArgs>>): Prisma__OrganisationInviteTokenClient<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many OrganisationInviteTokens.
+     * @param {OrganisationInviteTokenCreateManyArgs} args - Arguments to create many OrganisationInviteTokens.
+     * @example
+     * // Create many OrganisationInviteTokens
+     * const organisationInviteToken = await prisma.organisationInviteToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OrganisationInviteTokenCreateManyArgs>(args?: SelectSubset<T, OrganisationInviteTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many OrganisationInviteTokens and returns the data saved in the database.
+     * @param {OrganisationInviteTokenCreateManyAndReturnArgs} args - Arguments to create many OrganisationInviteTokens.
+     * @example
+     * // Create many OrganisationInviteTokens
+     * const organisationInviteToken = await prisma.organisationInviteToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many OrganisationInviteTokens and only return the `id`
+     * const organisationInviteTokenWithIdOnly = await prisma.organisationInviteToken.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends OrganisationInviteTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, OrganisationInviteTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a OrganisationInviteToken.
+     * @param {OrganisationInviteTokenDeleteArgs} args - Arguments to delete one OrganisationInviteToken.
+     * @example
+     * // Delete one OrganisationInviteToken
+     * const OrganisationInviteToken = await prisma.organisationInviteToken.delete({
+     *   where: {
+     *     // ... filter to delete one OrganisationInviteToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OrganisationInviteTokenDeleteArgs>(args: SelectSubset<T, OrganisationInviteTokenDeleteArgs<ExtArgs>>): Prisma__OrganisationInviteTokenClient<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one OrganisationInviteToken.
+     * @param {OrganisationInviteTokenUpdateArgs} args - Arguments to update one OrganisationInviteToken.
+     * @example
+     * // Update one OrganisationInviteToken
+     * const organisationInviteToken = await prisma.organisationInviteToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OrganisationInviteTokenUpdateArgs>(args: SelectSubset<T, OrganisationInviteTokenUpdateArgs<ExtArgs>>): Prisma__OrganisationInviteTokenClient<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more OrganisationInviteTokens.
+     * @param {OrganisationInviteTokenDeleteManyArgs} args - Arguments to filter OrganisationInviteTokens to delete.
+     * @example
+     * // Delete a few OrganisationInviteTokens
+     * const { count } = await prisma.organisationInviteToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OrganisationInviteTokenDeleteManyArgs>(args?: SelectSubset<T, OrganisationInviteTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OrganisationInviteTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganisationInviteTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many OrganisationInviteTokens
+     * const organisationInviteToken = await prisma.organisationInviteToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OrganisationInviteTokenUpdateManyArgs>(args: SelectSubset<T, OrganisationInviteTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OrganisationInviteTokens and returns the data updated in the database.
+     * @param {OrganisationInviteTokenUpdateManyAndReturnArgs} args - Arguments to update many OrganisationInviteTokens.
+     * @example
+     * // Update many OrganisationInviteTokens
+     * const organisationInviteToken = await prisma.organisationInviteToken.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more OrganisationInviteTokens and only return the `id`
+     * const organisationInviteTokenWithIdOnly = await prisma.organisationInviteToken.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends OrganisationInviteTokenUpdateManyAndReturnArgs>(args: SelectSubset<T, OrganisationInviteTokenUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one OrganisationInviteToken.
+     * @param {OrganisationInviteTokenUpsertArgs} args - Arguments to update or create a OrganisationInviteToken.
+     * @example
+     * // Update or create a OrganisationInviteToken
+     * const organisationInviteToken = await prisma.organisationInviteToken.upsert({
+     *   create: {
+     *     // ... data to create a OrganisationInviteToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the OrganisationInviteToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OrganisationInviteTokenUpsertArgs>(args: SelectSubset<T, OrganisationInviteTokenUpsertArgs<ExtArgs>>): Prisma__OrganisationInviteTokenClient<$Result.GetResult<Prisma.$OrganisationInviteTokenPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of OrganisationInviteTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganisationInviteTokenCountArgs} args - Arguments to filter OrganisationInviteTokens to count.
+     * @example
+     * // Count the number of OrganisationInviteTokens
+     * const count = await prisma.organisationInviteToken.count({
+     *   where: {
+     *     // ... the filter for the OrganisationInviteTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends OrganisationInviteTokenCountArgs>(
+      args?: Subset<T, OrganisationInviteTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OrganisationInviteTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a OrganisationInviteToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganisationInviteTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OrganisationInviteTokenAggregateArgs>(args: Subset<T, OrganisationInviteTokenAggregateArgs>): Prisma.PrismaPromise<GetOrganisationInviteTokenAggregateType<T>>
+
+    /**
+     * Group by OrganisationInviteToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganisationInviteTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OrganisationInviteTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OrganisationInviteTokenGroupByArgs['orderBy'] }
+        : { orderBy?: OrganisationInviteTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OrganisationInviteTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrganisationInviteTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the OrganisationInviteToken model
+   */
+  readonly fields: OrganisationInviteTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for OrganisationInviteToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OrganisationInviteTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    organisation_member<T extends OrganisationMemberDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationMemberDefaultArgs<ExtArgs>>): Prisma__OrganisationMemberClient<$Result.GetResult<Prisma.$OrganisationMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the OrganisationInviteToken model
+   */
+  interface OrganisationInviteTokenFieldRefs {
+    readonly id: FieldRef<"OrganisationInviteToken", 'String'>
+    readonly token_hash: FieldRef<"OrganisationInviteToken", 'String'>
+    readonly organisation_member_id: FieldRef<"OrganisationInviteToken", 'String'>
+    readonly invited_by_user_id: FieldRef<"OrganisationInviteToken", 'String'>
+    readonly expires_at: FieldRef<"OrganisationInviteToken", 'DateTime'>
+    readonly used_at: FieldRef<"OrganisationInviteToken", 'DateTime'>
+    readonly created_at: FieldRef<"OrganisationInviteToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * OrganisationInviteToken findUnique
+   */
+  export type OrganisationInviteTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganisationInviteToken to fetch.
+     */
+    where: OrganisationInviteTokenWhereUniqueInput
+  }
+
+  /**
+   * OrganisationInviteToken findUniqueOrThrow
+   */
+  export type OrganisationInviteTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganisationInviteToken to fetch.
+     */
+    where: OrganisationInviteTokenWhereUniqueInput
+  }
+
+  /**
+   * OrganisationInviteToken findFirst
+   */
+  export type OrganisationInviteTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganisationInviteToken to fetch.
+     */
+    where?: OrganisationInviteTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganisationInviteTokens to fetch.
+     */
+    orderBy?: OrganisationInviteTokenOrderByWithRelationInput | OrganisationInviteTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OrganisationInviteTokens.
+     */
+    cursor?: OrganisationInviteTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganisationInviteTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganisationInviteTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrganisationInviteTokens.
+     */
+    distinct?: OrganisationInviteTokenScalarFieldEnum | OrganisationInviteTokenScalarFieldEnum[]
+  }
+
+  /**
+   * OrganisationInviteToken findFirstOrThrow
+   */
+  export type OrganisationInviteTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganisationInviteToken to fetch.
+     */
+    where?: OrganisationInviteTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganisationInviteTokens to fetch.
+     */
+    orderBy?: OrganisationInviteTokenOrderByWithRelationInput | OrganisationInviteTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OrganisationInviteTokens.
+     */
+    cursor?: OrganisationInviteTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganisationInviteTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganisationInviteTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrganisationInviteTokens.
+     */
+    distinct?: OrganisationInviteTokenScalarFieldEnum | OrganisationInviteTokenScalarFieldEnum[]
+  }
+
+  /**
+   * OrganisationInviteToken findMany
+   */
+  export type OrganisationInviteTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganisationInviteTokens to fetch.
+     */
+    where?: OrganisationInviteTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganisationInviteTokens to fetch.
+     */
+    orderBy?: OrganisationInviteTokenOrderByWithRelationInput | OrganisationInviteTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing OrganisationInviteTokens.
+     */
+    cursor?: OrganisationInviteTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganisationInviteTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganisationInviteTokens.
+     */
+    skip?: number
+    distinct?: OrganisationInviteTokenScalarFieldEnum | OrganisationInviteTokenScalarFieldEnum[]
+  }
+
+  /**
+   * OrganisationInviteToken create
+   */
+  export type OrganisationInviteTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to create a OrganisationInviteToken.
+     */
+    data: XOR<OrganisationInviteTokenCreateInput, OrganisationInviteTokenUncheckedCreateInput>
+  }
+
+  /**
+   * OrganisationInviteToken createMany
+   */
+  export type OrganisationInviteTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many OrganisationInviteTokens.
+     */
+    data: OrganisationInviteTokenCreateManyInput | OrganisationInviteTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * OrganisationInviteToken createManyAndReturn
+   */
+  export type OrganisationInviteTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * The data used to create many OrganisationInviteTokens.
+     */
+    data: OrganisationInviteTokenCreateManyInput | OrganisationInviteTokenCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OrganisationInviteToken update
+   */
+  export type OrganisationInviteTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to update a OrganisationInviteToken.
+     */
+    data: XOR<OrganisationInviteTokenUpdateInput, OrganisationInviteTokenUncheckedUpdateInput>
+    /**
+     * Choose, which OrganisationInviteToken to update.
+     */
+    where: OrganisationInviteTokenWhereUniqueInput
+  }
+
+  /**
+   * OrganisationInviteToken updateMany
+   */
+  export type OrganisationInviteTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update OrganisationInviteTokens.
+     */
+    data: XOR<OrganisationInviteTokenUpdateManyMutationInput, OrganisationInviteTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which OrganisationInviteTokens to update
+     */
+    where?: OrganisationInviteTokenWhereInput
+    /**
+     * Limit how many OrganisationInviteTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * OrganisationInviteToken updateManyAndReturn
+   */
+  export type OrganisationInviteTokenUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * The data used to update OrganisationInviteTokens.
+     */
+    data: XOR<OrganisationInviteTokenUpdateManyMutationInput, OrganisationInviteTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which OrganisationInviteTokens to update
+     */
+    where?: OrganisationInviteTokenWhereInput
+    /**
+     * Limit how many OrganisationInviteTokens to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OrganisationInviteToken upsert
+   */
+  export type OrganisationInviteTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    /**
+     * The filter to search for the OrganisationInviteToken to update in case it exists.
+     */
+    where: OrganisationInviteTokenWhereUniqueInput
+    /**
+     * In case the OrganisationInviteToken found by the `where` argument doesn't exist, create a new OrganisationInviteToken with this data.
+     */
+    create: XOR<OrganisationInviteTokenCreateInput, OrganisationInviteTokenUncheckedCreateInput>
+    /**
+     * In case the OrganisationInviteToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OrganisationInviteTokenUpdateInput, OrganisationInviteTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * OrganisationInviteToken delete
+   */
+  export type OrganisationInviteTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
+    /**
+     * Filter which OrganisationInviteToken to delete.
+     */
+    where: OrganisationInviteTokenWhereUniqueInput
+  }
+
+  /**
+   * OrganisationInviteToken deleteMany
+   */
+  export type OrganisationInviteTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OrganisationInviteTokens to delete
+     */
+    where?: OrganisationInviteTokenWhereInput
+    /**
+     * Limit how many OrganisationInviteTokens to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * OrganisationInviteToken without action
+   */
+  export type OrganisationInviteTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganisationInviteToken
+     */
+    select?: OrganisationInviteTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganisationInviteToken
+     */
+    omit?: OrganisationInviteTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInviteTokenInclude<ExtArgs> | null
   }
 
 
@@ -11164,6 +12824,7 @@ export namespace Prisma {
     updated_at?: boolean
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     style_profiles?: boolean | Project$style_profilesArgs<ExtArgs>
+    rss_feeds?: boolean | Project$rss_feedsArgs<ExtArgs>
     posts?: boolean | Project$postsArgs<ExtArgs>
     generation_runs?: boolean | Project$generation_runsArgs<ExtArgs>
     automations?: boolean | Project$automationsArgs<ExtArgs>
@@ -11218,6 +12879,7 @@ export namespace Prisma {
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     style_profiles?: boolean | Project$style_profilesArgs<ExtArgs>
+    rss_feeds?: boolean | Project$rss_feedsArgs<ExtArgs>
     posts?: boolean | Project$postsArgs<ExtArgs>
     generation_runs?: boolean | Project$generation_runsArgs<ExtArgs>
     automations?: boolean | Project$automationsArgs<ExtArgs>
@@ -11235,6 +12897,7 @@ export namespace Prisma {
     objects: {
       organisation: Prisma.$OrganisationPayload<ExtArgs>
       style_profiles: Prisma.$ProjectStyleProfilePayload<ExtArgs>[]
+      rss_feeds: Prisma.$ProjectRssFeedPayload<ExtArgs>[]
       posts: Prisma.$PostPayload<ExtArgs>[]
       generation_runs: Prisma.$GenerationRunPayload<ExtArgs>[]
       automations: Prisma.$AutomationPayload<ExtArgs>[]
@@ -11647,6 +13310,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organisation<T extends OrganisationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationDefaultArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     style_profiles<T extends Project$style_profilesArgs<ExtArgs> = {}>(args?: Subset<T, Project$style_profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectStyleProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rss_feeds<T extends Project$rss_feedsArgs<ExtArgs> = {}>(args?: Subset<T, Project$rss_feedsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     posts<T extends Project$postsArgs<ExtArgs> = {}>(args?: Subset<T, Project$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     generation_runs<T extends Project$generation_runsArgs<ExtArgs> = {}>(args?: Subset<T, Project$generation_runsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     automations<T extends Project$automationsArgs<ExtArgs> = {}>(args?: Subset<T, Project$automationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -12110,6 +13774,30 @@ export namespace Prisma {
   }
 
   /**
+   * Project.rss_feeds
+   */
+  export type Project$rss_feedsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    where?: ProjectRssFeedWhereInput
+    orderBy?: ProjectRssFeedOrderByWithRelationInput | ProjectRssFeedOrderByWithRelationInput[]
+    cursor?: ProjectRssFeedWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProjectRssFeedScalarFieldEnum | ProjectRssFeedScalarFieldEnum[]
+  }
+
+  /**
    * Project.posts
    */
   export type Project$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12197,6 +13885,3395 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProjectInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RssFeed
+   */
+
+  export type AggregateRssFeed = {
+    _count: RssFeedCountAggregateOutputType | null
+    _min: RssFeedMinAggregateOutputType | null
+    _max: RssFeedMaxAggregateOutputType | null
+  }
+
+  export type RssFeedMinAggregateOutputType = {
+    id: string | null
+    organisation_id: string | null
+    name: string | null
+    url: string | null
+    last_fetched_at: Date | null
+    last_fetch_error: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type RssFeedMaxAggregateOutputType = {
+    id: string | null
+    organisation_id: string | null
+    name: string | null
+    url: string | null
+    last_fetched_at: Date | null
+    last_fetch_error: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type RssFeedCountAggregateOutputType = {
+    id: number
+    organisation_id: number
+    name: number
+    url: number
+    last_fetched_at: number
+    last_fetch_error: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type RssFeedMinAggregateInputType = {
+    id?: true
+    organisation_id?: true
+    name?: true
+    url?: true
+    last_fetched_at?: true
+    last_fetch_error?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type RssFeedMaxAggregateInputType = {
+    id?: true
+    organisation_id?: true
+    name?: true
+    url?: true
+    last_fetched_at?: true
+    last_fetch_error?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type RssFeedCountAggregateInputType = {
+    id?: true
+    organisation_id?: true
+    name?: true
+    url?: true
+    last_fetched_at?: true
+    last_fetch_error?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type RssFeedAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RssFeed to aggregate.
+     */
+    where?: RssFeedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RssFeeds to fetch.
+     */
+    orderBy?: RssFeedOrderByWithRelationInput | RssFeedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RssFeedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RssFeeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RssFeeds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RssFeeds
+    **/
+    _count?: true | RssFeedCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RssFeedMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RssFeedMaxAggregateInputType
+  }
+
+  export type GetRssFeedAggregateType<T extends RssFeedAggregateArgs> = {
+        [P in keyof T & keyof AggregateRssFeed]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRssFeed[P]>
+      : GetScalarType<T[P], AggregateRssFeed[P]>
+  }
+
+
+
+
+  export type RssFeedGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RssFeedWhereInput
+    orderBy?: RssFeedOrderByWithAggregationInput | RssFeedOrderByWithAggregationInput[]
+    by: RssFeedScalarFieldEnum[] | RssFeedScalarFieldEnum
+    having?: RssFeedScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RssFeedCountAggregateInputType | true
+    _min?: RssFeedMinAggregateInputType
+    _max?: RssFeedMaxAggregateInputType
+  }
+
+  export type RssFeedGroupByOutputType = {
+    id: string
+    organisation_id: string
+    name: string
+    url: string
+    last_fetched_at: Date | null
+    last_fetch_error: string | null
+    created_at: Date
+    updated_at: Date
+    _count: RssFeedCountAggregateOutputType | null
+    _min: RssFeedMinAggregateOutputType | null
+    _max: RssFeedMaxAggregateOutputType | null
+  }
+
+  type GetRssFeedGroupByPayload<T extends RssFeedGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RssFeedGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RssFeedGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RssFeedGroupByOutputType[P]>
+            : GetScalarType<T[P], RssFeedGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RssFeedSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organisation_id?: boolean
+    name?: boolean
+    url?: boolean
+    last_fetched_at?: boolean
+    last_fetch_error?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
+    projects?: boolean | RssFeed$projectsArgs<ExtArgs>
+    items?: boolean | RssFeed$itemsArgs<ExtArgs>
+    automations?: boolean | RssFeed$automationsArgs<ExtArgs>
+    _count?: boolean | RssFeedCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rssFeed"]>
+
+  export type RssFeedSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organisation_id?: boolean
+    name?: boolean
+    url?: boolean
+    last_fetched_at?: boolean
+    last_fetch_error?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rssFeed"]>
+
+  export type RssFeedSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organisation_id?: boolean
+    name?: boolean
+    url?: boolean
+    last_fetched_at?: boolean
+    last_fetch_error?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rssFeed"]>
+
+  export type RssFeedSelectScalar = {
+    id?: boolean
+    organisation_id?: boolean
+    name?: boolean
+    url?: boolean
+    last_fetched_at?: boolean
+    last_fetch_error?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type RssFeedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "name" | "url" | "last_fetched_at" | "last_fetch_error" | "created_at" | "updated_at", ExtArgs["result"]["rssFeed"]>
+  export type RssFeedInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
+    projects?: boolean | RssFeed$projectsArgs<ExtArgs>
+    items?: boolean | RssFeed$itemsArgs<ExtArgs>
+    automations?: boolean | RssFeed$automationsArgs<ExtArgs>
+    _count?: boolean | RssFeedCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RssFeedIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
+  }
+  export type RssFeedIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
+  }
+
+  export type $RssFeedPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RssFeed"
+    objects: {
+      organisation: Prisma.$OrganisationPayload<ExtArgs>
+      projects: Prisma.$ProjectRssFeedPayload<ExtArgs>[]
+      items: Prisma.$RssFeedItemPayload<ExtArgs>[]
+      automations: Prisma.$AutomationPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      organisation_id: string
+      name: string
+      url: string
+      last_fetched_at: Date | null
+      last_fetch_error: string | null
+      created_at: Date
+      updated_at: Date
+    }, ExtArgs["result"]["rssFeed"]>
+    composites: {}
+  }
+
+  type RssFeedGetPayload<S extends boolean | null | undefined | RssFeedDefaultArgs> = $Result.GetResult<Prisma.$RssFeedPayload, S>
+
+  type RssFeedCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RssFeedFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RssFeedCountAggregateInputType | true
+    }
+
+  export interface RssFeedDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RssFeed'], meta: { name: 'RssFeed' } }
+    /**
+     * Find zero or one RssFeed that matches the filter.
+     * @param {RssFeedFindUniqueArgs} args - Arguments to find a RssFeed
+     * @example
+     * // Get one RssFeed
+     * const rssFeed = await prisma.rssFeed.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RssFeedFindUniqueArgs>(args: SelectSubset<T, RssFeedFindUniqueArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RssFeed that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RssFeedFindUniqueOrThrowArgs} args - Arguments to find a RssFeed
+     * @example
+     * // Get one RssFeed
+     * const rssFeed = await prisma.rssFeed.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RssFeedFindUniqueOrThrowArgs>(args: SelectSubset<T, RssFeedFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RssFeed that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedFindFirstArgs} args - Arguments to find a RssFeed
+     * @example
+     * // Get one RssFeed
+     * const rssFeed = await prisma.rssFeed.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RssFeedFindFirstArgs>(args?: SelectSubset<T, RssFeedFindFirstArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RssFeed that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedFindFirstOrThrowArgs} args - Arguments to find a RssFeed
+     * @example
+     * // Get one RssFeed
+     * const rssFeed = await prisma.rssFeed.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RssFeedFindFirstOrThrowArgs>(args?: SelectSubset<T, RssFeedFindFirstOrThrowArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RssFeeds that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RssFeeds
+     * const rssFeeds = await prisma.rssFeed.findMany()
+     * 
+     * // Get first 10 RssFeeds
+     * const rssFeeds = await prisma.rssFeed.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const rssFeedWithIdOnly = await prisma.rssFeed.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RssFeedFindManyArgs>(args?: SelectSubset<T, RssFeedFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RssFeed.
+     * @param {RssFeedCreateArgs} args - Arguments to create a RssFeed.
+     * @example
+     * // Create one RssFeed
+     * const RssFeed = await prisma.rssFeed.create({
+     *   data: {
+     *     // ... data to create a RssFeed
+     *   }
+     * })
+     * 
+     */
+    create<T extends RssFeedCreateArgs>(args: SelectSubset<T, RssFeedCreateArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RssFeeds.
+     * @param {RssFeedCreateManyArgs} args - Arguments to create many RssFeeds.
+     * @example
+     * // Create many RssFeeds
+     * const rssFeed = await prisma.rssFeed.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RssFeedCreateManyArgs>(args?: SelectSubset<T, RssFeedCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RssFeeds and returns the data saved in the database.
+     * @param {RssFeedCreateManyAndReturnArgs} args - Arguments to create many RssFeeds.
+     * @example
+     * // Create many RssFeeds
+     * const rssFeed = await prisma.rssFeed.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RssFeeds and only return the `id`
+     * const rssFeedWithIdOnly = await prisma.rssFeed.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RssFeedCreateManyAndReturnArgs>(args?: SelectSubset<T, RssFeedCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RssFeed.
+     * @param {RssFeedDeleteArgs} args - Arguments to delete one RssFeed.
+     * @example
+     * // Delete one RssFeed
+     * const RssFeed = await prisma.rssFeed.delete({
+     *   where: {
+     *     // ... filter to delete one RssFeed
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RssFeedDeleteArgs>(args: SelectSubset<T, RssFeedDeleteArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RssFeed.
+     * @param {RssFeedUpdateArgs} args - Arguments to update one RssFeed.
+     * @example
+     * // Update one RssFeed
+     * const rssFeed = await prisma.rssFeed.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RssFeedUpdateArgs>(args: SelectSubset<T, RssFeedUpdateArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RssFeeds.
+     * @param {RssFeedDeleteManyArgs} args - Arguments to filter RssFeeds to delete.
+     * @example
+     * // Delete a few RssFeeds
+     * const { count } = await prisma.rssFeed.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RssFeedDeleteManyArgs>(args?: SelectSubset<T, RssFeedDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RssFeeds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RssFeeds
+     * const rssFeed = await prisma.rssFeed.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RssFeedUpdateManyArgs>(args: SelectSubset<T, RssFeedUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RssFeeds and returns the data updated in the database.
+     * @param {RssFeedUpdateManyAndReturnArgs} args - Arguments to update many RssFeeds.
+     * @example
+     * // Update many RssFeeds
+     * const rssFeed = await prisma.rssFeed.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RssFeeds and only return the `id`
+     * const rssFeedWithIdOnly = await prisma.rssFeed.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RssFeedUpdateManyAndReturnArgs>(args: SelectSubset<T, RssFeedUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RssFeed.
+     * @param {RssFeedUpsertArgs} args - Arguments to update or create a RssFeed.
+     * @example
+     * // Update or create a RssFeed
+     * const rssFeed = await prisma.rssFeed.upsert({
+     *   create: {
+     *     // ... data to create a RssFeed
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RssFeed we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RssFeedUpsertArgs>(args: SelectSubset<T, RssFeedUpsertArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RssFeeds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedCountArgs} args - Arguments to filter RssFeeds to count.
+     * @example
+     * // Count the number of RssFeeds
+     * const count = await prisma.rssFeed.count({
+     *   where: {
+     *     // ... the filter for the RssFeeds we want to count
+     *   }
+     * })
+    **/
+    count<T extends RssFeedCountArgs>(
+      args?: Subset<T, RssFeedCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RssFeedCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RssFeed.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RssFeedAggregateArgs>(args: Subset<T, RssFeedAggregateArgs>): Prisma.PrismaPromise<GetRssFeedAggregateType<T>>
+
+    /**
+     * Group by RssFeed.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RssFeedGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RssFeedGroupByArgs['orderBy'] }
+        : { orderBy?: RssFeedGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RssFeedGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRssFeedGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RssFeed model
+   */
+  readonly fields: RssFeedFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RssFeed.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RssFeedClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    organisation<T extends OrganisationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationDefaultArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    projects<T extends RssFeed$projectsArgs<ExtArgs> = {}>(args?: Subset<T, RssFeed$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    items<T extends RssFeed$itemsArgs<ExtArgs> = {}>(args?: Subset<T, RssFeed$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    automations<T extends RssFeed$automationsArgs<ExtArgs> = {}>(args?: Subset<T, RssFeed$automationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RssFeed model
+   */
+  interface RssFeedFieldRefs {
+    readonly id: FieldRef<"RssFeed", 'String'>
+    readonly organisation_id: FieldRef<"RssFeed", 'String'>
+    readonly name: FieldRef<"RssFeed", 'String'>
+    readonly url: FieldRef<"RssFeed", 'String'>
+    readonly last_fetched_at: FieldRef<"RssFeed", 'DateTime'>
+    readonly last_fetch_error: FieldRef<"RssFeed", 'String'>
+    readonly created_at: FieldRef<"RssFeed", 'DateTime'>
+    readonly updated_at: FieldRef<"RssFeed", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RssFeed findUnique
+   */
+  export type RssFeedFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeed to fetch.
+     */
+    where: RssFeedWhereUniqueInput
+  }
+
+  /**
+   * RssFeed findUniqueOrThrow
+   */
+  export type RssFeedFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeed to fetch.
+     */
+    where: RssFeedWhereUniqueInput
+  }
+
+  /**
+   * RssFeed findFirst
+   */
+  export type RssFeedFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeed to fetch.
+     */
+    where?: RssFeedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RssFeeds to fetch.
+     */
+    orderBy?: RssFeedOrderByWithRelationInput | RssFeedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RssFeeds.
+     */
+    cursor?: RssFeedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RssFeeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RssFeeds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RssFeeds.
+     */
+    distinct?: RssFeedScalarFieldEnum | RssFeedScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeed findFirstOrThrow
+   */
+  export type RssFeedFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeed to fetch.
+     */
+    where?: RssFeedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RssFeeds to fetch.
+     */
+    orderBy?: RssFeedOrderByWithRelationInput | RssFeedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RssFeeds.
+     */
+    cursor?: RssFeedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RssFeeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RssFeeds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RssFeeds.
+     */
+    distinct?: RssFeedScalarFieldEnum | RssFeedScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeed findMany
+   */
+  export type RssFeedFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeeds to fetch.
+     */
+    where?: RssFeedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RssFeeds to fetch.
+     */
+    orderBy?: RssFeedOrderByWithRelationInput | RssFeedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RssFeeds.
+     */
+    cursor?: RssFeedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RssFeeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RssFeeds.
+     */
+    skip?: number
+    distinct?: RssFeedScalarFieldEnum | RssFeedScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeed create
+   */
+  export type RssFeedCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RssFeed.
+     */
+    data: XOR<RssFeedCreateInput, RssFeedUncheckedCreateInput>
+  }
+
+  /**
+   * RssFeed createMany
+   */
+  export type RssFeedCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RssFeeds.
+     */
+    data: RssFeedCreateManyInput | RssFeedCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RssFeed createManyAndReturn
+   */
+  export type RssFeedCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * The data used to create many RssFeeds.
+     */
+    data: RssFeedCreateManyInput | RssFeedCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RssFeed update
+   */
+  export type RssFeedUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RssFeed.
+     */
+    data: XOR<RssFeedUpdateInput, RssFeedUncheckedUpdateInput>
+    /**
+     * Choose, which RssFeed to update.
+     */
+    where: RssFeedWhereUniqueInput
+  }
+
+  /**
+   * RssFeed updateMany
+   */
+  export type RssFeedUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RssFeeds.
+     */
+    data: XOR<RssFeedUpdateManyMutationInput, RssFeedUncheckedUpdateManyInput>
+    /**
+     * Filter which RssFeeds to update
+     */
+    where?: RssFeedWhereInput
+    /**
+     * Limit how many RssFeeds to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RssFeed updateManyAndReturn
+   */
+  export type RssFeedUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * The data used to update RssFeeds.
+     */
+    data: XOR<RssFeedUpdateManyMutationInput, RssFeedUncheckedUpdateManyInput>
+    /**
+     * Filter which RssFeeds to update
+     */
+    where?: RssFeedWhereInput
+    /**
+     * Limit how many RssFeeds to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RssFeed upsert
+   */
+  export type RssFeedUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RssFeed to update in case it exists.
+     */
+    where: RssFeedWhereUniqueInput
+    /**
+     * In case the RssFeed found by the `where` argument doesn't exist, create a new RssFeed with this data.
+     */
+    create: XOR<RssFeedCreateInput, RssFeedUncheckedCreateInput>
+    /**
+     * In case the RssFeed was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RssFeedUpdateInput, RssFeedUncheckedUpdateInput>
+  }
+
+  /**
+   * RssFeed delete
+   */
+  export type RssFeedDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    /**
+     * Filter which RssFeed to delete.
+     */
+    where: RssFeedWhereUniqueInput
+  }
+
+  /**
+   * RssFeed deleteMany
+   */
+  export type RssFeedDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RssFeeds to delete
+     */
+    where?: RssFeedWhereInput
+    /**
+     * Limit how many RssFeeds to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RssFeed.projects
+   */
+  export type RssFeed$projectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    where?: ProjectRssFeedWhereInput
+    orderBy?: ProjectRssFeedOrderByWithRelationInput | ProjectRssFeedOrderByWithRelationInput[]
+    cursor?: ProjectRssFeedWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProjectRssFeedScalarFieldEnum | ProjectRssFeedScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeed.items
+   */
+  export type RssFeed$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    where?: RssFeedItemWhereInput
+    orderBy?: RssFeedItemOrderByWithRelationInput | RssFeedItemOrderByWithRelationInput[]
+    cursor?: RssFeedItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RssFeedItemScalarFieldEnum | RssFeedItemScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeed.automations
+   */
+  export type RssFeed$automationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Automation
+     */
+    select?: AutomationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Automation
+     */
+    omit?: AutomationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationInclude<ExtArgs> | null
+    where?: AutomationWhereInput
+    orderBy?: AutomationOrderByWithRelationInput | AutomationOrderByWithRelationInput[]
+    cursor?: AutomationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AutomationScalarFieldEnum | AutomationScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeed without action
+   */
+  export type RssFeedDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProjectRssFeed
+   */
+
+  export type AggregateProjectRssFeed = {
+    _count: ProjectRssFeedCountAggregateOutputType | null
+    _min: ProjectRssFeedMinAggregateOutputType | null
+    _max: ProjectRssFeedMaxAggregateOutputType | null
+  }
+
+  export type ProjectRssFeedMinAggregateOutputType = {
+    id: string | null
+    project_id: string | null
+    rss_feed_id: string | null
+    created_at: Date | null
+  }
+
+  export type ProjectRssFeedMaxAggregateOutputType = {
+    id: string | null
+    project_id: string | null
+    rss_feed_id: string | null
+    created_at: Date | null
+  }
+
+  export type ProjectRssFeedCountAggregateOutputType = {
+    id: number
+    project_id: number
+    rss_feed_id: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type ProjectRssFeedMinAggregateInputType = {
+    id?: true
+    project_id?: true
+    rss_feed_id?: true
+    created_at?: true
+  }
+
+  export type ProjectRssFeedMaxAggregateInputType = {
+    id?: true
+    project_id?: true
+    rss_feed_id?: true
+    created_at?: true
+  }
+
+  export type ProjectRssFeedCountAggregateInputType = {
+    id?: true
+    project_id?: true
+    rss_feed_id?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type ProjectRssFeedAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProjectRssFeed to aggregate.
+     */
+    where?: ProjectRssFeedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectRssFeeds to fetch.
+     */
+    orderBy?: ProjectRssFeedOrderByWithRelationInput | ProjectRssFeedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProjectRssFeedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectRssFeeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectRssFeeds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProjectRssFeeds
+    **/
+    _count?: true | ProjectRssFeedCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProjectRssFeedMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProjectRssFeedMaxAggregateInputType
+  }
+
+  export type GetProjectRssFeedAggregateType<T extends ProjectRssFeedAggregateArgs> = {
+        [P in keyof T & keyof AggregateProjectRssFeed]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProjectRssFeed[P]>
+      : GetScalarType<T[P], AggregateProjectRssFeed[P]>
+  }
+
+
+
+
+  export type ProjectRssFeedGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectRssFeedWhereInput
+    orderBy?: ProjectRssFeedOrderByWithAggregationInput | ProjectRssFeedOrderByWithAggregationInput[]
+    by: ProjectRssFeedScalarFieldEnum[] | ProjectRssFeedScalarFieldEnum
+    having?: ProjectRssFeedScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProjectRssFeedCountAggregateInputType | true
+    _min?: ProjectRssFeedMinAggregateInputType
+    _max?: ProjectRssFeedMaxAggregateInputType
+  }
+
+  export type ProjectRssFeedGroupByOutputType = {
+    id: string
+    project_id: string
+    rss_feed_id: string
+    created_at: Date
+    _count: ProjectRssFeedCountAggregateOutputType | null
+    _min: ProjectRssFeedMinAggregateOutputType | null
+    _max: ProjectRssFeedMaxAggregateOutputType | null
+  }
+
+  type GetProjectRssFeedGroupByPayload<T extends ProjectRssFeedGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProjectRssFeedGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProjectRssFeedGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProjectRssFeedGroupByOutputType[P]>
+            : GetScalarType<T[P], ProjectRssFeedGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProjectRssFeedSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    project_id?: boolean
+    rss_feed_id?: boolean
+    created_at?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projectRssFeed"]>
+
+  export type ProjectRssFeedSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    project_id?: boolean
+    rss_feed_id?: boolean
+    created_at?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projectRssFeed"]>
+
+  export type ProjectRssFeedSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    project_id?: boolean
+    rss_feed_id?: boolean
+    created_at?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projectRssFeed"]>
+
+  export type ProjectRssFeedSelectScalar = {
+    id?: boolean
+    project_id?: boolean
+    rss_feed_id?: boolean
+    created_at?: boolean
+  }
+
+  export type ProjectRssFeedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "project_id" | "rss_feed_id" | "created_at", ExtArgs["result"]["projectRssFeed"]>
+  export type ProjectRssFeedInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }
+  export type ProjectRssFeedIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }
+  export type ProjectRssFeedIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }
+
+  export type $ProjectRssFeedPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProjectRssFeed"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+      rss_feed: Prisma.$RssFeedPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      project_id: string
+      rss_feed_id: string
+      created_at: Date
+    }, ExtArgs["result"]["projectRssFeed"]>
+    composites: {}
+  }
+
+  type ProjectRssFeedGetPayload<S extends boolean | null | undefined | ProjectRssFeedDefaultArgs> = $Result.GetResult<Prisma.$ProjectRssFeedPayload, S>
+
+  type ProjectRssFeedCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProjectRssFeedFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProjectRssFeedCountAggregateInputType | true
+    }
+
+  export interface ProjectRssFeedDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProjectRssFeed'], meta: { name: 'ProjectRssFeed' } }
+    /**
+     * Find zero or one ProjectRssFeed that matches the filter.
+     * @param {ProjectRssFeedFindUniqueArgs} args - Arguments to find a ProjectRssFeed
+     * @example
+     * // Get one ProjectRssFeed
+     * const projectRssFeed = await prisma.projectRssFeed.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProjectRssFeedFindUniqueArgs>(args: SelectSubset<T, ProjectRssFeedFindUniqueArgs<ExtArgs>>): Prisma__ProjectRssFeedClient<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProjectRssFeed that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProjectRssFeedFindUniqueOrThrowArgs} args - Arguments to find a ProjectRssFeed
+     * @example
+     * // Get one ProjectRssFeed
+     * const projectRssFeed = await prisma.projectRssFeed.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProjectRssFeedFindUniqueOrThrowArgs>(args: SelectSubset<T, ProjectRssFeedFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProjectRssFeedClient<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProjectRssFeed that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectRssFeedFindFirstArgs} args - Arguments to find a ProjectRssFeed
+     * @example
+     * // Get one ProjectRssFeed
+     * const projectRssFeed = await prisma.projectRssFeed.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProjectRssFeedFindFirstArgs>(args?: SelectSubset<T, ProjectRssFeedFindFirstArgs<ExtArgs>>): Prisma__ProjectRssFeedClient<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProjectRssFeed that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectRssFeedFindFirstOrThrowArgs} args - Arguments to find a ProjectRssFeed
+     * @example
+     * // Get one ProjectRssFeed
+     * const projectRssFeed = await prisma.projectRssFeed.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProjectRssFeedFindFirstOrThrowArgs>(args?: SelectSubset<T, ProjectRssFeedFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProjectRssFeedClient<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProjectRssFeeds that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectRssFeedFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProjectRssFeeds
+     * const projectRssFeeds = await prisma.projectRssFeed.findMany()
+     * 
+     * // Get first 10 ProjectRssFeeds
+     * const projectRssFeeds = await prisma.projectRssFeed.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const projectRssFeedWithIdOnly = await prisma.projectRssFeed.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProjectRssFeedFindManyArgs>(args?: SelectSubset<T, ProjectRssFeedFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProjectRssFeed.
+     * @param {ProjectRssFeedCreateArgs} args - Arguments to create a ProjectRssFeed.
+     * @example
+     * // Create one ProjectRssFeed
+     * const ProjectRssFeed = await prisma.projectRssFeed.create({
+     *   data: {
+     *     // ... data to create a ProjectRssFeed
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProjectRssFeedCreateArgs>(args: SelectSubset<T, ProjectRssFeedCreateArgs<ExtArgs>>): Prisma__ProjectRssFeedClient<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProjectRssFeeds.
+     * @param {ProjectRssFeedCreateManyArgs} args - Arguments to create many ProjectRssFeeds.
+     * @example
+     * // Create many ProjectRssFeeds
+     * const projectRssFeed = await prisma.projectRssFeed.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProjectRssFeedCreateManyArgs>(args?: SelectSubset<T, ProjectRssFeedCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProjectRssFeeds and returns the data saved in the database.
+     * @param {ProjectRssFeedCreateManyAndReturnArgs} args - Arguments to create many ProjectRssFeeds.
+     * @example
+     * // Create many ProjectRssFeeds
+     * const projectRssFeed = await prisma.projectRssFeed.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProjectRssFeeds and only return the `id`
+     * const projectRssFeedWithIdOnly = await prisma.projectRssFeed.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProjectRssFeedCreateManyAndReturnArgs>(args?: SelectSubset<T, ProjectRssFeedCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProjectRssFeed.
+     * @param {ProjectRssFeedDeleteArgs} args - Arguments to delete one ProjectRssFeed.
+     * @example
+     * // Delete one ProjectRssFeed
+     * const ProjectRssFeed = await prisma.projectRssFeed.delete({
+     *   where: {
+     *     // ... filter to delete one ProjectRssFeed
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProjectRssFeedDeleteArgs>(args: SelectSubset<T, ProjectRssFeedDeleteArgs<ExtArgs>>): Prisma__ProjectRssFeedClient<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProjectRssFeed.
+     * @param {ProjectRssFeedUpdateArgs} args - Arguments to update one ProjectRssFeed.
+     * @example
+     * // Update one ProjectRssFeed
+     * const projectRssFeed = await prisma.projectRssFeed.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProjectRssFeedUpdateArgs>(args: SelectSubset<T, ProjectRssFeedUpdateArgs<ExtArgs>>): Prisma__ProjectRssFeedClient<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProjectRssFeeds.
+     * @param {ProjectRssFeedDeleteManyArgs} args - Arguments to filter ProjectRssFeeds to delete.
+     * @example
+     * // Delete a few ProjectRssFeeds
+     * const { count } = await prisma.projectRssFeed.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProjectRssFeedDeleteManyArgs>(args?: SelectSubset<T, ProjectRssFeedDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProjectRssFeeds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectRssFeedUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProjectRssFeeds
+     * const projectRssFeed = await prisma.projectRssFeed.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProjectRssFeedUpdateManyArgs>(args: SelectSubset<T, ProjectRssFeedUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProjectRssFeeds and returns the data updated in the database.
+     * @param {ProjectRssFeedUpdateManyAndReturnArgs} args - Arguments to update many ProjectRssFeeds.
+     * @example
+     * // Update many ProjectRssFeeds
+     * const projectRssFeed = await prisma.projectRssFeed.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProjectRssFeeds and only return the `id`
+     * const projectRssFeedWithIdOnly = await prisma.projectRssFeed.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProjectRssFeedUpdateManyAndReturnArgs>(args: SelectSubset<T, ProjectRssFeedUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProjectRssFeed.
+     * @param {ProjectRssFeedUpsertArgs} args - Arguments to update or create a ProjectRssFeed.
+     * @example
+     * // Update or create a ProjectRssFeed
+     * const projectRssFeed = await prisma.projectRssFeed.upsert({
+     *   create: {
+     *     // ... data to create a ProjectRssFeed
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProjectRssFeed we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProjectRssFeedUpsertArgs>(args: SelectSubset<T, ProjectRssFeedUpsertArgs<ExtArgs>>): Prisma__ProjectRssFeedClient<$Result.GetResult<Prisma.$ProjectRssFeedPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProjectRssFeeds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectRssFeedCountArgs} args - Arguments to filter ProjectRssFeeds to count.
+     * @example
+     * // Count the number of ProjectRssFeeds
+     * const count = await prisma.projectRssFeed.count({
+     *   where: {
+     *     // ... the filter for the ProjectRssFeeds we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProjectRssFeedCountArgs>(
+      args?: Subset<T, ProjectRssFeedCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProjectRssFeedCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProjectRssFeed.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectRssFeedAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProjectRssFeedAggregateArgs>(args: Subset<T, ProjectRssFeedAggregateArgs>): Prisma.PrismaPromise<GetProjectRssFeedAggregateType<T>>
+
+    /**
+     * Group by ProjectRssFeed.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectRssFeedGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProjectRssFeedGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProjectRssFeedGroupByArgs['orderBy'] }
+        : { orderBy?: ProjectRssFeedGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProjectRssFeedGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProjectRssFeedGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProjectRssFeed model
+   */
+  readonly fields: ProjectRssFeedFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProjectRssFeed.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProjectRssFeedClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    rss_feed<T extends RssFeedDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RssFeedDefaultArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProjectRssFeed model
+   */
+  interface ProjectRssFeedFieldRefs {
+    readonly id: FieldRef<"ProjectRssFeed", 'String'>
+    readonly project_id: FieldRef<"ProjectRssFeed", 'String'>
+    readonly rss_feed_id: FieldRef<"ProjectRssFeed", 'String'>
+    readonly created_at: FieldRef<"ProjectRssFeed", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProjectRssFeed findUnique
+   */
+  export type ProjectRssFeedFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectRssFeed to fetch.
+     */
+    where: ProjectRssFeedWhereUniqueInput
+  }
+
+  /**
+   * ProjectRssFeed findUniqueOrThrow
+   */
+  export type ProjectRssFeedFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectRssFeed to fetch.
+     */
+    where: ProjectRssFeedWhereUniqueInput
+  }
+
+  /**
+   * ProjectRssFeed findFirst
+   */
+  export type ProjectRssFeedFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectRssFeed to fetch.
+     */
+    where?: ProjectRssFeedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectRssFeeds to fetch.
+     */
+    orderBy?: ProjectRssFeedOrderByWithRelationInput | ProjectRssFeedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProjectRssFeeds.
+     */
+    cursor?: ProjectRssFeedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectRssFeeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectRssFeeds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProjectRssFeeds.
+     */
+    distinct?: ProjectRssFeedScalarFieldEnum | ProjectRssFeedScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectRssFeed findFirstOrThrow
+   */
+  export type ProjectRssFeedFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectRssFeed to fetch.
+     */
+    where?: ProjectRssFeedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectRssFeeds to fetch.
+     */
+    orderBy?: ProjectRssFeedOrderByWithRelationInput | ProjectRssFeedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProjectRssFeeds.
+     */
+    cursor?: ProjectRssFeedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectRssFeeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectRssFeeds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProjectRssFeeds.
+     */
+    distinct?: ProjectRssFeedScalarFieldEnum | ProjectRssFeedScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectRssFeed findMany
+   */
+  export type ProjectRssFeedFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectRssFeeds to fetch.
+     */
+    where?: ProjectRssFeedWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectRssFeeds to fetch.
+     */
+    orderBy?: ProjectRssFeedOrderByWithRelationInput | ProjectRssFeedOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProjectRssFeeds.
+     */
+    cursor?: ProjectRssFeedWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectRssFeeds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectRssFeeds.
+     */
+    skip?: number
+    distinct?: ProjectRssFeedScalarFieldEnum | ProjectRssFeedScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectRssFeed create
+   */
+  export type ProjectRssFeedCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProjectRssFeed.
+     */
+    data: XOR<ProjectRssFeedCreateInput, ProjectRssFeedUncheckedCreateInput>
+  }
+
+  /**
+   * ProjectRssFeed createMany
+   */
+  export type ProjectRssFeedCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProjectRssFeeds.
+     */
+    data: ProjectRssFeedCreateManyInput | ProjectRssFeedCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProjectRssFeed createManyAndReturn
+   */
+  export type ProjectRssFeedCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProjectRssFeeds.
+     */
+    data: ProjectRssFeedCreateManyInput | ProjectRssFeedCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProjectRssFeed update
+   */
+  export type ProjectRssFeedUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProjectRssFeed.
+     */
+    data: XOR<ProjectRssFeedUpdateInput, ProjectRssFeedUncheckedUpdateInput>
+    /**
+     * Choose, which ProjectRssFeed to update.
+     */
+    where: ProjectRssFeedWhereUniqueInput
+  }
+
+  /**
+   * ProjectRssFeed updateMany
+   */
+  export type ProjectRssFeedUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProjectRssFeeds.
+     */
+    data: XOR<ProjectRssFeedUpdateManyMutationInput, ProjectRssFeedUncheckedUpdateManyInput>
+    /**
+     * Filter which ProjectRssFeeds to update
+     */
+    where?: ProjectRssFeedWhereInput
+    /**
+     * Limit how many ProjectRssFeeds to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProjectRssFeed updateManyAndReturn
+   */
+  export type ProjectRssFeedUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * The data used to update ProjectRssFeeds.
+     */
+    data: XOR<ProjectRssFeedUpdateManyMutationInput, ProjectRssFeedUncheckedUpdateManyInput>
+    /**
+     * Filter which ProjectRssFeeds to update
+     */
+    where?: ProjectRssFeedWhereInput
+    /**
+     * Limit how many ProjectRssFeeds to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProjectRssFeed upsert
+   */
+  export type ProjectRssFeedUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProjectRssFeed to update in case it exists.
+     */
+    where: ProjectRssFeedWhereUniqueInput
+    /**
+     * In case the ProjectRssFeed found by the `where` argument doesn't exist, create a new ProjectRssFeed with this data.
+     */
+    create: XOR<ProjectRssFeedCreateInput, ProjectRssFeedUncheckedCreateInput>
+    /**
+     * In case the ProjectRssFeed was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProjectRssFeedUpdateInput, ProjectRssFeedUncheckedUpdateInput>
+  }
+
+  /**
+   * ProjectRssFeed delete
+   */
+  export type ProjectRssFeedDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+    /**
+     * Filter which ProjectRssFeed to delete.
+     */
+    where: ProjectRssFeedWhereUniqueInput
+  }
+
+  /**
+   * ProjectRssFeed deleteMany
+   */
+  export type ProjectRssFeedDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProjectRssFeeds to delete
+     */
+    where?: ProjectRssFeedWhereInput
+    /**
+     * Limit how many ProjectRssFeeds to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProjectRssFeed without action
+   */
+  export type ProjectRssFeedDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectRssFeed
+     */
+    select?: ProjectRssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectRssFeed
+     */
+    omit?: ProjectRssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectRssFeedInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RssFeedItem
+   */
+
+  export type AggregateRssFeedItem = {
+    _count: RssFeedItemCountAggregateOutputType | null
+    _min: RssFeedItemMinAggregateOutputType | null
+    _max: RssFeedItemMaxAggregateOutputType | null
+  }
+
+  export type RssFeedItemMinAggregateOutputType = {
+    id: string | null
+    rss_feed_id: string | null
+    guid: string | null
+    title: string | null
+    link: string | null
+    summary: string | null
+    content: string | null
+    published_at: Date | null
+    is_used: boolean | null
+    fetched_at: Date | null
+  }
+
+  export type RssFeedItemMaxAggregateOutputType = {
+    id: string | null
+    rss_feed_id: string | null
+    guid: string | null
+    title: string | null
+    link: string | null
+    summary: string | null
+    content: string | null
+    published_at: Date | null
+    is_used: boolean | null
+    fetched_at: Date | null
+  }
+
+  export type RssFeedItemCountAggregateOutputType = {
+    id: number
+    rss_feed_id: number
+    guid: number
+    title: number
+    link: number
+    summary: number
+    content: number
+    published_at: number
+    is_used: number
+    fetched_at: number
+    _all: number
+  }
+
+
+  export type RssFeedItemMinAggregateInputType = {
+    id?: true
+    rss_feed_id?: true
+    guid?: true
+    title?: true
+    link?: true
+    summary?: true
+    content?: true
+    published_at?: true
+    is_used?: true
+    fetched_at?: true
+  }
+
+  export type RssFeedItemMaxAggregateInputType = {
+    id?: true
+    rss_feed_id?: true
+    guid?: true
+    title?: true
+    link?: true
+    summary?: true
+    content?: true
+    published_at?: true
+    is_used?: true
+    fetched_at?: true
+  }
+
+  export type RssFeedItemCountAggregateInputType = {
+    id?: true
+    rss_feed_id?: true
+    guid?: true
+    title?: true
+    link?: true
+    summary?: true
+    content?: true
+    published_at?: true
+    is_used?: true
+    fetched_at?: true
+    _all?: true
+  }
+
+  export type RssFeedItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RssFeedItem to aggregate.
+     */
+    where?: RssFeedItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RssFeedItems to fetch.
+     */
+    orderBy?: RssFeedItemOrderByWithRelationInput | RssFeedItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RssFeedItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RssFeedItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RssFeedItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RssFeedItems
+    **/
+    _count?: true | RssFeedItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RssFeedItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RssFeedItemMaxAggregateInputType
+  }
+
+  export type GetRssFeedItemAggregateType<T extends RssFeedItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateRssFeedItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRssFeedItem[P]>
+      : GetScalarType<T[P], AggregateRssFeedItem[P]>
+  }
+
+
+
+
+  export type RssFeedItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RssFeedItemWhereInput
+    orderBy?: RssFeedItemOrderByWithAggregationInput | RssFeedItemOrderByWithAggregationInput[]
+    by: RssFeedItemScalarFieldEnum[] | RssFeedItemScalarFieldEnum
+    having?: RssFeedItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RssFeedItemCountAggregateInputType | true
+    _min?: RssFeedItemMinAggregateInputType
+    _max?: RssFeedItemMaxAggregateInputType
+  }
+
+  export type RssFeedItemGroupByOutputType = {
+    id: string
+    rss_feed_id: string
+    guid: string
+    title: string
+    link: string | null
+    summary: string | null
+    content: string | null
+    published_at: Date | null
+    is_used: boolean
+    fetched_at: Date
+    _count: RssFeedItemCountAggregateOutputType | null
+    _min: RssFeedItemMinAggregateOutputType | null
+    _max: RssFeedItemMaxAggregateOutputType | null
+  }
+
+  type GetRssFeedItemGroupByPayload<T extends RssFeedItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RssFeedItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RssFeedItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RssFeedItemGroupByOutputType[P]>
+            : GetScalarType<T[P], RssFeedItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RssFeedItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    rss_feed_id?: boolean
+    guid?: boolean
+    title?: boolean
+    link?: boolean
+    summary?: boolean
+    content?: boolean
+    published_at?: boolean
+    is_used?: boolean
+    fetched_at?: boolean
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+    posts?: boolean | RssFeedItem$postsArgs<ExtArgs>
+    _count?: boolean | RssFeedItemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rssFeedItem"]>
+
+  export type RssFeedItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    rss_feed_id?: boolean
+    guid?: boolean
+    title?: boolean
+    link?: boolean
+    summary?: boolean
+    content?: boolean
+    published_at?: boolean
+    is_used?: boolean
+    fetched_at?: boolean
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rssFeedItem"]>
+
+  export type RssFeedItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    rss_feed_id?: boolean
+    guid?: boolean
+    title?: boolean
+    link?: boolean
+    summary?: boolean
+    content?: boolean
+    published_at?: boolean
+    is_used?: boolean
+    fetched_at?: boolean
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rssFeedItem"]>
+
+  export type RssFeedItemSelectScalar = {
+    id?: boolean
+    rss_feed_id?: boolean
+    guid?: boolean
+    title?: boolean
+    link?: boolean
+    summary?: boolean
+    content?: boolean
+    published_at?: boolean
+    is_used?: boolean
+    fetched_at?: boolean
+  }
+
+  export type RssFeedItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "rss_feed_id" | "guid" | "title" | "link" | "summary" | "content" | "published_at" | "is_used" | "fetched_at", ExtArgs["result"]["rssFeedItem"]>
+  export type RssFeedItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+    posts?: boolean | RssFeedItem$postsArgs<ExtArgs>
+    _count?: boolean | RssFeedItemCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RssFeedItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }
+  export type RssFeedItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rss_feed?: boolean | RssFeedDefaultArgs<ExtArgs>
+  }
+
+  export type $RssFeedItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RssFeedItem"
+    objects: {
+      rss_feed: Prisma.$RssFeedPayload<ExtArgs>
+      posts: Prisma.$PostPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      rss_feed_id: string
+      guid: string
+      title: string
+      link: string | null
+      summary: string | null
+      content: string | null
+      published_at: Date | null
+      is_used: boolean
+      fetched_at: Date
+    }, ExtArgs["result"]["rssFeedItem"]>
+    composites: {}
+  }
+
+  type RssFeedItemGetPayload<S extends boolean | null | undefined | RssFeedItemDefaultArgs> = $Result.GetResult<Prisma.$RssFeedItemPayload, S>
+
+  type RssFeedItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RssFeedItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RssFeedItemCountAggregateInputType | true
+    }
+
+  export interface RssFeedItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RssFeedItem'], meta: { name: 'RssFeedItem' } }
+    /**
+     * Find zero or one RssFeedItem that matches the filter.
+     * @param {RssFeedItemFindUniqueArgs} args - Arguments to find a RssFeedItem
+     * @example
+     * // Get one RssFeedItem
+     * const rssFeedItem = await prisma.rssFeedItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RssFeedItemFindUniqueArgs>(args: SelectSubset<T, RssFeedItemFindUniqueArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RssFeedItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RssFeedItemFindUniqueOrThrowArgs} args - Arguments to find a RssFeedItem
+     * @example
+     * // Get one RssFeedItem
+     * const rssFeedItem = await prisma.rssFeedItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RssFeedItemFindUniqueOrThrowArgs>(args: SelectSubset<T, RssFeedItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RssFeedItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedItemFindFirstArgs} args - Arguments to find a RssFeedItem
+     * @example
+     * // Get one RssFeedItem
+     * const rssFeedItem = await prisma.rssFeedItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RssFeedItemFindFirstArgs>(args?: SelectSubset<T, RssFeedItemFindFirstArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RssFeedItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedItemFindFirstOrThrowArgs} args - Arguments to find a RssFeedItem
+     * @example
+     * // Get one RssFeedItem
+     * const rssFeedItem = await prisma.rssFeedItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RssFeedItemFindFirstOrThrowArgs>(args?: SelectSubset<T, RssFeedItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RssFeedItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RssFeedItems
+     * const rssFeedItems = await prisma.rssFeedItem.findMany()
+     * 
+     * // Get first 10 RssFeedItems
+     * const rssFeedItems = await prisma.rssFeedItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const rssFeedItemWithIdOnly = await prisma.rssFeedItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RssFeedItemFindManyArgs>(args?: SelectSubset<T, RssFeedItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RssFeedItem.
+     * @param {RssFeedItemCreateArgs} args - Arguments to create a RssFeedItem.
+     * @example
+     * // Create one RssFeedItem
+     * const RssFeedItem = await prisma.rssFeedItem.create({
+     *   data: {
+     *     // ... data to create a RssFeedItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends RssFeedItemCreateArgs>(args: SelectSubset<T, RssFeedItemCreateArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RssFeedItems.
+     * @param {RssFeedItemCreateManyArgs} args - Arguments to create many RssFeedItems.
+     * @example
+     * // Create many RssFeedItems
+     * const rssFeedItem = await prisma.rssFeedItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RssFeedItemCreateManyArgs>(args?: SelectSubset<T, RssFeedItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RssFeedItems and returns the data saved in the database.
+     * @param {RssFeedItemCreateManyAndReturnArgs} args - Arguments to create many RssFeedItems.
+     * @example
+     * // Create many RssFeedItems
+     * const rssFeedItem = await prisma.rssFeedItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RssFeedItems and only return the `id`
+     * const rssFeedItemWithIdOnly = await prisma.rssFeedItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RssFeedItemCreateManyAndReturnArgs>(args?: SelectSubset<T, RssFeedItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RssFeedItem.
+     * @param {RssFeedItemDeleteArgs} args - Arguments to delete one RssFeedItem.
+     * @example
+     * // Delete one RssFeedItem
+     * const RssFeedItem = await prisma.rssFeedItem.delete({
+     *   where: {
+     *     // ... filter to delete one RssFeedItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RssFeedItemDeleteArgs>(args: SelectSubset<T, RssFeedItemDeleteArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RssFeedItem.
+     * @param {RssFeedItemUpdateArgs} args - Arguments to update one RssFeedItem.
+     * @example
+     * // Update one RssFeedItem
+     * const rssFeedItem = await prisma.rssFeedItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RssFeedItemUpdateArgs>(args: SelectSubset<T, RssFeedItemUpdateArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RssFeedItems.
+     * @param {RssFeedItemDeleteManyArgs} args - Arguments to filter RssFeedItems to delete.
+     * @example
+     * // Delete a few RssFeedItems
+     * const { count } = await prisma.rssFeedItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RssFeedItemDeleteManyArgs>(args?: SelectSubset<T, RssFeedItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RssFeedItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RssFeedItems
+     * const rssFeedItem = await prisma.rssFeedItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RssFeedItemUpdateManyArgs>(args: SelectSubset<T, RssFeedItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RssFeedItems and returns the data updated in the database.
+     * @param {RssFeedItemUpdateManyAndReturnArgs} args - Arguments to update many RssFeedItems.
+     * @example
+     * // Update many RssFeedItems
+     * const rssFeedItem = await prisma.rssFeedItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RssFeedItems and only return the `id`
+     * const rssFeedItemWithIdOnly = await prisma.rssFeedItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RssFeedItemUpdateManyAndReturnArgs>(args: SelectSubset<T, RssFeedItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RssFeedItem.
+     * @param {RssFeedItemUpsertArgs} args - Arguments to update or create a RssFeedItem.
+     * @example
+     * // Update or create a RssFeedItem
+     * const rssFeedItem = await prisma.rssFeedItem.upsert({
+     *   create: {
+     *     // ... data to create a RssFeedItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RssFeedItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RssFeedItemUpsertArgs>(args: SelectSubset<T, RssFeedItemUpsertArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RssFeedItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedItemCountArgs} args - Arguments to filter RssFeedItems to count.
+     * @example
+     * // Count the number of RssFeedItems
+     * const count = await prisma.rssFeedItem.count({
+     *   where: {
+     *     // ... the filter for the RssFeedItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends RssFeedItemCountArgs>(
+      args?: Subset<T, RssFeedItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RssFeedItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RssFeedItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RssFeedItemAggregateArgs>(args: Subset<T, RssFeedItemAggregateArgs>): Prisma.PrismaPromise<GetRssFeedItemAggregateType<T>>
+
+    /**
+     * Group by RssFeedItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RssFeedItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RssFeedItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RssFeedItemGroupByArgs['orderBy'] }
+        : { orderBy?: RssFeedItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RssFeedItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRssFeedItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RssFeedItem model
+   */
+  readonly fields: RssFeedItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RssFeedItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RssFeedItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    rss_feed<T extends RssFeedDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RssFeedDefaultArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    posts<T extends RssFeedItem$postsArgs<ExtArgs> = {}>(args?: Subset<T, RssFeedItem$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RssFeedItem model
+   */
+  interface RssFeedItemFieldRefs {
+    readonly id: FieldRef<"RssFeedItem", 'String'>
+    readonly rss_feed_id: FieldRef<"RssFeedItem", 'String'>
+    readonly guid: FieldRef<"RssFeedItem", 'String'>
+    readonly title: FieldRef<"RssFeedItem", 'String'>
+    readonly link: FieldRef<"RssFeedItem", 'String'>
+    readonly summary: FieldRef<"RssFeedItem", 'String'>
+    readonly content: FieldRef<"RssFeedItem", 'String'>
+    readonly published_at: FieldRef<"RssFeedItem", 'DateTime'>
+    readonly is_used: FieldRef<"RssFeedItem", 'Boolean'>
+    readonly fetched_at: FieldRef<"RssFeedItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RssFeedItem findUnique
+   */
+  export type RssFeedItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeedItem to fetch.
+     */
+    where: RssFeedItemWhereUniqueInput
+  }
+
+  /**
+   * RssFeedItem findUniqueOrThrow
+   */
+  export type RssFeedItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeedItem to fetch.
+     */
+    where: RssFeedItemWhereUniqueInput
+  }
+
+  /**
+   * RssFeedItem findFirst
+   */
+  export type RssFeedItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeedItem to fetch.
+     */
+    where?: RssFeedItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RssFeedItems to fetch.
+     */
+    orderBy?: RssFeedItemOrderByWithRelationInput | RssFeedItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RssFeedItems.
+     */
+    cursor?: RssFeedItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RssFeedItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RssFeedItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RssFeedItems.
+     */
+    distinct?: RssFeedItemScalarFieldEnum | RssFeedItemScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeedItem findFirstOrThrow
+   */
+  export type RssFeedItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeedItem to fetch.
+     */
+    where?: RssFeedItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RssFeedItems to fetch.
+     */
+    orderBy?: RssFeedItemOrderByWithRelationInput | RssFeedItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RssFeedItems.
+     */
+    cursor?: RssFeedItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RssFeedItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RssFeedItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RssFeedItems.
+     */
+    distinct?: RssFeedItemScalarFieldEnum | RssFeedItemScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeedItem findMany
+   */
+  export type RssFeedItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which RssFeedItems to fetch.
+     */
+    where?: RssFeedItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RssFeedItems to fetch.
+     */
+    orderBy?: RssFeedItemOrderByWithRelationInput | RssFeedItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RssFeedItems.
+     */
+    cursor?: RssFeedItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RssFeedItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RssFeedItems.
+     */
+    skip?: number
+    distinct?: RssFeedItemScalarFieldEnum | RssFeedItemScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeedItem create
+   */
+  export type RssFeedItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RssFeedItem.
+     */
+    data: XOR<RssFeedItemCreateInput, RssFeedItemUncheckedCreateInput>
+  }
+
+  /**
+   * RssFeedItem createMany
+   */
+  export type RssFeedItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RssFeedItems.
+     */
+    data: RssFeedItemCreateManyInput | RssFeedItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RssFeedItem createManyAndReturn
+   */
+  export type RssFeedItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many RssFeedItems.
+     */
+    data: RssFeedItemCreateManyInput | RssFeedItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RssFeedItem update
+   */
+  export type RssFeedItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RssFeedItem.
+     */
+    data: XOR<RssFeedItemUpdateInput, RssFeedItemUncheckedUpdateInput>
+    /**
+     * Choose, which RssFeedItem to update.
+     */
+    where: RssFeedItemWhereUniqueInput
+  }
+
+  /**
+   * RssFeedItem updateMany
+   */
+  export type RssFeedItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RssFeedItems.
+     */
+    data: XOR<RssFeedItemUpdateManyMutationInput, RssFeedItemUncheckedUpdateManyInput>
+    /**
+     * Filter which RssFeedItems to update
+     */
+    where?: RssFeedItemWhereInput
+    /**
+     * Limit how many RssFeedItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RssFeedItem updateManyAndReturn
+   */
+  export type RssFeedItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * The data used to update RssFeedItems.
+     */
+    data: XOR<RssFeedItemUpdateManyMutationInput, RssFeedItemUncheckedUpdateManyInput>
+    /**
+     * Filter which RssFeedItems to update
+     */
+    where?: RssFeedItemWhereInput
+    /**
+     * Limit how many RssFeedItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RssFeedItem upsert
+   */
+  export type RssFeedItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RssFeedItem to update in case it exists.
+     */
+    where: RssFeedItemWhereUniqueInput
+    /**
+     * In case the RssFeedItem found by the `where` argument doesn't exist, create a new RssFeedItem with this data.
+     */
+    create: XOR<RssFeedItemCreateInput, RssFeedItemUncheckedCreateInput>
+    /**
+     * In case the RssFeedItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RssFeedItemUpdateInput, RssFeedItemUncheckedUpdateInput>
+  }
+
+  /**
+   * RssFeedItem delete
+   */
+  export type RssFeedItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    /**
+     * Filter which RssFeedItem to delete.
+     */
+    where: RssFeedItemWhereUniqueInput
+  }
+
+  /**
+   * RssFeedItem deleteMany
+   */
+  export type RssFeedItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RssFeedItems to delete
+     */
+    where?: RssFeedItemWhereInput
+    /**
+     * Limit how many RssFeedItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RssFeedItem.posts
+   */
+  export type RssFeedItem$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    cursor?: PostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * RssFeedItem without action
+   */
+  export type RssFeedItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
   }
 
 
@@ -14483,17 +19560,20 @@ export namespace Prisma {
   export type AutomationAvgAggregateOutputType = {
     days_of_week: number | null
     posts_per_run: number | null
+    image_count: number | null
   }
 
   export type AutomationSumAggregateOutputType = {
     days_of_week: number[]
     posts_per_run: number | null
+    image_count: number | null
   }
 
   export type AutomationMinAggregateOutputType = {
     id: string | null
     project_id: string | null
     style_profile_id: string | null
+    rss_feed_id: string | null
     name: string | null
     is_active: boolean | null
     frequency: $Enums.AutomationFrequency | null
@@ -14501,6 +19581,8 @@ export namespace Prisma {
     timezone: string | null
     posts_per_run: number | null
     output_stage: $Enums.AutomationOutputStage | null
+    generate_images: boolean | null
+    image_count: number | null
     last_run_at: Date | null
     next_run_at: Date | null
     created_at: Date | null
@@ -14511,6 +19593,7 @@ export namespace Prisma {
     id: string | null
     project_id: string | null
     style_profile_id: string | null
+    rss_feed_id: string | null
     name: string | null
     is_active: boolean | null
     frequency: $Enums.AutomationFrequency | null
@@ -14518,6 +19601,8 @@ export namespace Prisma {
     timezone: string | null
     posts_per_run: number | null
     output_stage: $Enums.AutomationOutputStage | null
+    generate_images: boolean | null
+    image_count: number | null
     last_run_at: Date | null
     next_run_at: Date | null
     created_at: Date | null
@@ -14528,6 +19613,7 @@ export namespace Prisma {
     id: number
     project_id: number
     style_profile_id: number
+    rss_feed_id: number
     name: number
     is_active: number
     frequency: number
@@ -14536,6 +19622,8 @@ export namespace Prisma {
     timezone: number
     posts_per_run: number
     output_stage: number
+    generate_images: number
+    image_count: number
     last_run_at: number
     next_run_at: number
     created_at: number
@@ -14547,17 +19635,20 @@ export namespace Prisma {
   export type AutomationAvgAggregateInputType = {
     days_of_week?: true
     posts_per_run?: true
+    image_count?: true
   }
 
   export type AutomationSumAggregateInputType = {
     days_of_week?: true
     posts_per_run?: true
+    image_count?: true
   }
 
   export type AutomationMinAggregateInputType = {
     id?: true
     project_id?: true
     style_profile_id?: true
+    rss_feed_id?: true
     name?: true
     is_active?: true
     frequency?: true
@@ -14565,6 +19656,8 @@ export namespace Prisma {
     timezone?: true
     posts_per_run?: true
     output_stage?: true
+    generate_images?: true
+    image_count?: true
     last_run_at?: true
     next_run_at?: true
     created_at?: true
@@ -14575,6 +19668,7 @@ export namespace Prisma {
     id?: true
     project_id?: true
     style_profile_id?: true
+    rss_feed_id?: true
     name?: true
     is_active?: true
     frequency?: true
@@ -14582,6 +19676,8 @@ export namespace Prisma {
     timezone?: true
     posts_per_run?: true
     output_stage?: true
+    generate_images?: true
+    image_count?: true
     last_run_at?: true
     next_run_at?: true
     created_at?: true
@@ -14592,6 +19688,7 @@ export namespace Prisma {
     id?: true
     project_id?: true
     style_profile_id?: true
+    rss_feed_id?: true
     name?: true
     is_active?: true
     frequency?: true
@@ -14600,6 +19697,8 @@ export namespace Prisma {
     timezone?: true
     posts_per_run?: true
     output_stage?: true
+    generate_images?: true
+    image_count?: true
     last_run_at?: true
     next_run_at?: true
     created_at?: true
@@ -14697,6 +19796,7 @@ export namespace Prisma {
     id: string
     project_id: string
     style_profile_id: string | null
+    rss_feed_id: string | null
     name: string
     is_active: boolean
     frequency: $Enums.AutomationFrequency
@@ -14705,6 +19805,8 @@ export namespace Prisma {
     timezone: string
     posts_per_run: number
     output_stage: $Enums.AutomationOutputStage
+    generate_images: boolean
+    image_count: number
     last_run_at: Date | null
     next_run_at: Date | null
     created_at: Date
@@ -14734,6 +19836,7 @@ export namespace Prisma {
     id?: boolean
     project_id?: boolean
     style_profile_id?: boolean
+    rss_feed_id?: boolean
     name?: boolean
     is_active?: boolean
     frequency?: boolean
@@ -14742,12 +19845,15 @@ export namespace Prisma {
     timezone?: boolean
     posts_per_run?: boolean
     output_stage?: boolean
+    generate_images?: boolean
+    image_count?: boolean
     last_run_at?: boolean
     next_run_at?: boolean
     created_at?: boolean
     updated_at?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | Automation$style_profileArgs<ExtArgs>
+    rss_feed?: boolean | Automation$rss_feedArgs<ExtArgs>
     generation_runs?: boolean | Automation$generation_runsArgs<ExtArgs>
     _count?: boolean | AutomationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["automation"]>
@@ -14756,6 +19862,7 @@ export namespace Prisma {
     id?: boolean
     project_id?: boolean
     style_profile_id?: boolean
+    rss_feed_id?: boolean
     name?: boolean
     is_active?: boolean
     frequency?: boolean
@@ -14764,18 +19871,22 @@ export namespace Prisma {
     timezone?: boolean
     posts_per_run?: boolean
     output_stage?: boolean
+    generate_images?: boolean
+    image_count?: boolean
     last_run_at?: boolean
     next_run_at?: boolean
     created_at?: boolean
     updated_at?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | Automation$style_profileArgs<ExtArgs>
+    rss_feed?: boolean | Automation$rss_feedArgs<ExtArgs>
   }, ExtArgs["result"]["automation"]>
 
   export type AutomationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     project_id?: boolean
     style_profile_id?: boolean
+    rss_feed_id?: boolean
     name?: boolean
     is_active?: boolean
     frequency?: boolean
@@ -14784,18 +19895,22 @@ export namespace Prisma {
     timezone?: boolean
     posts_per_run?: boolean
     output_stage?: boolean
+    generate_images?: boolean
+    image_count?: boolean
     last_run_at?: boolean
     next_run_at?: boolean
     created_at?: boolean
     updated_at?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | Automation$style_profileArgs<ExtArgs>
+    rss_feed?: boolean | Automation$rss_feedArgs<ExtArgs>
   }, ExtArgs["result"]["automation"]>
 
   export type AutomationSelectScalar = {
     id?: boolean
     project_id?: boolean
     style_profile_id?: boolean
+    rss_feed_id?: boolean
     name?: boolean
     is_active?: boolean
     frequency?: boolean
@@ -14804,26 +19919,31 @@ export namespace Prisma {
     timezone?: boolean
     posts_per_run?: boolean
     output_stage?: boolean
+    generate_images?: boolean
+    image_count?: boolean
     last_run_at?: boolean
     next_run_at?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type AutomationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "project_id" | "style_profile_id" | "name" | "is_active" | "frequency" | "days_of_week" | "time_of_day" | "timezone" | "posts_per_run" | "output_stage" | "last_run_at" | "next_run_at" | "created_at" | "updated_at", ExtArgs["result"]["automation"]>
+  export type AutomationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "project_id" | "style_profile_id" | "rss_feed_id" | "name" | "is_active" | "frequency" | "days_of_week" | "time_of_day" | "timezone" | "posts_per_run" | "output_stage" | "generate_images" | "image_count" | "last_run_at" | "next_run_at" | "created_at" | "updated_at", ExtArgs["result"]["automation"]>
   export type AutomationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | Automation$style_profileArgs<ExtArgs>
+    rss_feed?: boolean | Automation$rss_feedArgs<ExtArgs>
     generation_runs?: boolean | Automation$generation_runsArgs<ExtArgs>
     _count?: boolean | AutomationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AutomationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | Automation$style_profileArgs<ExtArgs>
+    rss_feed?: boolean | Automation$rss_feedArgs<ExtArgs>
   }
   export type AutomationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | Automation$style_profileArgs<ExtArgs>
+    rss_feed?: boolean | Automation$rss_feedArgs<ExtArgs>
   }
 
   export type $AutomationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14831,12 +19951,14 @@ export namespace Prisma {
     objects: {
       project: Prisma.$ProjectPayload<ExtArgs>
       style_profile: Prisma.$StyleProfilePayload<ExtArgs> | null
+      rss_feed: Prisma.$RssFeedPayload<ExtArgs> | null
       generation_runs: Prisma.$GenerationRunPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       project_id: string
       style_profile_id: string | null
+      rss_feed_id: string | null
       name: string
       is_active: boolean
       frequency: $Enums.AutomationFrequency
@@ -14845,6 +19967,8 @@ export namespace Prisma {
       timezone: string
       posts_per_run: number
       output_stage: $Enums.AutomationOutputStage
+      generate_images: boolean
+      image_count: number
       last_run_at: Date | null
       next_run_at: Date | null
       created_at: Date
@@ -15245,6 +20369,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     style_profile<T extends Automation$style_profileArgs<ExtArgs> = {}>(args?: Subset<T, Automation$style_profileArgs<ExtArgs>>): Prisma__StyleProfileClient<$Result.GetResult<Prisma.$StyleProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    rss_feed<T extends Automation$rss_feedArgs<ExtArgs> = {}>(args?: Subset<T, Automation$rss_feedArgs<ExtArgs>>): Prisma__RssFeedClient<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     generation_runs<T extends Automation$generation_runsArgs<ExtArgs> = {}>(args?: Subset<T, Automation$generation_runsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -15278,6 +20403,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Automation", 'String'>
     readonly project_id: FieldRef<"Automation", 'String'>
     readonly style_profile_id: FieldRef<"Automation", 'String'>
+    readonly rss_feed_id: FieldRef<"Automation", 'String'>
     readonly name: FieldRef<"Automation", 'String'>
     readonly is_active: FieldRef<"Automation", 'Boolean'>
     readonly frequency: FieldRef<"Automation", 'AutomationFrequency'>
@@ -15286,6 +20412,8 @@ export namespace Prisma {
     readonly timezone: FieldRef<"Automation", 'String'>
     readonly posts_per_run: FieldRef<"Automation", 'Int'>
     readonly output_stage: FieldRef<"Automation", 'AutomationOutputStage'>
+    readonly generate_images: FieldRef<"Automation", 'Boolean'>
+    readonly image_count: FieldRef<"Automation", 'Int'>
     readonly last_run_at: FieldRef<"Automation", 'DateTime'>
     readonly next_run_at: FieldRef<"Automation", 'DateTime'>
     readonly created_at: FieldRef<"Automation", 'DateTime'>
@@ -15705,6 +20833,25 @@ export namespace Prisma {
   }
 
   /**
+   * Automation.rss_feed
+   */
+  export type Automation$rss_feedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeed
+     */
+    select?: RssFeedSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeed
+     */
+    omit?: RssFeedOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedInclude<ExtArgs> | null
+    where?: RssFeedWhereInput
+  }
+
+  /**
    * Automation.generation_runs
    */
   export type Automation$generation_runsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15765,6 +20912,7 @@ export namespace Prisma {
     style_profile_id: string | null
     generation_run_id: string | null
     source_post_id: string | null
+    rss_feed_item_id: string | null
     type: $Enums.PostType | null
     status: $Enums.PostStatus | null
     hook: string | null
@@ -15790,6 +20938,7 @@ export namespace Prisma {
     style_profile_id: string | null
     generation_run_id: string | null
     source_post_id: string | null
+    rss_feed_item_id: string | null
     type: $Enums.PostType | null
     status: $Enums.PostStatus | null
     hook: string | null
@@ -15815,6 +20964,7 @@ export namespace Prisma {
     style_profile_id: number
     generation_run_id: number
     source_post_id: number
+    rss_feed_item_id: number
     type: number
     status: number
     hook: number
@@ -15843,6 +20993,7 @@ export namespace Prisma {
     style_profile_id?: true
     generation_run_id?: true
     source_post_id?: true
+    rss_feed_item_id?: true
     type?: true
     status?: true
     hook?: true
@@ -15868,6 +21019,7 @@ export namespace Prisma {
     style_profile_id?: true
     generation_run_id?: true
     source_post_id?: true
+    rss_feed_item_id?: true
     type?: true
     status?: true
     hook?: true
@@ -15893,6 +21045,7 @@ export namespace Prisma {
     style_profile_id?: true
     generation_run_id?: true
     source_post_id?: true
+    rss_feed_item_id?: true
     type?: true
     status?: true
     hook?: true
@@ -15992,6 +21145,7 @@ export namespace Prisma {
     style_profile_id: string | null
     generation_run_id: string | null
     source_post_id: string | null
+    rss_feed_item_id: string | null
     type: $Enums.PostType
     status: $Enums.PostStatus
     hook: string | null
@@ -16035,6 +21189,7 @@ export namespace Prisma {
     style_profile_id?: boolean
     generation_run_id?: boolean
     source_post_id?: boolean
+    rss_feed_item_id?: boolean
     type?: boolean
     status?: boolean
     hook?: boolean
@@ -16057,6 +21212,7 @@ export namespace Prisma {
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
+    rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     source_post?: boolean | Post$source_postArgs<ExtArgs>
     repurposed_posts?: boolean | Post$repurposed_postsArgs<ExtArgs>
     attachments?: boolean | Post$attachmentsArgs<ExtArgs>
@@ -16072,6 +21228,7 @@ export namespace Prisma {
     style_profile_id?: boolean
     generation_run_id?: boolean
     source_post_id?: boolean
+    rss_feed_item_id?: boolean
     type?: boolean
     status?: boolean
     hook?: boolean
@@ -16094,6 +21251,7 @@ export namespace Prisma {
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
+    rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     source_post?: boolean | Post$source_postArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
@@ -16105,6 +21263,7 @@ export namespace Prisma {
     style_profile_id?: boolean
     generation_run_id?: boolean
     source_post_id?: boolean
+    rss_feed_item_id?: boolean
     type?: boolean
     status?: boolean
     hook?: boolean
@@ -16127,6 +21286,7 @@ export namespace Prisma {
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
+    rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     source_post?: boolean | Post$source_postArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
@@ -16138,6 +21298,7 @@ export namespace Prisma {
     style_profile_id?: boolean
     generation_run_id?: boolean
     source_post_id?: boolean
+    rss_feed_item_id?: boolean
     type?: boolean
     status?: boolean
     hook?: boolean
@@ -16156,7 +21317,7 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "organisation_id" | "project_id" | "style_profile_id" | "generation_run_id" | "source_post_id" | "type" | "status" | "hook" | "body" | "metadata" | "title" | "excerpt" | "cover_document_id" | "seo_title" | "seo_description" | "canonical_url" | "scheduled_at" | "published_at" | "failed_reason" | "created_at" | "updated_at", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "organisation_id" | "project_id" | "style_profile_id" | "generation_run_id" | "source_post_id" | "rss_feed_item_id" | "type" | "status" | "hook" | "body" | "metadata" | "title" | "excerpt" | "cover_document_id" | "seo_title" | "seo_description" | "canonical_url" | "scheduled_at" | "published_at" | "failed_reason" | "created_at" | "updated_at", ExtArgs["result"]["post"]>
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
@@ -16164,6 +21325,7 @@ export namespace Prisma {
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
+    rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     source_post?: boolean | Post$source_postArgs<ExtArgs>
     repurposed_posts?: boolean | Post$repurposed_postsArgs<ExtArgs>
     attachments?: boolean | Post$attachmentsArgs<ExtArgs>
@@ -16177,6 +21339,7 @@ export namespace Prisma {
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
+    rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     source_post?: boolean | Post$source_postArgs<ExtArgs>
   }
   export type PostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16186,6 +21349,7 @@ export namespace Prisma {
     style_profile?: boolean | Post$style_profileArgs<ExtArgs>
     generation_run?: boolean | Post$generation_runArgs<ExtArgs>
     cover_document?: boolean | Post$cover_documentArgs<ExtArgs>
+    rss_feed_item?: boolean | Post$rss_feed_itemArgs<ExtArgs>
     source_post?: boolean | Post$source_postArgs<ExtArgs>
   }
 
@@ -16198,6 +21362,7 @@ export namespace Prisma {
       style_profile: Prisma.$StyleProfilePayload<ExtArgs> | null
       generation_run: Prisma.$GenerationRunPayload<ExtArgs> | null
       cover_document: Prisma.$DocumentPayload<ExtArgs> | null
+      rss_feed_item: Prisma.$RssFeedItemPayload<ExtArgs> | null
       source_post: Prisma.$PostPayload<ExtArgs> | null
       repurposed_posts: Prisma.$PostPayload<ExtArgs>[]
       attachments: Prisma.$PostAttachmentPayload<ExtArgs>[]
@@ -16211,6 +21376,7 @@ export namespace Prisma {
       style_profile_id: string | null
       generation_run_id: string | null
       source_post_id: string | null
+      rss_feed_item_id: string | null
       type: $Enums.PostType
       status: $Enums.PostStatus
       hook: string | null
@@ -16627,6 +21793,7 @@ export namespace Prisma {
     style_profile<T extends Post$style_profileArgs<ExtArgs> = {}>(args?: Subset<T, Post$style_profileArgs<ExtArgs>>): Prisma__StyleProfileClient<$Result.GetResult<Prisma.$StyleProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     generation_run<T extends Post$generation_runArgs<ExtArgs> = {}>(args?: Subset<T, Post$generation_runArgs<ExtArgs>>): Prisma__GenerationRunClient<$Result.GetResult<Prisma.$GenerationRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     cover_document<T extends Post$cover_documentArgs<ExtArgs> = {}>(args?: Subset<T, Post$cover_documentArgs<ExtArgs>>): Prisma__DocumentClient<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    rss_feed_item<T extends Post$rss_feed_itemArgs<ExtArgs> = {}>(args?: Subset<T, Post$rss_feed_itemArgs<ExtArgs>>): Prisma__RssFeedItemClient<$Result.GetResult<Prisma.$RssFeedItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     source_post<T extends Post$source_postArgs<ExtArgs> = {}>(args?: Subset<T, Post$source_postArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     repurposed_posts<T extends Post$repurposed_postsArgs<ExtArgs> = {}>(args?: Subset<T, Post$repurposed_postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attachments<T extends Post$attachmentsArgs<ExtArgs> = {}>(args?: Subset<T, Post$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -16667,6 +21834,7 @@ export namespace Prisma {
     readonly style_profile_id: FieldRef<"Post", 'String'>
     readonly generation_run_id: FieldRef<"Post", 'String'>
     readonly source_post_id: FieldRef<"Post", 'String'>
+    readonly rss_feed_item_id: FieldRef<"Post", 'String'>
     readonly type: FieldRef<"Post", 'PostType'>
     readonly status: FieldRef<"Post", 'PostStatus'>
     readonly hook: FieldRef<"Post", 'String'>
@@ -17152,6 +22320,25 @@ export namespace Prisma {
      */
     include?: DocumentInclude<ExtArgs> | null
     where?: DocumentWhereInput
+  }
+
+  /**
+   * Post.rss_feed_item
+   */
+  export type Post$rss_feed_itemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RssFeedItem
+     */
+    select?: RssFeedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RssFeedItem
+     */
+    omit?: RssFeedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RssFeedItemInclude<ExtArgs> | null
+    where?: RssFeedItemWhereInput
   }
 
   /**
@@ -19567,11 +24754,25 @@ export namespace Prisma {
     organisation_id: 'organisation_id',
     user_id: 'user_id',
     role: 'role',
+    status: 'status',
     created_at: 'created_at',
     updated_at: 'updated_at'
   };
 
   export type OrganisationMemberScalarFieldEnum = (typeof OrganisationMemberScalarFieldEnum)[keyof typeof OrganisationMemberScalarFieldEnum]
+
+
+  export const OrganisationInviteTokenScalarFieldEnum: {
+    id: 'id',
+    token_hash: 'token_hash',
+    organisation_member_id: 'organisation_member_id',
+    invited_by_user_id: 'invited_by_user_id',
+    expires_at: 'expires_at',
+    used_at: 'used_at',
+    created_at: 'created_at'
+  };
+
+  export type OrganisationInviteTokenScalarFieldEnum = (typeof OrganisationInviteTokenScalarFieldEnum)[keyof typeof OrganisationInviteTokenScalarFieldEnum]
 
 
   export const SocialChannelConnectionScalarFieldEnum: {
@@ -19632,6 +24833,46 @@ export namespace Prisma {
   export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
 
 
+  export const RssFeedScalarFieldEnum: {
+    id: 'id',
+    organisation_id: 'organisation_id',
+    name: 'name',
+    url: 'url',
+    last_fetched_at: 'last_fetched_at',
+    last_fetch_error: 'last_fetch_error',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type RssFeedScalarFieldEnum = (typeof RssFeedScalarFieldEnum)[keyof typeof RssFeedScalarFieldEnum]
+
+
+  export const ProjectRssFeedScalarFieldEnum: {
+    id: 'id',
+    project_id: 'project_id',
+    rss_feed_id: 'rss_feed_id',
+    created_at: 'created_at'
+  };
+
+  export type ProjectRssFeedScalarFieldEnum = (typeof ProjectRssFeedScalarFieldEnum)[keyof typeof ProjectRssFeedScalarFieldEnum]
+
+
+  export const RssFeedItemScalarFieldEnum: {
+    id: 'id',
+    rss_feed_id: 'rss_feed_id',
+    guid: 'guid',
+    title: 'title',
+    link: 'link',
+    summary: 'summary',
+    content: 'content',
+    published_at: 'published_at',
+    is_used: 'is_used',
+    fetched_at: 'fetched_at'
+  };
+
+  export type RssFeedItemScalarFieldEnum = (typeof RssFeedItemScalarFieldEnum)[keyof typeof RssFeedItemScalarFieldEnum]
+
+
   export const ProjectStyleProfileScalarFieldEnum: {
     id: 'id',
     project_id: 'project_id',
@@ -19660,6 +24901,7 @@ export namespace Prisma {
     id: 'id',
     project_id: 'project_id',
     style_profile_id: 'style_profile_id',
+    rss_feed_id: 'rss_feed_id',
     name: 'name',
     is_active: 'is_active',
     frequency: 'frequency',
@@ -19668,6 +24910,8 @@ export namespace Prisma {
     timezone: 'timezone',
     posts_per_run: 'posts_per_run',
     output_stage: 'output_stage',
+    generate_images: 'generate_images',
+    image_count: 'image_count',
     last_run_at: 'last_run_at',
     next_run_at: 'next_run_at',
     created_at: 'created_at',
@@ -19685,6 +24929,7 @@ export namespace Prisma {
     style_profile_id: 'style_profile_id',
     generation_run_id: 'generation_run_id',
     source_post_id: 'source_post_id',
+    rss_feed_item_id: 'rss_feed_item_id',
     type: 'type',
     status: 'status',
     hook: 'hook',
@@ -19860,6 +25105,20 @@ export namespace Prisma {
    * Reference to a field of type 'OrganisationRole[]'
    */
   export type ListEnumOrganisationRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrganisationRole[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'OrganisationMemberStatus'
+   */
+  export type EnumOrganisationMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrganisationMemberStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'OrganisationMemberStatus[]'
+   */
+  export type ListEnumOrganisationMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrganisationMemberStatus[]'>
     
 
 
@@ -20238,6 +25497,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionListRelationFilter
     style_profiles?: StyleProfileListRelationFilter
     projects?: ProjectListRelationFilter
+    rss_feeds?: RssFeedListRelationFilter
   }
 
   export type OrganisationOrderByWithRelationInput = {
@@ -20254,6 +25514,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionOrderByRelationAggregateInput
     style_profiles?: StyleProfileOrderByRelationAggregateInput
     projects?: ProjectOrderByRelationAggregateInput
+    rss_feeds?: RssFeedOrderByRelationAggregateInput
   }
 
   export type OrganisationWhereUniqueInput = Prisma.AtLeast<{
@@ -20273,6 +25534,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionListRelationFilter
     style_profiles?: StyleProfileListRelationFilter
     projects?: ProjectListRelationFilter
+    rss_feeds?: RssFeedListRelationFilter
   }, "id" | "slug">
 
   export type OrganisationOrderByWithAggregationInput = {
@@ -20307,10 +25569,12 @@ export namespace Prisma {
     organisation_id?: StringFilter<"OrganisationMember"> | string
     user_id?: StringFilter<"OrganisationMember"> | string
     role?: EnumOrganisationRoleFilter<"OrganisationMember"> | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFilter<"OrganisationMember"> | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFilter<"OrganisationMember"> | Date | string
     updated_at?: DateTimeFilter<"OrganisationMember"> | Date | string
     organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    invite_tokens?: OrganisationInviteTokenListRelationFilter
   }
 
   export type OrganisationMemberOrderByWithRelationInput = {
@@ -20318,10 +25582,12 @@ export namespace Prisma {
     organisation_id?: SortOrder
     user_id?: SortOrder
     role?: SortOrder
+    status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     organisation?: OrganisationOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
+    invite_tokens?: OrganisationInviteTokenOrderByRelationAggregateInput
   }
 
   export type OrganisationMemberWhereUniqueInput = Prisma.AtLeast<{
@@ -20333,10 +25599,12 @@ export namespace Prisma {
     organisation_id?: StringFilter<"OrganisationMember"> | string
     user_id?: StringFilter<"OrganisationMember"> | string
     role?: EnumOrganisationRoleFilter<"OrganisationMember"> | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFilter<"OrganisationMember"> | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFilter<"OrganisationMember"> | Date | string
     updated_at?: DateTimeFilter<"OrganisationMember"> | Date | string
     organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    invite_tokens?: OrganisationInviteTokenListRelationFilter
   }, "id" | "organisation_id_user_id">
 
   export type OrganisationMemberOrderByWithAggregationInput = {
@@ -20344,6 +25612,7 @@ export namespace Prisma {
     organisation_id?: SortOrder
     user_id?: SortOrder
     role?: SortOrder
+    status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     _count?: OrganisationMemberCountOrderByAggregateInput
@@ -20359,8 +25628,74 @@ export namespace Prisma {
     organisation_id?: StringWithAggregatesFilter<"OrganisationMember"> | string
     user_id?: StringWithAggregatesFilter<"OrganisationMember"> | string
     role?: EnumOrganisationRoleWithAggregatesFilter<"OrganisationMember"> | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusWithAggregatesFilter<"OrganisationMember"> | $Enums.OrganisationMemberStatus
     created_at?: DateTimeWithAggregatesFilter<"OrganisationMember"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"OrganisationMember"> | Date | string
+  }
+
+  export type OrganisationInviteTokenWhereInput = {
+    AND?: OrganisationInviteTokenWhereInput | OrganisationInviteTokenWhereInput[]
+    OR?: OrganisationInviteTokenWhereInput[]
+    NOT?: OrganisationInviteTokenWhereInput | OrganisationInviteTokenWhereInput[]
+    id?: StringFilter<"OrganisationInviteToken"> | string
+    token_hash?: StringFilter<"OrganisationInviteToken"> | string
+    organisation_member_id?: StringFilter<"OrganisationInviteToken"> | string
+    invited_by_user_id?: StringFilter<"OrganisationInviteToken"> | string
+    expires_at?: DateTimeFilter<"OrganisationInviteToken"> | Date | string
+    used_at?: DateTimeNullableFilter<"OrganisationInviteToken"> | Date | string | null
+    created_at?: DateTimeFilter<"OrganisationInviteToken"> | Date | string
+    organisation_member?: XOR<OrganisationMemberScalarRelationFilter, OrganisationMemberWhereInput>
+  }
+
+  export type OrganisationInviteTokenOrderByWithRelationInput = {
+    id?: SortOrder
+    token_hash?: SortOrder
+    organisation_member_id?: SortOrder
+    invited_by_user_id?: SortOrder
+    expires_at?: SortOrder
+    used_at?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    organisation_member?: OrganisationMemberOrderByWithRelationInput
+  }
+
+  export type OrganisationInviteTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token_hash?: string
+    AND?: OrganisationInviteTokenWhereInput | OrganisationInviteTokenWhereInput[]
+    OR?: OrganisationInviteTokenWhereInput[]
+    NOT?: OrganisationInviteTokenWhereInput | OrganisationInviteTokenWhereInput[]
+    organisation_member_id?: StringFilter<"OrganisationInviteToken"> | string
+    invited_by_user_id?: StringFilter<"OrganisationInviteToken"> | string
+    expires_at?: DateTimeFilter<"OrganisationInviteToken"> | Date | string
+    used_at?: DateTimeNullableFilter<"OrganisationInviteToken"> | Date | string | null
+    created_at?: DateTimeFilter<"OrganisationInviteToken"> | Date | string
+    organisation_member?: XOR<OrganisationMemberScalarRelationFilter, OrganisationMemberWhereInput>
+  }, "id" | "token_hash">
+
+  export type OrganisationInviteTokenOrderByWithAggregationInput = {
+    id?: SortOrder
+    token_hash?: SortOrder
+    organisation_member_id?: SortOrder
+    invited_by_user_id?: SortOrder
+    expires_at?: SortOrder
+    used_at?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    _count?: OrganisationInviteTokenCountOrderByAggregateInput
+    _max?: OrganisationInviteTokenMaxOrderByAggregateInput
+    _min?: OrganisationInviteTokenMinOrderByAggregateInput
+  }
+
+  export type OrganisationInviteTokenScalarWhereWithAggregatesInput = {
+    AND?: OrganisationInviteTokenScalarWhereWithAggregatesInput | OrganisationInviteTokenScalarWhereWithAggregatesInput[]
+    OR?: OrganisationInviteTokenScalarWhereWithAggregatesInput[]
+    NOT?: OrganisationInviteTokenScalarWhereWithAggregatesInput | OrganisationInviteTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"OrganisationInviteToken"> | string
+    token_hash?: StringWithAggregatesFilter<"OrganisationInviteToken"> | string
+    organisation_member_id?: StringWithAggregatesFilter<"OrganisationInviteToken"> | string
+    invited_by_user_id?: StringWithAggregatesFilter<"OrganisationInviteToken"> | string
+    expires_at?: DateTimeWithAggregatesFilter<"OrganisationInviteToken"> | Date | string
+    used_at?: DateTimeNullableWithAggregatesFilter<"OrganisationInviteToken"> | Date | string | null
+    created_at?: DateTimeWithAggregatesFilter<"OrganisationInviteToken"> | Date | string
   }
 
   export type SocialChannelConnectionWhereInput = {
@@ -20603,6 +25938,7 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"Project"> | Date | string
     organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     style_profiles?: ProjectStyleProfileListRelationFilter
+    rss_feeds?: ProjectRssFeedListRelationFilter
     posts?: PostListRelationFilter
     generation_runs?: GenerationRunListRelationFilter
     automations?: AutomationListRelationFilter
@@ -20622,6 +25958,7 @@ export namespace Prisma {
     updated_at?: SortOrder
     organisation?: OrganisationOrderByWithRelationInput
     style_profiles?: ProjectStyleProfileOrderByRelationAggregateInput
+    rss_feeds?: ProjectRssFeedOrderByRelationAggregateInput
     posts?: PostOrderByRelationAggregateInput
     generation_runs?: GenerationRunOrderByRelationAggregateInput
     automations?: AutomationOrderByRelationAggregateInput
@@ -20644,6 +25981,7 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"Project"> | Date | string
     organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
     style_profiles?: ProjectStyleProfileListRelationFilter
+    rss_feeds?: ProjectRssFeedListRelationFilter
     posts?: PostListRelationFilter
     generation_runs?: GenerationRunListRelationFilter
     automations?: AutomationListRelationFilter
@@ -20681,6 +26019,223 @@ export namespace Prisma {
     is_archived?: BoolWithAggregatesFilter<"Project"> | boolean
     created_at?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Project"> | Date | string
+  }
+
+  export type RssFeedWhereInput = {
+    AND?: RssFeedWhereInput | RssFeedWhereInput[]
+    OR?: RssFeedWhereInput[]
+    NOT?: RssFeedWhereInput | RssFeedWhereInput[]
+    id?: StringFilter<"RssFeed"> | string
+    organisation_id?: StringFilter<"RssFeed"> | string
+    name?: StringFilter<"RssFeed"> | string
+    url?: StringFilter<"RssFeed"> | string
+    last_fetched_at?: DateTimeNullableFilter<"RssFeed"> | Date | string | null
+    last_fetch_error?: StringNullableFilter<"RssFeed"> | string | null
+    created_at?: DateTimeFilter<"RssFeed"> | Date | string
+    updated_at?: DateTimeFilter<"RssFeed"> | Date | string
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
+    projects?: ProjectRssFeedListRelationFilter
+    items?: RssFeedItemListRelationFilter
+    automations?: AutomationListRelationFilter
+  }
+
+  export type RssFeedOrderByWithRelationInput = {
+    id?: SortOrder
+    organisation_id?: SortOrder
+    name?: SortOrder
+    url?: SortOrder
+    last_fetched_at?: SortOrderInput | SortOrder
+    last_fetch_error?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    organisation?: OrganisationOrderByWithRelationInput
+    projects?: ProjectRssFeedOrderByRelationAggregateInput
+    items?: RssFeedItemOrderByRelationAggregateInput
+    automations?: AutomationOrderByRelationAggregateInput
+  }
+
+  export type RssFeedWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RssFeedWhereInput | RssFeedWhereInput[]
+    OR?: RssFeedWhereInput[]
+    NOT?: RssFeedWhereInput | RssFeedWhereInput[]
+    organisation_id?: StringFilter<"RssFeed"> | string
+    name?: StringFilter<"RssFeed"> | string
+    url?: StringFilter<"RssFeed"> | string
+    last_fetched_at?: DateTimeNullableFilter<"RssFeed"> | Date | string | null
+    last_fetch_error?: StringNullableFilter<"RssFeed"> | string | null
+    created_at?: DateTimeFilter<"RssFeed"> | Date | string
+    updated_at?: DateTimeFilter<"RssFeed"> | Date | string
+    organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
+    projects?: ProjectRssFeedListRelationFilter
+    items?: RssFeedItemListRelationFilter
+    automations?: AutomationListRelationFilter
+  }, "id">
+
+  export type RssFeedOrderByWithAggregationInput = {
+    id?: SortOrder
+    organisation_id?: SortOrder
+    name?: SortOrder
+    url?: SortOrder
+    last_fetched_at?: SortOrderInput | SortOrder
+    last_fetch_error?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    _count?: RssFeedCountOrderByAggregateInput
+    _max?: RssFeedMaxOrderByAggregateInput
+    _min?: RssFeedMinOrderByAggregateInput
+  }
+
+  export type RssFeedScalarWhereWithAggregatesInput = {
+    AND?: RssFeedScalarWhereWithAggregatesInput | RssFeedScalarWhereWithAggregatesInput[]
+    OR?: RssFeedScalarWhereWithAggregatesInput[]
+    NOT?: RssFeedScalarWhereWithAggregatesInput | RssFeedScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RssFeed"> | string
+    organisation_id?: StringWithAggregatesFilter<"RssFeed"> | string
+    name?: StringWithAggregatesFilter<"RssFeed"> | string
+    url?: StringWithAggregatesFilter<"RssFeed"> | string
+    last_fetched_at?: DateTimeNullableWithAggregatesFilter<"RssFeed"> | Date | string | null
+    last_fetch_error?: StringNullableWithAggregatesFilter<"RssFeed"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"RssFeed"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"RssFeed"> | Date | string
+  }
+
+  export type ProjectRssFeedWhereInput = {
+    AND?: ProjectRssFeedWhereInput | ProjectRssFeedWhereInput[]
+    OR?: ProjectRssFeedWhereInput[]
+    NOT?: ProjectRssFeedWhereInput | ProjectRssFeedWhereInput[]
+    id?: StringFilter<"ProjectRssFeed"> | string
+    project_id?: StringFilter<"ProjectRssFeed"> | string
+    rss_feed_id?: StringFilter<"ProjectRssFeed"> | string
+    created_at?: DateTimeFilter<"ProjectRssFeed"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    rss_feed?: XOR<RssFeedScalarRelationFilter, RssFeedWhereInput>
+  }
+
+  export type ProjectRssFeedOrderByWithRelationInput = {
+    id?: SortOrder
+    project_id?: SortOrder
+    rss_feed_id?: SortOrder
+    created_at?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+    rss_feed?: RssFeedOrderByWithRelationInput
+  }
+
+  export type ProjectRssFeedWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    project_id_rss_feed_id?: ProjectRssFeedProject_idRss_feed_idCompoundUniqueInput
+    AND?: ProjectRssFeedWhereInput | ProjectRssFeedWhereInput[]
+    OR?: ProjectRssFeedWhereInput[]
+    NOT?: ProjectRssFeedWhereInput | ProjectRssFeedWhereInput[]
+    project_id?: StringFilter<"ProjectRssFeed"> | string
+    rss_feed_id?: StringFilter<"ProjectRssFeed"> | string
+    created_at?: DateTimeFilter<"ProjectRssFeed"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    rss_feed?: XOR<RssFeedScalarRelationFilter, RssFeedWhereInput>
+  }, "id" | "project_id_rss_feed_id">
+
+  export type ProjectRssFeedOrderByWithAggregationInput = {
+    id?: SortOrder
+    project_id?: SortOrder
+    rss_feed_id?: SortOrder
+    created_at?: SortOrder
+    _count?: ProjectRssFeedCountOrderByAggregateInput
+    _max?: ProjectRssFeedMaxOrderByAggregateInput
+    _min?: ProjectRssFeedMinOrderByAggregateInput
+  }
+
+  export type ProjectRssFeedScalarWhereWithAggregatesInput = {
+    AND?: ProjectRssFeedScalarWhereWithAggregatesInput | ProjectRssFeedScalarWhereWithAggregatesInput[]
+    OR?: ProjectRssFeedScalarWhereWithAggregatesInput[]
+    NOT?: ProjectRssFeedScalarWhereWithAggregatesInput | ProjectRssFeedScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ProjectRssFeed"> | string
+    project_id?: StringWithAggregatesFilter<"ProjectRssFeed"> | string
+    rss_feed_id?: StringWithAggregatesFilter<"ProjectRssFeed"> | string
+    created_at?: DateTimeWithAggregatesFilter<"ProjectRssFeed"> | Date | string
+  }
+
+  export type RssFeedItemWhereInput = {
+    AND?: RssFeedItemWhereInput | RssFeedItemWhereInput[]
+    OR?: RssFeedItemWhereInput[]
+    NOT?: RssFeedItemWhereInput | RssFeedItemWhereInput[]
+    id?: StringFilter<"RssFeedItem"> | string
+    rss_feed_id?: StringFilter<"RssFeedItem"> | string
+    guid?: StringFilter<"RssFeedItem"> | string
+    title?: StringFilter<"RssFeedItem"> | string
+    link?: StringNullableFilter<"RssFeedItem"> | string | null
+    summary?: StringNullableFilter<"RssFeedItem"> | string | null
+    content?: StringNullableFilter<"RssFeedItem"> | string | null
+    published_at?: DateTimeNullableFilter<"RssFeedItem"> | Date | string | null
+    is_used?: BoolFilter<"RssFeedItem"> | boolean
+    fetched_at?: DateTimeFilter<"RssFeedItem"> | Date | string
+    rss_feed?: XOR<RssFeedScalarRelationFilter, RssFeedWhereInput>
+    posts?: PostListRelationFilter
+  }
+
+  export type RssFeedItemOrderByWithRelationInput = {
+    id?: SortOrder
+    rss_feed_id?: SortOrder
+    guid?: SortOrder
+    title?: SortOrder
+    link?: SortOrderInput | SortOrder
+    summary?: SortOrderInput | SortOrder
+    content?: SortOrderInput | SortOrder
+    published_at?: SortOrderInput | SortOrder
+    is_used?: SortOrder
+    fetched_at?: SortOrder
+    rss_feed?: RssFeedOrderByWithRelationInput
+    posts?: PostOrderByRelationAggregateInput
+  }
+
+  export type RssFeedItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    rss_feed_id_guid?: RssFeedItemRss_feed_idGuidCompoundUniqueInput
+    AND?: RssFeedItemWhereInput | RssFeedItemWhereInput[]
+    OR?: RssFeedItemWhereInput[]
+    NOT?: RssFeedItemWhereInput | RssFeedItemWhereInput[]
+    rss_feed_id?: StringFilter<"RssFeedItem"> | string
+    guid?: StringFilter<"RssFeedItem"> | string
+    title?: StringFilter<"RssFeedItem"> | string
+    link?: StringNullableFilter<"RssFeedItem"> | string | null
+    summary?: StringNullableFilter<"RssFeedItem"> | string | null
+    content?: StringNullableFilter<"RssFeedItem"> | string | null
+    published_at?: DateTimeNullableFilter<"RssFeedItem"> | Date | string | null
+    is_used?: BoolFilter<"RssFeedItem"> | boolean
+    fetched_at?: DateTimeFilter<"RssFeedItem"> | Date | string
+    rss_feed?: XOR<RssFeedScalarRelationFilter, RssFeedWhereInput>
+    posts?: PostListRelationFilter
+  }, "id" | "rss_feed_id_guid">
+
+  export type RssFeedItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    rss_feed_id?: SortOrder
+    guid?: SortOrder
+    title?: SortOrder
+    link?: SortOrderInput | SortOrder
+    summary?: SortOrderInput | SortOrder
+    content?: SortOrderInput | SortOrder
+    published_at?: SortOrderInput | SortOrder
+    is_used?: SortOrder
+    fetched_at?: SortOrder
+    _count?: RssFeedItemCountOrderByAggregateInput
+    _max?: RssFeedItemMaxOrderByAggregateInput
+    _min?: RssFeedItemMinOrderByAggregateInput
+  }
+
+  export type RssFeedItemScalarWhereWithAggregatesInput = {
+    AND?: RssFeedItemScalarWhereWithAggregatesInput | RssFeedItemScalarWhereWithAggregatesInput[]
+    OR?: RssFeedItemScalarWhereWithAggregatesInput[]
+    NOT?: RssFeedItemScalarWhereWithAggregatesInput | RssFeedItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RssFeedItem"> | string
+    rss_feed_id?: StringWithAggregatesFilter<"RssFeedItem"> | string
+    guid?: StringWithAggregatesFilter<"RssFeedItem"> | string
+    title?: StringWithAggregatesFilter<"RssFeedItem"> | string
+    link?: StringNullableWithAggregatesFilter<"RssFeedItem"> | string | null
+    summary?: StringNullableWithAggregatesFilter<"RssFeedItem"> | string | null
+    content?: StringNullableWithAggregatesFilter<"RssFeedItem"> | string | null
+    published_at?: DateTimeNullableWithAggregatesFilter<"RssFeedItem"> | Date | string | null
+    is_used?: BoolWithAggregatesFilter<"RssFeedItem"> | boolean
+    fetched_at?: DateTimeWithAggregatesFilter<"RssFeedItem"> | Date | string
   }
 
   export type ProjectStyleProfileWhereInput = {
@@ -20825,6 +26380,7 @@ export namespace Prisma {
     id?: StringFilter<"Automation"> | string
     project_id?: StringFilter<"Automation"> | string
     style_profile_id?: StringNullableFilter<"Automation"> | string | null
+    rss_feed_id?: StringNullableFilter<"Automation"> | string | null
     name?: StringFilter<"Automation"> | string
     is_active?: BoolFilter<"Automation"> | boolean
     frequency?: EnumAutomationFrequencyFilter<"Automation"> | $Enums.AutomationFrequency
@@ -20833,12 +26389,15 @@ export namespace Prisma {
     timezone?: StringFilter<"Automation"> | string
     posts_per_run?: IntFilter<"Automation"> | number
     output_stage?: EnumAutomationOutputStageFilter<"Automation"> | $Enums.AutomationOutputStage
+    generate_images?: BoolFilter<"Automation"> | boolean
+    image_count?: IntFilter<"Automation"> | number
     last_run_at?: DateTimeNullableFilter<"Automation"> | Date | string | null
     next_run_at?: DateTimeNullableFilter<"Automation"> | Date | string | null
     created_at?: DateTimeFilter<"Automation"> | Date | string
     updated_at?: DateTimeFilter<"Automation"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
+    rss_feed?: XOR<RssFeedNullableScalarRelationFilter, RssFeedWhereInput> | null
     generation_runs?: GenerationRunListRelationFilter
   }
 
@@ -20846,6 +26405,7 @@ export namespace Prisma {
     id?: SortOrder
     project_id?: SortOrder
     style_profile_id?: SortOrderInput | SortOrder
+    rss_feed_id?: SortOrderInput | SortOrder
     name?: SortOrder
     is_active?: SortOrder
     frequency?: SortOrder
@@ -20854,12 +26414,15 @@ export namespace Prisma {
     timezone?: SortOrder
     posts_per_run?: SortOrder
     output_stage?: SortOrder
+    generate_images?: SortOrder
+    image_count?: SortOrder
     last_run_at?: SortOrderInput | SortOrder
     next_run_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     project?: ProjectOrderByWithRelationInput
     style_profile?: StyleProfileOrderByWithRelationInput
+    rss_feed?: RssFeedOrderByWithRelationInput
     generation_runs?: GenerationRunOrderByRelationAggregateInput
   }
 
@@ -20870,6 +26433,7 @@ export namespace Prisma {
     NOT?: AutomationWhereInput | AutomationWhereInput[]
     project_id?: StringFilter<"Automation"> | string
     style_profile_id?: StringNullableFilter<"Automation"> | string | null
+    rss_feed_id?: StringNullableFilter<"Automation"> | string | null
     name?: StringFilter<"Automation"> | string
     is_active?: BoolFilter<"Automation"> | boolean
     frequency?: EnumAutomationFrequencyFilter<"Automation"> | $Enums.AutomationFrequency
@@ -20878,12 +26442,15 @@ export namespace Prisma {
     timezone?: StringFilter<"Automation"> | string
     posts_per_run?: IntFilter<"Automation"> | number
     output_stage?: EnumAutomationOutputStageFilter<"Automation"> | $Enums.AutomationOutputStage
+    generate_images?: BoolFilter<"Automation"> | boolean
+    image_count?: IntFilter<"Automation"> | number
     last_run_at?: DateTimeNullableFilter<"Automation"> | Date | string | null
     next_run_at?: DateTimeNullableFilter<"Automation"> | Date | string | null
     created_at?: DateTimeFilter<"Automation"> | Date | string
     updated_at?: DateTimeFilter<"Automation"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
+    rss_feed?: XOR<RssFeedNullableScalarRelationFilter, RssFeedWhereInput> | null
     generation_runs?: GenerationRunListRelationFilter
   }, "id">
 
@@ -20891,6 +26458,7 @@ export namespace Prisma {
     id?: SortOrder
     project_id?: SortOrder
     style_profile_id?: SortOrderInput | SortOrder
+    rss_feed_id?: SortOrderInput | SortOrder
     name?: SortOrder
     is_active?: SortOrder
     frequency?: SortOrder
@@ -20899,6 +26467,8 @@ export namespace Prisma {
     timezone?: SortOrder
     posts_per_run?: SortOrder
     output_stage?: SortOrder
+    generate_images?: SortOrder
+    image_count?: SortOrder
     last_run_at?: SortOrderInput | SortOrder
     next_run_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
@@ -20917,6 +26487,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Automation"> | string
     project_id?: StringWithAggregatesFilter<"Automation"> | string
     style_profile_id?: StringNullableWithAggregatesFilter<"Automation"> | string | null
+    rss_feed_id?: StringNullableWithAggregatesFilter<"Automation"> | string | null
     name?: StringWithAggregatesFilter<"Automation"> | string
     is_active?: BoolWithAggregatesFilter<"Automation"> | boolean
     frequency?: EnumAutomationFrequencyWithAggregatesFilter<"Automation"> | $Enums.AutomationFrequency
@@ -20925,6 +26496,8 @@ export namespace Prisma {
     timezone?: StringWithAggregatesFilter<"Automation"> | string
     posts_per_run?: IntWithAggregatesFilter<"Automation"> | number
     output_stage?: EnumAutomationOutputStageWithAggregatesFilter<"Automation"> | $Enums.AutomationOutputStage
+    generate_images?: BoolWithAggregatesFilter<"Automation"> | boolean
+    image_count?: IntWithAggregatesFilter<"Automation"> | number
     last_run_at?: DateTimeNullableWithAggregatesFilter<"Automation"> | Date | string | null
     next_run_at?: DateTimeNullableWithAggregatesFilter<"Automation"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"Automation"> | Date | string
@@ -20942,6 +26515,7 @@ export namespace Prisma {
     style_profile_id?: StringNullableFilter<"Post"> | string | null
     generation_run_id?: StringNullableFilter<"Post"> | string | null
     source_post_id?: StringNullableFilter<"Post"> | string | null
+    rss_feed_item_id?: StringNullableFilter<"Post"> | string | null
     type?: EnumPostTypeFilter<"Post"> | $Enums.PostType
     status?: EnumPostStatusFilter<"Post"> | $Enums.PostStatus
     hook?: StringNullableFilter<"Post"> | string | null
@@ -20964,6 +26538,7 @@ export namespace Prisma {
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
     generation_run?: XOR<GenerationRunNullableScalarRelationFilter, GenerationRunWhereInput> | null
     cover_document?: XOR<DocumentNullableScalarRelationFilter, DocumentWhereInput> | null
+    rss_feed_item?: XOR<RssFeedItemNullableScalarRelationFilter, RssFeedItemWhereInput> | null
     source_post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
     repurposed_posts?: PostListRelationFilter
     attachments?: PostAttachmentListRelationFilter
@@ -20978,6 +26553,7 @@ export namespace Prisma {
     style_profile_id?: SortOrderInput | SortOrder
     generation_run_id?: SortOrderInput | SortOrder
     source_post_id?: SortOrderInput | SortOrder
+    rss_feed_item_id?: SortOrderInput | SortOrder
     type?: SortOrder
     status?: SortOrder
     hook?: SortOrderInput | SortOrder
@@ -21000,6 +26576,7 @@ export namespace Prisma {
     style_profile?: StyleProfileOrderByWithRelationInput
     generation_run?: GenerationRunOrderByWithRelationInput
     cover_document?: DocumentOrderByWithRelationInput
+    rss_feed_item?: RssFeedItemOrderByWithRelationInput
     source_post?: PostOrderByWithRelationInput
     repurposed_posts?: PostOrderByRelationAggregateInput
     attachments?: PostAttachmentOrderByRelationAggregateInput
@@ -21017,6 +26594,7 @@ export namespace Prisma {
     style_profile_id?: StringNullableFilter<"Post"> | string | null
     generation_run_id?: StringNullableFilter<"Post"> | string | null
     source_post_id?: StringNullableFilter<"Post"> | string | null
+    rss_feed_item_id?: StringNullableFilter<"Post"> | string | null
     type?: EnumPostTypeFilter<"Post"> | $Enums.PostType
     status?: EnumPostStatusFilter<"Post"> | $Enums.PostStatus
     hook?: StringNullableFilter<"Post"> | string | null
@@ -21039,6 +26617,7 @@ export namespace Prisma {
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
     generation_run?: XOR<GenerationRunNullableScalarRelationFilter, GenerationRunWhereInput> | null
     cover_document?: XOR<DocumentNullableScalarRelationFilter, DocumentWhereInput> | null
+    rss_feed_item?: XOR<RssFeedItemNullableScalarRelationFilter, RssFeedItemWhereInput> | null
     source_post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
     repurposed_posts?: PostListRelationFilter
     attachments?: PostAttachmentListRelationFilter
@@ -21053,6 +26632,7 @@ export namespace Prisma {
     style_profile_id?: SortOrderInput | SortOrder
     generation_run_id?: SortOrderInput | SortOrder
     source_post_id?: SortOrderInput | SortOrder
+    rss_feed_item_id?: SortOrderInput | SortOrder
     type?: SortOrder
     status?: SortOrder
     hook?: SortOrderInput | SortOrder
@@ -21085,6 +26665,7 @@ export namespace Prisma {
     style_profile_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     generation_run_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     source_post_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    rss_feed_item_id?: StringNullableWithAggregatesFilter<"Post"> | string | null
     type?: EnumPostTypeWithAggregatesFilter<"Post"> | $Enums.PostType
     status?: EnumPostStatusWithAggregatesFilter<"Post"> | $Enums.PostStatus
     hook?: StringNullableWithAggregatesFilter<"Post"> | string | null
@@ -21507,6 +27088,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateInput = {
@@ -21522,6 +27104,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUpdateInput = {
@@ -21537,6 +27120,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateInput = {
@@ -21552,6 +27136,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationCreateManyInput = {
@@ -21583,10 +27168,12 @@ export namespace Prisma {
   export type OrganisationMemberCreateInput = {
     id?: string
     role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
     created_at?: Date | string
     updated_at?: Date | string
     organisation: OrganisationCreateNestedOneWithoutMembersInput
     user: UserCreateNestedOneWithoutOrganisation_membershipsInput
+    invite_tokens?: OrganisationInviteTokenCreateNestedManyWithoutOrganisation_memberInput
   }
 
   export type OrganisationMemberUncheckedCreateInput = {
@@ -21594,17 +27181,21 @@ export namespace Prisma {
     organisation_id: string
     user_id: string
     role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
     created_at?: Date | string
     updated_at?: Date | string
+    invite_tokens?: OrganisationInviteTokenUncheckedCreateNestedManyWithoutOrganisation_memberInput
   }
 
   export type OrganisationMemberUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     organisation?: OrganisationUpdateOneRequiredWithoutMembersNestedInput
     user?: UserUpdateOneRequiredWithoutOrganisation_membershipsNestedInput
+    invite_tokens?: OrganisationInviteTokenUpdateManyWithoutOrganisation_memberNestedInput
   }
 
   export type OrganisationMemberUncheckedUpdateInput = {
@@ -21612,8 +27203,10 @@ export namespace Prisma {
     organisation_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    invite_tokens?: OrganisationInviteTokenUncheckedUpdateManyWithoutOrganisation_memberNestedInput
   }
 
   export type OrganisationMemberCreateManyInput = {
@@ -21621,6 +27214,7 @@ export namespace Prisma {
     organisation_id: string
     user_id: string
     role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -21628,6 +27222,7 @@ export namespace Prisma {
   export type OrganisationMemberUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21637,8 +27232,78 @@ export namespace Prisma {
     organisation_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganisationInviteTokenCreateInput = {
+    id?: string
+    token_hash: string
+    invited_by_user_id: string
+    expires_at: Date | string
+    used_at?: Date | string | null
+    created_at?: Date | string
+    organisation_member: OrganisationMemberCreateNestedOneWithoutInvite_tokensInput
+  }
+
+  export type OrganisationInviteTokenUncheckedCreateInput = {
+    id?: string
+    token_hash: string
+    organisation_member_id: string
+    invited_by_user_id: string
+    expires_at: Date | string
+    used_at?: Date | string | null
+    created_at?: Date | string
+  }
+
+  export type OrganisationInviteTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token_hash?: StringFieldUpdateOperationsInput | string
+    invited_by_user_id?: StringFieldUpdateOperationsInput | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation_member?: OrganisationMemberUpdateOneRequiredWithoutInvite_tokensNestedInput
+  }
+
+  export type OrganisationInviteTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token_hash?: StringFieldUpdateOperationsInput | string
+    organisation_member_id?: StringFieldUpdateOperationsInput | string
+    invited_by_user_id?: StringFieldUpdateOperationsInput | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganisationInviteTokenCreateManyInput = {
+    id?: string
+    token_hash: string
+    organisation_member_id: string
+    invited_by_user_id: string
+    expires_at: Date | string
+    used_at?: Date | string | null
+    created_at?: Date | string
+  }
+
+  export type OrganisationInviteTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token_hash?: StringFieldUpdateOperationsInput | string
+    invited_by_user_id?: StringFieldUpdateOperationsInput | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganisationInviteTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token_hash?: StringFieldUpdateOperationsInput | string
+    organisation_member_id?: StringFieldUpdateOperationsInput | string
+    invited_by_user_id?: StringFieldUpdateOperationsInput | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SocialChannelConnectionCreateInput = {
@@ -21917,6 +27582,7 @@ export namespace Prisma {
     updated_at?: Date | string
     organisation: OrganisationCreateNestedOneWithoutProjectsInput
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedCreateNestedManyWithoutProjectInput
     posts?: PostCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
     automations?: AutomationCreateNestedManyWithoutProjectInput
@@ -21935,6 +27601,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     style_profiles?: ProjectStyleProfileUncheckedCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedUncheckedCreateNestedManyWithoutProjectInput
     posts?: PostUncheckedCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunUncheckedCreateNestedManyWithoutProjectInput
     automations?: AutomationUncheckedCreateNestedManyWithoutProjectInput
@@ -21953,6 +27620,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUpdateManyWithoutProjectNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
     automations?: AutomationUpdateManyWithoutProjectNestedInput
@@ -21971,6 +27639,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     style_profiles?: ProjectStyleProfileUncheckedUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUncheckedUpdateManyWithoutProjectNestedInput
     posts?: PostUncheckedUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUncheckedUpdateManyWithoutProjectNestedInput
     automations?: AutomationUncheckedUpdateManyWithoutProjectNestedInput
@@ -22015,6 +27684,235 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RssFeedCreateInput = {
+    id?: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    organisation: OrganisationCreateNestedOneWithoutRss_feedsInput
+    projects?: ProjectRssFeedCreateNestedManyWithoutRss_feedInput
+    items?: RssFeedItemCreateNestedManyWithoutRss_feedInput
+    automations?: AutomationCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedUncheckedCreateInput = {
+    id?: string
+    organisation_id: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    projects?: ProjectRssFeedUncheckedCreateNestedManyWithoutRss_feedInput
+    items?: RssFeedItemUncheckedCreateNestedManyWithoutRss_feedInput
+    automations?: AutomationUncheckedCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneRequiredWithoutRss_feedsNestedInput
+    projects?: ProjectRssFeedUpdateManyWithoutRss_feedNestedInput
+    items?: RssFeedItemUpdateManyWithoutRss_feedNestedInput
+    automations?: AutomationUpdateManyWithoutRss_feedNestedInput
+  }
+
+  export type RssFeedUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    projects?: ProjectRssFeedUncheckedUpdateManyWithoutRss_feedNestedInput
+    items?: RssFeedItemUncheckedUpdateManyWithoutRss_feedNestedInput
+    automations?: AutomationUncheckedUpdateManyWithoutRss_feedNestedInput
+  }
+
+  export type RssFeedCreateManyInput = {
+    id?: string
+    organisation_id: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type RssFeedUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RssFeedUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectRssFeedCreateInput = {
+    id?: string
+    created_at?: Date | string
+    project: ProjectCreateNestedOneWithoutRss_feedsInput
+    rss_feed: RssFeedCreateNestedOneWithoutProjectsInput
+  }
+
+  export type ProjectRssFeedUncheckedCreateInput = {
+    id?: string
+    project_id: string
+    rss_feed_id: string
+    created_at?: Date | string
+  }
+
+  export type ProjectRssFeedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutRss_feedsNestedInput
+    rss_feed?: RssFeedUpdateOneRequiredWithoutProjectsNestedInput
+  }
+
+  export type ProjectRssFeedUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
+    rss_feed_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectRssFeedCreateManyInput = {
+    id?: string
+    project_id: string
+    rss_feed_id: string
+    created_at?: Date | string
+  }
+
+  export type ProjectRssFeedUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectRssFeedUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
+    rss_feed_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RssFeedItemCreateInput = {
+    id?: string
+    guid: string
+    title: string
+    link?: string | null
+    summary?: string | null
+    content?: string | null
+    published_at?: Date | string | null
+    is_used?: boolean
+    fetched_at?: Date | string
+    rss_feed: RssFeedCreateNestedOneWithoutItemsInput
+    posts?: PostCreateNestedManyWithoutRss_feed_itemInput
+  }
+
+  export type RssFeedItemUncheckedCreateInput = {
+    id?: string
+    rss_feed_id: string
+    guid: string
+    title: string
+    link?: string | null
+    summary?: string | null
+    content?: string | null
+    published_at?: Date | string | null
+    is_used?: boolean
+    fetched_at?: Date | string
+    posts?: PostUncheckedCreateNestedManyWithoutRss_feed_itemInput
+  }
+
+  export type RssFeedItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    guid?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_used?: BoolFieldUpdateOperationsInput | boolean
+    fetched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    rss_feed?: RssFeedUpdateOneRequiredWithoutItemsNestedInput
+    posts?: PostUpdateManyWithoutRss_feed_itemNestedInput
+  }
+
+  export type RssFeedItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rss_feed_id?: StringFieldUpdateOperationsInput | string
+    guid?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_used?: BoolFieldUpdateOperationsInput | boolean
+    fetched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUncheckedUpdateManyWithoutRss_feed_itemNestedInput
+  }
+
+  export type RssFeedItemCreateManyInput = {
+    id?: string
+    rss_feed_id: string
+    guid: string
+    title: string
+    link?: string | null
+    summary?: string | null
+    content?: string | null
+    published_at?: Date | string | null
+    is_used?: boolean
+    fetched_at?: Date | string
+  }
+
+  export type RssFeedItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    guid?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_used?: BoolFieldUpdateOperationsInput | boolean
+    fetched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RssFeedItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rss_feed_id?: StringFieldUpdateOperationsInput | string
+    guid?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_used?: BoolFieldUpdateOperationsInput | boolean
+    fetched_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProjectStyleProfileCreateInput = {
@@ -22152,12 +28050,15 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     project: ProjectCreateNestedOneWithoutAutomationsInput
     style_profile?: StyleProfileCreateNestedOneWithoutAutomationsInput
+    rss_feed?: RssFeedCreateNestedOneWithoutAutomationsInput
     generation_runs?: GenerationRunCreateNestedManyWithoutAutomationInput
   }
 
@@ -22165,6 +28066,7 @@ export namespace Prisma {
     id?: string
     project_id: string
     style_profile_id?: string | null
+    rss_feed_id?: string | null
     name: string
     is_active?: boolean
     frequency?: $Enums.AutomationFrequency
@@ -22173,6 +28075,8 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
@@ -22190,12 +28094,15 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutAutomationsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutAutomationsNestedInput
+    rss_feed?: RssFeedUpdateOneWithoutAutomationsNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutAutomationNestedInput
   }
 
@@ -22203,6 +28110,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     project_id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     is_active?: BoolFieldUpdateOperationsInput | boolean
     frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
@@ -22211,6 +28119,8 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22222,6 +28132,7 @@ export namespace Prisma {
     id?: string
     project_id: string
     style_profile_id?: string | null
+    rss_feed_id?: string | null
     name: string
     is_active?: boolean
     frequency?: $Enums.AutomationFrequency
@@ -22230,6 +28141,8 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
@@ -22246,6 +28159,8 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22256,6 +28171,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     project_id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     is_active?: BoolFieldUpdateOperationsInput | boolean
     frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
@@ -22264,6 +28180,8 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22293,6 +28211,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
@@ -22307,6 +28226,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -22351,6 +28271,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
@@ -22365,6 +28286,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22394,6 +28316,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -22439,6 +28362,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22970,6 +28894,12 @@ export namespace Prisma {
     none?: ProjectWhereInput
   }
 
+  export type RssFeedListRelationFilter = {
+    every?: RssFeedWhereInput
+    some?: RssFeedWhereInput
+    none?: RssFeedWhereInput
+  }
+
   export type DocumentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -22983,6 +28913,10 @@ export namespace Prisma {
   }
 
   export type ProjectOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RssFeedOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23020,6 +28954,23 @@ export namespace Prisma {
     not?: NestedEnumOrganisationRoleFilter<$PrismaModel> | $Enums.OrganisationRole
   }
 
+  export type EnumOrganisationMemberStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrganisationMemberStatus | EnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrganisationMemberStatus[] | ListEnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrganisationMemberStatus[] | ListEnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrganisationMemberStatusFilter<$PrismaModel> | $Enums.OrganisationMemberStatus
+  }
+
+  export type OrganisationInviteTokenListRelationFilter = {
+    every?: OrganisationInviteTokenWhereInput
+    some?: OrganisationInviteTokenWhereInput
+    none?: OrganisationInviteTokenWhereInput
+  }
+
+  export type OrganisationInviteTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type OrganisationMemberOrganisation_idUser_idCompoundUniqueInput = {
     organisation_id: string
     user_id: string
@@ -23030,6 +28981,7 @@ export namespace Prisma {
     organisation_id?: SortOrder
     user_id?: SortOrder
     role?: SortOrder
+    status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -23039,6 +28991,7 @@ export namespace Prisma {
     organisation_id?: SortOrder
     user_id?: SortOrder
     role?: SortOrder
+    status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -23048,6 +29001,7 @@ export namespace Prisma {
     organisation_id?: SortOrder
     user_id?: SortOrder
     role?: SortOrder
+    status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -23060,6 +29014,51 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumOrganisationRoleFilter<$PrismaModel>
     _max?: NestedEnumOrganisationRoleFilter<$PrismaModel>
+  }
+
+  export type EnumOrganisationMemberStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrganisationMemberStatus | EnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrganisationMemberStatus[] | ListEnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrganisationMemberStatus[] | ListEnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrganisationMemberStatusWithAggregatesFilter<$PrismaModel> | $Enums.OrganisationMemberStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOrganisationMemberStatusFilter<$PrismaModel>
+    _max?: NestedEnumOrganisationMemberStatusFilter<$PrismaModel>
+  }
+
+  export type OrganisationMemberScalarRelationFilter = {
+    is?: OrganisationMemberWhereInput
+    isNot?: OrganisationMemberWhereInput
+  }
+
+  export type OrganisationInviteTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    token_hash?: SortOrder
+    organisation_member_id?: SortOrder
+    invited_by_user_id?: SortOrder
+    expires_at?: SortOrder
+    used_at?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type OrganisationInviteTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    token_hash?: SortOrder
+    organisation_member_id?: SortOrder
+    invited_by_user_id?: SortOrder
+    expires_at?: SortOrder
+    used_at?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type OrganisationInviteTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    token_hash?: SortOrder
+    organisation_member_id?: SortOrder
+    invited_by_user_id?: SortOrder
+    expires_at?: SortOrder
+    used_at?: SortOrder
+    created_at?: SortOrder
   }
 
   export type EnumSocialChannelFilter<$PrismaModel = never> = {
@@ -23317,6 +29316,16 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type ProjectRssFeedListRelationFilter = {
+    every?: ProjectRssFeedWhereInput
+    some?: ProjectRssFeedWhereInput
+    none?: ProjectRssFeedWhereInput
+  }
+
+  export type ProjectRssFeedOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ProjectCountOrderByAggregateInput = {
     id?: SortOrder
     organisation_id?: SortOrder
@@ -23361,9 +29370,127 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type RssFeedItemListRelationFilter = {
+    every?: RssFeedItemWhereInput
+    some?: RssFeedItemWhereInput
+    none?: RssFeedItemWhereInput
+  }
+
+  export type RssFeedItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RssFeedCountOrderByAggregateInput = {
+    id?: SortOrder
+    organisation_id?: SortOrder
+    name?: SortOrder
+    url?: SortOrder
+    last_fetched_at?: SortOrder
+    last_fetch_error?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type RssFeedMaxOrderByAggregateInput = {
+    id?: SortOrder
+    organisation_id?: SortOrder
+    name?: SortOrder
+    url?: SortOrder
+    last_fetched_at?: SortOrder
+    last_fetch_error?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type RssFeedMinOrderByAggregateInput = {
+    id?: SortOrder
+    organisation_id?: SortOrder
+    name?: SortOrder
+    url?: SortOrder
+    last_fetched_at?: SortOrder
+    last_fetch_error?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
   export type ProjectScalarRelationFilter = {
     is?: ProjectWhereInput
     isNot?: ProjectWhereInput
+  }
+
+  export type RssFeedScalarRelationFilter = {
+    is?: RssFeedWhereInput
+    isNot?: RssFeedWhereInput
+  }
+
+  export type ProjectRssFeedProject_idRss_feed_idCompoundUniqueInput = {
+    project_id: string
+    rss_feed_id: string
+  }
+
+  export type ProjectRssFeedCountOrderByAggregateInput = {
+    id?: SortOrder
+    project_id?: SortOrder
+    rss_feed_id?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type ProjectRssFeedMaxOrderByAggregateInput = {
+    id?: SortOrder
+    project_id?: SortOrder
+    rss_feed_id?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type ProjectRssFeedMinOrderByAggregateInput = {
+    id?: SortOrder
+    project_id?: SortOrder
+    rss_feed_id?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type RssFeedItemRss_feed_idGuidCompoundUniqueInput = {
+    rss_feed_id: string
+    guid: string
+  }
+
+  export type RssFeedItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    rss_feed_id?: SortOrder
+    guid?: SortOrder
+    title?: SortOrder
+    link?: SortOrder
+    summary?: SortOrder
+    content?: SortOrder
+    published_at?: SortOrder
+    is_used?: SortOrder
+    fetched_at?: SortOrder
+  }
+
+  export type RssFeedItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    rss_feed_id?: SortOrder
+    guid?: SortOrder
+    title?: SortOrder
+    link?: SortOrder
+    summary?: SortOrder
+    content?: SortOrder
+    published_at?: SortOrder
+    is_used?: SortOrder
+    fetched_at?: SortOrder
+  }
+
+  export type RssFeedItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    rss_feed_id?: SortOrder
+    guid?: SortOrder
+    title?: SortOrder
+    link?: SortOrder
+    summary?: SortOrder
+    content?: SortOrder
+    published_at?: SortOrder
+    is_used?: SortOrder
+    fetched_at?: SortOrder
   }
 
   export type StyleProfileScalarRelationFilter = {
@@ -23470,10 +29597,16 @@ export namespace Prisma {
     not?: NestedEnumAutomationOutputStageFilter<$PrismaModel> | $Enums.AutomationOutputStage
   }
 
+  export type RssFeedNullableScalarRelationFilter = {
+    is?: RssFeedWhereInput | null
+    isNot?: RssFeedWhereInput | null
+  }
+
   export type AutomationCountOrderByAggregateInput = {
     id?: SortOrder
     project_id?: SortOrder
     style_profile_id?: SortOrder
+    rss_feed_id?: SortOrder
     name?: SortOrder
     is_active?: SortOrder
     frequency?: SortOrder
@@ -23482,6 +29615,8 @@ export namespace Prisma {
     timezone?: SortOrder
     posts_per_run?: SortOrder
     output_stage?: SortOrder
+    generate_images?: SortOrder
+    image_count?: SortOrder
     last_run_at?: SortOrder
     next_run_at?: SortOrder
     created_at?: SortOrder
@@ -23491,12 +29626,14 @@ export namespace Prisma {
   export type AutomationAvgOrderByAggregateInput = {
     days_of_week?: SortOrder
     posts_per_run?: SortOrder
+    image_count?: SortOrder
   }
 
   export type AutomationMaxOrderByAggregateInput = {
     id?: SortOrder
     project_id?: SortOrder
     style_profile_id?: SortOrder
+    rss_feed_id?: SortOrder
     name?: SortOrder
     is_active?: SortOrder
     frequency?: SortOrder
@@ -23504,6 +29641,8 @@ export namespace Prisma {
     timezone?: SortOrder
     posts_per_run?: SortOrder
     output_stage?: SortOrder
+    generate_images?: SortOrder
+    image_count?: SortOrder
     last_run_at?: SortOrder
     next_run_at?: SortOrder
     created_at?: SortOrder
@@ -23514,6 +29653,7 @@ export namespace Prisma {
     id?: SortOrder
     project_id?: SortOrder
     style_profile_id?: SortOrder
+    rss_feed_id?: SortOrder
     name?: SortOrder
     is_active?: SortOrder
     frequency?: SortOrder
@@ -23521,6 +29661,8 @@ export namespace Prisma {
     timezone?: SortOrder
     posts_per_run?: SortOrder
     output_stage?: SortOrder
+    generate_images?: SortOrder
+    image_count?: SortOrder
     last_run_at?: SortOrder
     next_run_at?: SortOrder
     created_at?: SortOrder
@@ -23530,6 +29672,7 @@ export namespace Prisma {
   export type AutomationSumOrderByAggregateInput = {
     days_of_week?: SortOrder
     posts_per_run?: SortOrder
+    image_count?: SortOrder
   }
 
   export type EnumAutomationFrequencyWithAggregatesFilter<$PrismaModel = never> = {
@@ -23597,6 +29740,11 @@ export namespace Prisma {
     isNot?: DocumentWhereInput | null
   }
 
+  export type RssFeedItemNullableScalarRelationFilter = {
+    is?: RssFeedItemWhereInput | null
+    isNot?: RssFeedItemWhereInput | null
+  }
+
   export type PostNullableScalarRelationFilter = {
     is?: PostWhereInput | null
     isNot?: PostWhereInput | null
@@ -23610,6 +29758,7 @@ export namespace Prisma {
     style_profile_id?: SortOrder
     generation_run_id?: SortOrder
     source_post_id?: SortOrder
+    rss_feed_item_id?: SortOrder
     type?: SortOrder
     status?: SortOrder
     hook?: SortOrder
@@ -23636,6 +29785,7 @@ export namespace Prisma {
     style_profile_id?: SortOrder
     generation_run_id?: SortOrder
     source_post_id?: SortOrder
+    rss_feed_item_id?: SortOrder
     type?: SortOrder
     status?: SortOrder
     hook?: SortOrder
@@ -23661,6 +29811,7 @@ export namespace Prisma {
     style_profile_id?: SortOrder
     generation_run_id?: SortOrder
     source_post_id?: SortOrder
+    rss_feed_item_id?: SortOrder
     type?: SortOrder
     status?: SortOrder
     hook?: SortOrder
@@ -24187,6 +30338,13 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
+  export type RssFeedCreateNestedManyWithoutOrganisationInput = {
+    create?: XOR<RssFeedCreateWithoutOrganisationInput, RssFeedUncheckedCreateWithoutOrganisationInput> | RssFeedCreateWithoutOrganisationInput[] | RssFeedUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: RssFeedCreateOrConnectWithoutOrganisationInput | RssFeedCreateOrConnectWithoutOrganisationInput[]
+    createMany?: RssFeedCreateManyOrganisationInputEnvelope
+    connect?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
+  }
+
   export type OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput = {
     create?: XOR<OrganisationMemberCreateWithoutOrganisationInput, OrganisationMemberUncheckedCreateWithoutOrganisationInput> | OrganisationMemberCreateWithoutOrganisationInput[] | OrganisationMemberUncheckedCreateWithoutOrganisationInput[]
     connectOrCreate?: OrganisationMemberCreateOrConnectWithoutOrganisationInput | OrganisationMemberCreateOrConnectWithoutOrganisationInput[]
@@ -24227,6 +30385,13 @@ export namespace Prisma {
     connectOrCreate?: ProjectCreateOrConnectWithoutOrganisationInput | ProjectCreateOrConnectWithoutOrganisationInput[]
     createMany?: ProjectCreateManyOrganisationInputEnvelope
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+  }
+
+  export type RssFeedUncheckedCreateNestedManyWithoutOrganisationInput = {
+    create?: XOR<RssFeedCreateWithoutOrganisationInput, RssFeedUncheckedCreateWithoutOrganisationInput> | RssFeedCreateWithoutOrganisationInput[] | RssFeedUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: RssFeedCreateOrConnectWithoutOrganisationInput | RssFeedCreateOrConnectWithoutOrganisationInput[]
+    createMany?: RssFeedCreateManyOrganisationInputEnvelope
+    connect?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutOrganisations_createdNestedInput = {
@@ -24321,6 +30486,20 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
+  export type RssFeedUpdateManyWithoutOrganisationNestedInput = {
+    create?: XOR<RssFeedCreateWithoutOrganisationInput, RssFeedUncheckedCreateWithoutOrganisationInput> | RssFeedCreateWithoutOrganisationInput[] | RssFeedUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: RssFeedCreateOrConnectWithoutOrganisationInput | RssFeedCreateOrConnectWithoutOrganisationInput[]
+    upsert?: RssFeedUpsertWithWhereUniqueWithoutOrganisationInput | RssFeedUpsertWithWhereUniqueWithoutOrganisationInput[]
+    createMany?: RssFeedCreateManyOrganisationInputEnvelope
+    set?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
+    disconnect?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
+    delete?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
+    connect?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
+    update?: RssFeedUpdateWithWhereUniqueWithoutOrganisationInput | RssFeedUpdateWithWhereUniqueWithoutOrganisationInput[]
+    updateMany?: RssFeedUpdateManyWithWhereWithoutOrganisationInput | RssFeedUpdateManyWithWhereWithoutOrganisationInput[]
+    deleteMany?: RssFeedScalarWhereInput | RssFeedScalarWhereInput[]
+  }
+
   export type OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput = {
     create?: XOR<OrganisationMemberCreateWithoutOrganisationInput, OrganisationMemberUncheckedCreateWithoutOrganisationInput> | OrganisationMemberCreateWithoutOrganisationInput[] | OrganisationMemberUncheckedCreateWithoutOrganisationInput[]
     connectOrCreate?: OrganisationMemberCreateOrConnectWithoutOrganisationInput | OrganisationMemberCreateOrConnectWithoutOrganisationInput[]
@@ -24405,6 +30584,20 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
+  export type RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput = {
+    create?: XOR<RssFeedCreateWithoutOrganisationInput, RssFeedUncheckedCreateWithoutOrganisationInput> | RssFeedCreateWithoutOrganisationInput[] | RssFeedUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: RssFeedCreateOrConnectWithoutOrganisationInput | RssFeedCreateOrConnectWithoutOrganisationInput[]
+    upsert?: RssFeedUpsertWithWhereUniqueWithoutOrganisationInput | RssFeedUpsertWithWhereUniqueWithoutOrganisationInput[]
+    createMany?: RssFeedCreateManyOrganisationInputEnvelope
+    set?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
+    disconnect?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
+    delete?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
+    connect?: RssFeedWhereUniqueInput | RssFeedWhereUniqueInput[]
+    update?: RssFeedUpdateWithWhereUniqueWithoutOrganisationInput | RssFeedUpdateWithWhereUniqueWithoutOrganisationInput[]
+    updateMany?: RssFeedUpdateManyWithWhereWithoutOrganisationInput | RssFeedUpdateManyWithWhereWithoutOrganisationInput[]
+    deleteMany?: RssFeedScalarWhereInput | RssFeedScalarWhereInput[]
+  }
+
   export type OrganisationCreateNestedOneWithoutMembersInput = {
     create?: XOR<OrganisationCreateWithoutMembersInput, OrganisationUncheckedCreateWithoutMembersInput>
     connectOrCreate?: OrganisationCreateOrConnectWithoutMembersInput
@@ -24417,8 +30610,26 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type OrganisationInviteTokenCreateNestedManyWithoutOrganisation_memberInput = {
+    create?: XOR<OrganisationInviteTokenCreateWithoutOrganisation_memberInput, OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput> | OrganisationInviteTokenCreateWithoutOrganisation_memberInput[] | OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput[]
+    connectOrCreate?: OrganisationInviteTokenCreateOrConnectWithoutOrganisation_memberInput | OrganisationInviteTokenCreateOrConnectWithoutOrganisation_memberInput[]
+    createMany?: OrganisationInviteTokenCreateManyOrganisation_memberInputEnvelope
+    connect?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+  }
+
+  export type OrganisationInviteTokenUncheckedCreateNestedManyWithoutOrganisation_memberInput = {
+    create?: XOR<OrganisationInviteTokenCreateWithoutOrganisation_memberInput, OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput> | OrganisationInviteTokenCreateWithoutOrganisation_memberInput[] | OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput[]
+    connectOrCreate?: OrganisationInviteTokenCreateOrConnectWithoutOrganisation_memberInput | OrganisationInviteTokenCreateOrConnectWithoutOrganisation_memberInput[]
+    createMany?: OrganisationInviteTokenCreateManyOrganisation_memberInputEnvelope
+    connect?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+  }
+
   export type EnumOrganisationRoleFieldUpdateOperationsInput = {
     set?: $Enums.OrganisationRole
+  }
+
+  export type EnumOrganisationMemberStatusFieldUpdateOperationsInput = {
+    set?: $Enums.OrganisationMemberStatus
   }
 
   export type OrganisationUpdateOneRequiredWithoutMembersNestedInput = {
@@ -24435,6 +30646,48 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutOrganisation_membershipsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrganisation_membershipsInput, UserUpdateWithoutOrganisation_membershipsInput>, UserUncheckedUpdateWithoutOrganisation_membershipsInput>
+  }
+
+  export type OrganisationInviteTokenUpdateManyWithoutOrganisation_memberNestedInput = {
+    create?: XOR<OrganisationInviteTokenCreateWithoutOrganisation_memberInput, OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput> | OrganisationInviteTokenCreateWithoutOrganisation_memberInput[] | OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput[]
+    connectOrCreate?: OrganisationInviteTokenCreateOrConnectWithoutOrganisation_memberInput | OrganisationInviteTokenCreateOrConnectWithoutOrganisation_memberInput[]
+    upsert?: OrganisationInviteTokenUpsertWithWhereUniqueWithoutOrganisation_memberInput | OrganisationInviteTokenUpsertWithWhereUniqueWithoutOrganisation_memberInput[]
+    createMany?: OrganisationInviteTokenCreateManyOrganisation_memberInputEnvelope
+    set?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+    disconnect?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+    delete?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+    connect?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+    update?: OrganisationInviteTokenUpdateWithWhereUniqueWithoutOrganisation_memberInput | OrganisationInviteTokenUpdateWithWhereUniqueWithoutOrganisation_memberInput[]
+    updateMany?: OrganisationInviteTokenUpdateManyWithWhereWithoutOrganisation_memberInput | OrganisationInviteTokenUpdateManyWithWhereWithoutOrganisation_memberInput[]
+    deleteMany?: OrganisationInviteTokenScalarWhereInput | OrganisationInviteTokenScalarWhereInput[]
+  }
+
+  export type OrganisationInviteTokenUncheckedUpdateManyWithoutOrganisation_memberNestedInput = {
+    create?: XOR<OrganisationInviteTokenCreateWithoutOrganisation_memberInput, OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput> | OrganisationInviteTokenCreateWithoutOrganisation_memberInput[] | OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput[]
+    connectOrCreate?: OrganisationInviteTokenCreateOrConnectWithoutOrganisation_memberInput | OrganisationInviteTokenCreateOrConnectWithoutOrganisation_memberInput[]
+    upsert?: OrganisationInviteTokenUpsertWithWhereUniqueWithoutOrganisation_memberInput | OrganisationInviteTokenUpsertWithWhereUniqueWithoutOrganisation_memberInput[]
+    createMany?: OrganisationInviteTokenCreateManyOrganisation_memberInputEnvelope
+    set?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+    disconnect?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+    delete?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+    connect?: OrganisationInviteTokenWhereUniqueInput | OrganisationInviteTokenWhereUniqueInput[]
+    update?: OrganisationInviteTokenUpdateWithWhereUniqueWithoutOrganisation_memberInput | OrganisationInviteTokenUpdateWithWhereUniqueWithoutOrganisation_memberInput[]
+    updateMany?: OrganisationInviteTokenUpdateManyWithWhereWithoutOrganisation_memberInput | OrganisationInviteTokenUpdateManyWithWhereWithoutOrganisation_memberInput[]
+    deleteMany?: OrganisationInviteTokenScalarWhereInput | OrganisationInviteTokenScalarWhereInput[]
+  }
+
+  export type OrganisationMemberCreateNestedOneWithoutInvite_tokensInput = {
+    create?: XOR<OrganisationMemberCreateWithoutInvite_tokensInput, OrganisationMemberUncheckedCreateWithoutInvite_tokensInput>
+    connectOrCreate?: OrganisationMemberCreateOrConnectWithoutInvite_tokensInput
+    connect?: OrganisationMemberWhereUniqueInput
+  }
+
+  export type OrganisationMemberUpdateOneRequiredWithoutInvite_tokensNestedInput = {
+    create?: XOR<OrganisationMemberCreateWithoutInvite_tokensInput, OrganisationMemberUncheckedCreateWithoutInvite_tokensInput>
+    connectOrCreate?: OrganisationMemberCreateOrConnectWithoutInvite_tokensInput
+    upsert?: OrganisationMemberUpsertWithoutInvite_tokensInput
+    connect?: OrganisationMemberWhereUniqueInput
+    update?: XOR<XOR<OrganisationMemberUpdateToOneWithWhereWithoutInvite_tokensInput, OrganisationMemberUpdateWithoutInvite_tokensInput>, OrganisationMemberUncheckedUpdateWithoutInvite_tokensInput>
   }
 
   export type OrganisationCreateNestedOneWithoutChannel_connectionsInput = {
@@ -24738,6 +30991,13 @@ export namespace Prisma {
     connect?: ProjectStyleProfileWhereUniqueInput | ProjectStyleProfileWhereUniqueInput[]
   }
 
+  export type ProjectRssFeedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<ProjectRssFeedCreateWithoutProjectInput, ProjectRssFeedUncheckedCreateWithoutProjectInput> | ProjectRssFeedCreateWithoutProjectInput[] | ProjectRssFeedUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ProjectRssFeedCreateOrConnectWithoutProjectInput | ProjectRssFeedCreateOrConnectWithoutProjectInput[]
+    createMany?: ProjectRssFeedCreateManyProjectInputEnvelope
+    connect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+  }
+
   export type PostCreateNestedManyWithoutProjectInput = {
     create?: XOR<PostCreateWithoutProjectInput, PostUncheckedCreateWithoutProjectInput> | PostCreateWithoutProjectInput[] | PostUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PostCreateOrConnectWithoutProjectInput | PostCreateOrConnectWithoutProjectInput[]
@@ -24764,6 +31024,13 @@ export namespace Prisma {
     connectOrCreate?: ProjectStyleProfileCreateOrConnectWithoutProjectInput | ProjectStyleProfileCreateOrConnectWithoutProjectInput[]
     createMany?: ProjectStyleProfileCreateManyProjectInputEnvelope
     connect?: ProjectStyleProfileWhereUniqueInput | ProjectStyleProfileWhereUniqueInput[]
+  }
+
+  export type ProjectRssFeedUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<ProjectRssFeedCreateWithoutProjectInput, ProjectRssFeedUncheckedCreateWithoutProjectInput> | ProjectRssFeedCreateWithoutProjectInput[] | ProjectRssFeedUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ProjectRssFeedCreateOrConnectWithoutProjectInput | ProjectRssFeedCreateOrConnectWithoutProjectInput[]
+    createMany?: ProjectRssFeedCreateManyProjectInputEnvelope
+    connect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
   }
 
   export type PostUncheckedCreateNestedManyWithoutProjectInput = {
@@ -24828,6 +31095,20 @@ export namespace Prisma {
     deleteMany?: ProjectStyleProfileScalarWhereInput | ProjectStyleProfileScalarWhereInput[]
   }
 
+  export type ProjectRssFeedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<ProjectRssFeedCreateWithoutProjectInput, ProjectRssFeedUncheckedCreateWithoutProjectInput> | ProjectRssFeedCreateWithoutProjectInput[] | ProjectRssFeedUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ProjectRssFeedCreateOrConnectWithoutProjectInput | ProjectRssFeedCreateOrConnectWithoutProjectInput[]
+    upsert?: ProjectRssFeedUpsertWithWhereUniqueWithoutProjectInput | ProjectRssFeedUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: ProjectRssFeedCreateManyProjectInputEnvelope
+    set?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    disconnect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    delete?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    connect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    update?: ProjectRssFeedUpdateWithWhereUniqueWithoutProjectInput | ProjectRssFeedUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: ProjectRssFeedUpdateManyWithWhereWithoutProjectInput | ProjectRssFeedUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: ProjectRssFeedScalarWhereInput | ProjectRssFeedScalarWhereInput[]
+  }
+
   export type PostUpdateManyWithoutProjectNestedInput = {
     create?: XOR<PostCreateWithoutProjectInput, PostUncheckedCreateWithoutProjectInput> | PostCreateWithoutProjectInput[] | PostUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PostCreateOrConnectWithoutProjectInput | PostCreateOrConnectWithoutProjectInput[]
@@ -24884,6 +31165,20 @@ export namespace Prisma {
     deleteMany?: ProjectStyleProfileScalarWhereInput | ProjectStyleProfileScalarWhereInput[]
   }
 
+  export type ProjectRssFeedUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<ProjectRssFeedCreateWithoutProjectInput, ProjectRssFeedUncheckedCreateWithoutProjectInput> | ProjectRssFeedCreateWithoutProjectInput[] | ProjectRssFeedUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ProjectRssFeedCreateOrConnectWithoutProjectInput | ProjectRssFeedCreateOrConnectWithoutProjectInput[]
+    upsert?: ProjectRssFeedUpsertWithWhereUniqueWithoutProjectInput | ProjectRssFeedUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: ProjectRssFeedCreateManyProjectInputEnvelope
+    set?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    disconnect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    delete?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    connect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    update?: ProjectRssFeedUpdateWithWhereUniqueWithoutProjectInput | ProjectRssFeedUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: ProjectRssFeedUpdateManyWithWhereWithoutProjectInput | ProjectRssFeedUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: ProjectRssFeedScalarWhereInput | ProjectRssFeedScalarWhereInput[]
+  }
+
   export type PostUncheckedUpdateManyWithoutProjectNestedInput = {
     create?: XOR<PostCreateWithoutProjectInput, PostUncheckedCreateWithoutProjectInput> | PostCreateWithoutProjectInput[] | PostUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PostCreateOrConnectWithoutProjectInput | PostCreateOrConnectWithoutProjectInput[]
@@ -24924,6 +31219,230 @@ export namespace Prisma {
     update?: AutomationUpdateWithWhereUniqueWithoutProjectInput | AutomationUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: AutomationUpdateManyWithWhereWithoutProjectInput | AutomationUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: AutomationScalarWhereInput | AutomationScalarWhereInput[]
+  }
+
+  export type OrganisationCreateNestedOneWithoutRss_feedsInput = {
+    create?: XOR<OrganisationCreateWithoutRss_feedsInput, OrganisationUncheckedCreateWithoutRss_feedsInput>
+    connectOrCreate?: OrganisationCreateOrConnectWithoutRss_feedsInput
+    connect?: OrganisationWhereUniqueInput
+  }
+
+  export type ProjectRssFeedCreateNestedManyWithoutRss_feedInput = {
+    create?: XOR<ProjectRssFeedCreateWithoutRss_feedInput, ProjectRssFeedUncheckedCreateWithoutRss_feedInput> | ProjectRssFeedCreateWithoutRss_feedInput[] | ProjectRssFeedUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: ProjectRssFeedCreateOrConnectWithoutRss_feedInput | ProjectRssFeedCreateOrConnectWithoutRss_feedInput[]
+    createMany?: ProjectRssFeedCreateManyRss_feedInputEnvelope
+    connect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+  }
+
+  export type RssFeedItemCreateNestedManyWithoutRss_feedInput = {
+    create?: XOR<RssFeedItemCreateWithoutRss_feedInput, RssFeedItemUncheckedCreateWithoutRss_feedInput> | RssFeedItemCreateWithoutRss_feedInput[] | RssFeedItemUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: RssFeedItemCreateOrConnectWithoutRss_feedInput | RssFeedItemCreateOrConnectWithoutRss_feedInput[]
+    createMany?: RssFeedItemCreateManyRss_feedInputEnvelope
+    connect?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+  }
+
+  export type AutomationCreateNestedManyWithoutRss_feedInput = {
+    create?: XOR<AutomationCreateWithoutRss_feedInput, AutomationUncheckedCreateWithoutRss_feedInput> | AutomationCreateWithoutRss_feedInput[] | AutomationUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: AutomationCreateOrConnectWithoutRss_feedInput | AutomationCreateOrConnectWithoutRss_feedInput[]
+    createMany?: AutomationCreateManyRss_feedInputEnvelope
+    connect?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+  }
+
+  export type ProjectRssFeedUncheckedCreateNestedManyWithoutRss_feedInput = {
+    create?: XOR<ProjectRssFeedCreateWithoutRss_feedInput, ProjectRssFeedUncheckedCreateWithoutRss_feedInput> | ProjectRssFeedCreateWithoutRss_feedInput[] | ProjectRssFeedUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: ProjectRssFeedCreateOrConnectWithoutRss_feedInput | ProjectRssFeedCreateOrConnectWithoutRss_feedInput[]
+    createMany?: ProjectRssFeedCreateManyRss_feedInputEnvelope
+    connect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+  }
+
+  export type RssFeedItemUncheckedCreateNestedManyWithoutRss_feedInput = {
+    create?: XOR<RssFeedItemCreateWithoutRss_feedInput, RssFeedItemUncheckedCreateWithoutRss_feedInput> | RssFeedItemCreateWithoutRss_feedInput[] | RssFeedItemUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: RssFeedItemCreateOrConnectWithoutRss_feedInput | RssFeedItemCreateOrConnectWithoutRss_feedInput[]
+    createMany?: RssFeedItemCreateManyRss_feedInputEnvelope
+    connect?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+  }
+
+  export type AutomationUncheckedCreateNestedManyWithoutRss_feedInput = {
+    create?: XOR<AutomationCreateWithoutRss_feedInput, AutomationUncheckedCreateWithoutRss_feedInput> | AutomationCreateWithoutRss_feedInput[] | AutomationUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: AutomationCreateOrConnectWithoutRss_feedInput | AutomationCreateOrConnectWithoutRss_feedInput[]
+    createMany?: AutomationCreateManyRss_feedInputEnvelope
+    connect?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+  }
+
+  export type OrganisationUpdateOneRequiredWithoutRss_feedsNestedInput = {
+    create?: XOR<OrganisationCreateWithoutRss_feedsInput, OrganisationUncheckedCreateWithoutRss_feedsInput>
+    connectOrCreate?: OrganisationCreateOrConnectWithoutRss_feedsInput
+    upsert?: OrganisationUpsertWithoutRss_feedsInput
+    connect?: OrganisationWhereUniqueInput
+    update?: XOR<XOR<OrganisationUpdateToOneWithWhereWithoutRss_feedsInput, OrganisationUpdateWithoutRss_feedsInput>, OrganisationUncheckedUpdateWithoutRss_feedsInput>
+  }
+
+  export type ProjectRssFeedUpdateManyWithoutRss_feedNestedInput = {
+    create?: XOR<ProjectRssFeedCreateWithoutRss_feedInput, ProjectRssFeedUncheckedCreateWithoutRss_feedInput> | ProjectRssFeedCreateWithoutRss_feedInput[] | ProjectRssFeedUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: ProjectRssFeedCreateOrConnectWithoutRss_feedInput | ProjectRssFeedCreateOrConnectWithoutRss_feedInput[]
+    upsert?: ProjectRssFeedUpsertWithWhereUniqueWithoutRss_feedInput | ProjectRssFeedUpsertWithWhereUniqueWithoutRss_feedInput[]
+    createMany?: ProjectRssFeedCreateManyRss_feedInputEnvelope
+    set?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    disconnect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    delete?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    connect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    update?: ProjectRssFeedUpdateWithWhereUniqueWithoutRss_feedInput | ProjectRssFeedUpdateWithWhereUniqueWithoutRss_feedInput[]
+    updateMany?: ProjectRssFeedUpdateManyWithWhereWithoutRss_feedInput | ProjectRssFeedUpdateManyWithWhereWithoutRss_feedInput[]
+    deleteMany?: ProjectRssFeedScalarWhereInput | ProjectRssFeedScalarWhereInput[]
+  }
+
+  export type RssFeedItemUpdateManyWithoutRss_feedNestedInput = {
+    create?: XOR<RssFeedItemCreateWithoutRss_feedInput, RssFeedItemUncheckedCreateWithoutRss_feedInput> | RssFeedItemCreateWithoutRss_feedInput[] | RssFeedItemUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: RssFeedItemCreateOrConnectWithoutRss_feedInput | RssFeedItemCreateOrConnectWithoutRss_feedInput[]
+    upsert?: RssFeedItemUpsertWithWhereUniqueWithoutRss_feedInput | RssFeedItemUpsertWithWhereUniqueWithoutRss_feedInput[]
+    createMany?: RssFeedItemCreateManyRss_feedInputEnvelope
+    set?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+    disconnect?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+    delete?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+    connect?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+    update?: RssFeedItemUpdateWithWhereUniqueWithoutRss_feedInput | RssFeedItemUpdateWithWhereUniqueWithoutRss_feedInput[]
+    updateMany?: RssFeedItemUpdateManyWithWhereWithoutRss_feedInput | RssFeedItemUpdateManyWithWhereWithoutRss_feedInput[]
+    deleteMany?: RssFeedItemScalarWhereInput | RssFeedItemScalarWhereInput[]
+  }
+
+  export type AutomationUpdateManyWithoutRss_feedNestedInput = {
+    create?: XOR<AutomationCreateWithoutRss_feedInput, AutomationUncheckedCreateWithoutRss_feedInput> | AutomationCreateWithoutRss_feedInput[] | AutomationUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: AutomationCreateOrConnectWithoutRss_feedInput | AutomationCreateOrConnectWithoutRss_feedInput[]
+    upsert?: AutomationUpsertWithWhereUniqueWithoutRss_feedInput | AutomationUpsertWithWhereUniqueWithoutRss_feedInput[]
+    createMany?: AutomationCreateManyRss_feedInputEnvelope
+    set?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+    disconnect?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+    delete?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+    connect?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+    update?: AutomationUpdateWithWhereUniqueWithoutRss_feedInput | AutomationUpdateWithWhereUniqueWithoutRss_feedInput[]
+    updateMany?: AutomationUpdateManyWithWhereWithoutRss_feedInput | AutomationUpdateManyWithWhereWithoutRss_feedInput[]
+    deleteMany?: AutomationScalarWhereInput | AutomationScalarWhereInput[]
+  }
+
+  export type ProjectRssFeedUncheckedUpdateManyWithoutRss_feedNestedInput = {
+    create?: XOR<ProjectRssFeedCreateWithoutRss_feedInput, ProjectRssFeedUncheckedCreateWithoutRss_feedInput> | ProjectRssFeedCreateWithoutRss_feedInput[] | ProjectRssFeedUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: ProjectRssFeedCreateOrConnectWithoutRss_feedInput | ProjectRssFeedCreateOrConnectWithoutRss_feedInput[]
+    upsert?: ProjectRssFeedUpsertWithWhereUniqueWithoutRss_feedInput | ProjectRssFeedUpsertWithWhereUniqueWithoutRss_feedInput[]
+    createMany?: ProjectRssFeedCreateManyRss_feedInputEnvelope
+    set?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    disconnect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    delete?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    connect?: ProjectRssFeedWhereUniqueInput | ProjectRssFeedWhereUniqueInput[]
+    update?: ProjectRssFeedUpdateWithWhereUniqueWithoutRss_feedInput | ProjectRssFeedUpdateWithWhereUniqueWithoutRss_feedInput[]
+    updateMany?: ProjectRssFeedUpdateManyWithWhereWithoutRss_feedInput | ProjectRssFeedUpdateManyWithWhereWithoutRss_feedInput[]
+    deleteMany?: ProjectRssFeedScalarWhereInput | ProjectRssFeedScalarWhereInput[]
+  }
+
+  export type RssFeedItemUncheckedUpdateManyWithoutRss_feedNestedInput = {
+    create?: XOR<RssFeedItemCreateWithoutRss_feedInput, RssFeedItemUncheckedCreateWithoutRss_feedInput> | RssFeedItemCreateWithoutRss_feedInput[] | RssFeedItemUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: RssFeedItemCreateOrConnectWithoutRss_feedInput | RssFeedItemCreateOrConnectWithoutRss_feedInput[]
+    upsert?: RssFeedItemUpsertWithWhereUniqueWithoutRss_feedInput | RssFeedItemUpsertWithWhereUniqueWithoutRss_feedInput[]
+    createMany?: RssFeedItemCreateManyRss_feedInputEnvelope
+    set?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+    disconnect?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+    delete?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+    connect?: RssFeedItemWhereUniqueInput | RssFeedItemWhereUniqueInput[]
+    update?: RssFeedItemUpdateWithWhereUniqueWithoutRss_feedInput | RssFeedItemUpdateWithWhereUniqueWithoutRss_feedInput[]
+    updateMany?: RssFeedItemUpdateManyWithWhereWithoutRss_feedInput | RssFeedItemUpdateManyWithWhereWithoutRss_feedInput[]
+    deleteMany?: RssFeedItemScalarWhereInput | RssFeedItemScalarWhereInput[]
+  }
+
+  export type AutomationUncheckedUpdateManyWithoutRss_feedNestedInput = {
+    create?: XOR<AutomationCreateWithoutRss_feedInput, AutomationUncheckedCreateWithoutRss_feedInput> | AutomationCreateWithoutRss_feedInput[] | AutomationUncheckedCreateWithoutRss_feedInput[]
+    connectOrCreate?: AutomationCreateOrConnectWithoutRss_feedInput | AutomationCreateOrConnectWithoutRss_feedInput[]
+    upsert?: AutomationUpsertWithWhereUniqueWithoutRss_feedInput | AutomationUpsertWithWhereUniqueWithoutRss_feedInput[]
+    createMany?: AutomationCreateManyRss_feedInputEnvelope
+    set?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+    disconnect?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+    delete?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+    connect?: AutomationWhereUniqueInput | AutomationWhereUniqueInput[]
+    update?: AutomationUpdateWithWhereUniqueWithoutRss_feedInput | AutomationUpdateWithWhereUniqueWithoutRss_feedInput[]
+    updateMany?: AutomationUpdateManyWithWhereWithoutRss_feedInput | AutomationUpdateManyWithWhereWithoutRss_feedInput[]
+    deleteMany?: AutomationScalarWhereInput | AutomationScalarWhereInput[]
+  }
+
+  export type ProjectCreateNestedOneWithoutRss_feedsInput = {
+    create?: XOR<ProjectCreateWithoutRss_feedsInput, ProjectUncheckedCreateWithoutRss_feedsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutRss_feedsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type RssFeedCreateNestedOneWithoutProjectsInput = {
+    create?: XOR<RssFeedCreateWithoutProjectsInput, RssFeedUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: RssFeedCreateOrConnectWithoutProjectsInput
+    connect?: RssFeedWhereUniqueInput
+  }
+
+  export type ProjectUpdateOneRequiredWithoutRss_feedsNestedInput = {
+    create?: XOR<ProjectCreateWithoutRss_feedsInput, ProjectUncheckedCreateWithoutRss_feedsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutRss_feedsInput
+    upsert?: ProjectUpsertWithoutRss_feedsInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutRss_feedsInput, ProjectUpdateWithoutRss_feedsInput>, ProjectUncheckedUpdateWithoutRss_feedsInput>
+  }
+
+  export type RssFeedUpdateOneRequiredWithoutProjectsNestedInput = {
+    create?: XOR<RssFeedCreateWithoutProjectsInput, RssFeedUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: RssFeedCreateOrConnectWithoutProjectsInput
+    upsert?: RssFeedUpsertWithoutProjectsInput
+    connect?: RssFeedWhereUniqueInput
+    update?: XOR<XOR<RssFeedUpdateToOneWithWhereWithoutProjectsInput, RssFeedUpdateWithoutProjectsInput>, RssFeedUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type RssFeedCreateNestedOneWithoutItemsInput = {
+    create?: XOR<RssFeedCreateWithoutItemsInput, RssFeedUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: RssFeedCreateOrConnectWithoutItemsInput
+    connect?: RssFeedWhereUniqueInput
+  }
+
+  export type PostCreateNestedManyWithoutRss_feed_itemInput = {
+    create?: XOR<PostCreateWithoutRss_feed_itemInput, PostUncheckedCreateWithoutRss_feed_itemInput> | PostCreateWithoutRss_feed_itemInput[] | PostUncheckedCreateWithoutRss_feed_itemInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutRss_feed_itemInput | PostCreateOrConnectWithoutRss_feed_itemInput[]
+    createMany?: PostCreateManyRss_feed_itemInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type PostUncheckedCreateNestedManyWithoutRss_feed_itemInput = {
+    create?: XOR<PostCreateWithoutRss_feed_itemInput, PostUncheckedCreateWithoutRss_feed_itemInput> | PostCreateWithoutRss_feed_itemInput[] | PostUncheckedCreateWithoutRss_feed_itemInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutRss_feed_itemInput | PostCreateOrConnectWithoutRss_feed_itemInput[]
+    createMany?: PostCreateManyRss_feed_itemInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type RssFeedUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<RssFeedCreateWithoutItemsInput, RssFeedUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: RssFeedCreateOrConnectWithoutItemsInput
+    upsert?: RssFeedUpsertWithoutItemsInput
+    connect?: RssFeedWhereUniqueInput
+    update?: XOR<XOR<RssFeedUpdateToOneWithWhereWithoutItemsInput, RssFeedUpdateWithoutItemsInput>, RssFeedUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type PostUpdateManyWithoutRss_feed_itemNestedInput = {
+    create?: XOR<PostCreateWithoutRss_feed_itemInput, PostUncheckedCreateWithoutRss_feed_itemInput> | PostCreateWithoutRss_feed_itemInput[] | PostUncheckedCreateWithoutRss_feed_itemInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutRss_feed_itemInput | PostCreateOrConnectWithoutRss_feed_itemInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutRss_feed_itemInput | PostUpsertWithWhereUniqueWithoutRss_feed_itemInput[]
+    createMany?: PostCreateManyRss_feed_itemInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutRss_feed_itemInput | PostUpdateWithWhereUniqueWithoutRss_feed_itemInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutRss_feed_itemInput | PostUpdateManyWithWhereWithoutRss_feed_itemInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type PostUncheckedUpdateManyWithoutRss_feed_itemNestedInput = {
+    create?: XOR<PostCreateWithoutRss_feed_itemInput, PostUncheckedCreateWithoutRss_feed_itemInput> | PostCreateWithoutRss_feed_itemInput[] | PostUncheckedCreateWithoutRss_feed_itemInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutRss_feed_itemInput | PostCreateOrConnectWithoutRss_feed_itemInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutRss_feed_itemInput | PostUpsertWithWhereUniqueWithoutRss_feed_itemInput[]
+    createMany?: PostCreateManyRss_feed_itemInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutRss_feed_itemInput | PostUpdateWithWhereUniqueWithoutRss_feed_itemInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutRss_feed_itemInput | PostUpdateManyWithWhereWithoutRss_feed_itemInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
   export type ProjectCreateNestedOneWithoutStyle_profilesInput = {
@@ -25058,6 +31577,12 @@ export namespace Prisma {
     connect?: StyleProfileWhereUniqueInput
   }
 
+  export type RssFeedCreateNestedOneWithoutAutomationsInput = {
+    create?: XOR<RssFeedCreateWithoutAutomationsInput, RssFeedUncheckedCreateWithoutAutomationsInput>
+    connectOrCreate?: RssFeedCreateOrConnectWithoutAutomationsInput
+    connect?: RssFeedWhereUniqueInput
+  }
+
   export type GenerationRunCreateNestedManyWithoutAutomationInput = {
     create?: XOR<GenerationRunCreateWithoutAutomationInput, GenerationRunUncheckedCreateWithoutAutomationInput> | GenerationRunCreateWithoutAutomationInput[] | GenerationRunUncheckedCreateWithoutAutomationInput[]
     connectOrCreate?: GenerationRunCreateOrConnectWithoutAutomationInput | GenerationRunCreateOrConnectWithoutAutomationInput[]
@@ -25101,6 +31626,16 @@ export namespace Prisma {
     delete?: StyleProfileWhereInput | boolean
     connect?: StyleProfileWhereUniqueInput
     update?: XOR<XOR<StyleProfileUpdateToOneWithWhereWithoutAutomationsInput, StyleProfileUpdateWithoutAutomationsInput>, StyleProfileUncheckedUpdateWithoutAutomationsInput>
+  }
+
+  export type RssFeedUpdateOneWithoutAutomationsNestedInput = {
+    create?: XOR<RssFeedCreateWithoutAutomationsInput, RssFeedUncheckedCreateWithoutAutomationsInput>
+    connectOrCreate?: RssFeedCreateOrConnectWithoutAutomationsInput
+    upsert?: RssFeedUpsertWithoutAutomationsInput
+    disconnect?: RssFeedWhereInput | boolean
+    delete?: RssFeedWhereInput | boolean
+    connect?: RssFeedWhereUniqueInput
+    update?: XOR<XOR<RssFeedUpdateToOneWithWhereWithoutAutomationsInput, RssFeedUpdateWithoutAutomationsInput>, RssFeedUncheckedUpdateWithoutAutomationsInput>
   }
 
   export type GenerationRunUpdateManyWithoutAutomationNestedInput = {
@@ -25165,6 +31700,12 @@ export namespace Prisma {
     create?: XOR<DocumentCreateWithoutCover_of_postsInput, DocumentUncheckedCreateWithoutCover_of_postsInput>
     connectOrCreate?: DocumentCreateOrConnectWithoutCover_of_postsInput
     connect?: DocumentWhereUniqueInput
+  }
+
+  export type RssFeedItemCreateNestedOneWithoutPostsInput = {
+    create?: XOR<RssFeedItemCreateWithoutPostsInput, RssFeedItemUncheckedCreateWithoutPostsInput>
+    connectOrCreate?: RssFeedItemCreateOrConnectWithoutPostsInput
+    connect?: RssFeedItemWhereUniqueInput
   }
 
   export type PostCreateNestedOneWithoutRepurposed_postsInput = {
@@ -25273,6 +31814,16 @@ export namespace Prisma {
     delete?: DocumentWhereInput | boolean
     connect?: DocumentWhereUniqueInput
     update?: XOR<XOR<DocumentUpdateToOneWithWhereWithoutCover_of_postsInput, DocumentUpdateWithoutCover_of_postsInput>, DocumentUncheckedUpdateWithoutCover_of_postsInput>
+  }
+
+  export type RssFeedItemUpdateOneWithoutPostsNestedInput = {
+    create?: XOR<RssFeedItemCreateWithoutPostsInput, RssFeedItemUncheckedCreateWithoutPostsInput>
+    connectOrCreate?: RssFeedItemCreateOrConnectWithoutPostsInput
+    upsert?: RssFeedItemUpsertWithoutPostsInput
+    disconnect?: RssFeedItemWhereInput | boolean
+    delete?: RssFeedItemWhereInput | boolean
+    connect?: RssFeedItemWhereUniqueInput
+    update?: XOR<XOR<RssFeedItemUpdateToOneWithWhereWithoutPostsInput, RssFeedItemUpdateWithoutPostsInput>, RssFeedItemUncheckedUpdateWithoutPostsInput>
   }
 
   export type PostUpdateOneWithoutRepurposed_postsNestedInput = {
@@ -25631,6 +32182,13 @@ export namespace Prisma {
     not?: NestedEnumOrganisationRoleFilter<$PrismaModel> | $Enums.OrganisationRole
   }
 
+  export type NestedEnumOrganisationMemberStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrganisationMemberStatus | EnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrganisationMemberStatus[] | ListEnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrganisationMemberStatus[] | ListEnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrganisationMemberStatusFilter<$PrismaModel> | $Enums.OrganisationMemberStatus
+  }
+
   export type NestedEnumOrganisationRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.OrganisationRole | EnumOrganisationRoleFieldRefInput<$PrismaModel>
     in?: $Enums.OrganisationRole[] | ListEnumOrganisationRoleFieldRefInput<$PrismaModel>
@@ -25639,6 +32197,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumOrganisationRoleFilter<$PrismaModel>
     _max?: NestedEnumOrganisationRoleFilter<$PrismaModel>
+  }
+
+  export type NestedEnumOrganisationMemberStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrganisationMemberStatus | EnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrganisationMemberStatus[] | ListEnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrganisationMemberStatus[] | ListEnumOrganisationMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrganisationMemberStatusWithAggregatesFilter<$PrismaModel> | $Enums.OrganisationMemberStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOrganisationMemberStatusFilter<$PrismaModel>
+    _max?: NestedEnumOrganisationMemberStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumSocialChannelFilter<$PrismaModel = never> = {
@@ -25861,6 +32429,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutCreated_byInput = {
@@ -25875,6 +32444,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutCreated_byInput = {
@@ -25890,17 +32460,21 @@ export namespace Prisma {
   export type OrganisationMemberCreateWithoutUserInput = {
     id?: string
     role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
     created_at?: Date | string
     updated_at?: Date | string
     organisation: OrganisationCreateNestedOneWithoutMembersInput
+    invite_tokens?: OrganisationInviteTokenCreateNestedManyWithoutOrganisation_memberInput
   }
 
   export type OrganisationMemberUncheckedCreateWithoutUserInput = {
     id?: string
     organisation_id: string
     role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
     created_at?: Date | string
     updated_at?: Date | string
+    invite_tokens?: OrganisationInviteTokenUncheckedCreateNestedManyWithoutOrganisation_memberInput
   }
 
   export type OrganisationMemberCreateOrConnectWithoutUserInput = {
@@ -25935,6 +32509,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
@@ -25948,6 +32523,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -26059,6 +32635,7 @@ export namespace Prisma {
     organisation_id?: StringFilter<"OrganisationMember"> | string
     user_id?: StringFilter<"OrganisationMember"> | string
     role?: EnumOrganisationRoleFilter<"OrganisationMember"> | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFilter<"OrganisationMember"> | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFilter<"OrganisationMember"> | Date | string
     updated_at?: DateTimeFilter<"OrganisationMember"> | Date | string
   }
@@ -26090,6 +32667,7 @@ export namespace Prisma {
     style_profile_id?: StringNullableFilter<"Post"> | string | null
     generation_run_id?: StringNullableFilter<"Post"> | string | null
     source_post_id?: StringNullableFilter<"Post"> | string | null
+    rss_feed_item_id?: StringNullableFilter<"Post"> | string | null
     type?: EnumPostTypeFilter<"Post"> | $Enums.PostType
     status?: EnumPostStatusFilter<"Post"> | $Enums.PostStatus
     hook?: StringNullableFilter<"Post"> | string | null
@@ -26192,6 +32770,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutDocumentsInput = {
@@ -26206,6 +32785,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutDocumentsInput = {
@@ -26259,6 +32839,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
@@ -26273,6 +32854,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -26326,6 +32908,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutDocumentsInput = {
@@ -26340,6 +32923,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type PostAttachmentUpsertWithWhereUniqueWithoutDocumentInput = {
@@ -26421,17 +33005,21 @@ export namespace Prisma {
   export type OrganisationMemberCreateWithoutOrganisationInput = {
     id?: string
     role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
     created_at?: Date | string
     updated_at?: Date | string
     user: UserCreateNestedOneWithoutOrganisation_membershipsInput
+    invite_tokens?: OrganisationInviteTokenCreateNestedManyWithoutOrganisation_memberInput
   }
 
   export type OrganisationMemberUncheckedCreateWithoutOrganisationInput = {
     id?: string
     user_id: string
     role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
     created_at?: Date | string
     updated_at?: Date | string
+    invite_tokens?: OrganisationInviteTokenUncheckedCreateNestedManyWithoutOrganisation_memberInput
   }
 
   export type OrganisationMemberCreateOrConnectWithoutOrganisationInput = {
@@ -26502,6 +33090,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
@@ -26515,6 +33104,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -26654,6 +33244,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedCreateNestedManyWithoutProjectInput
     posts?: PostCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
     automations?: AutomationCreateNestedManyWithoutProjectInput
@@ -26671,6 +33262,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     style_profiles?: ProjectStyleProfileUncheckedCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedUncheckedCreateNestedManyWithoutProjectInput
     posts?: PostUncheckedCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunUncheckedCreateNestedManyWithoutProjectInput
     automations?: AutomationUncheckedCreateNestedManyWithoutProjectInput
@@ -26683,6 +33275,42 @@ export namespace Prisma {
 
   export type ProjectCreateManyOrganisationInputEnvelope = {
     data: ProjectCreateManyOrganisationInput | ProjectCreateManyOrganisationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RssFeedCreateWithoutOrganisationInput = {
+    id?: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    projects?: ProjectRssFeedCreateNestedManyWithoutRss_feedInput
+    items?: RssFeedItemCreateNestedManyWithoutRss_feedInput
+    automations?: AutomationCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedUncheckedCreateWithoutOrganisationInput = {
+    id?: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    projects?: ProjectRssFeedUncheckedCreateNestedManyWithoutRss_feedInput
+    items?: RssFeedItemUncheckedCreateNestedManyWithoutRss_feedInput
+    automations?: AutomationUncheckedCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedCreateOrConnectWithoutOrganisationInput = {
+    where: RssFeedWhereUniqueInput
+    create: XOR<RssFeedCreateWithoutOrganisationInput, RssFeedUncheckedCreateWithoutOrganisationInput>
+  }
+
+  export type RssFeedCreateManyOrganisationInputEnvelope = {
+    data: RssFeedCreateManyOrganisationInput | RssFeedCreateManyOrganisationInput[]
     skipDuplicates?: boolean
   }
 
@@ -26894,6 +33522,36 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"Project"> | Date | string
   }
 
+  export type RssFeedUpsertWithWhereUniqueWithoutOrganisationInput = {
+    where: RssFeedWhereUniqueInput
+    update: XOR<RssFeedUpdateWithoutOrganisationInput, RssFeedUncheckedUpdateWithoutOrganisationInput>
+    create: XOR<RssFeedCreateWithoutOrganisationInput, RssFeedUncheckedCreateWithoutOrganisationInput>
+  }
+
+  export type RssFeedUpdateWithWhereUniqueWithoutOrganisationInput = {
+    where: RssFeedWhereUniqueInput
+    data: XOR<RssFeedUpdateWithoutOrganisationInput, RssFeedUncheckedUpdateWithoutOrganisationInput>
+  }
+
+  export type RssFeedUpdateManyWithWhereWithoutOrganisationInput = {
+    where: RssFeedScalarWhereInput
+    data: XOR<RssFeedUpdateManyMutationInput, RssFeedUncheckedUpdateManyWithoutOrganisationInput>
+  }
+
+  export type RssFeedScalarWhereInput = {
+    AND?: RssFeedScalarWhereInput | RssFeedScalarWhereInput[]
+    OR?: RssFeedScalarWhereInput[]
+    NOT?: RssFeedScalarWhereInput | RssFeedScalarWhereInput[]
+    id?: StringFilter<"RssFeed"> | string
+    organisation_id?: StringFilter<"RssFeed"> | string
+    name?: StringFilter<"RssFeed"> | string
+    url?: StringFilter<"RssFeed"> | string
+    last_fetched_at?: DateTimeNullableFilter<"RssFeed"> | Date | string | null
+    last_fetch_error?: StringNullableFilter<"RssFeed"> | string | null
+    created_at?: DateTimeFilter<"RssFeed"> | Date | string
+    updated_at?: DateTimeFilter<"RssFeed"> | Date | string
+  }
+
   export type OrganisationCreateWithoutMembersInput = {
     id?: string
     name: string
@@ -26906,6 +33564,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutMembersInput = {
@@ -26920,6 +33579,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutMembersInput = {
@@ -26960,6 +33620,34 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutOrganisation_membershipsInput, UserUncheckedCreateWithoutOrganisation_membershipsInput>
   }
 
+  export type OrganisationInviteTokenCreateWithoutOrganisation_memberInput = {
+    id?: string
+    token_hash: string
+    invited_by_user_id: string
+    expires_at: Date | string
+    used_at?: Date | string | null
+    created_at?: Date | string
+  }
+
+  export type OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput = {
+    id?: string
+    token_hash: string
+    invited_by_user_id: string
+    expires_at: Date | string
+    used_at?: Date | string | null
+    created_at?: Date | string
+  }
+
+  export type OrganisationInviteTokenCreateOrConnectWithoutOrganisation_memberInput = {
+    where: OrganisationInviteTokenWhereUniqueInput
+    create: XOR<OrganisationInviteTokenCreateWithoutOrganisation_memberInput, OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput>
+  }
+
+  export type OrganisationInviteTokenCreateManyOrganisation_memberInputEnvelope = {
+    data: OrganisationInviteTokenCreateManyOrganisation_memberInput | OrganisationInviteTokenCreateManyOrganisation_memberInput[]
+    skipDuplicates?: boolean
+  }
+
   export type OrganisationUpsertWithoutMembersInput = {
     update: XOR<OrganisationUpdateWithoutMembersInput, OrganisationUncheckedUpdateWithoutMembersInput>
     create: XOR<OrganisationCreateWithoutMembersInput, OrganisationUncheckedCreateWithoutMembersInput>
@@ -26983,6 +33671,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutMembersInput = {
@@ -26997,6 +33686,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type UserUpsertWithoutOrganisation_membershipsInput = {
@@ -27038,6 +33728,91 @@ export namespace Prisma {
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type OrganisationInviteTokenUpsertWithWhereUniqueWithoutOrganisation_memberInput = {
+    where: OrganisationInviteTokenWhereUniqueInput
+    update: XOR<OrganisationInviteTokenUpdateWithoutOrganisation_memberInput, OrganisationInviteTokenUncheckedUpdateWithoutOrganisation_memberInput>
+    create: XOR<OrganisationInviteTokenCreateWithoutOrganisation_memberInput, OrganisationInviteTokenUncheckedCreateWithoutOrganisation_memberInput>
+  }
+
+  export type OrganisationInviteTokenUpdateWithWhereUniqueWithoutOrganisation_memberInput = {
+    where: OrganisationInviteTokenWhereUniqueInput
+    data: XOR<OrganisationInviteTokenUpdateWithoutOrganisation_memberInput, OrganisationInviteTokenUncheckedUpdateWithoutOrganisation_memberInput>
+  }
+
+  export type OrganisationInviteTokenUpdateManyWithWhereWithoutOrganisation_memberInput = {
+    where: OrganisationInviteTokenScalarWhereInput
+    data: XOR<OrganisationInviteTokenUpdateManyMutationInput, OrganisationInviteTokenUncheckedUpdateManyWithoutOrganisation_memberInput>
+  }
+
+  export type OrganisationInviteTokenScalarWhereInput = {
+    AND?: OrganisationInviteTokenScalarWhereInput | OrganisationInviteTokenScalarWhereInput[]
+    OR?: OrganisationInviteTokenScalarWhereInput[]
+    NOT?: OrganisationInviteTokenScalarWhereInput | OrganisationInviteTokenScalarWhereInput[]
+    id?: StringFilter<"OrganisationInviteToken"> | string
+    token_hash?: StringFilter<"OrganisationInviteToken"> | string
+    organisation_member_id?: StringFilter<"OrganisationInviteToken"> | string
+    invited_by_user_id?: StringFilter<"OrganisationInviteToken"> | string
+    expires_at?: DateTimeFilter<"OrganisationInviteToken"> | Date | string
+    used_at?: DateTimeNullableFilter<"OrganisationInviteToken"> | Date | string | null
+    created_at?: DateTimeFilter<"OrganisationInviteToken"> | Date | string
+  }
+
+  export type OrganisationMemberCreateWithoutInvite_tokensInput = {
+    id?: string
+    role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
+    created_at?: Date | string
+    updated_at?: Date | string
+    organisation: OrganisationCreateNestedOneWithoutMembersInput
+    user: UserCreateNestedOneWithoutOrganisation_membershipsInput
+  }
+
+  export type OrganisationMemberUncheckedCreateWithoutInvite_tokensInput = {
+    id?: string
+    organisation_id: string
+    user_id: string
+    role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type OrganisationMemberCreateOrConnectWithoutInvite_tokensInput = {
+    where: OrganisationMemberWhereUniqueInput
+    create: XOR<OrganisationMemberCreateWithoutInvite_tokensInput, OrganisationMemberUncheckedCreateWithoutInvite_tokensInput>
+  }
+
+  export type OrganisationMemberUpsertWithoutInvite_tokensInput = {
+    update: XOR<OrganisationMemberUpdateWithoutInvite_tokensInput, OrganisationMemberUncheckedUpdateWithoutInvite_tokensInput>
+    create: XOR<OrganisationMemberCreateWithoutInvite_tokensInput, OrganisationMemberUncheckedCreateWithoutInvite_tokensInput>
+    where?: OrganisationMemberWhereInput
+  }
+
+  export type OrganisationMemberUpdateToOneWithWhereWithoutInvite_tokensInput = {
+    where?: OrganisationMemberWhereInput
+    data: XOR<OrganisationMemberUpdateWithoutInvite_tokensInput, OrganisationMemberUncheckedUpdateWithoutInvite_tokensInput>
+  }
+
+  export type OrganisationMemberUpdateWithoutInvite_tokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneRequiredWithoutMembersNestedInput
+    user?: UserUpdateOneRequiredWithoutOrganisation_membershipsNestedInput
+  }
+
+  export type OrganisationMemberUncheckedUpdateWithoutInvite_tokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OrganisationCreateWithoutChannel_connectionsInput = {
     id?: string
     name: string
@@ -27050,6 +33825,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutChannel_connectionsInput = {
@@ -27064,6 +33840,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutChannel_connectionsInput = {
@@ -27128,6 +33905,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutChannel_connectionsInput = {
@@ -27142,6 +33920,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type PostChannelUpsertWithWhereUniqueWithoutChannel_connectionInput = {
@@ -27188,6 +33967,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutOrganisationInput
     channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutStyle_profilesInput = {
@@ -27202,6 +33982,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
     channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutStyle_profilesInput = {
@@ -27273,17 +34054,21 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     project: ProjectCreateNestedOneWithoutAutomationsInput
+    rss_feed?: RssFeedCreateNestedOneWithoutAutomationsInput
     generation_runs?: GenerationRunCreateNestedManyWithoutAutomationInput
   }
 
   export type AutomationUncheckedCreateWithoutStyle_profileInput = {
     id?: string
     project_id: string
+    rss_feed_id?: string | null
     name: string
     is_active?: boolean
     frequency?: $Enums.AutomationFrequency
@@ -27292,6 +34077,8 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
@@ -27331,6 +34118,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
@@ -27344,6 +34132,7 @@ export namespace Prisma {
     project_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -27398,6 +34187,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutOrganisationNestedInput
     channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutStyle_profilesInput = {
@@ -27412,6 +34202,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
     channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type ProjectStyleProfileUpsertWithWhereUniqueWithoutStyle_profileInput = {
@@ -27493,6 +34284,7 @@ export namespace Prisma {
     id?: StringFilter<"Automation"> | string
     project_id?: StringFilter<"Automation"> | string
     style_profile_id?: StringNullableFilter<"Automation"> | string | null
+    rss_feed_id?: StringNullableFilter<"Automation"> | string | null
     name?: StringFilter<"Automation"> | string
     is_active?: BoolFilter<"Automation"> | boolean
     frequency?: EnumAutomationFrequencyFilter<"Automation"> | $Enums.AutomationFrequency
@@ -27501,6 +34293,8 @@ export namespace Prisma {
     timezone?: StringFilter<"Automation"> | string
     posts_per_run?: IntFilter<"Automation"> | number
     output_stage?: EnumAutomationOutputStageFilter<"Automation"> | $Enums.AutomationOutputStage
+    generate_images?: BoolFilter<"Automation"> | boolean
+    image_count?: IntFilter<"Automation"> | number
     last_run_at?: DateTimeNullableFilter<"Automation"> | Date | string | null
     next_run_at?: DateTimeNullableFilter<"Automation"> | Date | string | null
     created_at?: DateTimeFilter<"Automation"> | Date | string
@@ -27535,6 +34329,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutOrganisationInput
     channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutProjectsInput = {
@@ -27549,6 +34344,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
     channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutProjectsInput = {
@@ -27578,6 +34374,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProjectRssFeedCreateWithoutProjectInput = {
+    id?: string
+    created_at?: Date | string
+    rss_feed: RssFeedCreateNestedOneWithoutProjectsInput
+  }
+
+  export type ProjectRssFeedUncheckedCreateWithoutProjectInput = {
+    id?: string
+    rss_feed_id: string
+    created_at?: Date | string
+  }
+
+  export type ProjectRssFeedCreateOrConnectWithoutProjectInput = {
+    where: ProjectRssFeedWhereUniqueInput
+    create: XOR<ProjectRssFeedCreateWithoutProjectInput, ProjectRssFeedUncheckedCreateWithoutProjectInput>
+  }
+
+  export type ProjectRssFeedCreateManyProjectInputEnvelope = {
+    data: ProjectRssFeedCreateManyProjectInput | ProjectRssFeedCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PostCreateWithoutProjectInput = {
     id?: string
     type: $Enums.PostType
@@ -27600,6 +34418,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
@@ -27613,6 +34432,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -27686,17 +34506,21 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     style_profile?: StyleProfileCreateNestedOneWithoutAutomationsInput
+    rss_feed?: RssFeedCreateNestedOneWithoutAutomationsInput
     generation_runs?: GenerationRunCreateNestedManyWithoutAutomationInput
   }
 
   export type AutomationUncheckedCreateWithoutProjectInput = {
     id?: string
     style_profile_id?: string | null
+    rss_feed_id?: string | null
     name: string
     is_active?: boolean
     frequency?: $Enums.AutomationFrequency
@@ -27705,6 +34529,8 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
@@ -27745,6 +34571,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutOrganisationNestedInput
     channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutProjectsInput = {
@@ -27759,6 +34586,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
     channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type ProjectStyleProfileUpsertWithWhereUniqueWithoutProjectInput = {
@@ -27775,6 +34603,32 @@ export namespace Prisma {
   export type ProjectStyleProfileUpdateManyWithWhereWithoutProjectInput = {
     where: ProjectStyleProfileScalarWhereInput
     data: XOR<ProjectStyleProfileUpdateManyMutationInput, ProjectStyleProfileUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type ProjectRssFeedUpsertWithWhereUniqueWithoutProjectInput = {
+    where: ProjectRssFeedWhereUniqueInput
+    update: XOR<ProjectRssFeedUpdateWithoutProjectInput, ProjectRssFeedUncheckedUpdateWithoutProjectInput>
+    create: XOR<ProjectRssFeedCreateWithoutProjectInput, ProjectRssFeedUncheckedCreateWithoutProjectInput>
+  }
+
+  export type ProjectRssFeedUpdateWithWhereUniqueWithoutProjectInput = {
+    where: ProjectRssFeedWhereUniqueInput
+    data: XOR<ProjectRssFeedUpdateWithoutProjectInput, ProjectRssFeedUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type ProjectRssFeedUpdateManyWithWhereWithoutProjectInput = {
+    where: ProjectRssFeedScalarWhereInput
+    data: XOR<ProjectRssFeedUpdateManyMutationInput, ProjectRssFeedUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type ProjectRssFeedScalarWhereInput = {
+    AND?: ProjectRssFeedScalarWhereInput | ProjectRssFeedScalarWhereInput[]
+    OR?: ProjectRssFeedScalarWhereInput[]
+    NOT?: ProjectRssFeedScalarWhereInput | ProjectRssFeedScalarWhereInput[]
+    id?: StringFilter<"ProjectRssFeed"> | string
+    project_id?: StringFilter<"ProjectRssFeed"> | string
+    rss_feed_id?: StringFilter<"ProjectRssFeed"> | string
+    created_at?: DateTimeFilter<"ProjectRssFeed"> | Date | string
   }
 
   export type PostUpsertWithWhereUniqueWithoutProjectInput = {
@@ -27825,6 +34679,564 @@ export namespace Prisma {
     data: XOR<AutomationUpdateManyMutationInput, AutomationUncheckedUpdateManyWithoutProjectInput>
   }
 
+  export type OrganisationCreateWithoutRss_feedsInput = {
+    id?: string
+    name: string
+    slug: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    created_by: UserCreateNestedOneWithoutOrganisations_createdInput
+    members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
+    documents?: DocumentCreateNestedManyWithoutOrganisationInput
+    posts?: PostCreateNestedManyWithoutOrganisationInput
+    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
+    projects?: ProjectCreateNestedManyWithoutOrganisationInput
+  }
+
+  export type OrganisationUncheckedCreateWithoutRss_feedsInput = {
+    id?: string
+    name: string
+    slug: string
+    created_by_user_id: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
+    posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
+    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
+  }
+
+  export type OrganisationCreateOrConnectWithoutRss_feedsInput = {
+    where: OrganisationWhereUniqueInput
+    create: XOR<OrganisationCreateWithoutRss_feedsInput, OrganisationUncheckedCreateWithoutRss_feedsInput>
+  }
+
+  export type ProjectRssFeedCreateWithoutRss_feedInput = {
+    id?: string
+    created_at?: Date | string
+    project: ProjectCreateNestedOneWithoutRss_feedsInput
+  }
+
+  export type ProjectRssFeedUncheckedCreateWithoutRss_feedInput = {
+    id?: string
+    project_id: string
+    created_at?: Date | string
+  }
+
+  export type ProjectRssFeedCreateOrConnectWithoutRss_feedInput = {
+    where: ProjectRssFeedWhereUniqueInput
+    create: XOR<ProjectRssFeedCreateWithoutRss_feedInput, ProjectRssFeedUncheckedCreateWithoutRss_feedInput>
+  }
+
+  export type ProjectRssFeedCreateManyRss_feedInputEnvelope = {
+    data: ProjectRssFeedCreateManyRss_feedInput | ProjectRssFeedCreateManyRss_feedInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RssFeedItemCreateWithoutRss_feedInput = {
+    id?: string
+    guid: string
+    title: string
+    link?: string | null
+    summary?: string | null
+    content?: string | null
+    published_at?: Date | string | null
+    is_used?: boolean
+    fetched_at?: Date | string
+    posts?: PostCreateNestedManyWithoutRss_feed_itemInput
+  }
+
+  export type RssFeedItemUncheckedCreateWithoutRss_feedInput = {
+    id?: string
+    guid: string
+    title: string
+    link?: string | null
+    summary?: string | null
+    content?: string | null
+    published_at?: Date | string | null
+    is_used?: boolean
+    fetched_at?: Date | string
+    posts?: PostUncheckedCreateNestedManyWithoutRss_feed_itemInput
+  }
+
+  export type RssFeedItemCreateOrConnectWithoutRss_feedInput = {
+    where: RssFeedItemWhereUniqueInput
+    create: XOR<RssFeedItemCreateWithoutRss_feedInput, RssFeedItemUncheckedCreateWithoutRss_feedInput>
+  }
+
+  export type RssFeedItemCreateManyRss_feedInputEnvelope = {
+    data: RssFeedItemCreateManyRss_feedInput | RssFeedItemCreateManyRss_feedInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AutomationCreateWithoutRss_feedInput = {
+    id?: string
+    name: string
+    is_active?: boolean
+    frequency?: $Enums.AutomationFrequency
+    days_of_week?: AutomationCreatedays_of_weekInput | number[]
+    time_of_day: string
+    timezone?: string
+    posts_per_run?: number
+    output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
+    last_run_at?: Date | string | null
+    next_run_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    project: ProjectCreateNestedOneWithoutAutomationsInput
+    style_profile?: StyleProfileCreateNestedOneWithoutAutomationsInput
+    generation_runs?: GenerationRunCreateNestedManyWithoutAutomationInput
+  }
+
+  export type AutomationUncheckedCreateWithoutRss_feedInput = {
+    id?: string
+    project_id: string
+    style_profile_id?: string | null
+    name: string
+    is_active?: boolean
+    frequency?: $Enums.AutomationFrequency
+    days_of_week?: AutomationCreatedays_of_weekInput | number[]
+    time_of_day: string
+    timezone?: string
+    posts_per_run?: number
+    output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
+    last_run_at?: Date | string | null
+    next_run_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    generation_runs?: GenerationRunUncheckedCreateNestedManyWithoutAutomationInput
+  }
+
+  export type AutomationCreateOrConnectWithoutRss_feedInput = {
+    where: AutomationWhereUniqueInput
+    create: XOR<AutomationCreateWithoutRss_feedInput, AutomationUncheckedCreateWithoutRss_feedInput>
+  }
+
+  export type AutomationCreateManyRss_feedInputEnvelope = {
+    data: AutomationCreateManyRss_feedInput | AutomationCreateManyRss_feedInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrganisationUpsertWithoutRss_feedsInput = {
+    update: XOR<OrganisationUpdateWithoutRss_feedsInput, OrganisationUncheckedUpdateWithoutRss_feedsInput>
+    create: XOR<OrganisationCreateWithoutRss_feedsInput, OrganisationUncheckedCreateWithoutRss_feedsInput>
+    where?: OrganisationWhereInput
+  }
+
+  export type OrganisationUpdateToOneWithWhereWithoutRss_feedsInput = {
+    where?: OrganisationWhereInput
+    data: XOR<OrganisationUpdateWithoutRss_feedsInput, OrganisationUncheckedUpdateWithoutRss_feedsInput>
+  }
+
+  export type OrganisationUpdateWithoutRss_feedsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: UserUpdateOneRequiredWithoutOrganisations_createdNestedInput
+    members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
+    documents?: DocumentUpdateManyWithoutOrganisationNestedInput
+    posts?: PostUpdateManyWithoutOrganisationNestedInput
+    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
+    projects?: ProjectUpdateManyWithoutOrganisationNestedInput
+  }
+
+  export type OrganisationUncheckedUpdateWithoutRss_feedsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    created_by_user_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
+    posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
+    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
+  }
+
+  export type ProjectRssFeedUpsertWithWhereUniqueWithoutRss_feedInput = {
+    where: ProjectRssFeedWhereUniqueInput
+    update: XOR<ProjectRssFeedUpdateWithoutRss_feedInput, ProjectRssFeedUncheckedUpdateWithoutRss_feedInput>
+    create: XOR<ProjectRssFeedCreateWithoutRss_feedInput, ProjectRssFeedUncheckedCreateWithoutRss_feedInput>
+  }
+
+  export type ProjectRssFeedUpdateWithWhereUniqueWithoutRss_feedInput = {
+    where: ProjectRssFeedWhereUniqueInput
+    data: XOR<ProjectRssFeedUpdateWithoutRss_feedInput, ProjectRssFeedUncheckedUpdateWithoutRss_feedInput>
+  }
+
+  export type ProjectRssFeedUpdateManyWithWhereWithoutRss_feedInput = {
+    where: ProjectRssFeedScalarWhereInput
+    data: XOR<ProjectRssFeedUpdateManyMutationInput, ProjectRssFeedUncheckedUpdateManyWithoutRss_feedInput>
+  }
+
+  export type RssFeedItemUpsertWithWhereUniqueWithoutRss_feedInput = {
+    where: RssFeedItemWhereUniqueInput
+    update: XOR<RssFeedItemUpdateWithoutRss_feedInput, RssFeedItemUncheckedUpdateWithoutRss_feedInput>
+    create: XOR<RssFeedItemCreateWithoutRss_feedInput, RssFeedItemUncheckedCreateWithoutRss_feedInput>
+  }
+
+  export type RssFeedItemUpdateWithWhereUniqueWithoutRss_feedInput = {
+    where: RssFeedItemWhereUniqueInput
+    data: XOR<RssFeedItemUpdateWithoutRss_feedInput, RssFeedItemUncheckedUpdateWithoutRss_feedInput>
+  }
+
+  export type RssFeedItemUpdateManyWithWhereWithoutRss_feedInput = {
+    where: RssFeedItemScalarWhereInput
+    data: XOR<RssFeedItemUpdateManyMutationInput, RssFeedItemUncheckedUpdateManyWithoutRss_feedInput>
+  }
+
+  export type RssFeedItemScalarWhereInput = {
+    AND?: RssFeedItemScalarWhereInput | RssFeedItemScalarWhereInput[]
+    OR?: RssFeedItemScalarWhereInput[]
+    NOT?: RssFeedItemScalarWhereInput | RssFeedItemScalarWhereInput[]
+    id?: StringFilter<"RssFeedItem"> | string
+    rss_feed_id?: StringFilter<"RssFeedItem"> | string
+    guid?: StringFilter<"RssFeedItem"> | string
+    title?: StringFilter<"RssFeedItem"> | string
+    link?: StringNullableFilter<"RssFeedItem"> | string | null
+    summary?: StringNullableFilter<"RssFeedItem"> | string | null
+    content?: StringNullableFilter<"RssFeedItem"> | string | null
+    published_at?: DateTimeNullableFilter<"RssFeedItem"> | Date | string | null
+    is_used?: BoolFilter<"RssFeedItem"> | boolean
+    fetched_at?: DateTimeFilter<"RssFeedItem"> | Date | string
+  }
+
+  export type AutomationUpsertWithWhereUniqueWithoutRss_feedInput = {
+    where: AutomationWhereUniqueInput
+    update: XOR<AutomationUpdateWithoutRss_feedInput, AutomationUncheckedUpdateWithoutRss_feedInput>
+    create: XOR<AutomationCreateWithoutRss_feedInput, AutomationUncheckedCreateWithoutRss_feedInput>
+  }
+
+  export type AutomationUpdateWithWhereUniqueWithoutRss_feedInput = {
+    where: AutomationWhereUniqueInput
+    data: XOR<AutomationUpdateWithoutRss_feedInput, AutomationUncheckedUpdateWithoutRss_feedInput>
+  }
+
+  export type AutomationUpdateManyWithWhereWithoutRss_feedInput = {
+    where: AutomationScalarWhereInput
+    data: XOR<AutomationUpdateManyMutationInput, AutomationUncheckedUpdateManyWithoutRss_feedInput>
+  }
+
+  export type ProjectCreateWithoutRss_feedsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    platform: $Enums.PostType
+    pillars?: ProjectCreatepillarsInput | string[]
+    ideas?: ProjectCreateideasInput | string[]
+    instructions?: ProjectCreateinstructionsInput | string[]
+    is_archived?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+    organisation: OrganisationCreateNestedOneWithoutProjectsInput
+    style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
+    posts?: PostCreateNestedManyWithoutProjectInput
+    generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
+    automations?: AutomationCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutRss_feedsInput = {
+    id?: string
+    organisation_id: string
+    title: string
+    description?: string | null
+    platform: $Enums.PostType
+    pillars?: ProjectCreatepillarsInput | string[]
+    ideas?: ProjectCreateideasInput | string[]
+    instructions?: ProjectCreateinstructionsInput | string[]
+    is_archived?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+    style_profiles?: ProjectStyleProfileUncheckedCreateNestedManyWithoutProjectInput
+    posts?: PostUncheckedCreateNestedManyWithoutProjectInput
+    generation_runs?: GenerationRunUncheckedCreateNestedManyWithoutProjectInput
+    automations?: AutomationUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutRss_feedsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutRss_feedsInput, ProjectUncheckedCreateWithoutRss_feedsInput>
+  }
+
+  export type RssFeedCreateWithoutProjectsInput = {
+    id?: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    organisation: OrganisationCreateNestedOneWithoutRss_feedsInput
+    items?: RssFeedItemCreateNestedManyWithoutRss_feedInput
+    automations?: AutomationCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedUncheckedCreateWithoutProjectsInput = {
+    id?: string
+    organisation_id: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    items?: RssFeedItemUncheckedCreateNestedManyWithoutRss_feedInput
+    automations?: AutomationUncheckedCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedCreateOrConnectWithoutProjectsInput = {
+    where: RssFeedWhereUniqueInput
+    create: XOR<RssFeedCreateWithoutProjectsInput, RssFeedUncheckedCreateWithoutProjectsInput>
+  }
+
+  export type ProjectUpsertWithoutRss_feedsInput = {
+    update: XOR<ProjectUpdateWithoutRss_feedsInput, ProjectUncheckedUpdateWithoutRss_feedsInput>
+    create: XOR<ProjectCreateWithoutRss_feedsInput, ProjectUncheckedCreateWithoutRss_feedsInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutRss_feedsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutRss_feedsInput, ProjectUncheckedUpdateWithoutRss_feedsInput>
+  }
+
+  export type ProjectUpdateWithoutRss_feedsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    pillars?: ProjectUpdatepillarsInput | string[]
+    ideas?: ProjectUpdateideasInput | string[]
+    instructions?: ProjectUpdateinstructionsInput | string[]
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
+    style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
+    posts?: PostUpdateManyWithoutProjectNestedInput
+    generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
+    automations?: AutomationUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutRss_feedsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    pillars?: ProjectUpdatepillarsInput | string[]
+    ideas?: ProjectUpdateideasInput | string[]
+    instructions?: ProjectUpdateinstructionsInput | string[]
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    style_profiles?: ProjectStyleProfileUncheckedUpdateManyWithoutProjectNestedInput
+    posts?: PostUncheckedUpdateManyWithoutProjectNestedInput
+    generation_runs?: GenerationRunUncheckedUpdateManyWithoutProjectNestedInput
+    automations?: AutomationUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type RssFeedUpsertWithoutProjectsInput = {
+    update: XOR<RssFeedUpdateWithoutProjectsInput, RssFeedUncheckedUpdateWithoutProjectsInput>
+    create: XOR<RssFeedCreateWithoutProjectsInput, RssFeedUncheckedCreateWithoutProjectsInput>
+    where?: RssFeedWhereInput
+  }
+
+  export type RssFeedUpdateToOneWithWhereWithoutProjectsInput = {
+    where?: RssFeedWhereInput
+    data: XOR<RssFeedUpdateWithoutProjectsInput, RssFeedUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type RssFeedUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneRequiredWithoutRss_feedsNestedInput
+    items?: RssFeedItemUpdateManyWithoutRss_feedNestedInput
+    automations?: AutomationUpdateManyWithoutRss_feedNestedInput
+  }
+
+  export type RssFeedUncheckedUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: RssFeedItemUncheckedUpdateManyWithoutRss_feedNestedInput
+    automations?: AutomationUncheckedUpdateManyWithoutRss_feedNestedInput
+  }
+
+  export type RssFeedCreateWithoutItemsInput = {
+    id?: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    organisation: OrganisationCreateNestedOneWithoutRss_feedsInput
+    projects?: ProjectRssFeedCreateNestedManyWithoutRss_feedInput
+    automations?: AutomationCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedUncheckedCreateWithoutItemsInput = {
+    id?: string
+    organisation_id: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    projects?: ProjectRssFeedUncheckedCreateNestedManyWithoutRss_feedInput
+    automations?: AutomationUncheckedCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedCreateOrConnectWithoutItemsInput = {
+    where: RssFeedWhereUniqueInput
+    create: XOR<RssFeedCreateWithoutItemsInput, RssFeedUncheckedCreateWithoutItemsInput>
+  }
+
+  export type PostCreateWithoutRss_feed_itemInput = {
+    id?: string
+    type: $Enums.PostType
+    status?: $Enums.PostStatus
+    hook?: string | null
+    body?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: string | null
+    excerpt?: string | null
+    seo_title?: string | null
+    seo_description?: string | null
+    canonical_url?: string | null
+    scheduled_at?: Date | string | null
+    published_at?: Date | string | null
+    failed_reason?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutAuthored_postsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
+    project?: ProjectCreateNestedOneWithoutPostsInput
+    style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
+    generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
+    repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
+    attachments?: PostAttachmentCreateNestedManyWithoutPostInput
+    channels?: PostChannelCreateNestedManyWithoutPostInput
+  }
+
+  export type PostUncheckedCreateWithoutRss_feed_itemInput = {
+    id?: string
+    user_id: string
+    organisation_id: string
+    project_id?: string | null
+    style_profile_id?: string | null
+    generation_run_id?: string | null
+    source_post_id?: string | null
+    type: $Enums.PostType
+    status?: $Enums.PostStatus
+    hook?: string | null
+    body?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: string | null
+    excerpt?: string | null
+    cover_document_id?: string | null
+    seo_title?: string | null
+    seo_description?: string | null
+    canonical_url?: string | null
+    scheduled_at?: Date | string | null
+    published_at?: Date | string | null
+    failed_reason?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
+    attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
+    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+  }
+
+  export type PostCreateOrConnectWithoutRss_feed_itemInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutRss_feed_itemInput, PostUncheckedCreateWithoutRss_feed_itemInput>
+  }
+
+  export type PostCreateManyRss_feed_itemInputEnvelope = {
+    data: PostCreateManyRss_feed_itemInput | PostCreateManyRss_feed_itemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RssFeedUpsertWithoutItemsInput = {
+    update: XOR<RssFeedUpdateWithoutItemsInput, RssFeedUncheckedUpdateWithoutItemsInput>
+    create: XOR<RssFeedCreateWithoutItemsInput, RssFeedUncheckedCreateWithoutItemsInput>
+    where?: RssFeedWhereInput
+  }
+
+  export type RssFeedUpdateToOneWithWhereWithoutItemsInput = {
+    where?: RssFeedWhereInput
+    data: XOR<RssFeedUpdateWithoutItemsInput, RssFeedUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type RssFeedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneRequiredWithoutRss_feedsNestedInput
+    projects?: ProjectRssFeedUpdateManyWithoutRss_feedNestedInput
+    automations?: AutomationUpdateManyWithoutRss_feedNestedInput
+  }
+
+  export type RssFeedUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    projects?: ProjectRssFeedUncheckedUpdateManyWithoutRss_feedNestedInput
+    automations?: AutomationUncheckedUpdateManyWithoutRss_feedNestedInput
+  }
+
+  export type PostUpsertWithWhereUniqueWithoutRss_feed_itemInput = {
+    where: PostWhereUniqueInput
+    update: XOR<PostUpdateWithoutRss_feed_itemInput, PostUncheckedUpdateWithoutRss_feed_itemInput>
+    create: XOR<PostCreateWithoutRss_feed_itemInput, PostUncheckedCreateWithoutRss_feed_itemInput>
+  }
+
+  export type PostUpdateWithWhereUniqueWithoutRss_feed_itemInput = {
+    where: PostWhereUniqueInput
+    data: XOR<PostUpdateWithoutRss_feed_itemInput, PostUncheckedUpdateWithoutRss_feed_itemInput>
+  }
+
+  export type PostUpdateManyWithWhereWithoutRss_feed_itemInput = {
+    where: PostScalarWhereInput
+    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutRss_feed_itemInput>
+  }
+
   export type ProjectCreateWithoutStyle_profilesInput = {
     id?: string
     title: string
@@ -27837,6 +35249,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     organisation: OrganisationCreateNestedOneWithoutProjectsInput
+    rss_feeds?: ProjectRssFeedCreateNestedManyWithoutProjectInput
     posts?: PostCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
     automations?: AutomationCreateNestedManyWithoutProjectInput
@@ -27854,6 +35267,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    rss_feeds?: ProjectRssFeedUncheckedCreateNestedManyWithoutProjectInput
     posts?: PostUncheckedCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunUncheckedCreateNestedManyWithoutProjectInput
     automations?: AutomationUncheckedCreateNestedManyWithoutProjectInput
@@ -27940,6 +35354,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
+    rss_feeds?: ProjectRssFeedUpdateManyWithoutProjectNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
     automations?: AutomationUpdateManyWithoutProjectNestedInput
@@ -27957,6 +35372,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    rss_feeds?: ProjectRssFeedUncheckedUpdateManyWithoutProjectNestedInput
     posts?: PostUncheckedUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUncheckedUpdateManyWithoutProjectNestedInput
     automations?: AutomationUncheckedUpdateManyWithoutProjectNestedInput
@@ -28034,6 +35450,7 @@ export namespace Prisma {
     updated_at?: Date | string
     organisation: OrganisationCreateNestedOneWithoutProjectsInput
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedCreateNestedManyWithoutProjectInput
     posts?: PostCreateNestedManyWithoutProjectInput
     automations?: AutomationCreateNestedManyWithoutProjectInput
   }
@@ -28051,6 +35468,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     style_profiles?: ProjectStyleProfileUncheckedCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedUncheckedCreateNestedManyWithoutProjectInput
     posts?: PostUncheckedCreateNestedManyWithoutProjectInput
     automations?: AutomationUncheckedCreateNestedManyWithoutProjectInput
   }
@@ -28123,18 +35541,22 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
     project: ProjectCreateNestedOneWithoutAutomationsInput
     style_profile?: StyleProfileCreateNestedOneWithoutAutomationsInput
+    rss_feed?: RssFeedCreateNestedOneWithoutAutomationsInput
   }
 
   export type AutomationUncheckedCreateWithoutGeneration_runsInput = {
     id?: string
     project_id: string
     style_profile_id?: string | null
+    rss_feed_id?: string | null
     name: string
     is_active?: boolean
     frequency?: $Enums.AutomationFrequency
@@ -28143,6 +35565,8 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
@@ -28176,6 +35600,7 @@ export namespace Prisma {
     project?: ProjectCreateNestedOneWithoutPostsInput
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
@@ -28189,6 +35614,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -28244,6 +35670,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUpdateManyWithoutProjectNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     automations?: AutomationUpdateManyWithoutProjectNestedInput
   }
@@ -28261,6 +35688,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     style_profiles?: ProjectStyleProfileUncheckedUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUncheckedUpdateManyWithoutProjectNestedInput
     posts?: PostUncheckedUpdateManyWithoutProjectNestedInput
     automations?: AutomationUncheckedUpdateManyWithoutProjectNestedInput
   }
@@ -28345,18 +35773,22 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutAutomationsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutAutomationsNestedInput
+    rss_feed?: RssFeedUpdateOneWithoutAutomationsNestedInput
   }
 
   export type AutomationUncheckedUpdateWithoutGeneration_runsInput = {
     id?: StringFieldUpdateOperationsInput | string
     project_id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     is_active?: BoolFieldUpdateOperationsInput | boolean
     frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
@@ -28365,6 +35797,8 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28400,6 +35834,7 @@ export namespace Prisma {
     updated_at?: Date | string
     organisation: OrganisationCreateNestedOneWithoutProjectsInput
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedCreateNestedManyWithoutProjectInput
     posts?: PostCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
   }
@@ -28417,6 +35852,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     style_profiles?: ProjectStyleProfileUncheckedCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedUncheckedCreateNestedManyWithoutProjectInput
     posts?: PostUncheckedCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunUncheckedCreateNestedManyWithoutProjectInput
   }
@@ -28479,6 +35915,37 @@ export namespace Prisma {
     create: XOR<StyleProfileCreateWithoutAutomationsInput, StyleProfileUncheckedCreateWithoutAutomationsInput>
   }
 
+  export type RssFeedCreateWithoutAutomationsInput = {
+    id?: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    organisation: OrganisationCreateNestedOneWithoutRss_feedsInput
+    projects?: ProjectRssFeedCreateNestedManyWithoutRss_feedInput
+    items?: RssFeedItemCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedUncheckedCreateWithoutAutomationsInput = {
+    id?: string
+    organisation_id: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    projects?: ProjectRssFeedUncheckedCreateNestedManyWithoutRss_feedInput
+    items?: RssFeedItemUncheckedCreateNestedManyWithoutRss_feedInput
+  }
+
+  export type RssFeedCreateOrConnectWithoutAutomationsInput = {
+    where: RssFeedWhereUniqueInput
+    create: XOR<RssFeedCreateWithoutAutomationsInput, RssFeedUncheckedCreateWithoutAutomationsInput>
+  }
+
   export type GenerationRunCreateWithoutAutomationInput = {
     id?: string
     label?: string | null
@@ -28535,6 +36002,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUpdateManyWithoutProjectNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
   }
@@ -28552,6 +36020,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     style_profiles?: ProjectStyleProfileUncheckedUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUncheckedUpdateManyWithoutProjectNestedInput
     posts?: PostUncheckedUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUncheckedUpdateManyWithoutProjectNestedInput
   }
@@ -28615,6 +36084,43 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutStyle_profileNestedInput
   }
 
+  export type RssFeedUpsertWithoutAutomationsInput = {
+    update: XOR<RssFeedUpdateWithoutAutomationsInput, RssFeedUncheckedUpdateWithoutAutomationsInput>
+    create: XOR<RssFeedCreateWithoutAutomationsInput, RssFeedUncheckedCreateWithoutAutomationsInput>
+    where?: RssFeedWhereInput
+  }
+
+  export type RssFeedUpdateToOneWithWhereWithoutAutomationsInput = {
+    where?: RssFeedWhereInput
+    data: XOR<RssFeedUpdateWithoutAutomationsInput, RssFeedUncheckedUpdateWithoutAutomationsInput>
+  }
+
+  export type RssFeedUpdateWithoutAutomationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneRequiredWithoutRss_feedsNestedInput
+    projects?: ProjectRssFeedUpdateManyWithoutRss_feedNestedInput
+    items?: RssFeedItemUpdateManyWithoutRss_feedNestedInput
+  }
+
+  export type RssFeedUncheckedUpdateWithoutAutomationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    projects?: ProjectRssFeedUncheckedUpdateManyWithoutRss_feedNestedInput
+    items?: RssFeedItemUncheckedUpdateManyWithoutRss_feedNestedInput
+  }
+
   export type GenerationRunUpsertWithWhereUniqueWithoutAutomationInput = {
     where: GenerationRunWhereUniqueInput
     update: XOR<GenerationRunUpdateWithoutAutomationInput, GenerationRunUncheckedUpdateWithoutAutomationInput>
@@ -28676,6 +36182,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutPostsInput = {
@@ -28690,6 +36197,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutPostsInput = {
@@ -28710,6 +36218,7 @@ export namespace Prisma {
     updated_at?: Date | string
     organisation: OrganisationCreateNestedOneWithoutProjectsInput
     style_profiles?: ProjectStyleProfileCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunCreateNestedManyWithoutProjectInput
     automations?: AutomationCreateNestedManyWithoutProjectInput
   }
@@ -28727,6 +36236,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     style_profiles?: ProjectStyleProfileUncheckedCreateNestedManyWithoutProjectInput
+    rss_feeds?: ProjectRssFeedUncheckedCreateNestedManyWithoutProjectInput
     generation_runs?: GenerationRunUncheckedCreateNestedManyWithoutProjectInput
     automations?: AutomationUncheckedCreateNestedManyWithoutProjectInput
   }
@@ -28847,6 +36357,37 @@ export namespace Prisma {
     create: XOR<DocumentCreateWithoutCover_of_postsInput, DocumentUncheckedCreateWithoutCover_of_postsInput>
   }
 
+  export type RssFeedItemCreateWithoutPostsInput = {
+    id?: string
+    guid: string
+    title: string
+    link?: string | null
+    summary?: string | null
+    content?: string | null
+    published_at?: Date | string | null
+    is_used?: boolean
+    fetched_at?: Date | string
+    rss_feed: RssFeedCreateNestedOneWithoutItemsInput
+  }
+
+  export type RssFeedItemUncheckedCreateWithoutPostsInput = {
+    id?: string
+    rss_feed_id: string
+    guid: string
+    title: string
+    link?: string | null
+    summary?: string | null
+    content?: string | null
+    published_at?: Date | string | null
+    is_used?: boolean
+    fetched_at?: Date | string
+  }
+
+  export type RssFeedItemCreateOrConnectWithoutPostsInput = {
+    where: RssFeedItemWhereUniqueInput
+    create: XOR<RssFeedItemCreateWithoutPostsInput, RssFeedItemUncheckedCreateWithoutPostsInput>
+  }
+
   export type PostCreateWithoutRepurposed_postsInput = {
     id?: string
     type: $Enums.PostType
@@ -28870,6 +36411,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     channels?: PostChannelCreateNestedManyWithoutPostInput
@@ -28883,6 +36425,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -28931,6 +36474,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     channels?: PostChannelCreateNestedManyWithoutPostInput
@@ -28943,6 +36487,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -29094,6 +36639,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutPostsInput = {
@@ -29108,6 +36654,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type ProjectUpsertWithoutPostsInput = {
@@ -29134,6 +36681,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     organisation?: OrganisationUpdateOneRequiredWithoutProjectsNestedInput
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
     automations?: AutomationUpdateManyWithoutProjectNestedInput
   }
@@ -29151,6 +36699,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     style_profiles?: ProjectStyleProfileUncheckedUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUncheckedUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUncheckedUpdateManyWithoutProjectNestedInput
     automations?: AutomationUncheckedUpdateManyWithoutProjectNestedInput
   }
@@ -29284,6 +36833,43 @@ export namespace Prisma {
     post_attachments?: PostAttachmentUncheckedUpdateManyWithoutDocumentNestedInput
   }
 
+  export type RssFeedItemUpsertWithoutPostsInput = {
+    update: XOR<RssFeedItemUpdateWithoutPostsInput, RssFeedItemUncheckedUpdateWithoutPostsInput>
+    create: XOR<RssFeedItemCreateWithoutPostsInput, RssFeedItemUncheckedCreateWithoutPostsInput>
+    where?: RssFeedItemWhereInput
+  }
+
+  export type RssFeedItemUpdateToOneWithWhereWithoutPostsInput = {
+    where?: RssFeedItemWhereInput
+    data: XOR<RssFeedItemUpdateWithoutPostsInput, RssFeedItemUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type RssFeedItemUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    guid?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_used?: BoolFieldUpdateOperationsInput | boolean
+    fetched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    rss_feed?: RssFeedUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type RssFeedItemUncheckedUpdateWithoutPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rss_feed_id?: StringFieldUpdateOperationsInput | string
+    guid?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_used?: BoolFieldUpdateOperationsInput | boolean
+    fetched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PostUpsertWithoutRepurposed_postsInput = {
     update: XOR<PostUpdateWithoutRepurposed_postsInput, PostUncheckedUpdateWithoutRepurposed_postsInput>
     create: XOR<PostCreateWithoutRepurposed_postsInput, PostUncheckedCreateWithoutRepurposed_postsInput>
@@ -29318,6 +36904,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     channels?: PostChannelUpdateManyWithoutPostNestedInput
@@ -29331,6 +36918,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29422,6 +37010,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     channels?: PostChannelCreateNestedManyWithoutPostInput
@@ -29435,6 +37024,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -29525,6 +37115,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     channels?: PostChannelUpdateManyWithoutPostNestedInput
@@ -29538,6 +37129,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29618,6 +37210,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
     generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
     cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
@@ -29631,6 +37224,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -29723,6 +37317,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
@@ -29736,6 +37331,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29815,6 +37411,7 @@ export namespace Prisma {
     id?: string
     organisation_id: string
     role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -29826,6 +37423,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -29880,6 +37478,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutCreated_byInput = {
@@ -29894,6 +37493,7 @@ export namespace Prisma {
     channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateManyWithoutCreated_byInput = {
@@ -29907,23 +37507,28 @@ export namespace Prisma {
   export type OrganisationMemberUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     organisation?: OrganisationUpdateOneRequiredWithoutMembersNestedInput
+    invite_tokens?: OrganisationInviteTokenUpdateManyWithoutOrganisation_memberNestedInput
   }
 
   export type OrganisationMemberUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     organisation_id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    invite_tokens?: OrganisationInviteTokenUncheckedUpdateManyWithoutOrganisation_memberNestedInput
   }
 
   export type OrganisationMemberUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     organisation_id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29950,6 +37555,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
@@ -29963,6 +37569,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29991,6 +37598,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30024,6 +37632,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -30084,6 +37693,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
@@ -30098,6 +37708,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30126,6 +37737,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30147,6 +37759,7 @@ export namespace Prisma {
     id?: string
     user_id: string
     role: $Enums.OrganisationRole
+    status?: $Enums.OrganisationMemberStatus
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -30169,6 +37782,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -30233,26 +37847,41 @@ export namespace Prisma {
     updated_at?: Date | string
   }
 
+  export type RssFeedCreateManyOrganisationInput = {
+    id?: string
+    name: string
+    url: string
+    last_fetched_at?: Date | string | null
+    last_fetch_error?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
   export type OrganisationMemberUpdateWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrganisation_membershipsNestedInput
+    invite_tokens?: OrganisationInviteTokenUpdateManyWithoutOrganisation_memberNestedInput
   }
 
   export type OrganisationMemberUncheckedUpdateWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    invite_tokens?: OrganisationInviteTokenUncheckedUpdateManyWithoutOrganisation_memberNestedInput
   }
 
   export type OrganisationMemberUncheckedUpdateManyWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
+    status?: EnumOrganisationMemberStatusFieldUpdateOperationsInput | $Enums.OrganisationMemberStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30316,6 +37945,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
@@ -30329,6 +37959,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30357,6 +37988,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30496,6 +38128,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     style_profiles?: ProjectStyleProfileUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUpdateManyWithoutProjectNestedInput
     posts?: PostUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutProjectNestedInput
     automations?: AutomationUpdateManyWithoutProjectNestedInput
@@ -30513,6 +38146,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     style_profiles?: ProjectStyleProfileUncheckedUpdateManyWithoutProjectNestedInput
+    rss_feeds?: ProjectRssFeedUncheckedUpdateManyWithoutProjectNestedInput
     posts?: PostUncheckedUpdateManyWithoutProjectNestedInput
     generation_runs?: GenerationRunUncheckedUpdateManyWithoutProjectNestedInput
     automations?: AutomationUncheckedUpdateManyWithoutProjectNestedInput
@@ -30529,6 +38163,78 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RssFeedUpdateWithoutOrganisationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    projects?: ProjectRssFeedUpdateManyWithoutRss_feedNestedInput
+    items?: RssFeedItemUpdateManyWithoutRss_feedNestedInput
+    automations?: AutomationUpdateManyWithoutRss_feedNestedInput
+  }
+
+  export type RssFeedUncheckedUpdateWithoutOrganisationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    projects?: ProjectRssFeedUncheckedUpdateManyWithoutRss_feedNestedInput
+    items?: RssFeedItemUncheckedUpdateManyWithoutRss_feedNestedInput
+    automations?: AutomationUncheckedUpdateManyWithoutRss_feedNestedInput
+  }
+
+  export type RssFeedUncheckedUpdateManyWithoutOrganisationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    last_fetched_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    last_fetch_error?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganisationInviteTokenCreateManyOrganisation_memberInput = {
+    id?: string
+    token_hash: string
+    invited_by_user_id: string
+    expires_at: Date | string
+    used_at?: Date | string | null
+    created_at?: Date | string
+  }
+
+  export type OrganisationInviteTokenUpdateWithoutOrganisation_memberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token_hash?: StringFieldUpdateOperationsInput | string
+    invited_by_user_id?: StringFieldUpdateOperationsInput | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganisationInviteTokenUncheckedUpdateWithoutOrganisation_memberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token_hash?: StringFieldUpdateOperationsInput | string
+    invited_by_user_id?: StringFieldUpdateOperationsInput | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganisationInviteTokenUncheckedUpdateManyWithoutOrganisation_memberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token_hash?: StringFieldUpdateOperationsInput | string
+    invited_by_user_id?: StringFieldUpdateOperationsInput | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PostChannelCreateManyChannel_connectionInput = {
@@ -30598,6 +38304,7 @@ export namespace Prisma {
   export type AutomationCreateManyStyle_profileInput = {
     id?: string
     project_id: string
+    rss_feed_id?: string | null
     name: string
     is_active?: boolean
     frequency?: $Enums.AutomationFrequency
@@ -30606,6 +38313,8 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
@@ -30619,6 +38328,7 @@ export namespace Prisma {
     project_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -30697,17 +38407,21 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutAutomationsNestedInput
+    rss_feed?: RssFeedUpdateOneWithoutAutomationsNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutAutomationNestedInput
   }
 
   export type AutomationUncheckedUpdateWithoutStyle_profileInput = {
     id?: StringFieldUpdateOperationsInput | string
     project_id?: StringFieldUpdateOperationsInput | string
+    rss_feed_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     is_active?: BoolFieldUpdateOperationsInput | boolean
     frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
@@ -30716,6 +38430,8 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30726,6 +38442,7 @@ export namespace Prisma {
   export type AutomationUncheckedUpdateManyWithoutStyle_profileInput = {
     id?: StringFieldUpdateOperationsInput | string
     project_id?: StringFieldUpdateOperationsInput | string
+    rss_feed_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     is_active?: BoolFieldUpdateOperationsInput | boolean
     frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
@@ -30734,6 +38451,8 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30762,6 +38481,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
@@ -30775,6 +38495,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30803,6 +38524,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30827,6 +38549,12 @@ export namespace Prisma {
     created_at?: Date | string
   }
 
+  export type ProjectRssFeedCreateManyProjectInput = {
+    id?: string
+    rss_feed_id: string
+    created_at?: Date | string
+  }
+
   export type PostCreateManyProjectInput = {
     id?: string
     user_id: string
@@ -30834,6 +38562,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     generation_run_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -30865,6 +38594,7 @@ export namespace Prisma {
   export type AutomationCreateManyProjectInput = {
     id?: string
     style_profile_id?: string | null
+    rss_feed_id?: string | null
     name: string
     is_active?: boolean
     frequency?: $Enums.AutomationFrequency
@@ -30873,6 +38603,8 @@ export namespace Prisma {
     timezone?: string
     posts_per_run?: number
     output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
     last_run_at?: Date | string | null
     next_run_at?: Date | string | null
     created_at?: Date | string
@@ -30894,6 +38626,24 @@ export namespace Prisma {
   export type ProjectStyleProfileUncheckedUpdateManyWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectRssFeedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    rss_feed?: RssFeedUpdateOneRequiredWithoutProjectsNestedInput
+  }
+
+  export type ProjectRssFeedUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rss_feed_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectRssFeedUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rss_feed_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30919,6 +38669,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
@@ -30932,6 +38683,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30960,6 +38712,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31020,17 +38773,21 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     style_profile?: StyleProfileUpdateOneWithoutAutomationsNestedInput
+    rss_feed?: RssFeedUpdateOneWithoutAutomationsNestedInput
     generation_runs?: GenerationRunUpdateManyWithoutAutomationNestedInput
   }
 
   export type AutomationUncheckedUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     is_active?: BoolFieldUpdateOperationsInput | boolean
     frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
@@ -31039,6 +38796,8 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31049,6 +38808,7 @@ export namespace Prisma {
   export type AutomationUncheckedUpdateManyWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     is_active?: BoolFieldUpdateOperationsInput | boolean
     frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
@@ -31057,8 +38817,276 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     posts_per_run?: IntFieldUpdateOperationsInput | number
     output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
     last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectRssFeedCreateManyRss_feedInput = {
+    id?: string
+    project_id: string
+    created_at?: Date | string
+  }
+
+  export type RssFeedItemCreateManyRss_feedInput = {
+    id?: string
+    guid: string
+    title: string
+    link?: string | null
+    summary?: string | null
+    content?: string | null
+    published_at?: Date | string | null
+    is_used?: boolean
+    fetched_at?: Date | string
+  }
+
+  export type AutomationCreateManyRss_feedInput = {
+    id?: string
+    project_id: string
+    style_profile_id?: string | null
+    name: string
+    is_active?: boolean
+    frequency?: $Enums.AutomationFrequency
+    days_of_week?: AutomationCreatedays_of_weekInput | number[]
+    time_of_day: string
+    timezone?: string
+    posts_per_run?: number
+    output_stage?: $Enums.AutomationOutputStage
+    generate_images?: boolean
+    image_count?: number
+    last_run_at?: Date | string | null
+    next_run_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type ProjectRssFeedUpdateWithoutRss_feedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutRss_feedsNestedInput
+  }
+
+  export type ProjectRssFeedUncheckedUpdateWithoutRss_feedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectRssFeedUncheckedUpdateManyWithoutRss_feedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RssFeedItemUpdateWithoutRss_feedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    guid?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_used?: BoolFieldUpdateOperationsInput | boolean
+    fetched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUpdateManyWithoutRss_feed_itemNestedInput
+  }
+
+  export type RssFeedItemUncheckedUpdateWithoutRss_feedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    guid?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_used?: BoolFieldUpdateOperationsInput | boolean
+    fetched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUncheckedUpdateManyWithoutRss_feed_itemNestedInput
+  }
+
+  export type RssFeedItemUncheckedUpdateManyWithoutRss_feedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    guid?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_used?: BoolFieldUpdateOperationsInput | boolean
+    fetched_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationUpdateWithoutRss_feedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    is_active?: BoolFieldUpdateOperationsInput | boolean
+    frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
+    days_of_week?: AutomationUpdatedays_of_weekInput | number[]
+    time_of_day?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    posts_per_run?: IntFieldUpdateOperationsInput | number
+    output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
+    last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutAutomationsNestedInput
+    style_profile?: StyleProfileUpdateOneWithoutAutomationsNestedInput
+    generation_runs?: GenerationRunUpdateManyWithoutAutomationNestedInput
+  }
+
+  export type AutomationUncheckedUpdateWithoutRss_feedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
+    style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    is_active?: BoolFieldUpdateOperationsInput | boolean
+    frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
+    days_of_week?: AutomationUpdatedays_of_weekInput | number[]
+    time_of_day?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    posts_per_run?: IntFieldUpdateOperationsInput | number
+    output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
+    last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    generation_runs?: GenerationRunUncheckedUpdateManyWithoutAutomationNestedInput
+  }
+
+  export type AutomationUncheckedUpdateManyWithoutRss_feedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
+    style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    is_active?: BoolFieldUpdateOperationsInput | boolean
+    frequency?: EnumAutomationFrequencyFieldUpdateOperationsInput | $Enums.AutomationFrequency
+    days_of_week?: AutomationUpdatedays_of_weekInput | number[]
+    time_of_day?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    posts_per_run?: IntFieldUpdateOperationsInput | number
+    output_stage?: EnumAutomationOutputStageFieldUpdateOperationsInput | $Enums.AutomationOutputStage
+    generate_images?: BoolFieldUpdateOperationsInput | boolean
+    image_count?: IntFieldUpdateOperationsInput | number
+    last_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    next_run_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PostCreateManyRss_feed_itemInput = {
+    id?: string
+    user_id: string
+    organisation_id: string
+    project_id?: string | null
+    style_profile_id?: string | null
+    generation_run_id?: string | null
+    source_post_id?: string | null
+    type: $Enums.PostType
+    status?: $Enums.PostStatus
+    hook?: string | null
+    body?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: string | null
+    excerpt?: string | null
+    cover_document_id?: string | null
+    seo_title?: string | null
+    seo_description?: string | null
+    canonical_url?: string | null
+    scheduled_at?: Date | string | null
+    published_at?: Date | string | null
+    failed_reason?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type PostUpdateWithoutRss_feed_itemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
+    hook?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    excerpt?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_title?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_description?: NullableStringFieldUpdateOperationsInput | string | null
+    canonical_url?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduled_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
+    project?: ProjectUpdateOneWithoutPostsNestedInput
+    style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
+    generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
+    repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
+    attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
+    channels?: PostChannelUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutRss_feed_itemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
+    hook?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    excerpt?: NullableStringFieldUpdateOperationsInput | string | null
+    cover_document_id?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_title?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_description?: NullableStringFieldUpdateOperationsInput | string | null
+    canonical_url?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduled_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
+    attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
+    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateManyWithoutRss_feed_itemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
+    hook?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    excerpt?: NullableStringFieldUpdateOperationsInput | string | null
+    cover_document_id?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_title?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_description?: NullableStringFieldUpdateOperationsInput | string | null
+    canonical_url?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduled_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31070,6 +39098,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     source_post_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -31110,6 +39139,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutPostsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
@@ -31123,6 +39153,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31151,6 +39182,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31218,6 +39250,7 @@ export namespace Prisma {
     project_id?: string | null
     style_profile_id?: string | null
     generation_run_id?: string | null
+    rss_feed_item_id?: string | null
     type: $Enums.PostType
     status?: $Enums.PostStatus
     hook?: string | null
@@ -31278,6 +39311,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
     generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
     cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     channels?: PostChannelUpdateManyWithoutPostNestedInput
@@ -31290,6 +39324,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31318,6 +39353,7 @@ export namespace Prisma {
     project_id?: NullableStringFieldUpdateOperationsInput | string | null
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
     hook?: NullableStringFieldUpdateOperationsInput | string | null

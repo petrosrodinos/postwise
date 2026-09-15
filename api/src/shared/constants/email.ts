@@ -4,6 +4,7 @@ export const EmailConfig = {
     email_addresses: {
         verification: 'sentify@logiqdev.com',
         alert: 'sentify@logiqdev.com',
+        postwise: 'info@logiqdev.com',
     },
     templates: {
         waitlist: {

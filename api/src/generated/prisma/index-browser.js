@@ -166,8 +166,19 @@ exports.Prisma.OrganisationMemberScalarFieldEnum = {
   organisation_id: 'organisation_id',
   user_id: 'user_id',
   role: 'role',
+  status: 'status',
   created_at: 'created_at',
   updated_at: 'updated_at'
+};
+
+exports.Prisma.OrganisationInviteTokenScalarFieldEnum = {
+  id: 'id',
+  token_hash: 'token_hash',
+  organisation_member_id: 'organisation_member_id',
+  invited_by_user_id: 'invited_by_user_id',
+  expires_at: 'expires_at',
+  used_at: 'used_at',
+  created_at: 'created_at'
 };
 
 exports.Prisma.SocialChannelConnectionScalarFieldEnum = {
@@ -219,6 +230,37 @@ exports.Prisma.ProjectScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.RssFeedScalarFieldEnum = {
+  id: 'id',
+  organisation_id: 'organisation_id',
+  name: 'name',
+  url: 'url',
+  last_fetched_at: 'last_fetched_at',
+  last_fetch_error: 'last_fetch_error',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ProjectRssFeedScalarFieldEnum = {
+  id: 'id',
+  project_id: 'project_id',
+  rss_feed_id: 'rss_feed_id',
+  created_at: 'created_at'
+};
+
+exports.Prisma.RssFeedItemScalarFieldEnum = {
+  id: 'id',
+  rss_feed_id: 'rss_feed_id',
+  guid: 'guid',
+  title: 'title',
+  link: 'link',
+  summary: 'summary',
+  content: 'content',
+  published_at: 'published_at',
+  is_used: 'is_used',
+  fetched_at: 'fetched_at'
+};
+
 exports.Prisma.ProjectStyleProfileScalarFieldEnum = {
   id: 'id',
   project_id: 'project_id',
@@ -241,6 +283,7 @@ exports.Prisma.AutomationScalarFieldEnum = {
   id: 'id',
   project_id: 'project_id',
   style_profile_id: 'style_profile_id',
+  rss_feed_id: 'rss_feed_id',
   name: 'name',
   is_active: 'is_active',
   frequency: 'frequency',
@@ -249,6 +292,8 @@ exports.Prisma.AutomationScalarFieldEnum = {
   timezone: 'timezone',
   posts_per_run: 'posts_per_run',
   output_stage: 'output_stage',
+  generate_images: 'generate_images',
+  image_count: 'image_count',
   last_run_at: 'last_run_at',
   next_run_at: 'next_run_at',
   created_at: 'created_at',
@@ -263,6 +308,7 @@ exports.Prisma.PostScalarFieldEnum = {
   style_profile_id: 'style_profile_id',
   generation_run_id: 'generation_run_id',
   source_post_id: 'source_post_id',
+  rss_feed_item_id: 'rss_feed_item_id',
   type: 'type',
   status: 'status',
   hook: 'hook',
@@ -351,6 +397,11 @@ exports.OrganisationRole = exports.$Enums.OrganisationRole = {
   MEMBER: 'MEMBER'
 };
 
+exports.OrganisationMemberStatus = exports.$Enums.OrganisationMemberStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE'
+};
+
 exports.SocialChannel = exports.$Enums.SocialChannel = {
   TWITTER: 'TWITTER',
   LINKEDIN: 'LINKEDIN'
@@ -405,9 +456,13 @@ exports.Prisma.ModelName = {
   Document: 'Document',
   Organisation: 'Organisation',
   OrganisationMember: 'OrganisationMember',
+  OrganisationInviteToken: 'OrganisationInviteToken',
   SocialChannelConnection: 'SocialChannelConnection',
   StyleProfile: 'StyleProfile',
   Project: 'Project',
+  RssFeed: 'RssFeed',
+  ProjectRssFeed: 'ProjectRssFeed',
+  RssFeedItem: 'RssFeedItem',
   ProjectStyleProfile: 'ProjectStyleProfile',
   GenerationRun: 'GenerationRun',
   Automation: 'Automation',
