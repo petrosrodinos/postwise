@@ -109,7 +109,7 @@ export function AutomationCard({ automation, project, onEdit }: AutomationCardPr
 
       <div className="flex flex-wrap gap-1.5">
         <Badge variant="pill">{project.title}</Badge>
-        {styleProfile && <DnaBadge name={styleProfile.name} traits={styleProfile} />}
+        {styleProfile && <DnaBadge name={styleProfile.name} />}
         <Badge variant="pill" className={OUTPUT_STAGE_STYLE[automation.output_stage]}>
           {getAutomationOutputStageLabel(automation.output_stage)}
         </Badge>

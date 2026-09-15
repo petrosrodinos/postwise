@@ -1,7 +1,6 @@
 import { formatDistanceToNow } from "date-fns";
 import { PlatformChip } from "@/components/ui/platform-glyph";
 import { Badge } from "@/components/ui/badge";
-import { StyleDnaStrand, StyleDnaLegend } from "@/components/ui/style-dna-strand";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getPostTypeLabel } from "@/config/constants/dropdowns/posts/post-type-form.options";
 import { isStyleProfileAnalyzed } from "@/features/style-profiles/utils/style-profiles.utils";
@@ -25,8 +24,6 @@ export function StyleProfileCardSkeleton() {
         </div>
         <Skeleton className="h-5 w-16 flex-none rounded-full" />
       </div>
-      <Skeleton className="h-2 w-full rounded-full" />
-      <Skeleton className="h-3 w-40" />
       <div className="flex flex-col gap-1.5">
         <Skeleton className="h-3.5 w-full" />
         <Skeleton className="h-3.5 w-11/12" />
@@ -63,9 +60,6 @@ export function StyleProfileCard({ profile, onClick }: StyleProfileCardProps) {
         </div>
         <PlatformChip platform={profile.platform} label={getPostTypeLabel(profile.platform)} />
       </div>
-
-      <StyleDnaStrand traits={profile} className="h-2" />
-      <StyleDnaLegend traits={profile} />
 
       <p className="line-clamp-3 text-sm text-muted-foreground">
         {analyzed ? profile.tone_description : "Not analyzed yet — add sample posts to build this profile's Style DNA."}

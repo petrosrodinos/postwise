@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { MoreHorizontal, Rss } from "lucide-react";
+import { MoreHorizontal, PlayCircle, Rss } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,6 +8,7 @@ import ConfirmationDialog from "@/components/ui/confirmation-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useDeleteRssFeed } from "@/features/rss-feeds/hooks/use-rss-feeds";
 import type { RssFeed } from "@/features/rss-feeds/interfaces/rss-feeds.interfaces";
+import { RssFeedTestDialog } from "./rss-feed-test-dialog";
 
 interface RssFeedCardProps {
   feed: RssFeed;
@@ -34,6 +35,7 @@ export function RssFeedCardSkeleton() {
 
 export function RssFeedCard({ feed, onEdit }: RssFeedCardProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isTestOpen, setIsTestOpen] = useState(false);
   const { mutate: deleteRssFeed, isPending: isDeleting } = useDeleteRssFeed();
 
   return (
@@ -48,19 +50,25 @@ export function RssFeedCard({ feed, onEdit }: RssFeedCardProps) {
             <p className="truncate text-xs text-muted-foreground">{feed.url}</p>
           </div>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8 flex-none">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={onEdit}>Edit</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => setIsDeleteOpen(true)}>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex flex-none items-center gap-1">
+          <Button variant="ghost" size="sm" className="h-8 gap-1.5 px-2" onClick={() => setIsTestOpen(true)}>
+            <PlayCircle className="h-4 w-4" />
+            Test
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8 flex-none">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={onEdit}>Edit</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => setIsDeleteOpen(true)}>
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       {feed.last_fetch_error ? (
@@ -85,6 +93,8 @@ export function RssFeedCard({ feed, onEdit }: RssFeedCardProps) {
         variant="destructive"
         isLoading={isDeleting}
       />
+
+      <RssFeedTestDialog isOpen={isTestOpen} onClose={() => setIsTestOpen(false)} feed={feed} />
     </div>
   );
 }

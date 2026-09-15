@@ -178,7 +178,7 @@ export default function DashboardHomePage() {
               ) : (
                 styleProfiles.map((profile) => (
                   <div key={profile.id} className="flex items-center justify-between gap-3">
-                    <DnaBadge name={profile.name} traits={profile} />
+                    <DnaBadge name={profile.name} />
                     <span className="text-xs text-muted-foreground">{profile.posts_analyzed} posts</span>
                   </div>
                 ))

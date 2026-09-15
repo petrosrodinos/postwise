@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { WorkflowBar } from "@/components/ui/workflow-bar";
 import { PostStatusTag } from "@/components/ui/post-status-tag";
-import { StyleDnaStrand } from "@/components/ui/style-dna-strand";
 import { TagInput } from "@/components/ui/tag-input";
 import { ChipListEditor } from "@/components/ui/chip-list-editor";
 import { PostStatusFilterOptions } from "@/config/constants/dropdowns/posts/post-status-filter.options";
@@ -232,10 +231,7 @@ export function OverviewTab({ project, onViewAllPosts }: OverviewTabProps) {
             ) : (
               project.style_profiles.map((link) => (
                 <div key={link.id} className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="truncate text-sm font-medium">{link.style_profile.name}</div>
-                    <StyleDnaStrand traits={link.style_profile} className="mt-1 w-24" />
-                  </div>
+                  <div className="min-w-0 truncate text-sm font-medium">{link.style_profile.name}</div>
                   <span className="whitespace-nowrap text-xs text-muted-foreground">{link.style_profile.posts_analyzed} posts</span>
                 </div>
               ))

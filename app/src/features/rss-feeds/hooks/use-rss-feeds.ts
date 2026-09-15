@@ -78,8 +78,13 @@ export const useDeleteRssFeed = () => {
 };
 
 export const useFetchRssItems = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({ id, dto }: { id: string; dto: FetchRssItemsDto }) => fetchRssItems(id, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [RSS_FEEDS_KEY] });
+    },
     onError: (error: Error) => {
       toast({ title: "Could not fetch feed items", description: error.message, variant: "error" });
     },

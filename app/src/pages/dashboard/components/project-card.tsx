@@ -69,7 +69,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       {project.style_profiles && project.style_profiles.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {project.style_profiles.map((link) => (
-            <DnaBadge key={link.id} name={link.style_profile.name} traits={link.style_profile} />
+            <DnaBadge key={link.id} name={link.style_profile.name} />
           ))}
         </div>
       )}
