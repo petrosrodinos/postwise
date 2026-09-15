@@ -4,20 +4,27 @@ import {
   Coffee,
   Feather,
   Maximize,
+  Repeat2,
   Scissors,
   Smile,
   Sparkles,
   SpellCheck,
+  Wand2,
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useRevisePost } from "@/features/posts/hooks/use-posts";
+import {
+  useRepurposePost,
+  useRevisePost,
+} from "@/features/posts/hooks/use-posts";
 import {
   RevisePresets,
+  type PostType,
   type RevisedPostDraft,
   type RevisePreset,
 } from "@/features/posts/interfaces/posts.interfaces";
+import { PostTypeFormOptions } from "@/config/constants/dropdowns/posts/post-type-form.options";
 
 const QUICK_ACTIONS: {
   preset: RevisePreset;
@@ -32,22 +39,41 @@ const QUICK_ACTIONS: {
   { preset: RevisePresets.SIMPLIFY, label: "Simplify", icon: Feather },
   { preset: RevisePresets.PUNCHIER, label: "Punchier", icon: Zap },
   { preset: RevisePresets.FIX_GRAMMAR, label: "Fix grammar", icon: SpellCheck },
+  { preset: RevisePresets.HUMANIZE, label: "Humanize", icon: Wand2 },
 ];
 
 interface PostAiRevisePanelProps {
   postId: string;
+  postType: PostType;
   onRevised: (draft: RevisedPostDraft) => void;
 }
 
 export function PostAiRevisePanel({
   postId,
+  postType,
   onRevised,
 }: PostAiRevisePanelProps) {
   const { mutate: revise, isPending } = useRevisePost();
+  const { mutate: repurposePost, isPending: isRepurposing } =
+    useRepurposePost();
   const [instructions, setInstructions] = useState("");
   const [activeAction, setActiveAction] = useState<
     RevisePreset | "custom" | null
   >(null);
+  const [activeRepurposeType, setActiveRepurposeType] =
+    useState<PostType | null>(null);
+
+  const repurposeTargets = PostTypeFormOptions.filter(
+    (option) => option.id !== postType,
+  );
+
+  function repurpose(targetType: PostType) {
+    setActiveRepurposeType(targetType);
+    repurposePost(
+      { id: postId, dto: { target_types: [targetType] } },
+      { onSettled: () => setActiveRepurposeType(null) },
+    );
+  }
 
   function runRevise(
     action: RevisePreset | "custom",
@@ -117,6 +143,33 @@ export function PostAiRevisePanel({
           Apply instructions
         </Button>
       </div>
+
+      {repurposeTargets.length > 0 && (
+        <div className="flex flex-col gap-1.5 border-t border-violet/20 pt-3">
+          <span className="text-[11px] font-semibold uppercase text-muted-foreground">
+            Repurpose into
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {repurposeTargets.map(({ id, label }) => (
+              <Button
+                key={id}
+                type="button"
+                size="sm"
+                variant="outline"
+                className="h-7 gap-1.5 bg-background px-2.5 text-xs"
+                disabled={isRepurposing}
+                loading={isRepurposing && activeRepurposeType === id}
+                onClick={() => repurpose(id)}
+              >
+                {!(isRepurposing && activeRepurposeType === id) && (
+                  <Repeat2 className="h-3.5 w-3.5" />
+                )}
+                {label}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

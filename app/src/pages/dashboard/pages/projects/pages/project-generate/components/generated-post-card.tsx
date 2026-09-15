@@ -11,12 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -28,11 +22,7 @@ import { PostStatusTag } from "@/components/ui/post-status-tag";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { getPostStatusLabel } from "@/config/constants/dropdowns/posts/post-status-filter.options";
-import { PostTypeFormOptions } from "@/config/constants/dropdowns/posts/post-type-form.options";
-import {
-  useRepurposePost,
-  useUpdatePost,
-} from "@/features/posts/hooks/use-posts";
+import { useUpdatePost } from "@/features/posts/hooks/use-posts";
 import { useDeleteDocument } from "@/features/documents/hooks/use-documents";
 import {
   PostStatuses,
@@ -64,8 +54,6 @@ export function GeneratedPostCard({
   highlighted,
 }: GeneratedPostCardProps) {
   const { mutate: updatePost, isPending: isSaving } = useUpdatePost();
-  const { mutate: repurposePost, isPending: isRepurposing } =
-    useRepurposePost();
   const { mutate: deleteDocument } = useDeleteDocument();
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -326,36 +314,15 @@ export function GeneratedPostCard({
             >
               Save
             </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  disabled={isRepurposing}
-                  loading={isRepurposing}
-                >
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Repurpose
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                {PostTypeFormOptions.filter(
-                  (option) => option.id !== post.type,
-                ).map((option) => (
-                  <DropdownMenuItem
-                    key={option.id}
-                    onClick={() =>
-                      repurposePost({
-                        id: post.id,
-                        dto: { target_types: [option.id] },
-                      })
-                    }
-                  >
-                    Repurpose into {option.label}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              onClick={() => setIsExpanded(true)}
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              Repurpose
+            </Button>
           </div>
 
           {isEditableStatus ? (
@@ -407,7 +374,11 @@ export function GeneratedPostCard({
           </SheetHeader>
 
           <div className="mt-4">
-            <PostAiRevisePanel postId={post.id} onRevised={handleRevised} />
+            <PostAiRevisePanel
+              postId={post.id}
+              postType={platform}
+              onRevised={handleRevised}
+            />
           </div>
 
           <div className="mt-6 flex flex-1 flex-col gap-4">

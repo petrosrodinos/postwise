@@ -129,6 +129,7 @@ export const RevisePresets = {
   SIMPLIFY: "SIMPLIFY",
   PUNCHIER: "PUNCHIER",
   FIX_GRAMMAR: "FIX_GRAMMAR",
+  HUMANIZE: "HUMANIZE",
 } as const;
 export type RevisePreset = (typeof RevisePresets)[keyof typeof RevisePresets];
 

@@ -10,6 +10,7 @@ export enum RevisePreset {
   SIMPLIFY = 'SIMPLIFY',
   PUNCHIER = 'PUNCHIER',
   FIX_GRAMMAR = 'FIX_GRAMMAR',
+  HUMANIZE = 'HUMANIZE',
 }
 
 export class RevisePostDto {

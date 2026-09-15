@@ -59,6 +59,17 @@ const REVISE_PRESET_INSTRUCTIONS: Record<RevisePreset, string> = {
   [RevisePreset.SIMPLIFY]: 'Simplify the language — shorter sentences, plainer words, easier to read.',
   [RevisePreset.PUNCHIER]: 'Make the opening/hook more attention-grabbing and punchy, and tighten the rest.',
   [RevisePreset.FIX_GRAMMAR]: 'Fix any grammar, spelling and clarity issues without changing the meaning or tone.',
+  [RevisePreset.HUMANIZE]:
+    'Rewrite it to remove common AI writing tells. Replace AI-tell vocabulary with plain words: ' +
+    'delve, leverage, robust, seamless, testament to, underscores, meticulous, game-changer, ' +
+    'cutting-edge, comprehensive, pivotal, and metaphors like landscape/realm/tapestry. Do not ' +
+    'stack words like harness, elevate, unleash, streamline, empower, crucial or myriad together ' +
+    'in one paragraph. Cut hedging and hollow intensifiers ("it\'s important to note", "to be ' +
+    'honest", "genuinely", "truly", "worth checking out") and the "it\'s not X — it\'s Y" reveal ' +
+    'pattern. Keep em dashes to at most one per 1,000 words. Vary sentence and paragraph length ' +
+    'instead of a uniform rhythm, avoid compulsive rule-of-three lists, and prefer concrete ' +
+    'specifics (numbers, names, examples) over vague superlatives. Use contractions and a ' +
+    'distinct, direct voice. Keep the meaning, facts and key points unchanged.',
 };
 
 @Injectable()
