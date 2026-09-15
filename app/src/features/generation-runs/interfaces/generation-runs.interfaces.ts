@@ -18,6 +18,18 @@ export interface CreateGenerationRunDto {
   posts_requested?: number;
   label?: string;
   language?: string;
+  generate_images?: boolean;
+  image_count?: number;
+}
+
+export interface CreateRssGenerationRunDto {
+  project_id: string;
+  rss_feed_item_ids: string[];
+  style_profile_id?: string;
+  label?: string;
+  language?: string;
+  generate_images?: boolean;
+  image_count?: number;
 }
 
 export interface GenerationRunsQueryType {

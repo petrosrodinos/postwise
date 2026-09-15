@@ -3,11 +3,13 @@ import { ApiRoutes } from "@/config/api/routes";
 import { getApiErrorMessage } from "@/lib/api-error.utils";
 import type { PaginatedResponse } from "@/interfaces/pagination.interfaces";
 import type {
+  AttachRssFeedDto,
   AttachStyleProfileDto,
   CreateProjectDto,
   GenerateProjectDetailsDto,
   Project,
   ProjectAiSuggestions,
+  ProjectRssFeedLink,
   ProjectStyleProfileLink,
   ProjectsQueryType,
   UpdateProjectDto,
@@ -82,5 +84,23 @@ export const detachStyleProfile = async (id: string, styleProfileId: string): Pr
     return response.data;
   } catch (error) {
     throw new Error("Failed to detach style profile. Please try again.");
+  }
+};
+
+export const attachRssFeed = async (id: string, dto: AttachRssFeedDto): Promise<ProjectRssFeedLink> => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.projects.rss_feeds(id), dto);
+    return response.data;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "Failed to attach RSS feed. Please try again."));
+  }
+};
+
+export const detachRssFeed = async (id: string, rssFeedId: string): Promise<{ message: string }> => {
+  try {
+    const response = await axiosInstance.delete(ApiRoutes.projects.rss_feed(id, rssFeedId));
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to detach RSS feed. Please try again.");
   }
 };

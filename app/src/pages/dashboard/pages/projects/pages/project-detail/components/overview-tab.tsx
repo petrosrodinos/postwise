@@ -12,7 +12,7 @@ import { TagInput } from "@/components/ui/tag-input";
 import { ChipListEditor } from "@/components/ui/chip-list-editor";
 import { PostStatusFilterOptions } from "@/config/constants/dropdowns/posts/post-status-filter.options";
 import { getDropdownOptionLabel } from "@/lib/dropdown-option-label.utils";
-import { PostStatuses } from "@/features/posts/interfaces/posts.interfaces";
+import { PostStatuses, PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import { usePosts } from "@/features/posts/hooks/use-posts";
 import { useUpdateProject } from "@/features/projects/hooks/use-projects";
 import { Routes } from "@/routes/routes";
@@ -245,6 +245,28 @@ export function OverviewTab({ project, onViewAllPosts }: OverviewTabProps) {
             </Button>
           </CardContent>
         </Card>
+
+        {project.platform === PostTypes.BLOG && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">RSS feeds attached</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3">
+              {!project.rss_feeds || project.rss_feeds.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No RSS feeds attached.</p>
+              ) : (
+                project.rss_feeds.map((link) => (
+                  <div key={link.id} className="flex items-center justify-between gap-3">
+                    <div className="min-w-0 truncate text-sm font-medium">{link.rss_feed.name}</div>
+                  </div>
+                ))
+              )}
+              <Button variant="outline" size="sm" asChild className="mt-1">
+                <Link to={Routes.dashboard.rss_feeds}>Manage RSS feeds</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

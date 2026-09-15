@@ -1,5 +1,5 @@
 import type { UseFormReturn } from "react-hook-form";
-import { Dna, Wand2 } from "lucide-react";
+import { Dna, Rss, Wand2 } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,7 +10,9 @@ import { ChipListEditor } from "@/components/ui/chip-list-editor";
 import { PlatformPicker } from "@/components/ui/platform-picker";
 import { cn } from "@/lib/utils";
 import { useGenerateProjectDetails } from "@/features/projects/hooks/use-projects";
+import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import type { StyleProfile } from "@/features/style-profiles/interfaces/style-profiles.interfaces";
+import type { RssFeed } from "@/features/rss-feeds/interfaces/rss-feeds.interfaces";
 import type { CreateProjectFormData } from "@/pages/dashboard/validation-schemas/project.schema";
 import { ProjectPreviewCard } from "./project-preview-card";
 
@@ -21,9 +23,10 @@ interface ProjectFormProps {
   isSubmitting: boolean;
   onCancel: () => void;
   styleProfiles: StyleProfile[];
+  rssFeeds: RssFeed[];
 }
 
-export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCancel, styleProfiles }: ProjectFormProps) {
+export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCancel, styleProfiles, rssFeeds }: ProjectFormProps) {
   const { mutate: generateDetails, isPending: isGeneratingDetails } = useGenerateProjectDetails();
 
   const title = form.watch("title");
@@ -133,6 +136,49 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
                             >
                               <Dna className="h-3.5 w-3.5" />
                               {profile.name}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          {platform === PostTypes.BLOG && rssFeeds.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Sources</CardTitle>
+                <CardDescription>Optionally pull items from RSS feeds to turn into blog posts.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <FormField
+                  control={form.control}
+                  name="rss_feed_ids"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex flex-wrap gap-2">
+                        {rssFeeds.map((feed) => {
+                          const selected = field.value.includes(feed.id);
+                          return (
+                            <button
+                              key={feed.id}
+                              type="button"
+                              onClick={() =>
+                                field.onChange(selected ? field.value.filter((id) => id !== feed.id) : [...field.value, feed.id])
+                              }
+                              className={cn(
+                                "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                                selected
+                                  ? "border-brass-ink bg-brass-soft text-brass-ink"
+                                  : "border-border bg-card text-muted-foreground hover:border-foreground/25 hover:text-foreground",
+                              )}
+                            >
+                              <Rss className="h-3.5 w-3.5" />
+                              {feed.name}
                             </button>
                           );
                         })}

@@ -7,8 +7,12 @@ import { Routes } from "@/routes/routes";
 import { useProject } from "@/features/projects/hooks/use-projects";
 import { useCreateGenerationRun, useGenerationRun } from "@/features/generation-runs/hooks/use-generation-runs";
 import { DEFAULT_LANGUAGE } from "@/config/constants/dropdowns/generation-runs/language-form.options";
+import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import { GenerationContextCard } from "./components/generation-context-card";
 import { GeneratedPostCard } from "./components/generated-post-card";
+import { RssItemPickerCard } from "./components/rss-item-picker-card";
+
+type GenerationSource = "ideas" | "rss";
 
 export default function ProjectGeneratePage() {
   const { id } = useParams<{ id: string }>();
@@ -19,9 +23,12 @@ export default function ProjectGeneratePage() {
   const { data: run, isPending: isRunPending } = useGenerationRun(runId);
   const { mutate: createRun, isPending: isGenerating } = useCreateGenerationRun();
 
+  const [source, setSource] = useState<GenerationSource>("ideas");
   const [styleProfileId, setStyleProfileId] = useState("");
   const [postsRequested, setPostsRequested] = useState(4);
   const [language, setLanguage] = useState(DEFAULT_LANGUAGE);
+  const [generateImages, setGenerateImages] = useState(false);
+  const [imageCount, setImageCount] = useState(1);
 
   useEffect(() => {
     if (run) {
@@ -106,6 +113,8 @@ export default function ProjectGeneratePage() {
         style_profile_id: styleProfileId || undefined,
         posts_requested: run ? (run.posts_requested ?? (posts.length || 4)) : postsRequested,
         language,
+        generate_images: generateImages,
+        image_count: imageCount,
       },
       {
         onSuccess: (newRun) => {
@@ -114,6 +123,8 @@ export default function ProjectGeneratePage() {
       },
     );
   }
+
+  const isBlog = project.platform === PostTypes.BLOG;
 
   return (
     <div className="flex flex-col gap-6">
@@ -126,18 +137,57 @@ export default function ProjectGeneratePage() {
       </Link>
 
       <div className="grid items-start gap-6" style={{ gridTemplateColumns: "320px 1fr" }}>
-        <GenerationContextCard
-          project={project}
-          isExistingRun={!!run}
-          styleProfileId={styleProfileId}
-          onStyleProfileChange={setStyleProfileId}
-          postsRequested={postsRequested}
-          onPostsRequestedChange={setPostsRequested}
-          language={language}
-          onLanguageChange={setLanguage}
-          onGenerate={handleGenerate}
-          isGenerating={isGenerating}
-        />
+        <div className="flex flex-col gap-4">
+          {isBlog && !run && (
+            <div className="inline-flex rounded-lg border border-input p-1">
+              {(
+                [
+                  { id: "ideas", label: "From ideas" },
+                  { id: "rss", label: "From RSS feed" },
+                ] as const
+              ).map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                    source === option.id ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                  onClick={() => setSource(option.id)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {source === "rss" && isBlog && !run ? (
+            <RssItemPickerCard
+              project={project}
+              styleProfileId={styleProfileId}
+              language={language}
+              generateImages={generateImages}
+              imageCount={imageCount}
+              onGenerated={(newRun) => setSearchParams({ run: newRun.id })}
+            />
+          ) : (
+            <GenerationContextCard
+              project={project}
+              isExistingRun={!!run}
+              styleProfileId={styleProfileId}
+              onStyleProfileChange={setStyleProfileId}
+              postsRequested={postsRequested}
+              onPostsRequestedChange={setPostsRequested}
+              language={language}
+              onLanguageChange={setLanguage}
+              generateImages={generateImages}
+              onGenerateImagesChange={setGenerateImages}
+              imageCount={imageCount}
+              onImageCountChange={setImageCount}
+              onGenerate={handleGenerate}
+              isGenerating={isGenerating}
+            />
+          )}
+        </div>
 
         <div className="flex flex-col gap-4">
           <div className="flex items-baseline justify-between gap-4">

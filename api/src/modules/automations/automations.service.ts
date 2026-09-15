@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { ProjectsService } from '@/modules/projects/projects.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
@@ -24,9 +24,21 @@ export class AutomationsService {
     this.ownershipService.assertRole(context, MANAGE_ROLES);
   }
 
+  private async assertRssFeedAttached(projectId: string, rssFeedId: string | undefined) {
+    if (!rssFeedId) return;
+
+    const link = await this.prisma.projectRssFeed.findUnique({
+      where: { project_id_rss_feed_id: { project_id: projectId, rss_feed_id: rssFeedId } },
+    });
+    if (!link) {
+      throw new BadRequestException('RSS feed must be attached to this project first');
+    }
+  }
+
   async create(userId: string, dto: CreateAutomationDto) {
     const project = await this.projectsService.findOwned(userId, dto.project_id);
     await this.assertManage(userId, project);
+    await this.assertRssFeedAttached(dto.project_id, dto.rss_feed_id);
 
     const daysOfWeek = dto.days_of_week ?? [];
     const timezone = dto.timezone ?? 'UTC';
@@ -42,6 +54,7 @@ export class AutomationsService {
       data: {
         project_id: dto.project_id,
         style_profile_id: dto.style_profile_id,
+        rss_feed_id: dto.rss_feed_id,
         name: dto.name,
         is_active: dto.is_active ?? true,
         frequency: dto.frequency,
@@ -50,6 +63,8 @@ export class AutomationsService {
         timezone,
         posts_per_run: dto.posts_per_run ?? 1,
         output_stage: dto.output_stage,
+        generate_images: dto.generate_images ?? false,
+        image_count: dto.image_count ?? 1,
         next_run_at: nextRunAt,
       },
     });
@@ -90,6 +105,9 @@ export class AutomationsService {
   async update(userId: string, id: string, dto: UpdateAutomationDto) {
     const { automation, project } = await this.findOwned(userId, id);
     await this.assertManage(userId, project);
+    if (dto.rss_feed_id !== undefined) {
+      await this.assertRssFeedAttached(automation.project_id, dto.rss_feed_id);
+    }
 
     const scheduleChanged =
       dto.frequency !== undefined ||
@@ -110,6 +128,7 @@ export class AutomationsService {
       where: { id },
       data: {
         style_profile_id: dto.style_profile_id,
+        rss_feed_id: dto.rss_feed_id,
         name: dto.name,
         is_active: dto.is_active,
         frequency: dto.frequency,
@@ -118,6 +137,8 @@ export class AutomationsService {
         timezone: dto.timezone,
         posts_per_run: dto.posts_per_run,
         output_stage: dto.output_stage,
+        generate_images: dto.generate_images,
+        image_count: dto.image_count,
         ...(nextRunAt && { next_run_at: nextRunAt }),
       },
     });

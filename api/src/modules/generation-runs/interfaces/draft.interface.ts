@@ -5,6 +5,8 @@ export const DraftSchema = z.object({
   body: z.string(),
   title: z.string().optional(),
   excerpt: z.string().optional(),
+  seo_title: z.string().optional(),
+  seo_description: z.string().optional(),
 });
 
 export const DraftsSchema = z.array(DraftSchema).min(1);

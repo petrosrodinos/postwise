@@ -8,6 +8,7 @@ export const createProjectSchema = z.object({
     required_error: "Choose a platform",
   }),
   style_profile_ids: z.array(z.string()),
+  rss_feed_ids: z.array(z.string()),
   pillars: z.array(z.string()),
   ideas: z.array(z.string()),
   instructions: z.array(z.string()),

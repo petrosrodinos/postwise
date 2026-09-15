@@ -4,6 +4,7 @@ import { AutomationFrequencies, AutomationOutputStages } from "@/features/automa
 export const automationSchema = z.object({
   project_id: z.string().min(1, "Choose a project"),
   style_profile_id: z.string().optional(),
+  rss_feed_id: z.string().optional(),
   name: z.string().min(1, "Give this automation a name"),
   frequency: z.enum([AutomationFrequencies.WEEKLY, AutomationFrequencies.DAILY, AutomationFrequencies.WEEKDAYS]),
   days_of_week: z.array(z.number().min(0).max(6)),
@@ -13,6 +14,8 @@ export const automationSchema = z.object({
   timezone: z.string().min(1),
   posts_per_run: z.number().min(1).max(10),
   output_stage: z.enum([AutomationOutputStages.DRAFT, AutomationOutputStages.REVIEW, AutomationOutputStages.PUBLISH]),
+  generate_images: z.boolean(),
+  image_count: z.number().min(1).max(4),
 });
 
 export type AutomationFormData = z.infer<typeof automationSchema>;

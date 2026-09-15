@@ -12,6 +12,7 @@ import { OrganisationRole } from 'generated/prisma';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AttachStyleProfileDto } from './dto/attach-style-profile.dto';
+import { AttachRssFeedDto } from './dto/attach-rss-feed.dto';
 import { GenerateProjectDetailsDto } from './dto/generate-project-details.dto';
 import { ProjectsQueryType } from './dto/projects-query.schema';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
@@ -82,7 +83,10 @@ Platform: ${dto.platform ?? 'general social media'}`;
         skip,
         take,
         orderBy: { created_at: 'desc' },
-        include: { style_profiles: { include: { style_profile: true } } },
+        include: {
+          style_profiles: { include: { style_profile: true } },
+          rss_feeds: { include: { rss_feed: true } },
+        },
       }),
       this.prisma.project.count({ where }),
     ]);
@@ -115,7 +119,10 @@ Platform: ${dto.platform ?? 'general social media'}`;
   async findOwned(userId: string, id: string) {
     const project = await this.prisma.project.findUnique({
       where: { id },
-      include: { style_profiles: { include: { style_profile: true } } },
+      include: {
+        style_profiles: { include: { style_profile: true } },
+        rss_feeds: { include: { rss_feed: true } },
+      },
     });
     if (!project) throw new NotFoundException('Project not found');
 
@@ -218,5 +225,49 @@ Platform: ${dto.platform ?? 'general social media'}`;
 
     await this.prisma.projectStyleProfile.delete({ where: { id: link.id } });
     return { message: 'Style profile detached successfully' };
+  }
+
+  async attachRssFeed(userId: string, id: string, dto: AttachRssFeedDto) {
+    const project = await this.findOwned(userId, id);
+    await this.assertManage(userId, project);
+
+    const rssFeed = await this.prisma.rssFeed.findUnique({
+      where: { id: dto.rss_feed_id },
+    });
+    if (!rssFeed) throw new NotFoundException('RSS feed not found');
+
+    const sameOwner = rssFeed.organisation_id === project.organisation_id;
+    if (!sameOwner) {
+      throw new BadRequestException(
+        'RSS feed must belong to the same owner context as the project',
+      );
+    }
+
+    const existing = await this.prisma.projectRssFeed.findUnique({
+      where: {
+        project_id_rss_feed_id: { project_id: id, rss_feed_id: dto.rss_feed_id },
+      },
+    });
+    if (existing) {
+      throw new ConflictException('This RSS feed is already attached to the project');
+    }
+
+    return this.prisma.projectRssFeed.create({
+      data: { project_id: id, rss_feed_id: dto.rss_feed_id },
+      include: { rss_feed: true },
+    });
+  }
+
+  async detachRssFeed(userId: string, id: string, rssFeedId: string) {
+    const project = await this.findOwned(userId, id);
+    await this.assertManage(userId, project);
+
+    const link = await this.prisma.projectRssFeed.findUnique({
+      where: { project_id_rss_feed_id: { project_id: id, rss_feed_id: rssFeedId } },
+    });
+    if (!link) throw new NotFoundException('This RSS feed is not attached to the project');
+
+    await this.prisma.projectRssFeed.delete({ where: { id: link.id } });
+    return { message: 'RSS feed detached successfully' };
   }
 }

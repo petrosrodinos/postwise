@@ -1,3 +1,5 @@
+import type { Document } from "@/features/documents/interfaces/documents.interfaces";
+
 // Canonical content-type enum — also reused as the "platform" for
 // StyleProfile and Project (all three share the same LinkedIn/X/Blog space).
 export const PostTypes = {
@@ -61,6 +63,7 @@ export interface PostAttachment {
   document_id: string;
   order: number;
   created_at: string;
+  document?: Document;
 }
 
 export interface PostChannel {

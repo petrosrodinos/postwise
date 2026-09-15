@@ -2,9 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { useWorkspaceStore } from "@/stores/workspace";
 import {
+  attachRssFeed,
   attachStyleProfile,
   createProject,
   deleteProject,
+  detachRssFeed,
   detachStyleProfile,
   generateProjectDetails,
   getProject,
@@ -12,6 +14,7 @@ import {
   updateProject,
 } from "../services/projects.services";
 import type {
+  AttachRssFeedDto,
   AttachStyleProfileDto,
   CreateProjectDto,
   GenerateProjectDetailsDto,
@@ -121,6 +124,34 @@ export const useDetachStyleProfile = () => {
     },
     onError: (error: Error) => {
       toast({ title: "Could not detach style profile", description: error.message, variant: "error" });
+    },
+  });
+};
+
+export const useAttachRssFeed = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, dto }: { id: string; dto: AttachRssFeedDto }) => attachRssFeed(id, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PROJECTS_KEY] });
+      toast({ title: "RSS feed attached", description: "This project can now generate posts from it.", duration: 2000 });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Could not attach RSS feed", description: error.message, variant: "error" });
+    },
+  });
+};
+
+export const useDetachRssFeed = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, rssFeedId }: { id: string; rssFeedId: string }) => detachRssFeed(id, rssFeedId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PROJECTS_KEY] });
+      toast({ title: "RSS feed detached", description: "It's no longer attached to this project.", duration: 2000 });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Could not detach RSS feed", description: error.message, variant: "error" });
     },
   });
 };

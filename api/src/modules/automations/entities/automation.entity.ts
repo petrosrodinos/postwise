@@ -11,6 +11,9 @@ export class AutomationEntity {
   @ApiProperty({ required: false, nullable: true })
   style_profile_id?: string | null;
 
+  @ApiProperty({ required: false, nullable: true })
+  rss_feed_id?: string | null;
+
   @ApiProperty()
   name: string;
 
@@ -34,6 +37,12 @@ export class AutomationEntity {
 
   @ApiProperty({ enum: AutomationOutputStage })
   output_stage: AutomationOutputStage;
+
+  @ApiProperty()
+  generate_images: boolean;
+
+  @ApiProperty()
+  image_count: number;
 
   @ApiProperty({ required: false, nullable: true })
   last_run_at?: Date | null;

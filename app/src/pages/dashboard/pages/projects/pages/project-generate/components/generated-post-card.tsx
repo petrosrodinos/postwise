@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,9 +8,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Badge } from "@/components/ui/badge";
 import { DnaBadge } from "@/components/ui/dna-badge";
 import { PostStatusTag } from "@/components/ui/post-status-tag";
+import { cn } from "@/lib/utils";
 import { getPostStatusLabel } from "@/config/constants/dropdowns/posts/post-status-filter.options";
 import { PostTypeFormOptions } from "@/config/constants/dropdowns/posts/post-type-form.options";
 import { useRepurposePost, useUpdatePost } from "@/features/posts/hooks/use-posts";
+import { useDeleteDocument } from "@/features/documents/hooks/use-documents";
 import { PostStatuses, PostTypes, type Post, type UpdatePostDto } from "@/features/posts/interfaces/posts.interfaces";
 import type { ProjectStyleProfileLink } from "@/features/projects/interfaces/projects.interfaces";
 
@@ -25,6 +27,7 @@ interface GeneratedPostCardProps {
 export function GeneratedPostCard({ post, platform, styleProfiles }: GeneratedPostCardProps) {
   const { mutate: updatePost, isPending: isSaving } = useUpdatePost();
   const { mutate: repurposePost, isPending: isRepurposing } = useRepurposePost();
+  const { mutate: deleteDocument } = useDeleteDocument();
 
   const [draft, setDraft] = useState({
     title: post.title ?? "",
@@ -92,6 +95,46 @@ export function GeneratedPostCard({ post, platform, styleProfiles }: GeneratedPo
             className="text-xs"
           />
         </>
+      )}
+
+      {isBlog && post.attachments && post.attachments.length > 0 && (
+        <div className="flex flex-col gap-1.5">
+          <span className="text-xs font-semibold uppercase text-muted-foreground">Cover image candidates</span>
+          <div className="flex flex-wrap gap-2">
+            {post.attachments.map((attachment) => {
+              const isCover = attachment.document_id === post.cover_document_id;
+              return (
+                <div key={attachment.id} className="group relative h-16 w-16 flex-none overflow-hidden rounded-lg border">
+                  <button
+                    type="button"
+                    onClick={() => updatePost({ id: post.id, dto: { cover_document_id: attachment.document_id } })}
+                    className={cn(
+                      "block h-full w-full",
+                      isCover ? "ring-2 ring-brass-ink ring-offset-1" : "opacity-80 hover:opacity-100",
+                    )}
+                  >
+                    {attachment.document?.url && (
+                      <img src={attachment.document.url} alt="Cover candidate" className="h-full w-full object-cover" />
+                    )}
+                  </button>
+                  {isCover && (
+                    <span className="absolute bottom-0 left-0 right-0 bg-brass-ink px-1 py-0.5 text-center text-[10px] font-semibold text-white">
+                      Cover
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => deleteDocument(attachment.document_id)}
+                    className="absolute right-0.5 top-0.5 hidden rounded-full bg-black/60 p-0.5 text-white group-hover:block"
+                    aria-label="Discard candidate"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
 
       <Textarea value={draft.body} onChange={(e) => setDraft((d) => ({ ...d, body: e.target.value }))} rows={6} className="text-sm leading-relaxed" />

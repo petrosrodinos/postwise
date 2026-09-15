@@ -3,8 +3,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAttachStyleProfile, useDetachStyleProfile, useProject, useUpdateProject } from "@/features/projects/hooks/use-projects";
+import {
+  useAttachRssFeed,
+  useAttachStyleProfile,
+  useDetachRssFeed,
+  useDetachStyleProfile,
+  useProject,
+  useUpdateProject,
+} from "@/features/projects/hooks/use-projects";
 import { useStyleProfiles } from "@/features/style-profiles/hooks/use-style-profiles";
+import { useRssFeeds } from "@/features/rss-feeds/hooks/use-rss-feeds";
 import { Routes } from "@/routes/routes";
 import { createProjectSchema, type CreateProjectFormData } from "@/pages/dashboard/validation-schemas/project.schema";
 import { ProjectForm } from "../../components/project-form";
@@ -16,8 +24,12 @@ export default function EditProjectPage() {
   const { mutate: updateProject, isPending: isSaving } = useUpdateProject();
   const { mutate: attachStyleProfile } = useAttachStyleProfile();
   const { mutate: detachStyleProfile } = useDetachStyleProfile();
+  const { mutate: attachRssFeed } = useAttachRssFeed();
+  const { mutate: detachRssFeed } = useDetachRssFeed();
   const { data: styleProfilesPage } = useStyleProfiles({ limit: 100 });
   const styleProfiles = styleProfilesPage?.data ?? [];
+  const { data: rssFeedsPage } = useRssFeeds({ limit: 100 });
+  const rssFeeds = rssFeedsPage?.data ?? [];
 
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
@@ -27,6 +39,7 @@ export default function EditProjectPage() {
           description: project.description ?? "",
           platform: project.platform,
           style_profile_ids: project.style_profiles?.map((link) => link.style_profile_id) ?? [],
+          rss_feed_ids: project.rss_feeds?.map((link) => link.rss_feed_id) ?? [],
           pillars: project.pillars,
           ideas: project.ideas,
           instructions: project.instructions,
@@ -100,6 +113,10 @@ export default function EditProjectPage() {
     const toAttach = data.style_profile_ids.filter((profileId) => !initialStyleProfileIds.includes(profileId));
     const toDetach = initialStyleProfileIds.filter((profileId) => !data.style_profile_ids.includes(profileId));
 
+    const initialRssFeedIds = project!.rss_feeds?.map((link) => link.rss_feed_id) ?? [];
+    const rssFeedsToAttach = data.rss_feed_ids.filter((feedId) => !initialRssFeedIds.includes(feedId));
+    const rssFeedsToDetach = initialRssFeedIds.filter((feedId) => !data.rss_feed_ids.includes(feedId));
+
     updateProject(
       {
         id: project!.id,
@@ -119,6 +136,12 @@ export default function EditProjectPage() {
           }
           for (const styleProfileId of toDetach) {
             detachStyleProfile({ id: project!.id, styleProfileId });
+          }
+          for (const rssFeedId of rssFeedsToAttach) {
+            attachRssFeed({ id: project!.id, dto: { rss_feed_id: rssFeedId } });
+          }
+          for (const rssFeedId of rssFeedsToDetach) {
+            detachRssFeed({ id: project!.id, rssFeedId });
           }
           navigate(Routes.dashboard.project_detail(project!.id));
         },
@@ -147,6 +170,7 @@ export default function EditProjectPage() {
         isSubmitting={isSaving}
         onCancel={() => navigate(Routes.dashboard.project_detail(project.id))}
         styleProfiles={styleProfiles}
+        rssFeeds={rssFeeds}
       />
     </div>
   );

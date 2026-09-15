@@ -2,8 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
-import { useAttachStyleProfile, useCreateProject } from "@/features/projects/hooks/use-projects";
+import { useAttachRssFeed, useAttachStyleProfile, useCreateProject } from "@/features/projects/hooks/use-projects";
 import { useStyleProfiles } from "@/features/style-profiles/hooks/use-style-profiles";
+import { useRssFeeds } from "@/features/rss-feeds/hooks/use-rss-feeds";
 import { Routes } from "@/routes/routes";
 import { createProjectSchema, type CreateProjectFormData } from "@/pages/dashboard/validation-schemas/project.schema";
 import { ProjectForm } from "../../components/project-form";
@@ -12,8 +13,11 @@ export default function NewProjectPage() {
   const navigate = useNavigate();
   const { mutate: createProject, isPending: isCreating } = useCreateProject();
   const { mutate: attachStyleProfile } = useAttachStyleProfile();
+  const { mutate: attachRssFeed } = useAttachRssFeed();
   const { data: styleProfilesPage } = useStyleProfiles({ limit: 100 });
   const styleProfiles = styleProfilesPage?.data ?? [];
+  const { data: rssFeedsPage } = useRssFeeds({ limit: 100 });
+  const rssFeeds = rssFeedsPage?.data ?? [];
 
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
@@ -22,6 +26,7 @@ export default function NewProjectPage() {
       description: "",
       platform: undefined,
       style_profile_ids: [],
+      rss_feed_ids: [],
       pillars: [],
       ideas: [],
       instructions: [],
@@ -42,6 +47,9 @@ export default function NewProjectPage() {
         onSuccess: (project) => {
           for (const styleProfileId of data.style_profile_ids) {
             attachStyleProfile({ id: project.id, dto: { style_profile_id: styleProfileId } });
+          }
+          for (const rssFeedId of data.rss_feed_ids) {
+            attachRssFeed({ id: project.id, dto: { rss_feed_id: rssFeedId } });
           }
           navigate(Routes.dashboard.project_detail(project.id));
         },
@@ -70,6 +78,7 @@ export default function NewProjectPage() {
         isSubmitting={isCreating}
         onCancel={() => navigate(Routes.dashboard.projects)}
         styleProfiles={styleProfiles}
+        rssFeeds={rssFeeds}
       />
     </div>
   );

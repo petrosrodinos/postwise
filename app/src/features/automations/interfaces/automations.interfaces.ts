@@ -16,6 +16,7 @@ export interface Automation {
   id: string;
   project_id: string;
   style_profile_id?: string | null;
+  rss_feed_id?: string | null;
   name: string;
   is_active: boolean;
   frequency: AutomationFrequency;
@@ -24,6 +25,8 @@ export interface Automation {
   timezone: string;
   posts_per_run: number;
   output_stage: AutomationOutputStage;
+  generate_images: boolean;
+  image_count: number;
   last_run_at?: string | null;
   next_run_at?: string | null;
   created_at: string;
@@ -33,6 +36,7 @@ export interface Automation {
 export interface CreateAutomationDto {
   project_id: string;
   style_profile_id?: string;
+  rss_feed_id?: string;
   name: string;
   is_active?: boolean;
   frequency: AutomationFrequency;
@@ -41,6 +45,8 @@ export interface CreateAutomationDto {
   timezone?: string;
   posts_per_run?: number;
   output_stage?: AutomationOutputStage;
+  generate_images?: boolean;
+  image_count?: number;
 }
 
 export type UpdateAutomationDto = Partial<Omit<CreateAutomationDto, "project_id">>;

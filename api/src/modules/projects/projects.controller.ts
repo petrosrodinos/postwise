@@ -17,6 +17,7 @@ import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AttachStyleProfileDto } from './dto/attach-style-profile.dto';
+import { AttachRssFeedDto } from './dto/attach-rss-feed.dto';
 import { GenerateProjectDetailsDto } from './dto/generate-project-details.dto';
 import { ProjectsQuerySchema, ProjectsQueryType } from './dto/projects-query.schema';
 import { ProjectEntity } from './entities/project.entity';
@@ -102,5 +103,27 @@ export class ProjectsController {
     @Param('styleProfileId') styleProfileId: string,
   ) {
     return this.projectsService.detachStyleProfile(userId, id, styleProfileId);
+  }
+
+  @Post(':id/rss-feeds')
+  @ApiOperation({ summary: 'Attach an RSS feed to a project' })
+  @ApiResponse({ status: 201 })
+  attachRssFeed(
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+    @Body() dto: AttachRssFeedDto,
+  ) {
+    return this.projectsService.attachRssFeed(userId, id, dto);
+  }
+
+  @Delete(':id/rss-feeds/:rssFeedId')
+  @ApiOperation({ summary: 'Detach an RSS feed from a project' })
+  @ApiResponse({ status: 200 })
+  detachRssFeed(
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+    @Param('rssFeedId') rssFeedId: string,
+  ) {
+    return this.projectsService.detachRssFeed(userId, id, rssFeedId);
   }
 }

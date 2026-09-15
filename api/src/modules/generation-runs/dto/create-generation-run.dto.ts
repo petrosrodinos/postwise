@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 import { GENERATION_LANGUAGE_CODES } from '../constants/languages.constant';
 
 export class CreateGenerationRunDto {
@@ -36,4 +36,16 @@ export class CreateGenerationRunDto {
   @IsOptional()
   @IsIn(GENERATION_LANGUAGE_CODES)
   language?: string;
+
+  @ApiProperty({ required: false, default: false, description: 'Generate AI cover image candidates for each post' })
+  @IsOptional()
+  @IsBoolean()
+  generate_images?: boolean;
+
+  @ApiProperty({ required: false, minimum: 1, maximum: 4, default: 1 })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(4)
+  image_count?: number;
 }

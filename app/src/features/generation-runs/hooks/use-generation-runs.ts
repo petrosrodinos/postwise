@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
-import { createGenerationRun, getGenerationRun, getGenerationRuns } from "../services/generation-runs.services";
-import type { CreateGenerationRunDto, GenerationRunsQueryType } from "../interfaces/generation-runs.interfaces";
+import { createGenerationRun, createRssGenerationRun, getGenerationRun, getGenerationRuns } from "../services/generation-runs.services";
+import type { CreateGenerationRunDto, CreateRssGenerationRunDto, GenerationRunsQueryType } from "../interfaces/generation-runs.interfaces";
 
 const GENERATION_RUNS_KEY = "generation-runs";
 
@@ -29,6 +29,21 @@ export const useCreateGenerationRun = () => {
       queryClient.invalidateQueries({ queryKey: [GENERATION_RUNS_KEY] });
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       toast({ title: "Batch generated", description: "New drafts are ready to review.", duration: 2500 });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Could not generate posts", description: error.message, variant: "error" });
+    },
+  });
+};
+
+export const useCreateRssGenerationRun = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (dto: CreateRssGenerationRunDto) => createRssGenerationRun(dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [GENERATION_RUNS_KEY] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast({ title: "Batch generated", description: "New blog posts are ready to review.", duration: 2500 });
     },
     onError: (error: Error) => {
       toast({ title: "Could not generate posts", description: error.message, variant: "error" });

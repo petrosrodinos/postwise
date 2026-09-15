@@ -1,4 +1,4 @@
-import { Dna, FolderKanban, LayoutDashboard, Repeat2, UserCircle, Building2 } from "lucide-react";
+import { Dna, FolderKanban, LayoutDashboard, Repeat2, Rss, UserCircle, Building2 } from "lucide-react";
 import { type SidebarData } from "../types";
 import { Routes } from "@/routes/routes";
 import { environments } from "@/config/environments";
@@ -29,6 +29,11 @@ export const dashboardSidebarData: SidebarData = {
           title: "Style Profiles",
           url: Routes.dashboard.style_profiles,
           icon: Dna,
+        },
+        {
+          title: "RSS Feeds",
+          url: Routes.dashboard.rss_feeds,
+          icon: Rss,
         },
       ],
     },

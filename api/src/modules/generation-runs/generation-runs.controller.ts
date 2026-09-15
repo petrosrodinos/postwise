@@ -5,6 +5,7 @@ import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
 import { GenerationRunsService } from './generation-runs.service';
 import { CreateGenerationRunDto } from './dto/create-generation-run.dto';
+import { CreateRssGenerationRunDto } from './dto/create-rss-generation-run.dto';
 import {
   GenerationRunsQuerySchema,
   GenerationRunsQueryType,
@@ -23,6 +24,13 @@ export class GenerationRunsController {
   @ApiResponse({ status: 201, type: GenerationRunEntity })
   create(@CurrentUser('id') userId: string, @Body() dto: CreateGenerationRunDto) {
     return this.generationRunsService.create(userId, dto);
+  }
+
+  @Post('from-rss')
+  @ApiOperation({ summary: 'Generate blog posts from selected RSS feed items' })
+  @ApiResponse({ status: 201, type: GenerationRunEntity })
+  createFromRss(@CurrentUser('id') userId: string, @Body() dto: CreateRssGenerationRunDto) {
+    return this.generationRunsService.createFromRssItems(userId, dto);
   }
 
   @Get()

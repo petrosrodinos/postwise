@@ -1,5 +1,6 @@
 import type { PostStatus, PostType } from "@/features/posts/interfaces/posts.interfaces";
 import type { StyleProfile } from "@/features/style-profiles/interfaces/style-profiles.interfaces";
+import type { RssFeed } from "@/features/rss-feeds/interfaces/rss-feeds.interfaces";
 
 export interface ProjectStyleProfileLink {
   id: string;
@@ -7,6 +8,14 @@ export interface ProjectStyleProfileLink {
   style_profile_id: string;
   created_at: string;
   style_profile: StyleProfile;
+}
+
+export interface ProjectRssFeedLink {
+  id: string;
+  project_id: string;
+  rss_feed_id: string;
+  created_at: string;
+  rss_feed: RssFeed;
 }
 
 export interface Project {
@@ -22,6 +31,7 @@ export interface Project {
   created_at: string;
   updated_at: string;
   style_profiles?: ProjectStyleProfileLink[];
+  rss_feeds?: ProjectRssFeedLink[];
   post_status_counts?: Partial<Record<PostStatus, number>>;
 }
 
@@ -41,6 +51,10 @@ export type UpdateProjectDto = Partial<Omit<CreateProjectDto, "organisation_id">
 
 export interface AttachStyleProfileDto {
   style_profile_id: string;
+}
+
+export interface AttachRssFeedDto {
+  rss_feed_id: string;
 }
 
 export interface GenerateProjectDetailsDto {

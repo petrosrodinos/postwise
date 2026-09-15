@@ -23,6 +23,14 @@ export class CreateAutomationDto {
   @IsString()
   style_profile_id?: string;
 
+  @ApiProperty({
+    required: false,
+    description: 'RSS feed (must already be attached to the project) to pull new items from each run',
+  })
+  @IsOptional()
+  @IsString()
+  rss_feed_id?: string;
+
   @ApiProperty({ description: 'Name of the automation', example: 'Weekly LinkedIn drafts' })
   @IsString()
   name: string;
@@ -70,4 +78,16 @@ export class CreateAutomationDto {
   @IsOptional()
   @IsEnum(AutomationOutputStage)
   output_stage?: AutomationOutputStage;
+
+  @ApiProperty({ required: false, default: false, description: 'Generate AI cover image candidates for each post' })
+  @IsOptional()
+  @IsBoolean()
+  generate_images?: boolean;
+
+  @ApiProperty({ required: false, minimum: 1, maximum: 4, default: 1 })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(4)
+  image_count?: number;
 }

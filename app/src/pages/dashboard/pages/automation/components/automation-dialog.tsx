@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { AutomationFrequencies, AutomationOutputStages, type Automation } from "@/features/automations/interfaces/automations.interfaces";
 import { useCreateAutomation, useUpdateAutomation } from "@/features/automations/hooks/use-automations";
 import { AutomationFrequencyFormOptions } from "@/config/constants/dropdowns/automations/automation-frequency-form.options";
 import { AutomationOutputStageFormOptions } from "@/config/constants/dropdowns/automations/automation-output-stage-form.options";
 import { WeekdayOptions } from "@/config/constants/dropdowns/shared/weekday.options";
+import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import type { Project } from "@/features/projects/interfaces/projects.interfaces";
 import { automationSchema, type AutomationFormData } from "../validation-schemas/automation.schema";
 
@@ -38,6 +40,7 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
     defaultValues: {
       project_id: automation?.project_id ?? defaultProjectId ?? "",
       style_profile_id: automation?.style_profile_id ?? undefined,
+      rss_feed_id: automation?.rss_feed_id ?? undefined,
       name: automation?.name ?? "",
       frequency: automation?.frequency ?? AutomationFrequencies.WEEKLY,
       days_of_week: automation?.days_of_week ?? [1],
@@ -45,6 +48,8 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
       timezone: automation?.timezone ?? browserTimezone,
       posts_per_run: automation?.posts_per_run ?? 3,
       output_stage: automation?.output_stage ?? AutomationOutputStages.DRAFT,
+      generate_images: automation?.generate_images ?? false,
+      image_count: automation?.image_count ?? 1,
     },
   });
 
@@ -53,6 +58,7 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
       form.reset({
         project_id: automation?.project_id ?? defaultProjectId ?? "",
         style_profile_id: automation?.style_profile_id ?? undefined,
+        rss_feed_id: automation?.rss_feed_id ?? undefined,
         name: automation?.name ?? "",
         frequency: automation?.frequency ?? AutomationFrequencies.WEEKLY,
         days_of_week: automation?.days_of_week ?? [1],
@@ -60,6 +66,8 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
         timezone: automation?.timezone ?? browserTimezone,
         posts_per_run: automation?.posts_per_run ?? 3,
         output_stage: automation?.output_stage ?? AutomationOutputStages.DRAFT,
+        generate_images: automation?.generate_images ?? false,
+        image_count: automation?.image_count ?? 1,
       });
     }
   }, [isOpen, automation, defaultProjectId, form]);
@@ -67,7 +75,10 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
   const selectedProjectId = form.watch("project_id");
   const selectedProject = projects.find((project) => project.id === selectedProjectId);
   const availableStyleProfiles = selectedProject?.style_profiles ?? [];
+  const availableRssFeeds = selectedProject?.rss_feeds ?? [];
+  const isBlogProject = selectedProject?.platform === PostTypes.BLOG;
   const frequency = form.watch("frequency");
+  const generateImages = form.watch("generate_images");
 
   function handleClose() {
     if (isPending) return;
@@ -78,6 +89,7 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
     const dto = {
       ...data,
       style_profile_id: data.style_profile_id || undefined,
+      rss_feed_id: data.rss_feed_id || undefined,
       days_of_week: data.frequency === AutomationFrequencies.WEEKLY ? data.days_of_week : undefined,
     };
 
@@ -122,6 +134,7 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
                     onValueChange={(value) => {
                       field.onChange(value);
                       form.setValue("style_profile_id", undefined);
+                      form.setValue("rss_feed_id", undefined);
                     }}
                     disabled={isEditing}
                   >
@@ -167,6 +180,72 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
                 </FormItem>
               )}
             />
+
+            {isBlogProject && availableRssFeeds.length > 0 && (
+              <FormField
+                control={form.control}
+                name="rss_feed_id"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>RSS feed source</FormLabel>
+                    <Select value={field.value ?? "none"} onValueChange={(value) => field.onChange(value === "none" ? undefined : value)}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Generate from ideas" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="none">Generate from ideas</SelectItem>
+                        {availableRssFeeds.map((link) => (
+                          <SelectItem key={link.rss_feed_id} value={link.rss_feed_id}>
+                            {link.rss_feed.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {isBlogProject && (
+              <div className="flex flex-col gap-3 rounded-lg border border-input p-3">
+                <FormField
+                  control={form.control}
+                  name="generate_images"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center gap-2 space-y-0">
+                      <FormControl>
+                        <Checkbox checked={field.value} onCheckedChange={(checked) => field.onChange(!!checked)} />
+                      </FormControl>
+                      <FormLabel className="font-normal">Generate AI cover image candidates for each post</FormLabel>
+                    </FormItem>
+                  )}
+                />
+                {generateImages && (
+                  <FormField
+                    control={form.control}
+                    name="image_count"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Image candidates</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            min={1}
+                            max={4}
+                            value={field.value}
+                            onChange={(event) => field.onChange(Number(event.target.value))}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+            )}
 
             <FormField
               control={form.control}

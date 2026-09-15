@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { GcsService } from '@/integrations/storage/gcs/services/gcs.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
-import { OrganisationRole } from 'generated/prisma';
+import { DocumentType, OrganisationRole } from 'generated/prisma';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { DocumentsQueryType } from './dto/documents-query.schema';
@@ -39,6 +39,36 @@ export class DocumentsService {
         url: uploaded.url,
         path: uploaded.path,
         type: dto.type,
+      },
+    });
+  }
+
+  // Service-to-service creation for AI-generated images (e.g. blog post cover
+  // candidates) — bypasses the controller's Multer upload since there is no
+  // HTTP file part, only base64 bytes already produced by the caller.
+  async createFromGenerated(params: {
+    organisationId: string;
+    base64Data: string;
+    filename: string;
+    mimetype: string;
+    type?: DocumentType;
+  }) {
+    const uploaded = await this.gcsService.uploadImageFromBase64(
+      params.base64Data,
+      params.filename,
+      params.mimetype,
+      GcsFolders.documents,
+    );
+
+    return this.prisma.document.create({
+      data: {
+        organisation_id: params.organisationId,
+        filename: params.filename,
+        mimetype: params.mimetype,
+        size: uploaded.size,
+        url: uploaded.url,
+        path: uploaded.path,
+        type: params.type ?? DocumentType.IMAGE,
       },
     });
   }
