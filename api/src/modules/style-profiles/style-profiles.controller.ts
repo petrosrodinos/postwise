@@ -9,7 +9,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtGuard } from '@/shared/guards/jwt.guard';
 import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
@@ -17,6 +23,7 @@ import { StyleProfilesService } from './style-profiles.service';
 import { CreateStyleProfileDto } from './dto/create-style-profile.dto';
 import { UpdateStyleProfileDto } from './dto/update-style-profile.dto';
 import { AnalyzeStyleProfileDto } from './dto/analyze-style-profile.dto';
+import { ScrapeLinkedInPostsDto } from './dto/scrape-linkedin-posts.dto';
 import {
   StyleProfilesQuerySchema,
   StyleProfilesQueryType,
@@ -33,7 +40,10 @@ export class StyleProfilesController {
   @Post()
   @ApiOperation({ summary: 'Create a style profile' })
   @ApiResponse({ status: 201, type: StyleProfileEntity })
-  create(@CurrentUser('id') userId: string, @Body() dto: CreateStyleProfileDto) {
+  create(
+    @CurrentUser('id') userId: string,
+    @Body() dto: CreateStyleProfileDto,
+  ) {
     return this.styleProfilesService.create(userId, dto);
   }
 
@@ -44,7 +54,8 @@ export class StyleProfilesController {
   @ApiResponse({ status: 200 })
   findAll(
     @CurrentUser('id') userId: string,
-    @Query(new ZodValidationPipe(StyleProfilesQuerySchema)) query: StyleProfilesQueryType,
+    @Query(new ZodValidationPipe(StyleProfilesQuerySchema))
+    query: StyleProfilesQueryType,
   ) {
     return this.styleProfilesService.findAll(userId, query);
   }
@@ -75,7 +86,9 @@ export class StyleProfilesController {
   }
 
   @Post(':id/analyze')
-  @ApiOperation({ summary: "Re-analyze a style profile's tone/structure from sample posts" })
+  @ApiOperation({
+    summary: "Re-analyze a style profile's tone/structure from sample posts",
+  })
   @ApiResponse({ status: 200, type: StyleProfileEntity })
   analyze(
     @CurrentUser('id') userId: string,
@@ -83,5 +96,19 @@ export class StyleProfilesController {
     @Body() dto: AnalyzeStyleProfileDto,
   ) {
     return this.styleProfilesService.analyze(userId, id, dto);
+  }
+
+  @Post(':id/scrape-posts')
+  @ApiOperation({
+    summary:
+      "Scrape a LinkedIn style profile's recent posts for review before analysis",
+  })
+  @ApiResponse({ status: 200 })
+  scrapePosts(
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+    @Body() dto: ScrapeLinkedInPostsDto,
+  ) {
+    return this.styleProfilesService.scrapeLinkedInPosts(userId, id, dto);
   }
 }

@@ -1,17 +1,28 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { z } from 'zod';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { AiService } from '@/integrations/ai/services/ai.service';
+import { LinkedInScraperService } from '@/integrations/apify/linkedin-scraper/services/linkedin-scraper.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
-import { OrganisationRole } from 'generated/prisma';
+import { OrganisationRole, PostType } from 'generated/prisma';
 import { CreateStyleProfileDto } from './dto/create-style-profile.dto';
 import { UpdateStyleProfileDto } from './dto/update-style-profile.dto';
 import { AnalyzeStyleProfileDto } from './dto/analyze-style-profile.dto';
+import { ScrapeLinkedInPostsDto } from './dto/scrape-linkedin-posts.dto';
 import { StyleProfilesQueryType } from './dto/style-profiles-query.schema';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
+import { ScrapedLinkedInPost } from './interfaces/style-profiles.interface';
 
-const MANAGE_ROLES: OrganisationRole[] = [OrganisationRole.OWNER, OrganisationRole.ADMIN];
+const MANAGE_ROLES: OrganisationRole[] = [
+  OrganisationRole.OWNER,
+  OrganisationRole.ADMIN,
+];
 
 const AnalysisSchema = z.object({
   tone_score: z.number().min(0).max(100),
@@ -30,11 +41,15 @@ export class StyleProfilesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly aiService: AiService,
+    private readonly linkedInScraperService: LinkedInScraperService,
     private readonly ownershipService: OwnershipService,
   ) {}
 
   async create(userId: string, dto: CreateStyleProfileDto) {
-    const context = await this.ownershipService.resolveContext(userId, dto.organisation_id);
+    const context = await this.ownershipService.resolveContext(
+      userId,
+      dto.organisation_id,
+    );
     this.ownershipService.assertRole(context, MANAGE_ROLES);
 
     return this.prisma.styleProfile.create({
@@ -76,13 +91,20 @@ export class StyleProfilesService {
   }
 
   async findOwned(userId: string, id: string) {
-    const profile = await this.prisma.styleProfile.findUnique({ where: { id } });
+    const profile = await this.prisma.styleProfile.findUnique({
+      where: { id },
+    });
     if (!profile) throw new NotFoundException('Style profile not found');
 
     if (profile.organisation_id) {
-      await this.ownershipService.resolveContext(userId, profile.organisation_id);
+      await this.ownershipService.resolveContext(
+        userId,
+        profile.organisation_id,
+      );
     } else if (profile.user_id !== userId) {
-      throw new ForbiddenException('You do not have access to this style profile');
+      throw new ForbiddenException(
+        'You do not have access to this style profile',
+      );
     }
 
     return profile;
@@ -92,9 +114,15 @@ export class StyleProfilesService {
     return this.findOwned(userId, id);
   }
 
-  private async assertManage(userId: string, profile: { organisation_id?: string | null }) {
+  private async assertManage(
+    userId: string,
+    profile: { organisation_id?: string | null },
+  ) {
     if (profile.organisation_id) {
-      const context = await this.ownershipService.resolveContext(userId, profile.organisation_id);
+      const context = await this.ownershipService.resolveContext(
+        userId,
+        profile.organisation_id,
+      );
       this.ownershipService.assertRole(context, MANAGE_ROLES);
     }
   }
@@ -143,7 +171,8 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
 
     const { response } = await this.aiService.generateText({
       prompt,
-      system: 'You are an expert content strategist who fingerprints writing style for AI drafting.',
+      system:
+        'You are an expert content strategist who fingerprints writing style for AI drafting.',
       temperature: 0.4,
     });
 
@@ -157,5 +186,47 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
         last_analyzed_at: new Date(),
       },
     });
+  }
+
+  async scrapeLinkedInPosts(
+    userId: string,
+    id: string,
+    dto: ScrapeLinkedInPostsDto,
+  ): Promise<ScrapedLinkedInPost[]> {
+    const profile = await this.findOwned(userId, id);
+    await this.assertManage(userId, profile);
+
+    if (profile.platform !== PostType.LINKEDIN) {
+      throw new BadRequestException(
+        'Scraping is only supported for LinkedIn style profiles',
+      );
+    }
+
+    const sourceUrl = dto.source_url ?? profile.source_url;
+    if (!sourceUrl) {
+      throw new BadRequestException(
+        'Provide a source_url to scrape posts from',
+      );
+    }
+
+    const posts = await this.linkedInScraperService.scrapeProfilePosts({
+      targetUrls: [sourceUrl],
+      maxPosts: dto.max_posts ?? 20,
+      postedLimit: dto.posted_limit,
+      includeReposts: dto.include_reposts,
+      includeQuotePosts: dto.include_quote_posts,
+    });
+
+    return posts
+      .filter((post) => post.text?.trim())
+      .map((post, index) => ({
+        id: post.id ?? post.urn ?? post.url ?? `${id}-${index}`,
+        url: post.url,
+        text: post.text!.trim(),
+        posted_at: post.postedAt,
+        author_name: post.author?.name,
+        likes: post.engagement?.likes,
+        comments: post.engagement?.comments,
+      }));
   }
 }

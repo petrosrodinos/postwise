@@ -35,6 +35,26 @@ export interface AnalyzeStyleProfileDto {
   sample_posts: string[];
 }
 
+export type PostedLimit = "any" | "1h" | "24h" | "week" | "month" | "3months" | "6months" | "year";
+
+export interface ScrapeLinkedInPostsDto {
+  source_url?: string;
+  max_posts?: number;
+  posted_limit?: PostedLimit;
+  include_reposts?: boolean;
+  include_quote_posts?: boolean;
+}
+
+export interface ScrapedLinkedInPost {
+  id: string;
+  url?: string;
+  text: string;
+  posted_at?: string;
+  author_name?: string;
+  likes?: number;
+  comments?: number;
+}
+
 export interface StyleProfilesQueryType {
   page?: number;
   limit?: number;

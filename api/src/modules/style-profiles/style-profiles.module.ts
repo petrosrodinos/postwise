@@ -1,12 +1,18 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '@/core/databases/prisma/prisma.module';
 import { AiIntegrationModule } from '@/integrations/ai/ai.module';
+import { LinkedInScraperModule } from '@/integrations/apify/linkedin-scraper/linkedin-scraper.module';
 import { OwnershipModule } from '@/shared/services/ownership/ownership.module';
 import { StyleProfilesController } from './style-profiles.controller';
 import { StyleProfilesService } from './style-profiles.service';
 
 @Module({
-  imports: [PrismaModule, AiIntegrationModule, OwnershipModule],
+  imports: [
+    PrismaModule,
+    AiIntegrationModule,
+    LinkedInScraperModule,
+    OwnershipModule,
+  ],
   controllers: [StyleProfilesController],
   providers: [StyleProfilesService],
   exports: [StyleProfilesService],

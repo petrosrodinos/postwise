@@ -35,6 +35,7 @@ export const ApiRoutes = {
     style_profiles: {
         prefix: "/style-profiles",
         analyze: (id: string) => `/style-profiles/${id}/analyze`,
+        scrape_posts: (id: string) => `/style-profiles/${id}/scrape-posts`,
     },
     posts: {
         prefix: "/posts",

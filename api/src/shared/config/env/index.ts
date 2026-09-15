@@ -33,4 +33,6 @@ export default () => ({
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     BULL_BOARD_USER: process.env.BULL_BOARD_USER,
     BULL_BOARD_PASSWORD: process.env.BULL_BOARD_PASSWORD,
+    APIFY_TOKEN: process.env.APIFY_TOKEN,
+    APIFY_LINKEDIN_ACTOR_ID: process.env.APIFY_LINKEDIN_ACTOR_ID,
 });

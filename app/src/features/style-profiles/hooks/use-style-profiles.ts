@@ -7,11 +7,13 @@ import {
   deleteStyleProfile,
   getStyleProfile,
   getStyleProfiles,
+  scrapeLinkedInPosts,
   updateStyleProfile,
 } from "../services/style-profiles.services";
 import type {
   AnalyzeStyleProfileDto,
   CreateStyleProfileDto,
+  ScrapeLinkedInPostsDto,
   StyleProfilesQueryType,
   UpdateStyleProfileDto,
 } from "../interfaces/style-profiles.interfaces";
@@ -91,6 +93,15 @@ export const useAnalyzeStyleProfile = () => {
     },
     onError: (error: Error) => {
       toast({ title: "Could not analyze style profile", description: error.message, variant: "error" });
+    },
+  });
+};
+
+export const useScrapeLinkedInPosts = () => {
+  return useMutation({
+    mutationFn: ({ id, dto }: { id: string; dto: ScrapeLinkedInPostsDto }) => scrapeLinkedInPosts(id, dto),
+    onError: (error: Error) => {
+      toast({ title: "Could not fetch LinkedIn posts", description: error.message, variant: "error" });
     },
   });
 };

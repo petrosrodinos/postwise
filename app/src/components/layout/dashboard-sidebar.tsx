@@ -1,3 +1,4 @@
+import { PenLine } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { NavGroup } from "@/components/layout/nav-group";
 import { WorkspaceSwitcher } from "@/components/layout/workspace-switcher";
@@ -17,9 +18,8 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
     <Sidebar collapsible="icon" className="group-data-[side=left]:border-r-0" {...props}>
       <SidebarHeader className="gap-0 px-2 pb-0 pt-3">
         <div className="mb-1 flex items-center gap-2.5 px-2 pb-4 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-          <div className="relative h-[30px] w-[30px] flex-none rounded-[8px] bg-gradient-to-br from-brass to-[#E4C77B]">
-            <span className="absolute left-[9px] top-[10px] h-[2px] w-3 rotate-[35deg] rounded-sm bg-[rgba(14,16,19,0.55)]" />
-            <span className="absolute left-[9px] top-[16px] h-[2px] w-3 -rotate-[35deg] rounded-sm bg-[rgba(14,16,19,0.55)]" />
+          <div className="flex h-[30px] w-[30px] flex-none items-center justify-center rounded-[8px] bg-brass">
+            <PenLine className="h-4 w-4 text-[#2A1C05]" strokeWidth={2.25} />
           </div>
           <div className="font-display text-lg font-semibold text-sidebar-foreground group-data-[collapsible=icon]:hidden">
             {environments.APP_NAME}
