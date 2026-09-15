@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Eye, MoreHorizontal, Send, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ExternalLink, Eye, MoreHorizontal, Send, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import ConfirmationDialog from "@/components/ui/confirmation-dialog";
 import { useDeletePost, usePublishPost } from "@/features/posts/hooks/use-posts";
 import { PostStatuses, type Post } from "@/features/posts/interfaces/posts.interfaces";
+import { Routes } from "@/routes/routes";
 
 interface PostRowActionsProps {
   post: Post;
@@ -18,6 +20,9 @@ export function PostRowActions({ post, onPreview, triggerClassName }: PostRowAct
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
 
   const canPublish = post.status !== PostStatuses.PUBLISHED && post.status !== PostStatuses.PUBLISHING;
+  const postDetailsUrl = post.project_id
+    ? `${Routes.dashboard.project_generate(post.project_id)}${post.generation_run_id ? `?run=${post.generation_run_id}&post=${post.id}&tab=generations` : `?post=${post.id}&tab=generations`}`
+    : undefined;
 
   return (
     <>
@@ -32,6 +37,14 @@ export function PostRowActions({ post, onPreview, triggerClassName }: PostRowAct
             <DropdownMenuItem onClick={onPreview}>
               <Eye className="h-4 w-4" />
               Preview
+            </DropdownMenuItem>
+          )}
+          {postDetailsUrl && (
+            <DropdownMenuItem asChild>
+              <Link to={postDetailsUrl}>
+                <ExternalLink className="h-4 w-4" />
+                Open post details
+              </Link>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem disabled={!canPublish || isPublishing} onClick={() => publishPost(post.id)}>

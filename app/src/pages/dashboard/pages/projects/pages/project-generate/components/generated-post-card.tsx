@@ -69,6 +69,7 @@ export function GeneratedPostCard({
   const { mutate: deleteDocument } = useDeleteDocument();
 
   const cardRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLTextAreaElement>(null);
   const [showHighlight, setShowHighlight] = useState(!!highlighted);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -105,6 +106,13 @@ export function GeneratedPostCard({
     post.seo_description,
     post.canonical_url,
   ]);
+
+  useEffect(() => {
+    const el = titleRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [draft.title]);
 
   const isBlog = platform === PostTypes.BLOG;
   const isDirty = isBlog
@@ -163,17 +171,19 @@ export function GeneratedPostCard({
           showHighlight && "ring-2 ring-brass-ink ring-offset-2",
         )}
       >
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex min-w-0 flex-1 items-center gap-2">
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex min-w-0 flex-1 items-start gap-2">
             {styleProfile && <DnaBadge name={styleProfile.name} />}
             {isBlog && (
-              <Input
+              <Textarea
+                ref={titleRef}
                 value={draft.title}
                 onChange={(e) =>
                   setDraft((d) => ({ ...d, title: e.target.value }))
                 }
                 placeholder="Post title"
-                className="font-display h-auto min-w-0 flex-1 border-none px-0 text-lg font-semibold shadow-none focus-visible:ring-0"
+                rows={1}
+                className="font-display min-h-0 flex-1 resize-none overflow-hidden border-none px-0 text-lg font-semibold leading-snug shadow-none focus-visible:ring-0"
               />
             )}
             {!isBlog && post.hook && (
