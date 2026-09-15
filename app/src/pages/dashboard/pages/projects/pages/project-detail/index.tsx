@@ -103,7 +103,7 @@ export default function ProjectDetailPage() {
             <Link to={Routes.dashboard.project_edit(project.id)}>Edit project</Link>
           </Button>
           <Button asChild>
-            <Link to={Routes.dashboard.project_generate(project.id)}>New generation</Link>
+            <Link to={`${Routes.dashboard.project_generate(project.id)}?tab=${tab}`}>New generation</Link>
           </Button>
         </div>
       </div>

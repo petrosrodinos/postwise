@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PostStatusTag } from "@/components/ui/post-status-tag";
-import { StyleDnaStrand } from "@/components/ui/style-dna-strand";
 import { useGenerationRuns } from "@/features/generation-runs/hooks/use-generation-runs";
 import { usePosts } from "@/features/posts/hooks/use-posts";
 import { Routes } from "@/routes/routes";
@@ -55,13 +54,12 @@ export function GenerationsTab({ project }: GenerationsTabProps) {
           <h3 className="text-base font-semibold text-foreground">No generations yet</h3>
           <p className="mx-auto mt-2 max-w-sm text-sm">Run your first AI generation to produce drafts from this project's context.</p>
           <Button className="mt-4" asChild>
-            <Link to={Routes.dashboard.project_generate(project.id)}>Generate posts</Link>
+            <Link to={`${Routes.dashboard.project_generate(project.id)}?tab=generations`}>Generate posts</Link>
           </Button>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
           {runs.map((run) => {
-            const styleProfile = styleProfileFor(run.style_profile_id);
             return (
               <Card key={run.id}>
                 <CardContent className="flex flex-col gap-3 pt-6">
@@ -70,12 +68,11 @@ export function GenerationsTab({ project }: GenerationsTabProps) {
                       <div className="truncate font-semibold">{run.label || `Batch ${run.id.slice(0, 8)}`}</div>
                       <div className="text-xs text-muted-foreground">Created {format(new Date(run.created_at), "MMM d, yyyy")}</div>
                     </div>
-                    {styleProfile && <StyleDnaStrand traits={styleProfile} className="w-14 flex-none" />}
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">{run.posts_requested ?? "—"} posts</span>
                     <Link
-                      to={`${Routes.dashboard.project_generate(project.id)}?run=${run.id}`}
+                      to={`${Routes.dashboard.project_generate(project.id)}?run=${run.id}&tab=generations`}
                       className="text-sm font-semibold text-brass-ink hover:underline"
                     >
                       View generation →
@@ -151,7 +148,7 @@ export function GenerationsTab({ project }: GenerationsTabProps) {
                     <TableCell className="text-sm text-muted-foreground">{format(new Date(post.updated_at), "MMM d, yyyy")}</TableCell>
                     <TableCell>
                       <Link
-                        to={`${Routes.dashboard.project_generate(project.id)}${post.generation_run_id ? `?run=${post.generation_run_id}` : ""}`}
+                        to={`${Routes.dashboard.project_generate(project.id)}${post.generation_run_id ? `?run=${post.generation_run_id}&tab=generations` : "?tab=generations"}`}
                         className="text-sm font-semibold text-brass-ink hover:underline"
                       >
                         Open →

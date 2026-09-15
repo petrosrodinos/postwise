@@ -15,7 +15,7 @@ interface ProjectStatusTabsProps {
 
 export function ProjectStatusTabs({ value, onChange }: ProjectStatusTabsProps) {
   return (
-    <div className="inline-flex items-center gap-0.5 rounded-lg bg-muted p-1">
+    <div className="inline-flex w-fit shrink-0 items-center gap-0.5 self-start rounded-lg bg-muted p-1">
       {TABS.map((tab) => (
         <button
           key={tab.id}

@@ -18,6 +18,8 @@ export default function ProjectGeneratePage() {
   const { id } = useParams<{ id: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const runId = searchParams.get("run") ?? undefined;
+  const tabParam = searchParams.get("tab");
+  const backToProjectUrl = tabParam ? `${Routes.dashboard.project_detail(id ?? "")}?tab=${tabParam}` : Routes.dashboard.project_detail(id ?? "");
 
   const { data: project, isPending: isProjectPending } = useProject(id);
   const { data: run, isPending: isRunPending } = useGenerationRun(runId);
@@ -99,7 +101,7 @@ export default function ProjectGeneratePage() {
     return (
       <div className="flex flex-col items-start gap-3">
         <p className="text-sm text-muted-foreground">This batch couldn't be found.</p>
-        <Link to={Routes.dashboard.project_detail(id)} className="text-sm font-semibold text-brass-ink hover:underline">
+        <Link to={backToProjectUrl} className="text-sm font-semibold text-brass-ink hover:underline">
           ← Back to {project.title}
         </Link>
       </div>
@@ -145,7 +147,7 @@ export default function ProjectGeneratePage() {
   return (
     <div className="flex flex-col gap-6">
       <Link
-        to={Routes.dashboard.project_detail(id)}
+        to={backToProjectUrl}
         className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
