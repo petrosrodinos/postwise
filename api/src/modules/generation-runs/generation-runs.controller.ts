@@ -4,6 +4,7 @@ import { JwtGuard } from '@/shared/guards/jwt.guard';
 import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
 import { GenerationRunsService } from './generation-runs.service';
+import { AddPostsToGenerationRunDto } from './dto/add-posts-to-generation-run.dto';
 import { CreateGenerationRunDto } from './dto/create-generation-run.dto';
 import { CreateRssGenerationRunDto } from './dto/create-rss-generation-run.dto';
 import {
@@ -31,6 +32,17 @@ export class GenerationRunsController {
   @ApiResponse({ status: 201, type: GenerationRunEntity })
   createFromRss(@CurrentUser('id') userId: string, @Body() dto: CreateRssGenerationRunDto) {
     return this.generationRunsService.createFromRssItems(userId, dto);
+  }
+
+  @Post(':id/generate-more')
+  @ApiOperation({ summary: 'Generate more posts into an existing generation run' })
+  @ApiResponse({ status: 201, type: GenerationRunEntity })
+  addPosts(
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+    @Body() dto: AddPostsToGenerationRunDto,
+  ) {
+    return this.generationRunsService.addPosts(userId, id, dto);
   }
 
   @Get()

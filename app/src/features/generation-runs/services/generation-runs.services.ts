@@ -3,6 +3,7 @@ import { ApiRoutes } from "@/config/api/routes";
 import { getApiErrorMessage } from "@/lib/api-error.utils";
 import type { PaginatedResponse } from "@/interfaces/pagination.interfaces";
 import type {
+  AddPostsToGenerationRunDto,
   CreateGenerationRunDto,
   CreateRssGenerationRunDto,
   GenerationRun,
@@ -15,6 +16,15 @@ export const createGenerationRun = async (dto: CreateGenerationRunDto): Promise<
     return response.data;
   } catch (error) {
     throw new Error(getApiErrorMessage(error, "Failed to start generation. Please try again."));
+  }
+};
+
+export const addPostsToGenerationRun = async (id: string, dto: AddPostsToGenerationRunDto): Promise<GenerationRun> => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.generation_runs.add_posts(id), dto);
+    return response.data;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "Failed to generate more posts. Please try again."));
   }
 };
 

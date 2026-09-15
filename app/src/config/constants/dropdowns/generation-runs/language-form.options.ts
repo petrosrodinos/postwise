@@ -1,4 +1,4 @@
-// Ten common languages offered when generating drafts. Codes are ISO 639-1.
+// Common languages offered when generating drafts. Codes are ISO 639-1.
 export const LanguageFormOptions: { id: string; label: string }[] = [
   { id: "en", label: "English" },
   { id: "es", label: "Spanish" },
@@ -10,6 +10,7 @@ export const LanguageFormOptions: { id: string; label: string }[] = [
   { id: "ja", label: "Japanese" },
   { id: "zh", label: "Chinese (Simplified)" },
   { id: "hi", label: "Hindi" },
+  { id: "el", label: "Greek" },
 ];
 
 export const DEFAULT_LANGUAGE = "en";

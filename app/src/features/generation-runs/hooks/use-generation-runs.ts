@@ -1,7 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
-import { createGenerationRun, createRssGenerationRun, getGenerationRun, getGenerationRuns } from "../services/generation-runs.services";
-import type { CreateGenerationRunDto, CreateRssGenerationRunDto, GenerationRunsQueryType } from "../interfaces/generation-runs.interfaces";
+import {
+  addPostsToGenerationRun,
+  createGenerationRun,
+  createRssGenerationRun,
+  getGenerationRun,
+  getGenerationRuns,
+} from "../services/generation-runs.services";
+import type {
+  AddPostsToGenerationRunDto,
+  CreateGenerationRunDto,
+  CreateRssGenerationRunDto,
+  GenerationRunsQueryType,
+} from "../interfaces/generation-runs.interfaces";
 
 const GENERATION_RUNS_KEY = "generation-runs";
 
@@ -32,6 +43,21 @@ export const useCreateGenerationRun = () => {
     },
     onError: (error: Error) => {
       toast({ title: "Could not generate posts", description: error.message, variant: "error" });
+    },
+  });
+};
+
+export const useAddPostsToGenerationRun = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, dto }: { id: string; dto: AddPostsToGenerationRunDto }) => addPostsToGenerationRun(id, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [GENERATION_RUNS_KEY] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast({ title: "Posts added", description: "New drafts have been added to this batch.", duration: 2500 });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Could not generate more posts", description: error.message, variant: "error" });
     },
   });
 };

@@ -28,7 +28,19 @@ export interface CreateStyleProfileDto {
   organisation_id: string;
 }
 
-export type UpdateStyleProfileDto = Partial<Omit<CreateStyleProfileDto, "organisation_id">>;
+export type UpdateStyleProfileDto = Partial<
+  Omit<CreateStyleProfileDto, "organisation_id"> & {
+    tone_score: number;
+    structure_score: number;
+    hooks_score: number;
+    vocabulary_score: number;
+    rhythm_score: number;
+    tone_description: string;
+    dominant_hook: string;
+    vocabulary: string[];
+    pillars: string[];
+  }
+>;
 
 export interface AnalyzeStyleProfileDto {
   sample_posts: string[];

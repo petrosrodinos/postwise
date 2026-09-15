@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,10 +12,26 @@ import { SettingsTab } from "./components/settings-tab";
 
 type TabValue = "overview" | "generations" | "settings";
 
+const TAB_VALUES: TabValue[] = ["overview", "generations", "settings"];
+
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const [tab, setTab] = useState<TabValue>("overview");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const tab: TabValue = TAB_VALUES.includes(tabParam as TabValue) ? (tabParam as TabValue) : "overview";
   const { data: project, isPending } = useProject(id);
+
+  function setTab(value: TabValue) {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (value === "overview") {
+        next.delete("tab");
+      } else {
+        next.set("tab", value);
+      }
+      return next;
+    });
+  }
 
   if (isPending) {
     return (

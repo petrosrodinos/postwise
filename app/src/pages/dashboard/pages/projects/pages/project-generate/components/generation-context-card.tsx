@@ -53,7 +53,7 @@ export function GenerationContextCard({
     <div className="sticky top-20 flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
       <div>
         <p className="text-xs font-semibold uppercase text-muted-foreground">Generation context</p>
-        <p className="mt-1 text-base font-semibold">{isExistingRun ? "Regenerate this batch" : "Set up this batch"}</p>
+        <p className="mt-1 text-base font-semibold">{isExistingRun ? "Add to this batch" : "Set up this batch"}</p>
       </div>
 
       <div>
@@ -81,18 +81,16 @@ export function GenerationContextCard({
         </Select>
       </div>
 
-      {!isExistingRun && (
-        <div>
-          <Label className="mb-1.5 block text-xs font-semibold text-foreground">Number of posts</Label>
-          <Input
-            type="number"
-            min={1}
-            max={10}
-            value={postsRequested}
-            onChange={(e) => onPostsRequestedChange(Math.min(10, Math.max(1, Number(e.target.value) || 1)))}
-          />
-        </div>
-      )}
+      <div>
+        <Label className="mb-1.5 block text-xs font-semibold text-foreground">{isExistingRun ? "Posts to add" : "Number of posts"}</Label>
+        <Input
+          type="number"
+          min={1}
+          max={10}
+          value={postsRequested}
+          onChange={(e) => onPostsRequestedChange(Math.min(10, Math.max(1, Number(e.target.value) || 1)))}
+        />
+      </div>
 
       <div>
         <Label className="mb-1.5 block text-xs font-semibold text-foreground">Language</Label>
@@ -146,7 +144,7 @@ export function GenerationContextCard({
 
       <Button className="mt-1 w-full" onClick={onGenerate} disabled={isGenerating} loading={isGenerating}>
         <Sparkles className="h-4 w-4" />
-        {isExistingRun ? "Generate another batch" : "Generate posts"}
+        {isExistingRun ? "Add posts to batch" : "Generate posts"}
       </Button>
     </div>
   );

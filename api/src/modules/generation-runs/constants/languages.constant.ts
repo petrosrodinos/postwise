@@ -1,4 +1,4 @@
-// Ten common languages offered when generating drafts. Codes are ISO 639-1.
+// Common languages offered when generating drafts. Codes are ISO 639-1.
 export const GENERATION_LANGUAGES: Record<string, string> = {
   en: 'English',
   es: 'Spanish',
@@ -10,6 +10,7 @@ export const GENERATION_LANGUAGES: Record<string, string> = {
   ja: 'Japanese',
   zh: 'Chinese (Simplified)',
   hi: 'Hindi',
+  el: 'Greek',
 };
 
 export const GENERATION_LANGUAGE_CODES = Object.keys(GENERATION_LANGUAGES);

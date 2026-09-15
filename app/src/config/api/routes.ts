@@ -64,6 +64,7 @@ export const ApiRoutes = {
     generation_runs: {
         prefix: "/generation-runs",
         from_rss: "/generation-runs/from-rss",
+        add_posts: (id: string) => `/generation-runs/${id}/generate-more`,
     },
     automations: {
         prefix: "/automations",

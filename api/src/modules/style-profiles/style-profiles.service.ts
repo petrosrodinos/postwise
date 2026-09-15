@@ -113,6 +113,15 @@ export class StyleProfilesService {
         name: dto.name,
         platform: dto.platform,
         source_url: dto.source_url,
+        tone_score: dto.tone_score,
+        structure_score: dto.structure_score,
+        hooks_score: dto.hooks_score,
+        vocabulary_score: dto.vocabulary_score,
+        rhythm_score: dto.rhythm_score,
+        tone_description: dto.tone_description,
+        dominant_hook: dto.dominant_hook,
+        vocabulary: dto.vocabulary,
+        pillars: dto.pillars,
       },
     });
   }

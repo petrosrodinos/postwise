@@ -32,6 +32,14 @@ export interface CreateRssGenerationRunDto {
   image_count?: number;
 }
 
+export interface AddPostsToGenerationRunDto {
+  style_profile_id?: string;
+  posts_requested?: number;
+  language?: string;
+  generate_images?: boolean;
+  image_count?: number;
+}
+
 export interface GenerationRunsQueryType {
   page?: number;
   limit?: number;

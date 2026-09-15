@@ -18,6 +18,7 @@ import {
   RssFeedItem,
   StyleProfile,
 } from 'generated/prisma';
+import { AddPostsToGenerationRunDto } from './dto/add-posts-to-generation-run.dto';
 import { CreateGenerationRunDto } from './dto/create-generation-run.dto';
 import { CreateRssGenerationRunDto } from './dto/create-rss-generation-run.dto';
 import { GenerationRunsQueryType } from './dto/generation-runs-query.schema';
@@ -246,6 +247,47 @@ ${
     });
   }
 
+  // Generates more drafts into an existing run instead of starting a new
+  // batch — used when the user is already viewing a run's results and asks
+  // for more posts in the same batch.
+  async addPosts(userId: string, runId: string, dto: AddPostsToGenerationRunDto) {
+    const run = await this.prisma.generationRun.findUnique({ where: { id: runId } });
+    if (!run) throw new NotFoundException('Generation run not found');
+
+    const project = await this.projectsService.findOwned(userId, run.project_id);
+
+    const styleProfileId =
+      dto.style_profile_id ?? run.style_profile_id ?? project.style_profiles[0]?.style_profile_id ?? null;
+    const styleProfile = styleProfileId
+      ? await this.prisma.styleProfile.findUnique({ where: { id: styleProfileId } })
+      : null;
+    if (styleProfileId && !styleProfile) throw new NotFoundException('Style profile not found');
+
+    const postsRequested = dto.posts_requested ?? 3;
+    const language = dto.language ?? run.language;
+    const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
+
+    const draftDocumentIds = await this.generateImagesForDrafts(
+      drafts,
+      project,
+      dto.generate_images,
+      dto.image_count,
+    );
+
+    return this.persistRun({
+      project,
+      styleProfileId,
+      automationId: run.automation_id,
+      label: run.label,
+      postsRequested: (run.posts_requested ?? 0) + postsRequested,
+      language,
+      authorUserId: userId,
+      drafts,
+      draftDocumentIds,
+      existingRunId: run.id,
+    });
+  }
+
   // Entry point used by the Automations cron — no interactive user is
   // available, so the author defaults to the organisation's creator.
   async runForAutomation(automation: Automation & { project: Project }) {
@@ -363,6 +405,7 @@ ${
     status?: PostStatus;
     draftDocumentIds?: string[][];
     rssFeedItemIds?: string[];
+    existingRunId?: string;
   }) {
     const {
       project,
@@ -376,19 +419,25 @@ ${
       status,
       draftDocumentIds,
       rssFeedItemIds,
+      existingRunId,
     } = params;
 
     return this.prisma.$transaction(async (tx) => {
-      const run = await tx.generationRun.create({
-        data: {
-          project_id: project.id,
-          style_profile_id: styleProfileId,
-          automation_id: automationId,
-          label,
-          posts_requested: postsRequested,
-          language,
-        },
-      });
+      const run = existingRunId
+        ? await tx.generationRun.update({
+            where: { id: existingRunId },
+            data: { posts_requested: postsRequested },
+          })
+        : await tx.generationRun.create({
+            data: {
+              project_id: project.id,
+              style_profile_id: styleProfileId,
+              automation_id: automationId,
+              label,
+              posts_requested: postsRequested,
+              language,
+            },
+          });
 
       const posts = await Promise.all(
         drafts.map(async (draft, index) => {

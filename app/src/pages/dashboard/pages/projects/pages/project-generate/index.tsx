@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Routes } from "@/routes/routes";
 import { useProject } from "@/features/projects/hooks/use-projects";
-import { useCreateGenerationRun, useGenerationRun } from "@/features/generation-runs/hooks/use-generation-runs";
+import { useAddPostsToGenerationRun, useCreateGenerationRun, useGenerationRun } from "@/features/generation-runs/hooks/use-generation-runs";
 import { DEFAULT_LANGUAGE } from "@/config/constants/dropdowns/generation-runs/language-form.options";
 import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import { GenerationContextCard } from "./components/generation-context-card";
@@ -21,7 +21,9 @@ export default function ProjectGeneratePage() {
 
   const { data: project, isPending: isProjectPending } = useProject(id);
   const { data: run, isPending: isRunPending } = useGenerationRun(runId);
-  const { mutate: createRun, isPending: isGenerating } = useCreateGenerationRun();
+  const { mutate: createRun, isPending: isCreatingRun } = useCreateGenerationRun();
+  const { mutate: addPosts, isPending: isAddingPosts } = useAddPostsToGenerationRun();
+  const isGenerating = isCreatingRun || isAddingPosts;
 
   const [source, setSource] = useState<GenerationSource>("ideas");
   const [styleProfileId, setStyleProfileId] = useState("");
@@ -107,11 +109,25 @@ export default function ProjectGeneratePage() {
   const posts = run?.posts ?? [];
 
   function handleGenerate() {
+    if (run) {
+      addPosts({
+        id: run.id,
+        dto: {
+          style_profile_id: styleProfileId || undefined,
+          posts_requested: postsRequested,
+          language,
+          generate_images: generateImages,
+          image_count: imageCount,
+        },
+      });
+      return;
+    }
+
     createRun(
       {
         project_id: id!,
         style_profile_id: styleProfileId || undefined,
-        posts_requested: run ? (run.posts_requested ?? (posts.length || 4)) : postsRequested,
+        posts_requested: postsRequested,
         language,
         generate_images: generateImages,
         image_count: imageCount,
@@ -201,22 +217,7 @@ export default function ProjectGeneratePage() {
             </span>
           </div>
 
-          {isGenerating ? (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {Array.from({ length: run?.posts_requested ?? postsRequested }).map((_, i) => (
-                <div key={i} className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
-                  <div className="flex items-center justify-between gap-2">
-                    <Skeleton className="h-5 w-24 rounded-full" />
-                    <Skeleton className="h-5 w-16 rounded-full" />
-                  </div>
-                  <Skeleton className="h-4 w-2/3" />
-                  <Skeleton className="h-3 w-full" />
-                  <Skeleton className="h-3 w-11/12" />
-                  <Skeleton className="h-3 w-3/4" />
-                </div>
-              ))}
-            </div>
-          ) : posts.length === 0 ? (
+          {posts.length === 0 && !isGenerating ? (
             <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
               <h3 className="text-base font-semibold text-foreground">No generation yet</h3>
               <p className="mx-auto mt-2 max-w-sm text-sm">Choose a style profile and a batch size, then generate this project's first drafts.</p>
@@ -226,6 +227,19 @@ export default function ProjectGeneratePage() {
               {posts.map((post) => (
                 <GeneratedPostCard key={post.id} post={post} platform={project.platform} styleProfiles={project.style_profiles ?? []} />
               ))}
+              {isGenerating &&
+                Array.from({ length: postsRequested }).map((_, i) => (
+                  <div key={`skeleton-${i}`} className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <div className="flex items-center justify-between gap-2">
+                      <Skeleton className="h-5 w-24 rounded-full" />
+                      <Skeleton className="h-5 w-16 rounded-full" />
+                    </div>
+                    <Skeleton className="h-4 w-2/3" />
+                    <Skeleton className="h-3 w-full" />
+                    <Skeleton className="h-3 w-11/12" />
+                    <Skeleton className="h-3 w-3/4" />
+                  </div>
+                ))}
             </div>
           )}
         </div>
