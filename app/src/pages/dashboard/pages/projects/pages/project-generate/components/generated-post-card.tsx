@@ -163,9 +163,19 @@ export function GeneratedPostCard({
           showHighlight && "ring-2 ring-brass-ink ring-offset-2",
         )}
       >
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          {styleProfile ? <DnaBadge name={styleProfile.name} /> : <span />}
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            {styleProfile && <DnaBadge name={styleProfile.name} />}
+            {isBlog && (
+              <Input
+                value={draft.title}
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, title: e.target.value }))
+                }
+                placeholder="Post title"
+                className="font-display h-auto min-w-0 flex-1 border-none px-0 text-lg font-semibold shadow-none focus-visible:ring-0"
+              />
+            )}
             {!isBlog && post.hook && (
               <Badge
                 variant="pill"
@@ -174,39 +184,29 @@ export function GeneratedPostCard({
                 {post.hook}
               </Badge>
             )}
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              className="h-7 w-7"
-              onClick={() => setIsExpanded(true)}
-              aria-label="Expand post"
-            >
-              <Maximize2 className="h-3.5 w-3.5" />
-            </Button>
           </div>
+          <Button
+            type="button"
+            size="icon"
+            variant="ghost"
+            className="h-7 w-7 flex-none"
+            onClick={() => setIsExpanded(true)}
+            aria-label="Expand post"
+          >
+            <Maximize2 className="h-3.5 w-3.5" />
+          </Button>
         </div>
 
         {isBlog && (
-          <>
-            <Input
-              value={draft.title}
-              onChange={(e) =>
-                setDraft((d) => ({ ...d, title: e.target.value }))
-              }
-              placeholder="Post title"
-              className="font-display h-auto border-none px-0 text-lg font-semibold shadow-none focus-visible:ring-0"
-            />
-            <Textarea
-              value={draft.excerpt}
-              onChange={(e) =>
-                setDraft((d) => ({ ...d, excerpt: e.target.value }))
-              }
-              placeholder="Excerpt — shown in previews and RSS"
-              rows={2}
-              className="text-xs"
-            />
-          </>
+          <Textarea
+            value={draft.excerpt}
+            onChange={(e) =>
+              setDraft((d) => ({ ...d, excerpt: e.target.value }))
+            }
+            placeholder="Excerpt — shown in previews and RSS"
+            rows={2}
+            className="text-xs"
+          />
         )}
 
         {isBlog && post.attachments && post.attachments.length > 0 && (
