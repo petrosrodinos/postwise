@@ -43,6 +43,11 @@ export class PostsController {
   @ApiQuery({ name: 'project_id', required: false })
   @ApiQuery({ name: 'status', required: false })
   @ApiQuery({ name: 'type', required: false })
+  @ApiQuery({ name: 'search', required: false })
+  @ApiQuery({ name: 'automation_id', required: false })
+  @ApiQuery({ name: 'source', required: false, enum: ['MANUAL', 'GENERATED', 'AUTOMATION', 'REPURPOSED'] })
+  @ApiQuery({ name: 'order_by', required: false, enum: ['created_at', 'updated_at', 'scheduled_at'] })
+  @ApiQuery({ name: 'order_direction', required: false, enum: ['asc', 'desc'] })
   @ApiResponse({ status: 200 })
   findAll(
     @CurrentUser('id') userId: string,

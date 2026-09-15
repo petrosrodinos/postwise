@@ -23,6 +23,15 @@ export class PostEntity {
   @ApiProperty({ required: false, nullable: true })
   source_post_id?: string | null;
 
+  @ApiProperty({ required: false, nullable: true })
+  rss_feed_item_id?: string | null;
+
+  @ApiProperty({ required: false, nullable: true })
+  automation_id?: string | null;
+
+  @ApiProperty({ required: false, nullable: true })
+  metadata?: Record<string, unknown> | null;
+
   @ApiProperty({ enum: PostType })
   type: PostType;
 

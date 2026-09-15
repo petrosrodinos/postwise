@@ -29,6 +29,14 @@ export const PostChannelStatuses = {
 } as const;
 export type PostChannelStatus = (typeof PostChannelStatuses)[keyof typeof PostChannelStatuses];
 
+export const PostSources = {
+  MANUAL: "MANUAL",
+  GENERATED: "GENERATED",
+  AUTOMATION: "AUTOMATION",
+  REPURPOSED: "REPURPOSED",
+} as const;
+export type PostSource = (typeof PostSources)[keyof typeof PostSources];
+
 export interface Post {
   id: string;
   user_id: string;
@@ -37,6 +45,10 @@ export interface Post {
   style_profile_id?: string | null;
   generation_run_id?: string | null;
   source_post_id?: string | null;
+  rss_feed_item_id?: string | null;
+  automation_id?: string | null;
+  automation?: { id: string; name: string } | null;
+  project?: { id: string; title: string } | null;
   type: PostType;
   status: PostStatus;
   hook?: string | null;
@@ -124,4 +136,9 @@ export interface PostsQueryType {
   project_id?: string;
   status?: PostStatus;
   type?: PostType;
+  search?: string;
+  automation_id?: string;
+  source?: PostSource;
+  order_by?: "created_at" | "updated_at" | "scheduled_at";
+  order_direction?: "asc" | "desc";
 }

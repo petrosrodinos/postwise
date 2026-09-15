@@ -17,6 +17,7 @@ export const Routes = {
     project_edit: (id: string) => `/dashboard/projects/${id}/edit`,
     project_generate: (id: string) => `/dashboard/projects/${id}/generate`,
     style_profiles: "/dashboard/style-profiles",
+    posts: "/dashboard/posts",
     rss_feeds: "/dashboard/rss-feeds",
     automation: "/dashboard/automation",
     settings: "/dashboard/settings",
