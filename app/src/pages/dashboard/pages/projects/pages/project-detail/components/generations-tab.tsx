@@ -148,7 +148,7 @@ export function GenerationsTab({ project }: GenerationsTabProps) {
                     <TableCell className="text-sm text-muted-foreground">{format(new Date(post.updated_at), "MMM d, yyyy")}</TableCell>
                     <TableCell>
                       <Link
-                        to={`${Routes.dashboard.project_generate(project.id)}${post.generation_run_id ? `?run=${post.generation_run_id}&tab=generations` : "?tab=generations"}`}
+                        to={`${Routes.dashboard.project_generate(project.id)}${post.generation_run_id ? `?run=${post.generation_run_id}&post=${post.id}&tab=generations` : `?post=${post.id}&tab=generations`}`}
                         className="text-sm font-semibold text-brass-ink hover:underline"
                       >
                         Open →

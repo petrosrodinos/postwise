@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Maximize2, Sparkles, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,19 +54,30 @@ interface GeneratedPostCardProps {
   post: Post;
   platform: (typeof PostTypes)[keyof typeof PostTypes];
   styleProfiles: ProjectStyleProfileLink[];
+  highlighted?: boolean;
 }
 
 export function GeneratedPostCard({
   post,
   platform,
   styleProfiles,
+  highlighted,
 }: GeneratedPostCardProps) {
   const { mutate: updatePost, isPending: isSaving } = useUpdatePost();
   const { mutate: repurposePost, isPending: isRepurposing } =
     useRepurposePost();
   const { mutate: deleteDocument } = useDeleteDocument();
 
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [showHighlight, setShowHighlight] = useState(!!highlighted);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    if (!highlighted) return;
+    cardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    const timeout = setTimeout(() => setShowHighlight(false), 2500);
+    return () => clearTimeout(timeout);
+  }, [highlighted]);
   const [draft, setDraft] = useState({
     title: post.title ?? "",
     excerpt: post.excerpt ?? "",
@@ -145,7 +156,13 @@ export function GeneratedPostCard({
 
   return (
     <>
-      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div
+        ref={cardRef}
+        className={cn(
+          "flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm transition-shadow",
+          showHighlight && "ring-2 ring-brass-ink ring-offset-2",
+        )}
+      >
         <div className="flex flex-wrap items-center justify-between gap-2">
           {styleProfile ? <DnaBadge name={styleProfile.name} /> : <span />}
           <div className="flex items-center gap-2">

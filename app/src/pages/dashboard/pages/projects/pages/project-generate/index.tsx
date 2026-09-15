@@ -18,6 +18,7 @@ export default function ProjectGeneratePage() {
   const { id } = useParams<{ id: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const runId = searchParams.get("run") ?? undefined;
+  const highlightedPostId = searchParams.get("post") ?? undefined;
   const tabParam = searchParams.get("tab");
   const backToProjectUrl = tabParam ? `${Routes.dashboard.project_detail(id ?? "")}?tab=${tabParam}` : Routes.dashboard.project_detail(id ?? "");
 
@@ -227,7 +228,13 @@ export default function ProjectGeneratePage() {
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
               {posts.map((post) => (
-                <GeneratedPostCard key={post.id} post={post} platform={project.platform} styleProfiles={project.style_profiles ?? []} />
+                <GeneratedPostCard
+                  key={post.id}
+                  post={post}
+                  platform={project.platform}
+                  styleProfiles={project.style_profiles ?? []}
+                  highlighted={post.id === highlightedPostId}
+                />
               ))}
               {isGenerating &&
                 Array.from({ length: postsRequested }).map((_, i) => (

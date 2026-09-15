@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Pencil } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,6 @@ import { getDropdownOptionLabel } from "@/lib/dropdown-option-label.utils";
 import { PostStatuses, PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import { usePosts } from "@/features/posts/hooks/use-posts";
 import { useUpdateProject } from "@/features/projects/hooks/use-projects";
-import { Routes } from "@/routes/routes";
 import type { Project } from "@/features/projects/interfaces/projects.interfaces";
 
 const ALL_STATUSES = Object.values(PostStatuses);
@@ -236,9 +234,6 @@ export function OverviewTab({ project, onViewAllPosts }: OverviewTabProps) {
                 </div>
               ))
             )}
-            <Button variant="outline" size="sm" asChild className="mt-1">
-              <Link to={Routes.dashboard.style_profiles}>Manage style profiles</Link>
-            </Button>
           </CardContent>
         </Card>
 
@@ -257,9 +252,6 @@ export function OverviewTab({ project, onViewAllPosts }: OverviewTabProps) {
                   </div>
                 ))
               )}
-              <Button variant="outline" size="sm" asChild className="mt-1">
-                <Link to={Routes.dashboard.rss_feeds}>Manage RSS feeds</Link>
-              </Button>
             </CardContent>
           </Card>
         )}
