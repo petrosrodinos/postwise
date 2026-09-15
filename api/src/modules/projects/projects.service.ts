@@ -7,12 +7,16 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
+import { AiService } from '@/integrations/ai/services/ai.service';
+import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
 import { OrganisationRole } from 'generated/prisma';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AttachStyleProfileDto } from './dto/attach-style-profile.dto';
+import { GenerateProjectDetailsDto } from './dto/generate-project-details.dto';
 import { ProjectsQueryType } from './dto/projects-query.schema';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
+import { ProjectAiSuggestionsSchema } from './interfaces/project-ai-suggestions.interface';
 
 const MANAGE_ROLES: OrganisationRole[] = [OrganisationRole.OWNER, OrganisationRole.ADMIN];
 
@@ -21,7 +25,29 @@ export class ProjectsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly ownershipService: OwnershipService,
+    private readonly aiService: AiService,
   ) {}
+
+  async generateDetails(dto: GenerateProjectDetailsDto) {
+    const prompt = `Plan a content strategy for the following project. Return ONLY a raw JSON object (no markdown) with this exact shape:
+{
+  "pillars": string[] (3-6 short, recurring content themes/topics for this project),
+  "ideas": string[] (5-8 concrete post ideas or angles to draw from),
+  "instructions": string[] (3-6 short rules the AI should always follow when drafting for this project, e.g. tone, formatting or things to avoid)
+}
+
+Project title: ${dto.title}
+Project description: ${dto.description ?? 'n/a'}
+Platform: ${dto.platform ?? 'general social media'}`;
+
+    const { response } = await this.aiService.generateText({
+      prompt,
+      system: 'You are an expert content strategist who plans social media and blog content.',
+      temperature: 0.7,
+    });
+
+    return parseAiJson(response, ProjectAiSuggestionsSchema);
+  }
 
   async create(userId: string, dto: CreateProjectDto) {
     const context = await this.ownershipService.resolveContext(userId, dto.organisation_id);

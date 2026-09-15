@@ -43,10 +43,31 @@ export default function SettingsPage() {
       </Link>
 
       {isPending || !organisation ? (
-        <div className="flex flex-col gap-2">
-          <Skeleton className="h-8 w-64" />
-          <Skeleton className="h-4 w-80" />
-        </div>
+        <>
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-4 w-80" />
+          </div>
+
+          <div className="flex gap-1 rounded-lg bg-muted p-1" style={{ width: "fit-content" }}>
+            <Skeleton className="h-8 w-20 rounded-md" />
+            <Skeleton className="h-8 w-24 rounded-md" />
+            <Skeleton className="h-8 w-24 rounded-md" />
+          </div>
+
+          <div className="flex max-w-lg flex-col gap-5 rounded-2xl border border-border bg-card p-6">
+            <Skeleton className="h-4 w-24" />
+            <div className="flex flex-col gap-1.5">
+              <Skeleton className="h-3.5 w-16" />
+              <Skeleton className="h-9 w-full rounded-md" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Skeleton className="h-3.5 w-16" />
+              <Skeleton className="h-9 w-full rounded-md" />
+            </div>
+            <Skeleton className="h-9 w-24 self-end rounded-md" />
+          </div>
+        </>
       ) : (
         <div className="flex items-center gap-3">
           <div>

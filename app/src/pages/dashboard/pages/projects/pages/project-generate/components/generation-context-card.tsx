@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PlatformGlyph } from "@/components/ui/platform-glyph";
 import { getDropdownOptionLabel } from "@/lib/dropdown-option-label.utils";
 import { PostTypeFormOptions } from "@/config/constants/dropdowns/posts/post-type-form.options";
+import { LanguageFormOptions } from "@/config/constants/dropdowns/generation-runs/language-form.options";
 import type { Project } from "@/features/projects/interfaces/projects.interfaces";
 
 const NONE_VALUE = "__none__";
@@ -17,6 +18,8 @@ interface GenerationContextCardProps {
   onStyleProfileChange: (value: string) => void;
   postsRequested: number;
   onPostsRequestedChange: (value: number) => void;
+  language: string;
+  onLanguageChange: (value: string) => void;
   onGenerate: () => void;
   isGenerating: boolean;
 }
@@ -28,13 +31,15 @@ export function GenerationContextCard({
   onStyleProfileChange,
   postsRequested,
   onPostsRequestedChange,
+  language,
+  onLanguageChange,
   onGenerate,
   isGenerating,
 }: GenerationContextCardProps) {
   const styleProfiles = project.style_profiles ?? [];
 
   return (
-    <div className="sticky top-4 flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <div className="sticky top-20 flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
       <div>
         <p className="text-xs font-semibold uppercase text-muted-foreground">Generation context</p>
         <p className="mt-1 text-base font-semibold">{isExistingRun ? "Regenerate this batch" : "Set up this batch"}</p>
@@ -77,6 +82,22 @@ export function GenerationContextCard({
           />
         </div>
       )}
+
+      <div>
+        <Label className="mb-1.5 block text-xs font-semibold text-foreground">Language</Label>
+        <Select value={language} onValueChange={onLanguageChange}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {LanguageFormOptions.map((option) => (
+              <SelectItem key={option.id} value={option.id}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
       <div>
         <Label className="mb-1.5 block text-xs font-semibold text-foreground">Platform</Label>

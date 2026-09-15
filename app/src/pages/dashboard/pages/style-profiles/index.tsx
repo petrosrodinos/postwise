@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useStyleProfiles } from "@/features/style-profiles/hooks/use-style-profiles";
 import { AnalyzeCreatorDialog } from "@/pages/dashboard/components/analyze-creator-dialog";
 import type { StyleProfile } from "@/features/style-profiles/interfaces/style-profiles.interfaces";
-import { StyleProfileCard } from "./components/style-profile-card";
+import { StyleProfileCard, StyleProfileCardSkeleton } from "./components/style-profile-card";
 import { StyleProfileDrawer } from "./components/style-profile-drawer";
 
 export default function StyleProfilesPage() {
@@ -36,7 +35,7 @@ export default function StyleProfilesPage() {
       {isPending ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-64 w-full rounded-2xl" />
+            <StyleProfileCardSkeleton key={i} />
           ))}
         </div>
       ) : profiles.length === 0 ? (

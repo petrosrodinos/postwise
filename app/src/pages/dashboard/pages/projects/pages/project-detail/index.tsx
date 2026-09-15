@@ -9,10 +9,9 @@ import { useProject } from "@/features/projects/hooks/use-projects";
 import { Routes } from "@/routes/routes";
 import { OverviewTab } from "./components/overview-tab";
 import { GenerationsTab } from "./components/generations-tab";
-import { IdeasInstructionsTab } from "./components/ideas-instructions-tab";
 import { SettingsTab } from "./components/settings-tab";
 
-type TabValue = "overview" | "generations" | "ideas" | "settings";
+type TabValue = "overview" | "generations" | "settings";
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -22,9 +21,38 @@ export default function ProjectDetailPage() {
   if (isPending) {
     return (
       <div className="flex flex-col gap-6">
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-10 w-96" />
-        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-4 w-24" />
+
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <Skeleton className="mt-1.5 h-6 w-6 rounded-full" />
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-7 w-48" />
+              <Skeleton className="h-4 w-72" />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Skeleton className="h-9 w-28 rounded-md" />
+            <Skeleton className="h-9 w-32 rounded-md" />
+          </div>
+        </div>
+
+        <div className="flex gap-1 rounded-lg bg-muted p-1" style={{ width: "fit-content" }}>
+          <Skeleton className="h-8 w-20 rounded-md" />
+          <Skeleton className="h-8 w-24 rounded-md" />
+          <Skeleton className="h-8 w-20 rounded-md" />
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="flex flex-col gap-6 lg:col-span-2">
+            <Skeleton className="h-40 w-full rounded-2xl" />
+            <Skeleton className="h-48 w-full rounded-2xl" />
+          </div>
+          <div className="flex flex-col gap-6">
+            <Skeleton className="h-28 w-full rounded-2xl" />
+            <Skeleton className="h-28 w-full rounded-2xl" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -56,8 +84,8 @@ export default function ProjectDetailPage() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setTab("settings")}>
-            Edit project
+          <Button variant="outline" asChild>
+            <Link to={Routes.dashboard.project_edit(project.id)}>Edit project</Link>
           </Button>
           <Button asChild>
             <Link to={Routes.dashboard.project_generate(project.id)}>New generation</Link>
@@ -69,7 +97,6 @@ export default function ProjectDetailPage() {
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="generations">Generations</TabsTrigger>
-          <TabsTrigger value="ideas">Ideas & instructions</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
@@ -77,9 +104,6 @@ export default function ProjectDetailPage() {
         </TabsContent>
         <TabsContent value="generations">
           <GenerationsTab project={project} />
-        </TabsContent>
-        <TabsContent value="ideas">
-          <IdeasInstructionsTab project={project} />
         </TabsContent>
         <TabsContent value="settings">
           <SettingsTab project={project} />

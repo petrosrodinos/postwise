@@ -47,6 +47,51 @@ export class OrganisationsService {
     return { organisation, membership };
   }
 
+  // Slugifies `base`, then appends a numeric suffix until the slug is free.
+  private async generateUniqueSlug(base: string) {
+    const root =
+      base
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'workspace';
+
+    let slug = root;
+    let suffix = 1;
+    while (await this.prisma.organisation.findUnique({ where: { slug } })) {
+      suffix += 1;
+      slug = `${root}-${suffix}`;
+    }
+    return slug;
+  }
+
+  // Every user gets a personal default organisation on registration, with
+  // themselves as an Admin member (§ default workspace) — this keeps them
+  // functional without going through the manual create-organisation flow.
+  async createDefault(userId: string, userName: string) {
+    const slug = await this.generateUniqueSlug(userName);
+
+    return this.prisma.$transaction(async (tx) => {
+      const organisation = await tx.organisation.create({
+        data: {
+          name: `${userName}'s Workspace`,
+          slug,
+          created_by_user_id: userId,
+        },
+      });
+
+      await tx.organisationMember.create({
+        data: {
+          organisation_id: organisation.id,
+          user_id: userId,
+          role: OrganisationRole.ADMIN,
+        },
+      });
+
+      return organisation;
+    });
+  }
+
   async create(userId: string, dto: CreateOrganisationDto) {
     await this.assertSlugAvailable(dto.slug);
 

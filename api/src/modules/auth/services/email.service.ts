@@ -8,6 +8,7 @@ import { AuthRoles } from '../interfaces/auth.interface';
 import { WaitlistDto } from '../dto/waitlist.dto';
 import { ResendMailService } from '@/integrations/notifications/resend/services/mail.service';
 import { EmailConfig } from '@/shared/constants/email';
+import { OrganisationsService } from '@/modules/organisations/organisations.service';
 
 @Injectable()
 export class EmailAuthService {
@@ -15,6 +16,7 @@ export class EmailAuthService {
         private readonly prisma: PrismaService,
         private readonly jwtService: CreateJwtService,
         private readonly mailService: ResendMailService,
+        private readonly organisationsService: OrganisationsService,
     ) { }
 
     async registerWithEmail(dto: RegisterEmailDto) {
@@ -40,6 +42,8 @@ export class EmailAuthService {
                     role: AuthRoles.USER,
                 },
             });
+
+            await this.organisationsService.createDefault(user.id, user.name);
 
             const token = await this.jwtService.signToken({
                 id: user.id,

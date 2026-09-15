@@ -20,5 +20,8 @@ export class GenerationRunEntity {
   posts_requested?: number | null;
 
   @ApiProperty()
+  language: string;
+
+  @ApiProperty()
   created_at: Date;
 }

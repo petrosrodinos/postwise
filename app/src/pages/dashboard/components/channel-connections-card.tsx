@@ -94,7 +94,21 @@ export function ChannelConnectionsCard({
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         {isPending ? (
-          Array.from({ length: 2 }).map((_, i) => <Skeleton key={i} className="h-12 w-full" />)
+          Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="flex items-center justify-between gap-3 rounded-lg border border-border px-3.5 py-2.5">
+              <div className="flex items-center gap-2.5">
+                <Skeleton className="h-6 w-6 flex-none rounded-md" />
+                <div className="flex flex-col gap-1.5">
+                  <Skeleton className="h-3.5 w-28" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-5 w-20 rounded-full" />
+                <Skeleton className="h-8 w-20 rounded-md" />
+              </div>
+            </div>
+          ))
         ) : connections.length === 0 ? (
           <p className="text-sm text-muted-foreground">No channels connected yet.</p>
         ) : (

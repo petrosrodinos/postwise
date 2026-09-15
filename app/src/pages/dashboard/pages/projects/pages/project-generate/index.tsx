@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Routes } from "@/routes/routes";
 import { useProject } from "@/features/projects/hooks/use-projects";
 import { useCreateGenerationRun, useGenerationRun } from "@/features/generation-runs/hooks/use-generation-runs";
+import { DEFAULT_LANGUAGE } from "@/config/constants/dropdowns/generation-runs/language-form.options";
 import { GenerationContextCard } from "./components/generation-context-card";
 import { GeneratedPostCard } from "./components/generated-post-card";
 
@@ -20,10 +21,12 @@ export default function ProjectGeneratePage() {
 
   const [styleProfileId, setStyleProfileId] = useState("");
   const [postsRequested, setPostsRequested] = useState(4);
+  const [language, setLanguage] = useState(DEFAULT_LANGUAGE);
 
   useEffect(() => {
     if (run) {
       setStyleProfileId(run.style_profile_id ?? "");
+      setLanguage(run.language ?? DEFAULT_LANGUAGE);
     } else if (project) {
       setStyleProfileId(project.style_profiles?.[0]?.style_profile_id ?? "");
     }
@@ -31,12 +34,42 @@ export default function ProjectGeneratePage() {
 
   if (isProjectPending || (runId && isRunPending)) {
     return (
-      <div className="grid gap-6" style={{ gridTemplateColumns: "320px 1fr" }}>
-        <Skeleton className="h-96 w-full rounded-2xl" />
-        <div className="grid gap-4 sm:grid-cols-2">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-64 w-full rounded-2xl" />
-          ))}
+      <div className="flex flex-col gap-6">
+        <Skeleton className="h-4 w-32" />
+        <div className="grid items-start gap-6" style={{ gridTemplateColumns: "320px 1fr" }}>
+          <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <div className="flex flex-col gap-1.5">
+              <Skeleton className="h-3 w-32" />
+              <Skeleton className="h-4 w-36" />
+            </div>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex flex-col gap-1.5">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-9 w-full rounded-md" />
+              </div>
+            ))}
+            <Skeleton className="mt-1 h-9 w-full rounded-md" />
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <div className="flex items-baseline justify-between gap-4">
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-3.5 w-28" />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                  <div className="flex items-center justify-between gap-2">
+                    <Skeleton className="h-5 w-24 rounded-full" />
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                  </div>
+                  <Skeleton className="h-3 w-full" />
+                  <Skeleton className="h-3 w-11/12" />
+                  <Skeleton className="h-3 w-3/4" />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -72,6 +105,7 @@ export default function ProjectGeneratePage() {
         project_id: id!,
         style_profile_id: styleProfileId || undefined,
         posts_requested: run ? (run.posts_requested ?? (posts.length || 4)) : postsRequested,
+        language,
       },
       {
         onSuccess: (newRun) => {
@@ -99,6 +133,8 @@ export default function ProjectGeneratePage() {
           onStyleProfileChange={setStyleProfileId}
           postsRequested={postsRequested}
           onPostsRequestedChange={setPostsRequested}
+          language={language}
+          onLanguageChange={setLanguage}
           onGenerate={handleGenerate}
           isGenerating={isGenerating}
         />
@@ -119,6 +155,10 @@ export default function ProjectGeneratePage() {
             <div className="grid gap-4 sm:grid-cols-2">
               {Array.from({ length: run?.posts_requested ?? postsRequested }).map((_, i) => (
                 <div key={i} className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                  <div className="flex items-center justify-between gap-2">
+                    <Skeleton className="h-5 w-24 rounded-full" />
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                  </div>
                   <Skeleton className="h-4 w-2/3" />
                   <Skeleton className="h-3 w-full" />
                   <Skeleton className="h-3 w-11/12" />

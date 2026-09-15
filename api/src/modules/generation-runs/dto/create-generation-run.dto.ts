@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { GENERATION_LANGUAGE_CODES } from '../constants/languages.constant';
 
 export class CreateGenerationRunDto {
   @ApiProperty({ description: 'Project to generate drafts for' })
@@ -25,4 +26,14 @@ export class CreateGenerationRunDto {
   @IsOptional()
   @IsString()
   label?: string;
+
+  @ApiProperty({
+    required: false,
+    enum: GENERATION_LANGUAGE_CODES,
+    default: 'en',
+    description: 'Language the drafts should be written in',
+  })
+  @IsOptional()
+  @IsIn(GENERATION_LANGUAGE_CODES)
+  language?: string;
 }

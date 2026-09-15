@@ -44,6 +44,18 @@ export interface AttachStyleProfileDto {
   style_profile_id: string;
 }
 
+export interface GenerateProjectDetailsDto {
+  title: string;
+  description?: string;
+  platform?: PostType;
+}
+
+export interface ProjectAiSuggestions {
+  pillars: string[];
+  ideas: string[];
+  instructions: string[];
+}
+
 export interface ProjectsQueryType {
   page?: number;
   limit?: number;

@@ -5,10 +5,35 @@ import { PlatformGlyph } from "@/components/ui/platform-glyph";
 import { Badge } from "@/components/ui/badge";
 import { DnaBadge } from "@/components/ui/dna-badge";
 import { WorkflowBar } from "@/components/ui/workflow-bar";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { Project } from "@/features/projects/interfaces/projects.interfaces";
 
 interface ProjectCardProps {
   project: Project;
+}
+
+export function ProjectCardSkeleton() {
+  return (
+    <div className="flex flex-col gap-3.5 rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-4 w-16" />
+        <Skeleton className="h-3 w-24" />
+      </div>
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-4 w-2/3" />
+        <Skeleton className="h-3.5 w-full" />
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        <Skeleton className="h-5 w-16 rounded-full" />
+        <Skeleton className="h-5 w-20 rounded-full" />
+      </div>
+      <Skeleton className="mt-1 h-1.5 w-full rounded-full" />
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-3 w-32" />
+        <Skeleton className="h-3 w-16" />
+      </div>
+    </div>
+  );
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FolderKanban, Sparkles, Dna } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,8 +10,7 @@ import { useWorkspaceStore } from "@/stores/workspace";
 import { useProjects } from "@/features/projects/hooks/use-projects";
 import { useStyleProfiles } from "@/features/style-profiles/hooks/use-style-profiles";
 import { usePosts } from "@/features/posts/hooks/use-posts";
-import { ProjectCard } from "@/pages/dashboard/components/project-card";
-import { NewProjectDialog } from "@/pages/dashboard/components/new-project-dialog";
+import { ProjectCard, ProjectCardSkeleton } from "@/pages/dashboard/components/project-card";
 import { AnalyzeCreatorDialog } from "@/pages/dashboard/components/analyze-creator-dialog";
 import { DnaBadge } from "@/components/ui/dna-badge";
 import { PostStatusTag } from "@/components/ui/post-status-tag";
@@ -25,7 +24,7 @@ function greeting() {
 }
 
 export default function DashboardHomePage() {
-  const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
+  const navigate = useNavigate();
   const [isAnalyzeOpen, setIsAnalyzeOpen] = useState(false);
 
   const fullName = useAuthStore((state) => state.full_name);
@@ -55,7 +54,7 @@ export default function DashboardHomePage() {
           <Button variant="outline" onClick={() => setIsAnalyzeOpen(true)}>
             Analyze a creator
           </Button>
-          <Button onClick={() => setIsNewProjectOpen(true)}>New project</Button>
+          <Button onClick={() => navigate(Routes.dashboard.new_project)}>New project</Button>
         </div>
       </div>
 
@@ -107,14 +106,14 @@ export default function DashboardHomePage() {
           {isProjectsPending ? (
             <div className="grid gap-4 sm:grid-cols-2">
               {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="h-48 w-full rounded-2xl" />
+                <ProjectCardSkeleton key={i} />
               ))}
             </div>
           ) : projects.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
               <h3 className="text-base font-semibold text-foreground">No projects yet</h3>
               <p className="mx-auto mt-2 max-w-sm text-sm">Create a project to organize AI generation around a goal, audience and voice.</p>
-              <Button className="mt-4" onClick={() => setIsNewProjectOpen(true)}>
+              <Button className="mt-4" onClick={() => navigate(Routes.dashboard.new_project)}>
                 New project
               </Button>
             </div>
@@ -134,7 +133,15 @@ export default function DashboardHomePage() {
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
               {isPostsPending ? (
-                Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-10 w-full" />)
+                Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="flex items-center justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <Skeleton className="h-4 w-4 flex-none rounded-full" />
+                      <Skeleton className="h-3.5 w-32" />
+                    </div>
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                  </div>
+                ))
               ) : recentPosts.length === 0 ? (
                 <p className="text-sm text-muted-foreground">No posts yet.</p>
               ) : (
@@ -160,7 +167,12 @@ export default function DashboardHomePage() {
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
               {isProfilesPending ? (
-                Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-10 w-full" />)
+                Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="flex items-center justify-between gap-3">
+                    <Skeleton className="h-5 w-28 rounded-full" />
+                    <Skeleton className="h-3 w-16" />
+                  </div>
+                ))
               ) : styleProfiles.length === 0 ? (
                 <p className="text-sm text-muted-foreground">No style profiles yet.</p>
               ) : (
@@ -176,7 +188,6 @@ export default function DashboardHomePage() {
         </div>
       </div>
 
-      <NewProjectDialog isOpen={isNewProjectOpen} onClose={() => setIsNewProjectOpen(false)} />
       <AnalyzeCreatorDialog isOpen={isAnalyzeOpen} onClose={() => setIsAnalyzeOpen(false)} />
     </div>
   );

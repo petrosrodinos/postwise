@@ -17,6 +17,7 @@ import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AttachStyleProfileDto } from './dto/attach-style-profile.dto';
+import { GenerateProjectDetailsDto } from './dto/generate-project-details.dto';
 import { ProjectsQuerySchema, ProjectsQueryType } from './dto/projects-query.schema';
 import { ProjectEntity } from './entities/project.entity';
 
@@ -32,6 +33,15 @@ export class ProjectsController {
   @ApiResponse({ status: 201, type: ProjectEntity })
   create(@CurrentUser('id') userId: string, @Body() dto: CreateProjectDto) {
     return this.projectsService.create(userId, dto);
+  }
+
+  @Post('generate-details')
+  @ApiOperation({
+    summary: 'Use AI to suggest content pillars, ideas and instructions for a new project',
+  })
+  @ApiResponse({ status: 201 })
+  generateDetails(@Body() dto: GenerateProjectDetailsDto) {
+    return this.projectsService.generateDetails(dto);
   }
 
   @Get()

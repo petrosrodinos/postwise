@@ -4,19 +4,13 @@ import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 export const createProjectSchema = z.object({
   title: z.string().min(1, "Project title is required"),
   description: z.string().optional(),
-  platform: z.enum([PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG]),
+  platform: z.enum([PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG], {
+    required_error: "Choose a platform",
+  }),
   style_profile_ids: z.array(z.string()),
   pillars: z.array(z.string()),
-  ideas: z.string().optional(),
-  instructions: z.string().optional(),
+  ideas: z.array(z.string()),
+  instructions: z.array(z.string()),
 });
 
 export type CreateProjectFormData = z.infer<typeof createProjectSchema>;
-
-export function linesToArray(value?: string): string[] {
-  if (!value) return [];
-  return value
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
-}

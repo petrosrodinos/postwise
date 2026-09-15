@@ -13664,6 +13664,7 @@ export namespace Prisma {
     automation_id: string | null
     label: string | null
     posts_requested: number | null
+    language: string | null
     created_at: Date | null
   }
 
@@ -13674,6 +13675,7 @@ export namespace Prisma {
     automation_id: string | null
     label: string | null
     posts_requested: number | null
+    language: string | null
     created_at: Date | null
   }
 
@@ -13684,6 +13686,7 @@ export namespace Prisma {
     automation_id: number
     label: number
     posts_requested: number
+    language: number
     created_at: number
     _all: number
   }
@@ -13704,6 +13707,7 @@ export namespace Prisma {
     automation_id?: true
     label?: true
     posts_requested?: true
+    language?: true
     created_at?: true
   }
 
@@ -13714,6 +13718,7 @@ export namespace Prisma {
     automation_id?: true
     label?: true
     posts_requested?: true
+    language?: true
     created_at?: true
   }
 
@@ -13724,6 +13729,7 @@ export namespace Prisma {
     automation_id?: true
     label?: true
     posts_requested?: true
+    language?: true
     created_at?: true
     _all?: true
   }
@@ -13821,6 +13827,7 @@ export namespace Prisma {
     automation_id: string | null
     label: string | null
     posts_requested: number | null
+    language: string
     created_at: Date
     _count: GenerationRunCountAggregateOutputType | null
     _avg: GenerationRunAvgAggregateOutputType | null
@@ -13850,6 +13857,7 @@ export namespace Prisma {
     automation_id?: boolean
     label?: boolean
     posts_requested?: boolean
+    language?: boolean
     created_at?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | GenerationRun$style_profileArgs<ExtArgs>
@@ -13865,6 +13873,7 @@ export namespace Prisma {
     automation_id?: boolean
     label?: boolean
     posts_requested?: boolean
+    language?: boolean
     created_at?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | GenerationRun$style_profileArgs<ExtArgs>
@@ -13878,6 +13887,7 @@ export namespace Prisma {
     automation_id?: boolean
     label?: boolean
     posts_requested?: boolean
+    language?: boolean
     created_at?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | GenerationRun$style_profileArgs<ExtArgs>
@@ -13891,10 +13901,11 @@ export namespace Prisma {
     automation_id?: boolean
     label?: boolean
     posts_requested?: boolean
+    language?: boolean
     created_at?: boolean
   }
 
-  export type GenerationRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "project_id" | "style_profile_id" | "automation_id" | "label" | "posts_requested" | "created_at", ExtArgs["result"]["generationRun"]>
+  export type GenerationRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "project_id" | "style_profile_id" | "automation_id" | "label" | "posts_requested" | "language" | "created_at", ExtArgs["result"]["generationRun"]>
   export type GenerationRunInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     style_profile?: boolean | GenerationRun$style_profileArgs<ExtArgs>
@@ -13928,6 +13939,7 @@ export namespace Prisma {
       automation_id: string | null
       label: string | null
       posts_requested: number | null
+      language: string
       created_at: Date
     }, ExtArgs["result"]["generationRun"]>
     composites: {}
@@ -14362,6 +14374,7 @@ export namespace Prisma {
     readonly automation_id: FieldRef<"GenerationRun", 'String'>
     readonly label: FieldRef<"GenerationRun", 'String'>
     readonly posts_requested: FieldRef<"GenerationRun", 'Int'>
+    readonly language: FieldRef<"GenerationRun", 'String'>
     readonly created_at: FieldRef<"GenerationRun", 'DateTime'>
   }
     
@@ -20043,6 +20056,7 @@ export namespace Prisma {
     automation_id: 'automation_id',
     label: 'label',
     posts_requested: 'posts_requested',
+    language: 'language',
     created_at: 'created_at'
   };
 
@@ -21184,6 +21198,7 @@ export namespace Prisma {
     automation_id?: StringNullableFilter<"GenerationRun"> | string | null
     label?: StringNullableFilter<"GenerationRun"> | string | null
     posts_requested?: IntNullableFilter<"GenerationRun"> | number | null
+    language?: StringFilter<"GenerationRun"> | string
     created_at?: DateTimeFilter<"GenerationRun"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
@@ -21198,6 +21213,7 @@ export namespace Prisma {
     automation_id?: SortOrderInput | SortOrder
     label?: SortOrderInput | SortOrder
     posts_requested?: SortOrderInput | SortOrder
+    language?: SortOrder
     created_at?: SortOrder
     project?: ProjectOrderByWithRelationInput
     style_profile?: StyleProfileOrderByWithRelationInput
@@ -21215,6 +21231,7 @@ export namespace Prisma {
     automation_id?: StringNullableFilter<"GenerationRun"> | string | null
     label?: StringNullableFilter<"GenerationRun"> | string | null
     posts_requested?: IntNullableFilter<"GenerationRun"> | number | null
+    language?: StringFilter<"GenerationRun"> | string
     created_at?: DateTimeFilter<"GenerationRun"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     style_profile?: XOR<StyleProfileNullableScalarRelationFilter, StyleProfileWhereInput> | null
@@ -21229,6 +21246,7 @@ export namespace Prisma {
     automation_id?: SortOrderInput | SortOrder
     label?: SortOrderInput | SortOrder
     posts_requested?: SortOrderInput | SortOrder
+    language?: SortOrder
     created_at?: SortOrder
     _count?: GenerationRunCountOrderByAggregateInput
     _avg?: GenerationRunAvgOrderByAggregateInput
@@ -21247,6 +21265,7 @@ export namespace Prisma {
     automation_id?: StringNullableWithAggregatesFilter<"GenerationRun"> | string | null
     label?: StringNullableWithAggregatesFilter<"GenerationRun"> | string | null
     posts_requested?: IntNullableWithAggregatesFilter<"GenerationRun"> | number | null
+    language?: StringWithAggregatesFilter<"GenerationRun"> | string
     created_at?: DateTimeWithAggregatesFilter<"GenerationRun"> | Date | string
   }
 
@@ -22540,6 +22559,7 @@ export namespace Prisma {
     id?: string
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
     project: ProjectCreateNestedOneWithoutGeneration_runsInput
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
@@ -22554,6 +22574,7 @@ export namespace Prisma {
     automation_id?: string | null
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
   }
@@ -22562,6 +22583,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
@@ -22576,6 +22598,7 @@ export namespace Prisma {
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
@@ -22587,6 +22610,7 @@ export namespace Prisma {
     automation_id?: string | null
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
   }
 
@@ -22594,6 +22618,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -22604,6 +22629,7 @@ export namespace Prisma {
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23901,6 +23927,7 @@ export namespace Prisma {
     automation_id?: SortOrder
     label?: SortOrder
     posts_requested?: SortOrder
+    language?: SortOrder
     created_at?: SortOrder
   }
 
@@ -23915,6 +23942,7 @@ export namespace Prisma {
     automation_id?: SortOrder
     label?: SortOrder
     posts_requested?: SortOrder
+    language?: SortOrder
     created_at?: SortOrder
   }
 
@@ -23925,6 +23953,7 @@ export namespace Prisma {
     automation_id?: SortOrder
     label?: SortOrder
     posts_requested?: SortOrder
+    language?: SortOrder
     created_at?: SortOrder
   }
 
@@ -28486,6 +28515,7 @@ export namespace Prisma {
     id?: string
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
     project: ProjectCreateNestedOneWithoutGeneration_runsInput
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
@@ -28498,6 +28528,7 @@ export namespace Prisma {
     automation_id?: string | null
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
   }
@@ -28762,6 +28793,7 @@ export namespace Prisma {
     automation_id?: StringNullableFilter<"GenerationRun"> | string | null
     label?: StringNullableFilter<"GenerationRun"> | string | null
     posts_requested?: IntNullableFilter<"GenerationRun"> | number | null
+    language?: StringFilter<"GenerationRun"> | string
     created_at?: DateTimeFilter<"GenerationRun"> | Date | string
   }
 
@@ -28984,6 +29016,7 @@ export namespace Prisma {
     id?: string
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
@@ -28996,6 +29029,7 @@ export namespace Prisma {
     automation_id?: string | null
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
   }
@@ -29884,6 +29918,7 @@ export namespace Prisma {
     id?: string
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
     project: ProjectCreateNestedOneWithoutGeneration_runsInput
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
@@ -29896,6 +29931,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
   }
@@ -30208,6 +30244,7 @@ export namespace Prisma {
     id?: string
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
     project: ProjectCreateNestedOneWithoutGeneration_runsInput
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
@@ -30221,6 +30258,7 @@ export namespace Prisma {
     automation_id?: string | null
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
   }
 
@@ -30656,6 +30694,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
@@ -30669,6 +30708,7 @@ export namespace Prisma {
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -32308,6 +32348,7 @@ export namespace Prisma {
     automation_id?: string | null
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
   }
 
@@ -32375,6 +32416,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
@@ -32387,6 +32429,7 @@ export namespace Prisma {
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
@@ -32397,6 +32440,7 @@ export namespace Prisma {
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -32571,6 +32615,7 @@ export namespace Prisma {
     automation_id?: string | null
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
   }
 
@@ -32694,6 +32739,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
@@ -32706,6 +32752,7 @@ export namespace Prisma {
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
@@ -32716,6 +32763,7 @@ export namespace Prisma {
     automation_id?: NullableStringFieldUpdateOperationsInput | string | null
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -32884,6 +32932,7 @@ export namespace Prisma {
     style_profile_id?: string | null
     label?: string | null
     posts_requested?: number | null
+    language?: string
     created_at?: Date | string
   }
 
@@ -32891,6 +32940,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
@@ -32903,6 +32953,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
@@ -32913,6 +32964,7 @@ export namespace Prisma {
     style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
     label?: NullableStringFieldUpdateOperationsInput | string | null
     posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

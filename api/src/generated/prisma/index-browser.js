@@ -237,6 +237,7 @@ exports.Prisma.GenerationRunScalarFieldEnum = {
   automation_id: 'automation_id',
   label: 'label',
   posts_requested: 'posts_requested',
+  language: 'language',
   created_at: 'created_at'
 };
 

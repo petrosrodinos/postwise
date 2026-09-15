@@ -38,7 +38,7 @@ export function ChangePasswordForm() {
                 <FormItem>
                   <FormLabel>Current password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} />
+                    <PasswordInput placeholder="Enter your current password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -64,7 +64,7 @@ export function ChangePasswordForm() {
                 <FormItem>
                   <FormLabel>Confirm new password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} />
+                    <PasswordInput placeholder="Re-enter your new password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

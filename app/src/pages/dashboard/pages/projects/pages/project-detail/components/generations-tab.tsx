@@ -33,7 +33,21 @@ export function GenerationsTab({ project }: GenerationsTabProps) {
       {isRunsPending ? (
         <div className="grid gap-4 sm:grid-cols-2">
           {Array.from({ length: 2 }).map((_, i) => (
-            <Skeleton key={i} className="h-32 w-full rounded-2xl" />
+            <Card key={i}>
+              <CardContent className="flex flex-col gap-3 pt-6">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex flex-col gap-1.5">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-24" />
+                  </div>
+                  <Skeleton className="h-2 w-14 flex-none rounded-full" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-3.5 w-16" />
+                  <Skeleton className="h-3.5 w-28" />
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       ) : runs.length === 0 ? (
@@ -77,7 +91,38 @@ export function GenerationsTab({ project }: GenerationsTabProps) {
       <div>
         <h3 className="mb-3 text-base font-semibold">All generated posts</h3>
         {isPostsPending ? (
-          <Skeleton className="h-40 w-full" />
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Post</TableHead>
+                <TableHead>Style profile</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Updated</TableHead>
+                <TableHead />
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: 4 }).map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell className="max-w-xs">
+                    <Skeleton className="h-4 w-40" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-3.5 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-3.5 w-20" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-3.5 w-12" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         ) : posts.length === 0 ? (
           <p className="text-sm text-muted-foreground">No posts yet.</p>
         ) : (

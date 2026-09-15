@@ -7,6 +7,7 @@ export interface GenerationRun {
   automation_id?: string | null;
   label?: string | null;
   posts_requested?: number | null;
+  language: string;
   created_at: string;
   posts?: Post[];
 }
@@ -16,6 +17,7 @@ export interface CreateGenerationRunDto {
   style_profile_id?: string;
   posts_requested?: number;
   label?: string;
+  language?: string;
 }
 
 export interface GenerationRunsQueryType {

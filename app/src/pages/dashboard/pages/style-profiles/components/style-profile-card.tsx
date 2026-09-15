@@ -2,6 +2,7 @@ import { formatDistanceToNow } from "date-fns";
 import { PlatformChip } from "@/components/ui/platform-glyph";
 import { Badge } from "@/components/ui/badge";
 import { StyleDnaStrand, StyleDnaLegend } from "@/components/ui/style-dna-strand";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getPostTypeLabel } from "@/config/constants/dropdowns/posts/post-type-form.options";
 import { isStyleProfileAnalyzed } from "@/features/style-profiles/utils/style-profiles.utils";
 import type { StyleProfile } from "@/features/style-profiles/interfaces/style-profiles.interfaces";
@@ -9,6 +10,38 @@ import type { StyleProfile } from "@/features/style-profiles/interfaces/style-pr
 interface StyleProfileCardProps {
   profile: StyleProfile;
   onClick: () => void;
+}
+
+export function StyleProfileCardSkeleton() {
+  return (
+    <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <Skeleton className="h-7 w-7 flex-none rounded-full" />
+          <div className="flex min-w-0 flex-col gap-1.5">
+            <Skeleton className="h-3.5 w-24" />
+            <Skeleton className="h-3 w-32" />
+          </div>
+        </div>
+        <Skeleton className="h-5 w-16 flex-none rounded-full" />
+      </div>
+      <Skeleton className="h-2 w-full rounded-full" />
+      <Skeleton className="h-3 w-40" />
+      <div className="flex flex-col gap-1.5">
+        <Skeleton className="h-3.5 w-full" />
+        <Skeleton className="h-3.5 w-11/12" />
+        <Skeleton className="h-3.5 w-2/3" />
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        <Skeleton className="h-5 w-16 rounded-full" />
+        <Skeleton className="h-5 w-20 rounded-full" />
+      </div>
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-3 w-24" />
+        <Skeleton className="h-3 w-28" />
+      </div>
+    </div>
+  );
 }
 
 export function StyleProfileCard({ profile, onClick }: StyleProfileCardProps) {

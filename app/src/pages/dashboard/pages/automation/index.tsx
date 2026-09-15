@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Routes } from "@/routes/routes";
 import { useAllAutomations } from "@/features/automations/hooks/use-automations";
 import type { Automation } from "@/features/automations/interfaces/automations.interfaces";
-import { AutomationCard } from "./components/automation-card";
+import { AutomationCard, AutomationCardSkeleton } from "./components/automation-card";
 import { AutomationDialog } from "./components/automation-dialog";
 
 export default function AutomationPage() {
@@ -38,7 +37,7 @@ export default function AutomationPage() {
       {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-40 w-full rounded-2xl" />
+            <AutomationCardSkeleton key={i} />
           ))}
         </div>
       ) : projects.length === 0 ? (

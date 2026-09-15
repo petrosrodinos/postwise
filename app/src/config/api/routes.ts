@@ -29,6 +29,7 @@ export const ApiRoutes = {
     },
     projects: {
         prefix: "/projects",
+        generate_details: "/projects/generate-details",
         style_profiles: (project_id: string) => `/projects/${project_id}/style-profiles`,
         style_profile: (project_id: string, style_profile_id: string) => `/projects/${project_id}/style-profiles/${style_profile_id}`,
     },

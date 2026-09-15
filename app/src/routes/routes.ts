@@ -11,7 +11,9 @@ export const Routes = {
   dashboard: {
     root: "/dashboard",
     projects: "/dashboard/projects",
+    new_project: "/dashboard/projects/new",
     project_detail: (id: string) => `/dashboard/projects/${id}`,
+    project_edit: (id: string) => `/dashboard/projects/${id}/edit`,
     project_generate: (id: string) => `/dashboard/projects/${id}/generate`,
     style_profiles: "/dashboard/style-profiles",
     automation: "/dashboard/automation",

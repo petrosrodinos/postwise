@@ -1,14 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Routes } from "@/routes/routes";
 import { useProjects } from "@/features/projects/hooks/use-projects";
-import { ProjectCard } from "@/pages/dashboard/components/project-card";
-import { NewProjectDialog } from "@/pages/dashboard/components/new-project-dialog";
+import { ProjectCard, ProjectCardSkeleton } from "@/pages/dashboard/components/project-card";
 import { ProjectStatusTabs, type ProjectStatusFilter } from "./components/project-status-tabs";
 
 export default function ProjectsPage() {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<ProjectStatusFilter>("all");
-  const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
 
   const { data: projectsPage, isPending } = useProjects({
     limit: 100,
@@ -25,7 +25,7 @@ export default function ProjectsPage() {
           <h1 className="text-2xl font-semibold">Projects</h1>
           <p className="mt-1 text-sm text-muted-foreground">Organize generation around a goal, audience and voice</p>
         </div>
-        <Button onClick={() => setIsNewProjectOpen(true)}>New project</Button>
+        <Button onClick={() => navigate(Routes.dashboard.new_project)}>New project</Button>
       </div>
 
       <ProjectStatusTabs value={filter} onChange={setFilter} />
@@ -33,7 +33,7 @@ export default function ProjectsPage() {
       {isPending ? (
         <div className="grid gap-4 sm:grid-cols-2">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-48 w-full rounded-2xl" />
+            <ProjectCardSkeleton key={i} />
           ))}
         </div>
       ) : projects.length === 0 ? (
@@ -47,7 +47,7 @@ export default function ProjectsPage() {
               : "Create a project to organize AI generation around a goal, audience and voice."}
           </p>
           {filter !== "archived" && (
-            <Button className="mt-4" onClick={() => setIsNewProjectOpen(true)}>
+            <Button className="mt-4" onClick={() => navigate(Routes.dashboard.new_project)}>
               New project
             </Button>
           )}
@@ -59,8 +59,6 @@ export default function ProjectsPage() {
           ))}
         </div>
       )}
-
-      <NewProjectDialog isOpen={isNewProjectOpen} onClose={() => setIsNewProjectOpen(false)} />
     </div>
   );
 }

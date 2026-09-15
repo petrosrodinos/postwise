@@ -321,6 +321,7 @@ model GenerationRun {
   automation_id    String?
   label            String?
   posts_requested  Int?
+  language         String   @default("en")
   created_at       DateTime @default(now())
 
   project       Project       @relation(fields: [project_id], references: [id], onDelete: Cascade)

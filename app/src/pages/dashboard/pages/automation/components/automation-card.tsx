@@ -8,6 +8,7 @@ import { DnaBadge } from "@/components/ui/dna-badge";
 import { Button } from "@/components/ui/button";
 import ConfirmationDialog from "@/components/ui/confirmation-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { AutomationOutputStages, type Automation } from "@/features/automations/interfaces/automations.interfaces";
 import { useDeleteAutomation, useUpdateAutomation } from "@/features/automations/hooks/use-automations";
 import { getAutomationFrequencyLabel } from "@/config/constants/dropdowns/automations/automation-frequency-form.options";
@@ -25,6 +26,35 @@ interface AutomationCardProps {
   automation: Automation;
   project: Project;
   onEdit: () => void;
+}
+
+export function AutomationCardSkeleton() {
+  return (
+    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <Skeleton className="h-9 w-9 flex-none rounded-lg" />
+          <div className="flex flex-col gap-1.5">
+            <Skeleton className="h-3.5 w-28" />
+            <Skeleton className="h-3 w-36" />
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-5 w-9 rounded-full" />
+          <Skeleton className="h-8 w-8 rounded-md" />
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        <Skeleton className="h-5 w-20 rounded-full" />
+        <Skeleton className="h-5 w-24 rounded-full" />
+        <Skeleton className="h-5 w-16 rounded-full" />
+      </div>
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-3 w-24" />
+        <Skeleton className="h-3 w-28" />
+      </div>
+    </div>
+  );
 }
 
 export function AutomationCard({ automation, project, onEdit }: AutomationCardProps) {

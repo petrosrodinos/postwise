@@ -6,11 +6,18 @@ import {
   createProject,
   deleteProject,
   detachStyleProfile,
+  generateProjectDetails,
   getProject,
   getProjects,
   updateProject,
 } from "../services/projects.services";
-import type { AttachStyleProfileDto, CreateProjectDto, ProjectsQueryType, UpdateProjectDto } from "../interfaces/projects.interfaces";
+import type {
+  AttachStyleProfileDto,
+  CreateProjectDto,
+  GenerateProjectDetailsDto,
+  ProjectsQueryType,
+  UpdateProjectDto,
+} from "../interfaces/projects.interfaces";
 
 const PROJECTS_KEY = "projects";
 
@@ -45,6 +52,18 @@ export const useCreateProject = () => {
     },
     onError: (error: Error) => {
       toast({ title: "Could not create project", description: error.message, variant: "error" });
+    },
+  });
+};
+
+export const useGenerateProjectDetails = () => {
+  return useMutation({
+    mutationFn: (dto: GenerateProjectDetailsDto) => generateProjectDetails(dto),
+    onSuccess: () => {
+      toast({ title: "Suggestions ready", description: "Pillars, ideas and instructions have been filled in — feel free to edit.", duration: 2500 });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Could not generate suggestions", description: error.message, variant: "error" });
     },
   });
 };

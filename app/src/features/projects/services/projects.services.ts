@@ -5,7 +5,9 @@ import type { PaginatedResponse } from "@/interfaces/pagination.interfaces";
 import type {
   AttachStyleProfileDto,
   CreateProjectDto,
+  GenerateProjectDetailsDto,
   Project,
+  ProjectAiSuggestions,
   ProjectStyleProfileLink,
   ProjectsQueryType,
   UpdateProjectDto,
@@ -17,6 +19,15 @@ export const createProject = async (dto: CreateProjectDto): Promise<Project> => 
     return response.data;
   } catch (error) {
     throw new Error("Failed to create project. Please try again.");
+  }
+};
+
+export const generateProjectDetails = async (dto: GenerateProjectDetailsDto): Promise<ProjectAiSuggestions> => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.projects.generate_details, dto);
+    return response.data;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "Failed to generate suggestions. Please try again."));
   }
 };
 

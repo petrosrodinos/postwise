@@ -9,6 +9,8 @@ import AdminHealthPage from "@/pages/admin/pages/health";
 import DashboardLayout from "@/pages/dashboard/layout";
 import DashboardHomePage from "@/pages/dashboard/pages/home";
 import ProjectsPage from "@/pages/dashboard/pages/projects";
+import NewProjectPage from "@/pages/dashboard/pages/projects/pages/new-project";
+import EditProjectPage from "@/pages/dashboard/pages/projects/pages/edit-project";
 import ProjectDetailPage from "@/pages/dashboard/pages/projects/pages/project-detail";
 import ProjectGeneratePage from "@/pages/dashboard/pages/projects/pages/project-generate";
 import StyleProfilesPage from "@/pages/dashboard/pages/style-profiles";
@@ -55,6 +57,8 @@ export default function AppRoutes() {
       >
         <Route index element={<DashboardHomePage />} />
         <Route path="projects" element={<ProjectsPage />} />
+        <Route path="projects/new" element={<NewProjectPage />} />
+        <Route path="projects/:id/edit" element={<EditProjectPage />} />
         <Route path="projects/:id" element={<ProjectDetailPage />} />
         <Route path="projects/:id/generate" element={<ProjectGeneratePage />} />
         <Route path="style-profiles" element={<StyleProfilesPage />} />

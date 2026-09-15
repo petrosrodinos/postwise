@@ -40,11 +40,40 @@ export function MembersTab({ organisationId }: MembersTabProps) {
       </div>
 
       {isPending ? (
-        <div className="flex flex-col gap-2">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-12 w-full" />
-          ))}
-        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Member</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Joined</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                  <div className="flex items-center gap-2.5">
+                    <Skeleton className="h-8 w-8 rounded-full" />
+                    <div className="flex flex-col gap-1.5">
+                      <Skeleton className="h-3.5 w-28" />
+                      <Skeleton className="h-3 w-36" />
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-9 w-32 rounded-md" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-3.5 w-20" />
+                </TableCell>
+                <TableCell className="text-right">
+                  <Skeleton className="ml-auto h-3.5 w-14" />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       ) : (
         <Table>
           <TableHeader>

@@ -7,12 +7,14 @@ import { PrismaModule } from '@/core/databases/prisma/prisma.module';
 import { CreateJwtServiceModule } from '@/shared/utils/jwt/jwt.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ResendModule } from '@/integrations/notifications/resend/resend.module';
+import { OrganisationsModule } from '@/modules/organisations/organisations.module';
 
 @Module({
   imports: [
     PrismaModule,
     CreateJwtServiceModule,
     ResendModule,
+    OrganisationsModule,
   ],
   providers: [EmailAuthService, PasswordService, JwtStrategy, Logger],
   controllers: [EmailAuthController, PasswordController],

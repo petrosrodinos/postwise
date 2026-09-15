@@ -15,6 +15,7 @@ import {
 import { CreateGenerationRunDto } from './dto/create-generation-run.dto';
 import { GenerationRunsQueryType } from './dto/generation-runs-query.schema';
 import { Draft, DraftsSchema } from './interfaces/draft.interface';
+import { DEFAULT_GENERATION_LANGUAGE, GENERATION_LANGUAGES } from './constants/languages.constant';
 
 @Injectable()
 export class GenerationRunsService {
@@ -28,13 +29,15 @@ export class GenerationRunsService {
     project: Pick<Project, 'title' | 'description' | 'platform' | 'pillars' | 'ideas' | 'instructions'>,
     styleProfile: StyleProfile | null,
     postsRequested: number,
+    language: string,
   ) {
     const shape =
       project.platform === PostType.BLOG
         ? '{ "title": string, "excerpt": string, "body": string }'
         : '{ "hook": string, "body": string }';
+    const languageName = GENERATION_LANGUAGES[language] ?? GENERATION_LANGUAGES[DEFAULT_GENERATION_LANGUAGE];
 
-    return `Generate ${postsRequested} distinct ${project.platform} post drafts for the following project. Return ONLY a raw JSON array (no markdown) of ${postsRequested} objects, each shaped exactly like ${shape}.
+    return `Generate ${postsRequested} distinct ${project.platform} post drafts for the following project. Return ONLY a raw JSON array (no markdown) of ${postsRequested} objects, each shaped exactly like ${shape}. Write every field in ${languageName}.
 
 Project title: ${project.title}
 Project description: ${project.description ?? 'n/a'}
@@ -52,8 +55,9 @@ ${
     project: Pick<Project, 'title' | 'description' | 'platform' | 'pillars' | 'ideas' | 'instructions'>,
     styleProfile: StyleProfile | null,
     postsRequested: number,
+    language: string,
   ): Promise<Draft[]> {
-    const prompt = this.buildPrompt(project, styleProfile, postsRequested);
+    const prompt = this.buildPrompt(project, styleProfile, postsRequested, language);
 
     const { response } = await this.aiService.generateText({
       prompt,
@@ -76,7 +80,8 @@ ${
     if (styleProfileId && !styleProfile) throw new NotFoundException('Style profile not found');
 
     const postsRequested = dto.posts_requested ?? 3;
-    const drafts = await this.generateDrafts(project, styleProfile, postsRequested);
+    const language = dto.language ?? DEFAULT_GENERATION_LANGUAGE;
+    const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
 
     return this.persistRun({
       project,
@@ -84,6 +89,7 @@ ${
       automationId: null,
       label: dto.label,
       postsRequested,
+      language,
       authorUserId: userId,
       drafts,
     });
@@ -101,7 +107,8 @@ ${
       : null;
 
     const postsRequested = automation.posts_per_run;
-    const drafts = await this.generateDrafts(project, styleProfile, postsRequested);
+    const language = DEFAULT_GENERATION_LANGUAGE;
+    const drafts = await this.generateDrafts(project, styleProfile, postsRequested, language);
 
     const authorUserId = project.user_id
       ? project.user_id
@@ -117,6 +124,7 @@ ${
       automationId: automation.id,
       label: `Automation: ${automation.name}`,
       postsRequested,
+      language,
       authorUserId,
       drafts,
       status:
@@ -134,11 +142,12 @@ ${
     automationId: string | null;
     label?: string | null;
     postsRequested: number;
+    language: string;
     authorUserId: string;
     drafts: Draft[];
     status?: PostStatus;
   }) {
-    const { project, styleProfileId, automationId, label, postsRequested, authorUserId, drafts, status } =
+    const { project, styleProfileId, automationId, label, postsRequested, language, authorUserId, drafts, status } =
       params;
 
     return this.prisma.$transaction(async (tx) => {
@@ -149,6 +158,7 @@ ${
           automation_id: automationId,
           label,
           posts_requested: postsRequested,
+          language,
         },
       });
 
