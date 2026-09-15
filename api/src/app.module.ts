@@ -20,6 +20,7 @@ import { GenerationRunsModule } from './modules/generation-runs/generation-runs.
 import { AutomationsModule } from './modules/automations/automations.module';
 import { PostsModule } from './modules/posts/posts.module';
 import { RssFeedsModule } from './modules/rss-feeds/rss-feeds.module';
+import { ActivityLogsModule } from './modules/activity-logs/activity-logs.module';
 import { BackgroundModule } from './background/background.module';
 
 @Module({
@@ -44,6 +45,7 @@ import { BackgroundModule } from './background/background.module';
     AutomationsModule,
     PostsModule,
     RssFeedsModule,
+    ActivityLogsModule,
     BackgroundModule,
   ],
   controllers: [AppController],

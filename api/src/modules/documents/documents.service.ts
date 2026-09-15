@@ -2,7 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { GcsService } from '@/integrations/storage/gcs/services/gcs.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
-import { DocumentType, OrganisationRole } from 'generated/prisma';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
+import { ActivityLogAction, ActivityLogEntityType, DocumentType, OrganisationRole } from 'generated/prisma';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { DocumentsQueryType } from './dto/documents-query.schema';
@@ -17,6 +19,7 @@ export class DocumentsService {
     private readonly prisma: PrismaService,
     private readonly gcsService: GcsService,
     private readonly ownershipService: OwnershipService,
+    private readonly activityLogsService: ActivityLogsService,
   ) {}
 
   async create(userId: string, file: any, dto: CreateDocumentDto) {
@@ -30,7 +33,7 @@ export class DocumentsService {
       GcsFolders.documents,
     );
 
-    return this.prisma.document.create({
+    const document = await this.prisma.document.create({
       data: {
         organisation_id: context.organisation_id,
         filename: file.originalname,
@@ -41,6 +44,17 @@ export class DocumentsService {
         type: dto.type,
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: context.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.DOCUMENT_UPLOADED,
+      entity_type: ActivityLogEntityType.DOCUMENT,
+      entity_id: document.id,
+      description: `Uploaded document "${document.filename}"`,
+    });
+
+    return document;
   }
 
   // Service-to-service creation for AI-generated images (e.g. blog post cover
@@ -115,10 +129,22 @@ export class DocumentsService {
     const context = await this.ownershipService.resolveContext(userId, document.organisation_id);
     this.ownershipService.assertRole(context, MANAGE_ROLES);
 
-    return this.prisma.document.update({
+    const updated = await this.prisma.document.update({
       where: { id },
       data: { filename: dto.filename, type: dto.type },
     });
+
+    this.activityLogsService.log({
+      organisation_id: document.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.DOCUMENT_UPDATED,
+      entity_type: ActivityLogEntityType.DOCUMENT,
+      entity_id: document.id,
+      description: `Updated document "${updated.filename}"`,
+      metadata: { changes: diffFields(document, updated, ['filename', 'type']) },
+    });
+
+    return updated;
   }
 
   async remove(userId: string, id: string) {
@@ -129,6 +155,15 @@ export class DocumentsService {
 
     await this.gcsService.deleteImage({ filename: document.path });
     await this.prisma.document.delete({ where: { id } });
+
+    this.activityLogsService.log({
+      organisation_id: document.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.DOCUMENT_DELETED,
+      entity_type: ActivityLogEntityType.DOCUMENT,
+      entity_id: document.id,
+      description: `Deleted document "${document.filename}"`,
+    });
 
     return { message: 'Document deleted successfully' };
   }

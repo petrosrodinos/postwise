@@ -9,6 +9,8 @@ import { WaitlistDto } from '../dto/waitlist.dto';
 import { ResendMailService } from '@/integrations/notifications/resend/services/mail.service';
 import { EmailConfig } from '@/shared/constants/email';
 import { OrganisationsService } from '@/modules/organisations/organisations.service';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { ActivityLogAction, ActivityLogEntityType } from 'generated/prisma';
 
 @Injectable()
 export class EmailAuthService {
@@ -17,6 +19,7 @@ export class EmailAuthService {
         private readonly jwtService: CreateJwtService,
         private readonly mailService: ResendMailService,
         private readonly organisationsService: OrganisationsService,
+        private readonly activityLogsService: ActivityLogsService,
     ) { }
 
     async registerWithEmail(dto: RegisterEmailDto) {
@@ -43,7 +46,7 @@ export class EmailAuthService {
                 },
             });
 
-            await this.organisationsService.createDefault(user.id, user.name);
+            const organisation = await this.organisationsService.createDefault(user.id, user.name);
 
             const token = await this.jwtService.signToken({
                 id: user.id,
@@ -53,6 +56,15 @@ export class EmailAuthService {
             const expires_in = this.jwtService.getExpirationTime(token);
 
             delete user.password;
+
+            this.activityLogsService.log({
+                organisation_id: organisation.id,
+                user_id: user.id,
+                action: ActivityLogAction.USER_REGISTERED,
+                entity_type: ActivityLogEntityType.USER,
+                entity_id: user.id,
+                description: `${user.name} registered`,
+            });
 
             return { access_token: token, expires_in: expires_in, user: user };
         } catch (error) {
@@ -88,6 +100,15 @@ export class EmailAuthService {
             const expires_in = this.jwtService.getExpirationTime(token);
 
             delete user.password;
+
+            this.activityLogsService.log({
+                organisation_id: null,
+                user_id: user.id,
+                action: ActivityLogAction.USER_LOGGED_IN,
+                entity_type: ActivityLogEntityType.USER,
+                entity_id: user.id,
+                description: `${user.name} logged in`,
+            });
 
             return { access_token: token, expires_in: expires_in, user: user };
         } catch (error) {

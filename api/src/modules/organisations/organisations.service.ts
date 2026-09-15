@@ -5,14 +5,19 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
-import { OrganisationRole } from 'generated/prisma';
+import { ActivityLogAction, ActivityLogEntityType, OrganisationRole } from 'generated/prisma';
 import { CreateOrganisationDto } from './dto/create-organisation.dto';
 import { UpdateOrganisationDto } from './dto/update-organisation.dto';
 import { ErrorCodes } from '@/shared/config/error-codes';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
 
 @Injectable()
 export class OrganisationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly activityLogsService: ActivityLogsService,
+  ) {}
 
   private async assertSlugAvailable(slug: string, excludeId?: string) {
     const existing = await this.prisma.organisation.findUnique({ where: { slug } });
@@ -95,7 +100,7 @@ export class OrganisationsService {
   async create(userId: string, dto: CreateOrganisationDto) {
     await this.assertSlugAvailable(dto.slug);
 
-    return this.prisma.$transaction(async (tx) => {
+    const organisation = await this.prisma.$transaction(async (tx) => {
       const organisation = await tx.organisation.create({
         data: {
           name: dto.name,
@@ -114,6 +119,17 @@ export class OrganisationsService {
 
       return organisation;
     });
+
+    this.activityLogsService.log({
+      organisation_id: organisation.id,
+      user_id: userId,
+      action: ActivityLogAction.ORGANISATION_CREATED,
+      entity_type: ActivityLogEntityType.ORGANISATION,
+      entity_id: organisation.id,
+      description: `Created organisation "${organisation.name}"`,
+    });
+
+    return organisation;
   }
 
   async findAll(userId: string) {
@@ -129,7 +145,7 @@ export class OrganisationsService {
   }
 
   async update(userId: string, organisationId: string, dto: UpdateOrganisationDto) {
-    const { membership } = await this.getMembership(organisationId, userId);
+    const { membership, organisation } = await this.getMembership(organisationId, userId);
 
     const canUpdate: OrganisationRole[] = [OrganisationRole.OWNER, OrganisationRole.ADMIN];
     if (!canUpdate.includes(membership.role)) {
@@ -140,20 +156,42 @@ export class OrganisationsService {
       await this.assertSlugAvailable(dto.slug, organisationId);
     }
 
-    return this.prisma.organisation.update({
+    const updated = await this.prisma.organisation.update({
       where: { id: organisationId },
       data: { name: dto.name, slug: dto.slug },
     });
+
+    this.activityLogsService.log({
+      organisation_id: organisationId,
+      user_id: userId,
+      action: ActivityLogAction.ORGANISATION_UPDATED,
+      entity_type: ActivityLogEntityType.ORGANISATION,
+      entity_id: organisationId,
+      description: `Updated organisation "${updated.name}"`,
+      metadata: { changes: diffFields(organisation, updated, ['name', 'slug']) },
+    });
+
+    return updated;
   }
 
   async remove(userId: string, organisationId: string) {
-    const { membership } = await this.getMembership(organisationId, userId);
+    const { membership, organisation } = await this.getMembership(organisationId, userId);
 
     if (membership.role !== OrganisationRole.OWNER) {
       throw new ForbiddenException('Only the owner can delete the organisation');
     }
 
     await this.prisma.organisation.delete({ where: { id: organisationId } });
+
+    this.activityLogsService.log({
+      organisation_id: null,
+      user_id: userId,
+      action: ActivityLogAction.ORGANISATION_DELETED,
+      entity_type: ActivityLogEntityType.ORGANISATION,
+      entity_id: organisationId,
+      description: `Deleted organisation "${organisation.name}"`,
+    });
+
     return { message: 'Organisation deleted successfully' };
   }
 }

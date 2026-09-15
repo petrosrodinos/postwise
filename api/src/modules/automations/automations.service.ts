@@ -4,7 +4,9 @@ import { ProjectsService } from '@/modules/projects/projects.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { computeNextRun } from '@/shared/utils/automations/next-run.util';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
-import { OrganisationRole } from 'generated/prisma';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
+import { ActivityLogAction, ActivityLogEntityType, OrganisationRole } from 'generated/prisma';
 import { CreateAutomationDto } from './dto/create-automation.dto';
 import { UpdateAutomationDto } from './dto/update-automation.dto';
 import { AutomationsQueryType } from './dto/automations-query.schema';
@@ -17,6 +19,7 @@ export class AutomationsService {
     private readonly prisma: PrismaService,
     private readonly projectsService: ProjectsService,
     private readonly ownershipService: OwnershipService,
+    private readonly activityLogsService: ActivityLogsService,
   ) {}
 
   private async assertManage(userId: string, project: { organisation_id: string }) {
@@ -50,7 +53,7 @@ export class AutomationsService {
       timezone,
     });
 
-    return this.prisma.automation.create({
+    const automation = await this.prisma.automation.create({
       data: {
         project_id: dto.project_id,
         style_profile_id: dto.style_profile_id,
@@ -68,6 +71,17 @@ export class AutomationsService {
         next_run_at: nextRunAt,
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: project.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.AUTOMATION_CREATED,
+      entity_type: ActivityLogEntityType.AUTOMATION,
+      entity_id: automation.id,
+      description: `Created automation "${automation.name}" for "${project.title}"`,
+    });
+
+    return automation;
   }
 
   async findAll(userId: string, query: AutomationsQueryType) {
@@ -124,7 +138,7 @@ export class AutomationsService {
         })
       : undefined;
 
-    return this.prisma.automation.update({
+    const updated = await this.prisma.automation.update({
       where: { id },
       data: {
         style_profile_id: dto.style_profile_id,
@@ -142,13 +156,50 @@ export class AutomationsService {
         ...(nextRunAt && { next_run_at: nextRunAt }),
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: project.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.AUTOMATION_UPDATED,
+      entity_type: ActivityLogEntityType.AUTOMATION,
+      entity_id: automation.id,
+      description: `Updated automation "${updated.name}"`,
+      metadata: {
+        changes: diffFields(automation, updated, [
+          'style_profile_id',
+          'rss_feed_id',
+          'name',
+          'is_active',
+          'frequency',
+          'days_of_week',
+          'time_of_day',
+          'timezone',
+          'posts_per_run',
+          'output_stage',
+          'generate_images',
+          'image_count',
+        ]),
+      },
+    });
+
+    return updated;
   }
 
   async remove(userId: string, id: string) {
-    const { project } = await this.findOwned(userId, id);
+    const { automation, project } = await this.findOwned(userId, id);
     await this.assertManage(userId, project);
 
     await this.prisma.automation.delete({ where: { id } });
+
+    this.activityLogsService.log({
+      organisation_id: project.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.AUTOMATION_DELETED,
+      entity_type: ActivityLogEntityType.AUTOMATION,
+      entity_id: automation.id,
+      description: `Deleted automation "${automation.name}"`,
+    });
+
     return { message: 'Automation deleted successfully' };
   }
 }

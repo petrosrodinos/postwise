@@ -3,7 +3,9 @@ import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { RssService } from '@/integrations/rss/services/rss.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
-import { OrganisationRole } from 'generated/prisma';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
+import { ActivityLogAction, ActivityLogEntityType, OrganisationRole } from 'generated/prisma';
 import { CreateRssFeedDto } from './dto/create-rss-feed.dto';
 import { UpdateRssFeedDto } from './dto/update-rss-feed.dto';
 import { FetchRssItemsDto } from './dto/fetch-rss-items.dto';
@@ -18,6 +20,7 @@ export class RssFeedsService {
     private readonly prisma: PrismaService,
     private readonly rssService: RssService,
     private readonly ownershipService: OwnershipService,
+    private readonly activityLogsService: ActivityLogsService,
   ) {}
 
   private async assertManage(userId: string, feed: { organisation_id: string }) {
@@ -29,13 +32,24 @@ export class RssFeedsService {
     const context = await this.ownershipService.resolveContext(userId, dto.organisation_id);
     this.ownershipService.assertRole(context, MANAGE_ROLES);
 
-    return this.prisma.rssFeed.create({
+    const feed = await this.prisma.rssFeed.create({
       data: {
         organisation_id: context.organisation_id,
         name: dto.name,
         url: dto.url,
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: context.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.RSS_FEED_CREATED,
+      entity_type: ActivityLogEntityType.RSS_FEED,
+      entity_id: feed.id,
+      description: `Added RSS feed "${feed.name}"`,
+    });
+
+    return feed;
   }
 
   async findAll(userId: string, query: RssFeedsQueryType) {
@@ -74,10 +88,22 @@ export class RssFeedsService {
     const feed = await this.findOwned(userId, id);
     await this.assertManage(userId, feed);
 
-    return this.prisma.rssFeed.update({
+    const updated = await this.prisma.rssFeed.update({
       where: { id },
       data: { name: dto.name, url: dto.url },
     });
+
+    this.activityLogsService.log({
+      organisation_id: feed.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.RSS_FEED_UPDATED,
+      entity_type: ActivityLogEntityType.RSS_FEED,
+      entity_id: feed.id,
+      description: `Updated RSS feed "${updated.name}"`,
+      metadata: { changes: diffFields(feed, updated, ['name', 'url']) },
+    });
+
+    return updated;
   }
 
   async remove(userId: string, id: string) {
@@ -85,6 +111,16 @@ export class RssFeedsService {
     await this.assertManage(userId, feed);
 
     await this.prisma.rssFeed.delete({ where: { id } });
+
+    this.activityLogsService.log({
+      organisation_id: feed.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.RSS_FEED_DELETED,
+      entity_type: ActivityLogEntityType.RSS_FEED,
+      entity_id: feed.id,
+      description: `Deleted RSS feed "${feed.name}"`,
+    });
+
     return { message: 'RSS feed deleted successfully' };
   }
 
@@ -94,7 +130,19 @@ export class RssFeedsService {
     const feed = await this.findOwned(userId, id);
     await this.assertManage(userId, feed);
 
-    return this.refreshAndListItems(feed.id, feed.url, dto);
+    const items = await this.refreshAndListItems(feed.id, feed.url, dto);
+
+    this.activityLogsService.log({
+      organisation_id: feed.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.RSS_FEED_ITEMS_FETCHED,
+      entity_type: ActivityLogEntityType.RSS_FEED,
+      entity_id: feed.id,
+      description: `Fetched items for RSS feed "${feed.name}"`,
+      metadata: { items_returned: items.length },
+    });
+
+    return items;
   }
 
   // Same as fetchItems but without the ownership check — used internally by

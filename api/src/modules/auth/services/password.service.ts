@@ -7,6 +7,8 @@ import { EmailConfig } from '@/shared/constants/email';
 import { AppUrls } from '@/shared/config/app-urls';
 import { ForgotPasswordDto } from '../dto/forgot-password.dto';
 import { ResetPasswordDto } from '../dto/reset-password.dto';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { ActivityLogAction, ActivityLogEntityType } from 'generated/prisma';
 
 const RESET_TOKEN_EXPIRY_MS = 60 * 60 * 1000;
 
@@ -15,6 +17,7 @@ export class PasswordService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly mailService: ResendMailService,
+        private readonly activityLogsService: ActivityLogsService,
     ) { }
 
     async forgotPassword(dto: ForgotPasswordDto) {
@@ -96,6 +99,15 @@ export class PasswordService {
                 data: { used_at: new Date() },
             }),
         ]);
+
+        this.activityLogsService.log({
+            organisation_id: null,
+            user_id: resetToken.user_uuid,
+            action: ActivityLogAction.PASSWORD_RESET_COMPLETED,
+            entity_type: ActivityLogEntityType.USER,
+            entity_id: resetToken.user_uuid,
+            description: 'Completed a password reset',
+        });
 
         return { message: 'Password has been reset successfully' };
     }

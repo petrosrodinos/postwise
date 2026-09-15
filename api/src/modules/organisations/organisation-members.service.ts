@@ -8,12 +8,19 @@ import {
 import * as bcrypt from 'bcrypt';
 import { createHash, randomBytes } from 'crypto';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
-import { OrganisationMemberStatus, OrganisationRole } from 'generated/prisma';
+import {
+  ActivityLogAction,
+  ActivityLogEntityType,
+  OrganisationMemberStatus,
+  OrganisationRole,
+} from 'generated/prisma';
 import { AuthRoles } from '@/modules/auth/interfaces/auth.interface';
 import { CreateJwtService } from '@/shared/utils/jwt/jwt.service';
 import { ResendMailService } from '@/integrations/notifications/resend/services/mail.service';
 import { EmailConfig } from '@/shared/constants/email';
 import { AppUrls } from '@/shared/config/app-urls';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
 import { OrganisationsService } from './organisations.service';
 import { AddOrganisationMemberDto } from './dto/add-organisation-member.dto';
 import { UpdateOrganisationMemberDto } from './dto/update-organisation-member.dto';
@@ -31,6 +38,7 @@ export class OrganisationMembersService {
     private readonly organisationsService: OrganisationsService,
     private readonly mailService: ResendMailService,
     private readonly jwtService: CreateJwtService,
+    private readonly activityLogsService: ActivityLogsService,
   ) {}
 
   private hashToken(token: string): string {
@@ -94,6 +102,15 @@ export class OrganisationMembersService {
         include: { user: { select: MEMBER_USER_SELECT } },
       });
 
+      this.activityLogsService.log({
+        organisation_id: organisationId,
+        user_id: userId,
+        action: ActivityLogAction.MEMBER_ADDED,
+        entity_type: ActivityLogEntityType.ORGANISATION_MEMBER,
+        entity_id: created.id,
+        description: `Added ${existingUser.name} (${dto.role.toLowerCase()}) to the organisation`,
+      });
+
       setImmediate(async () => {
         try {
           await this.mailService.sendEmail({
@@ -129,7 +146,7 @@ export class OrganisationMembersService {
         },
       });
 
-      return this.prisma.organisationMember.create({
+      const created = await this.prisma.organisationMember.create({
         data: {
           organisation_id: organisationId,
           user_id: newUser.id,
@@ -138,6 +155,17 @@ export class OrganisationMembersService {
         },
         include: { user: { select: MEMBER_USER_SELECT } },
       });
+
+      this.activityLogsService.log({
+        organisation_id: organisationId,
+        user_id: userId,
+        action: ActivityLogAction.MEMBER_ADDED,
+        entity_type: ActivityLogEntityType.ORGANISATION_MEMBER,
+        entity_id: created.id,
+        description: `Added ${newUser.name} (${dto.role.toLowerCase()}) to the organisation`,
+      });
+
+      return created;
     }
 
     // Placeholder password: a random bcrypt hash nobody can ever produce by
@@ -171,6 +199,15 @@ export class OrganisationMembersService {
         invited_by_user_id: userId,
         expires_at: new Date(Date.now() + INVITE_TOKEN_EXPIRY_MS),
       },
+    });
+
+    this.activityLogsService.log({
+      organisation_id: organisationId,
+      user_id: userId,
+      action: ActivityLogAction.MEMBER_INVITED,
+      entity_type: ActivityLogEntityType.ORGANISATION_MEMBER,
+      entity_id: member.id,
+      description: `Invited ${newUser.email} (${dto.role.toLowerCase()}) to the organisation`,
     });
 
     setImmediate(async () => {
@@ -236,6 +273,15 @@ export class OrganisationMembersService {
         organisationName: target.organisation.name,
         acceptUrl: AppUrls.acceptOrganisationInvite(token),
       },
+    });
+
+    this.activityLogsService.log({
+      organisation_id: organisationId,
+      user_id: userId,
+      action: ActivityLogAction.MEMBER_INVITATION_RESENT,
+      entity_type: ActivityLogEntityType.ORGANISATION_MEMBER,
+      entity_id: memberId,
+      description: `Resent invitation to ${target.user.email}`,
     });
 
     return { message: 'Invitation resent' };
@@ -328,6 +374,15 @@ export class OrganisationMembersService {
 
     delete user.password;
 
+    this.activityLogsService.log({
+      organisation_id: member.organisation_id,
+      user_id: member.user_id,
+      action: ActivityLogAction.MEMBER_INVITATION_ACCEPTED,
+      entity_type: ActivityLogEntityType.ORGANISATION_MEMBER,
+      entity_id: member.id,
+      description: `${user.name} accepted their invitation`,
+    });
+
     return { access_token: token, expires_in, user };
   }
 
@@ -366,24 +421,38 @@ export class OrganisationMembersService {
     );
     this.assertCanManageMembers(membership.role);
 
+    let target: { role: OrganisationRole };
     if (dto.role !== OrganisationRole.OWNER) {
-      await this.assertNotLastOwner(organisationId, memberId);
+      target = await this.assertNotLastOwner(organisationId, memberId);
     } else {
-      const target = await this.prisma.organisationMember.findUnique({
+      const found = await this.prisma.organisationMember.findUnique({
         where: { id: memberId },
       });
-      if (!target || target.organisation_id !== organisationId) {
+      if (!found || found.organisation_id !== organisationId) {
         throw new NotFoundException('Member not found');
       }
+      target = found;
     }
 
-    return this.prisma.organisationMember.update({
+    const updated = await this.prisma.organisationMember.update({
       where: { id: memberId },
       data: { role: dto.role },
       include: {
         user: { select: { id: true, name: true, email: true, created_at: true } },
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: organisationId,
+      user_id: userId,
+      action: ActivityLogAction.MEMBER_ROLE_UPDATED,
+      entity_type: ActivityLogEntityType.ORGANISATION_MEMBER,
+      entity_id: memberId,
+      description: `Changed ${updated.user.name}'s role from ${target.role.toLowerCase()} to ${updated.role.toLowerCase()}`,
+      metadata: { changes: { role: { from: target.role, to: updated.role } } },
+    });
+
+    return updated;
   }
 
   async remove(userId: string, organisationId: string, memberId: string) {
@@ -395,7 +464,20 @@ export class OrganisationMembersService {
 
     await this.assertNotLastOwner(organisationId, memberId);
 
-    await this.prisma.organisationMember.delete({ where: { id: memberId } });
+    const removed = await this.prisma.organisationMember.delete({
+      where: { id: memberId },
+      include: { user: { select: { name: true } } },
+    });
+
+    this.activityLogsService.log({
+      organisation_id: organisationId,
+      user_id: userId,
+      action: ActivityLogAction.MEMBER_REMOVED,
+      entity_type: ActivityLogEntityType.ORGANISATION_MEMBER,
+      entity_id: memberId,
+      description: `Removed ${removed.user.name} from the organisation`,
+    });
+
     return { message: 'Member removed successfully' };
   }
 }

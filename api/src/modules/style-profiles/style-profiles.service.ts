@@ -5,7 +5,9 @@ import { AiService } from '@/integrations/ai/services/ai.service';
 import { LinkedInScraperService } from '@/integrations/apify/linkedin-scraper/services/linkedin-scraper.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
-import { OrganisationRole, PostType } from 'generated/prisma';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
+import { ActivityLogAction, ActivityLogEntityType, OrganisationRole, PostType } from 'generated/prisma';
 import { CreateStyleProfileDto } from './dto/create-style-profile.dto';
 import { UpdateStyleProfileDto } from './dto/update-style-profile.dto';
 import { AnalyzeStyleProfileDto } from './dto/analyze-style-profile.dto';
@@ -38,6 +40,7 @@ export class StyleProfilesService {
     private readonly aiService: AiService,
     private readonly linkedInScraperService: LinkedInScraperService,
     private readonly ownershipService: OwnershipService,
+    private readonly activityLogsService: ActivityLogsService,
   ) {}
 
   async create(userId: string, dto: CreateStyleProfileDto) {
@@ -47,7 +50,7 @@ export class StyleProfilesService {
     );
     this.ownershipService.assertRole(context, MANAGE_ROLES);
 
-    return this.prisma.styleProfile.create({
+    const profile = await this.prisma.styleProfile.create({
       data: {
         organisation_id: context.organisation_id,
         name: dto.name,
@@ -55,6 +58,17 @@ export class StyleProfilesService {
         source_url: dto.source_url,
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: context.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.STYLE_PROFILE_CREATED,
+      entity_type: ActivityLogEntityType.STYLE_PROFILE,
+      entity_id: profile.id,
+      description: `Created style profile "${profile.name}"`,
+    });
+
+    return profile;
   }
 
   async findAll(userId: string, query: StyleProfilesQueryType) {
@@ -107,7 +121,7 @@ export class StyleProfilesService {
     const profile = await this.findOwned(userId, id);
     await this.assertManage(userId, profile);
 
-    return this.prisma.styleProfile.update({
+    const updated = await this.prisma.styleProfile.update({
       where: { id },
       data: {
         name: dto.name,
@@ -124,6 +138,33 @@ export class StyleProfilesService {
         pillars: dto.pillars,
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: profile.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.STYLE_PROFILE_UPDATED,
+      entity_type: ActivityLogEntityType.STYLE_PROFILE,
+      entity_id: profile.id,
+      description: `Updated style profile "${updated.name}"`,
+      metadata: {
+        changes: diffFields(profile, updated, [
+          'name',
+          'platform',
+          'source_url',
+          'tone_score',
+          'structure_score',
+          'hooks_score',
+          'vocabulary_score',
+          'rhythm_score',
+          'tone_description',
+          'dominant_hook',
+          'vocabulary',
+          'pillars',
+        ]),
+      },
+    });
+
+    return updated;
   }
 
   async remove(userId: string, id: string) {
@@ -131,6 +172,16 @@ export class StyleProfilesService {
     await this.assertManage(userId, profile);
 
     await this.prisma.styleProfile.delete({ where: { id } });
+
+    this.activityLogsService.log({
+      organisation_id: profile.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.STYLE_PROFILE_DELETED,
+      entity_type: ActivityLogEntityType.STYLE_PROFILE,
+      entity_id: profile.id,
+      description: `Deleted style profile "${profile.name}"`,
+    });
+
     return { message: 'Style profile deleted successfully' };
   }
 
@@ -163,7 +214,7 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
 
     const analysis = parseAiJson(response, AnalysisSchema);
 
-    return this.prisma.styleProfile.update({
+    const updated = await this.prisma.styleProfile.update({
       where: { id },
       data: {
         ...analysis,
@@ -171,6 +222,27 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
         last_analyzed_at: new Date(),
       },
     });
+
+    this.activityLogsService.log({
+      organisation_id: profile.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.STYLE_PROFILE_ANALYZED,
+      entity_type: ActivityLogEntityType.STYLE_PROFILE,
+      entity_id: profile.id,
+      description: `Analyzed ${dto.sample_posts.length} sample post${dto.sample_posts.length === 1 ? '' : 's'} for style profile "${updated.name}"`,
+      metadata: {
+        changes: diffFields(profile, updated, [
+          'tone_score',
+          'structure_score',
+          'hooks_score',
+          'vocabulary_score',
+          'rhythm_score',
+          'posts_analyzed',
+        ]),
+      },
+    });
+
+    return updated;
   }
 
   async scrapeLinkedInPosts(

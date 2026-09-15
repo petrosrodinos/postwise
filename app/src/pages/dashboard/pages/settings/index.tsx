@@ -1,4 +1,4 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,12 +9,16 @@ import { useActiveOrganisationRole, useOrganisation } from "@/features/organisat
 import { OrganisationRoles } from "@/features/organisations/interfaces/organisations.interfaces";
 import { GeneralTab } from "./components/general-tab";
 import { MembersTab } from "./components/members-tab";
+import { ActivityTab } from "./components/activity-tab";
 import { ChannelConnectionsCard } from "@/pages/dashboard/components/channel-connections-card";
 
 export default function SettingsPage() {
   const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
   const { data: organisation, isPending } = useOrganisation(activeOrganisationId ?? undefined);
-  const { role, isPending: isRolePending } = useActiveOrganisationRole();
+  const { role } = useActiveOrganisationRole();
+  // Regular members can only see the org-wide Activity feed — General,
+  // Members and Channels are management tabs restricted to Owner/Admin.
+  const isMember = role === OrganisationRoles.MEMBER;
 
   if (!activeOrganisationId) {
     return (
@@ -23,10 +27,6 @@ export default function SettingsPage() {
         <Skeleton className="h-4 w-80" />
       </div>
     );
-  }
-
-  if (!isRolePending && role === OrganisationRoles.MEMBER) {
-    return <Navigate to={Routes.dashboard.root} replace />;
   }
 
   return (
@@ -75,20 +75,30 @@ export default function SettingsPage() {
       )}
 
       {organisation && (
-        <Tabs defaultValue="general">
+        <Tabs defaultValue={isMember ? "activity" : "general"}>
           <TabsList>
-            <TabsTrigger value="general">General</TabsTrigger>
-            <TabsTrigger value="members">Members</TabsTrigger>
-            <TabsTrigger value="channels">Channels</TabsTrigger>
+            {!isMember && <TabsTrigger value="general">General</TabsTrigger>}
+            {!isMember && <TabsTrigger value="members">Members</TabsTrigger>}
+            {!isMember && <TabsTrigger value="channels">Channels</TabsTrigger>}
+            <TabsTrigger value="activity">Activity</TabsTrigger>
           </TabsList>
-          <TabsContent value="general">
-            <GeneralTab organisation={organisation} />
-          </TabsContent>
-          <TabsContent value="members">
-            <MembersTab organisationId={organisation.id} />
-          </TabsContent>
-          <TabsContent value="channels" className="max-w-lg">
-            <ChannelConnectionsCard title="Connected channels" description={`Social accounts for ${organisation.name}.`} />
+          {!isMember && (
+            <TabsContent value="general">
+              <GeneralTab organisation={organisation} />
+            </TabsContent>
+          )}
+          {!isMember && (
+            <TabsContent value="members">
+              <MembersTab organisationId={organisation.id} />
+            </TabsContent>
+          )}
+          {!isMember && (
+            <TabsContent value="channels" className="max-w-lg">
+              <ChannelConnectionsCard title="Connected channels" description={`Social accounts for ${organisation.name}.`} />
+            </TabsContent>
+          )}
+          <TabsContent value="activity">
+            <ActivityTab organisationId={organisation.id} />
           </TabsContent>
         </Tabs>
       )}

@@ -1,12 +1,19 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
-import { OrganisationRole, SocialChannelConnectionStatus } from 'generated/prisma';
+import {
+  ActivityLogAction,
+  ActivityLogEntityType,
+  OrganisationRole,
+  SocialChannelConnectionStatus,
+} from 'generated/prisma';
 import { CreateSocialChannelConnectionDto } from './dto/create-social-channel-connection.dto';
 import { UpdateSocialChannelConnectionDto } from './dto/update-social-channel-connection.dto';
 import { SocialChannelConnectionsQueryType } from './dto/social-channel-connections-query.schema';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
 import { ErrorCodes } from '@/shared/config/error-codes';
+import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
+import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
 
 const MANAGE_ROLES: OrganisationRole[] = [OrganisationRole.OWNER, OrganisationRole.ADMIN];
 
@@ -15,6 +22,7 @@ export class SocialChannelConnectionsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly ownershipService: OwnershipService,
+    private readonly activityLogsService: ActivityLogsService,
   ) {}
 
   private sanitize<T extends { access_token?: string; refresh_token?: string }>(
@@ -54,6 +62,15 @@ export class SocialChannelConnectionsService {
         token_expires_at: dto.token_expires_at ? new Date(dto.token_expires_at) : undefined,
         status: SocialChannelConnectionStatus.CONNECTED,
       },
+    });
+
+    this.activityLogsService.log({
+      organisation_id: context.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.CHANNEL_CONNECTION_CREATED,
+      entity_type: ActivityLogEntityType.SOCIAL_CHANNEL_CONNECTION,
+      entity_id: connection.id,
+      description: `Connected ${connection.channel.toLowerCase()} account "${connection.external_account_name ?? connection.external_account_id}"`,
     });
 
     return this.sanitize(connection);
@@ -124,6 +141,20 @@ export class SocialChannelConnectionsService {
       },
     });
 
+    // Never diff access_token/refresh_token into metadata — only track the
+    // non-secret fields that changed.
+    this.activityLogsService.log({
+      organisation_id: connection.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.CHANNEL_CONNECTION_UPDATED,
+      entity_type: ActivityLogEntityType.SOCIAL_CHANNEL_CONNECTION,
+      entity_id: connection.id,
+      description: `Updated ${connection.channel.toLowerCase()} connection "${updated.external_account_name ?? updated.external_account_id}"`,
+      metadata: {
+        changes: diffFields(connection, updated, ['external_account_name', 'status', 'token_expires_at']),
+      },
+    });
+
     return this.sanitize(updated);
   }
 
@@ -137,6 +168,16 @@ export class SocialChannelConnectionsService {
     this.ownershipService.assertRole(context, MANAGE_ROLES);
 
     await this.prisma.socialChannelConnection.delete({ where: { id } });
+
+    this.activityLogsService.log({
+      organisation_id: connection.organisation_id,
+      user_id: userId,
+      action: ActivityLogAction.CHANNEL_CONNECTION_REMOVED,
+      entity_type: ActivityLogEntityType.SOCIAL_CHANNEL_CONNECTION,
+      entity_id: connection.id,
+      description: `Disconnected ${connection.channel.toLowerCase()} account "${connection.external_account_name ?? connection.external_account_id}"`,
+    });
+
     return { message: 'Social channel connection removed successfully' };
   }
 }

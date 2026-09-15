@@ -28,6 +28,7 @@ export const ApiRoutes = {
         member: (organisation_id: string, member_id: string) => `/organisations/${organisation_id}/members/${member_id}`,
         resend_invitation: (organisation_id: string, member_id: string) =>
             `/organisations/${organisation_id}/members/${member_id}/resend-invitation`,
+        activity_logs: (organisation_id: string) => `/organisations/${organisation_id}/activity-logs`,
     },
     organisation_invitations: {
         prefix: "/organisation-invitations",

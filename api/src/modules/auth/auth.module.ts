@@ -8,6 +8,7 @@ import { CreateJwtServiceModule } from '@/shared/utils/jwt/jwt.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ResendModule } from '@/integrations/notifications/resend/resend.module';
 import { OrganisationsModule } from '@/modules/organisations/organisations.module';
+import { ActivityLogsModule } from '@/modules/activity-logs/activity-logs.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { OrganisationsModule } from '@/modules/organisations/organisations.modul
     CreateJwtServiceModule,
     ResendModule,
     OrganisationsModule,
+    ActivityLogsModule,
   ],
   providers: [EmailAuthService, PasswordService, JwtStrategy, Logger],
   controllers: [EmailAuthController, PasswordController],
