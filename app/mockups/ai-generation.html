@@ -95,10 +95,10 @@
     document.getElementById('styleSelect').innerHTML = project.styleProfiles.map(id => `<option value="${id}">${styleProfileById(id).name}</option>`).join('');
     if(run) document.getElementById('styleSelect').value = run.styleProfile;
 
-    const platformLabel = { linkedin:'LinkedIn', x:'X', blog:'Blog' };
-    document.getElementById('platformSelect').value = platformLabel[project.platform] || 'LinkedIn';
+    document.getElementById('platformSelect').value = platformLabel(project.platform);
 
-    const statusLabel = { draft:'Draft', review:'Pending review', ready:'Ready', scheduled:'Scheduled', published:'Published' };
+    const isBlog = project.platform === 'blog';
+    const EDITABLE_STATUSES = ['draft','review','ready'];
     let currentPosts;
 
     if(run){
@@ -114,24 +114,40 @@
 
     function postCard(p, idx){
       const sp = styleProfileById(p.styleProfile);
+      const statusControl = EDITABLE_STATUSES.includes(p.status)
+        ? `<select class="select" style="width:150px; padding:6px 10px; font-size:12.5px;">
+            <option value="draft" ${p.status==='draft'?'selected':''}>Draft</option>
+            <option value="review" ${p.status==='review'?'selected':''}>Pending review</option>
+            <option value="ready" ${p.status==='ready'?'selected':''}>Ready</option>
+          </select>`
+        : `<span class="tag ${STATUS_TAG_CLASS[p.status]}" title="${p.status==='failed' && p.failedReason ? p.failedReason : ''}"><span class="status-dot ${p.status}"></span> ${STATUS_LABEL[p.status]}</span>`;
+
       return `
         <div class="card card-pad gen-card" data-idx="${idx}">
           <div class="flex items-center justify-between mb-12">
             <span class="dna-badge"><span class="strand" data-strand data-traits='${JSON.stringify(sp.traits)}'></span>${sp.name}</span>
             <span class="tag tag-coral">${p.hook}</span>
           </div>
+          ${isBlog ? `
+            <input class="input" data-blog-title style="font-family:var(--font-display); font-size:16px; font-weight:600; margin-bottom:8px;" value="${p.title||''}" placeholder="Post title" />
+            <textarea class="textarea" data-blog-excerpt style="min-height:44px; font-size:12.5px; margin-bottom:12px;" placeholder="Excerpt — shown in previews and RSS">${p.excerpt||''}</textarea>
+          ` : ''}
           <div class="post-body text-sm" style="line-height:1.6; min-height:70px;" data-view>${p.body}</div>
           <textarea class="textarea post-edit" style="display:none;">${p.body}</textarea>
+          ${isBlog ? `
+            <div class="card-eyebrow mt-16 mb-8">SEO</div>
+            <div class="flex-col gap-8">
+              <input class="input" style="font-size:12.5px;" placeholder="SEO title" value="${p.seoTitle||''}" />
+              <input class="input" style="font-size:12.5px;" placeholder="SEO description" value="${p.seoDescription||''}" />
+              <input class="input" style="font-size:12.5px;" placeholder="Canonical URL" value="${p.canonicalUrl||''}" />
+            </div>
+          ` : ''}
           <div class="flex items-center justify-between mt-16">
             <div class="flex gap-6">
               <button class="btn btn-ghost btn-sm" onclick="regenerate(${idx})">↻ Regenerate</button>
               <button class="btn btn-ghost btn-sm" onclick="toggleEdit(${idx})">✎ Edit</button>
             </div>
-            <select class="select" style="width:150px; padding:6px 10px; font-size:12.5px;">
-              <option ${p.status==='draft'?'selected':''}>Draft</option>
-              <option ${p.status==='review'?'selected':''}>Pending review</option>
-              <option ${p.status==='ready'?'selected':''}>Ready</option>
-            </select>
+            ${statusControl}
           </div>
         </div>
       `;

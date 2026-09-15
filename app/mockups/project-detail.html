@@ -66,8 +66,6 @@
       </div>
     `;
 
-    const statusLabel = { draft:'Draft', review:'Pending review', ready:'Ready', scheduled:'Scheduled', published:'Published' };
-
     document.querySelector('[data-tab-panel="overview"]').innerHTML = `
       <div class="grid" style="grid-template-columns:2fr 1fr; margin-top:20px; align-items:flex-start;">
         <div class="flex-col gap-20">
@@ -78,7 +76,7 @@
               ${Object.entries(project.counts).map(([k,v]) => `
                 <div style="text-align:center;">
                   <div style="font-family:var(--font-display); font-size:22px; font-weight:600;">${v}</div>
-                  <div class="text-xs text-muted" style="text-transform:capitalize;">${statusLabel[k]||k}</div>
+                  <div class="text-xs text-muted" style="text-transform:capitalize;">${STATUS_LABEL[k]||k}</div>
                 </div>
               `).join('')}
             </div>
@@ -90,10 +88,10 @@
               ${posts.slice(0,4).map(p => `
                 <li class="flex items-center justify-between" style="padding:11px 0; border-bottom:1px solid var(--line);">
                   <div>
-                    <div class="text-sm" style="font-weight:600;">${p.title}</div>
+                    <div class="text-sm" style="font-weight:600;">${postLabel(p)}</div>
                     <div class="text-xs text-muted mt-4">${styleProfileById(p.styleProfile).name} · ${p.updated}</div>
                   </div>
-                  <span class="tag"><span class="status-dot ${p.status}"></span> ${statusLabel[p.status]}</span>
+                  <span class="tag ${STATUS_TAG_CLASS[p.status]}"><span class="status-dot ${p.status}"></span> ${STATUS_LABEL[p.status]}</span>
                 </li>
               `).join('')}
             </ul>
@@ -126,26 +124,58 @@
         <div class="card card-pad">
           <div class="card-title mb-10">Ideas</div>
           <p class="text-sm text-muted mb-10">Rough topics and angles Signal draws from when generating new posts.</p>
-          <ul class="flex-col gap-10">
-            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Our new interview loop cut time-to-hire by 40% — the story behind why we killed take-home assignments.</li>
-            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Why we stopped asking "where do you see yourself in 5 years."</li>
-            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">The onboarding change that dropped 90-day attrition by a third.</li>
-          </ul>
-          <button class="btn btn-secondary btn-sm mt-16">+ Add idea</button>
+          <ul class="flex-col gap-10" id="ideasList"></ul>
+          <div class="flex gap-8 mt-16">
+            <input class="input" id="newIdeaInput" placeholder="Add a new idea…" />
+            <button class="btn btn-secondary btn-sm" onclick="addIdea()">+ Add</button>
+          </div>
         </div>
         <div class="card card-pad">
           <div class="card-title mb-10">Instructions</div>
           <p class="text-sm text-muted mb-10">Rules the AI always follows when writing for this project.</p>
-          <ul class="flex-col gap-10">
-            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Never use emojis or hashtags.</li>
-            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Keep posts under 150 words.</li>
-            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Always end with a direct, answerable question.</li>
-            <li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">Reference real team examples, never hypotheticals.</li>
-          </ul>
-          <button class="btn btn-secondary btn-sm mt-16">+ Add instruction</button>
+          <ul class="flex-col gap-10" id="instructionsList"></ul>
+          <div class="flex gap-8 mt-16">
+            <input class="input" id="newInstructionInput" placeholder="Add a new instruction…" />
+            <button class="btn btn-secondary btn-sm" onclick="addInstruction()">+ Add</button>
+          </div>
         </div>
       </div>
     `;
+
+    function listItem(text){
+      return `<li class="text-sm card" style="padding:10px 12px; box-shadow:none; background:var(--surface-2);">${text}</li>`;
+    }
+
+    function renderIdeasInstructions(){
+      const ideasList = document.getElementById('ideasList');
+      const instructionsList = document.getElementById('instructionsList');
+      if(!ideasList || !instructionsList) return;
+      ideasList.innerHTML = project.ideas.length ? project.ideas.map(listItem).join('') : `<li class="text-sm text-muted">No ideas yet.</li>`;
+      instructionsList.innerHTML = project.instructions.length ? project.instructions.map(listItem).join('') : `<li class="text-sm text-muted">No instructions yet.</li>`;
+    }
+    renderIdeasInstructions();
+    document.getElementById('newIdeaInput').addEventListener('keydown', e => { if(e.key === 'Enter') addIdea(); });
+    document.getElementById('newInstructionInput').addEventListener('keydown', e => { if(e.key === 'Enter') addInstruction(); });
+
+    function addIdea(){
+      const input = document.getElementById('newIdeaInput');
+      const value = input.value.trim();
+      if(!value) return;
+      project.ideas.push(value);
+      input.value = '';
+      renderIdeasInstructions();
+      toast('Idea added.');
+    }
+
+    function addInstruction(){
+      const input = document.getElementById('newInstructionInput');
+      const value = input.value.trim();
+      if(!value) return;
+      project.instructions.push(value);
+      input.value = '';
+      renderIdeasInstructions();
+      toast('Instruction added.');
+    }
 
     document.querySelector('[data-tab-panel="generations"]').innerHTML = `
       <p class="text-sm text-muted mt-20 mb-16" style="max-width:480px;">Every batch of AI-generated posts for this project, in one place. Start a new one whenever you need fresh drafts.</p>
@@ -178,11 +208,14 @@
             <tbody>
               ${posts.map(p => `
                 <tr>
-                  <td class="cell-strong" style="max-width:260px;">${p.title}</td>
+                  <td class="cell-strong" style="max-width:260px;">${postLabel(p)}</td>
                   <td class="cell-muted">${runById(p.run) ? runById(p.run).label : '—'}</td>
                   <td class="cell-muted">${styleProfileById(p.styleProfile).name}</td>
                   <td><span class="tag">${p.hook}</span></td>
-                  <td><span class="tag"><span class="status-dot ${p.status}"></span> ${statusLabel[p.status]}</span></td>
+                  <td>
+                    <span class="tag ${STATUS_TAG_CLASS[p.status]}" title="${p.status==='failed' && p.failedReason ? p.failedReason : ''}"><span class="status-dot ${p.status}"></span> ${STATUS_LABEL[p.status]}</span>
+                    ${p.channels ? p.channels.map(c => `<span class="tag" style="margin-left:4px;" title="${platformLabel(c.channel)}: ${STATUS_LABEL[c.status]}">${platformGlyph(c.channel)}</span>`).join('') : ''}
+                  </td>
                   <td class="cell-muted">${p.updated}</td>
                   <td><a href="ai-generation.html?project=${project.id}&run=${p.run}" class="btn btn-ghost btn-sm">Open →</a></td>
                 </tr>

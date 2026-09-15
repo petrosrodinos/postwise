@@ -94,6 +94,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
+  name: 'name',
   email: 'email',
   phone: 'phone',
   password: 'password',
@@ -114,6 +115,7 @@ exports.Prisma.PasswordResetTokenScalarFieldEnum = {
 exports.Prisma.DocumentScalarFieldEnum = {
   id: 'id',
   user_uuid: 'user_uuid',
+  organisation_id: 'organisation_id',
   filename: 'filename',
   mimetype: 'mimetype',
   size: 'size',
@@ -123,9 +125,166 @@ exports.Prisma.DocumentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.OrganisationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  created_by_user_id: 'created_by_user_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.OrganisationMemberScalarFieldEnum = {
+  id: 'id',
+  organisation_id: 'organisation_id',
+  user_id: 'user_id',
+  role: 'role',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.SocialChannelConnectionScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  organisation_id: 'organisation_id',
+  channel: 'channel',
+  status: 'status',
+  external_account_id: 'external_account_id',
+  external_account_name: 'external_account_name',
+  access_token: 'access_token',
+  refresh_token: 'refresh_token',
+  token_expires_at: 'token_expires_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.StyleProfileScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  organisation_id: 'organisation_id',
+  name: 'name',
+  platform: 'platform',
+  source_url: 'source_url',
+  posts_analyzed: 'posts_analyzed',
+  tone_score: 'tone_score',
+  structure_score: 'structure_score',
+  hooks_score: 'hooks_score',
+  vocabulary_score: 'vocabulary_score',
+  rhythm_score: 'rhythm_score',
+  tone_description: 'tone_description',
+  dominant_hook: 'dominant_hook',
+  vocabulary: 'vocabulary',
+  pillars: 'pillars',
+  last_analyzed_at: 'last_analyzed_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ProjectScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  organisation_id: 'organisation_id',
+  title: 'title',
+  description: 'description',
+  platform: 'platform',
+  pillars: 'pillars',
+  ideas: 'ideas',
+  instructions: 'instructions',
+  is_archived: 'is_archived',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ProjectStyleProfileScalarFieldEnum = {
+  id: 'id',
+  project_id: 'project_id',
+  style_profile_id: 'style_profile_id',
+  created_at: 'created_at'
+};
+
+exports.Prisma.GenerationRunScalarFieldEnum = {
+  id: 'id',
+  project_id: 'project_id',
+  style_profile_id: 'style_profile_id',
+  automation_id: 'automation_id',
+  label: 'label',
+  posts_requested: 'posts_requested',
+  created_at: 'created_at'
+};
+
+exports.Prisma.AutomationScalarFieldEnum = {
+  id: 'id',
+  project_id: 'project_id',
+  style_profile_id: 'style_profile_id',
+  name: 'name',
+  is_active: 'is_active',
+  frequency: 'frequency',
+  days_of_week: 'days_of_week',
+  time_of_day: 'time_of_day',
+  timezone: 'timezone',
+  posts_per_run: 'posts_per_run',
+  output_stage: 'output_stage',
+  last_run_at: 'last_run_at',
+  next_run_at: 'next_run_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  organisation_id: 'organisation_id',
+  project_id: 'project_id',
+  style_profile_id: 'style_profile_id',
+  generation_run_id: 'generation_run_id',
+  source_post_id: 'source_post_id',
+  type: 'type',
+  status: 'status',
+  hook: 'hook',
+  body: 'body',
+  metadata: 'metadata',
+  title: 'title',
+  excerpt: 'excerpt',
+  cover_document_id: 'cover_document_id',
+  seo_title: 'seo_title',
+  seo_description: 'seo_description',
+  canonical_url: 'canonical_url',
+  scheduled_at: 'scheduled_at',
+  published_at: 'published_at',
+  failed_reason: 'failed_reason',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.PostAttachmentScalarFieldEnum = {
+  id: 'id',
+  post_id: 'post_id',
+  document_id: 'document_id',
+  order: 'order',
+  created_at: 'created_at'
+};
+
+exports.Prisma.PostChannelScalarFieldEnum = {
+  id: 'id',
+  post_id: 'post_id',
+  channel_connection_id: 'channel_connection_id',
+  status: 'status',
+  external_post_id: 'external_post_id',
+  external_post_url: 'external_post_url',
+  published_at: 'published_at',
+  failed_reason: 'failed_reason',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -136,6 +295,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.AuthRole = exports.$Enums.AuthRole = {
   USER: 'USER',
@@ -155,10 +320,75 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   OTHER: 'OTHER'
 };
 
+exports.PostType = exports.$Enums.PostType = {
+  TWITTER: 'TWITTER',
+  LINKEDIN: 'LINKEDIN',
+  BLOG: 'BLOG'
+};
+
+exports.PostStatus = exports.$Enums.PostStatus = {
+  DRAFT: 'DRAFT',
+  REVIEW: 'REVIEW',
+  READY: 'READY',
+  SCHEDULED: 'SCHEDULED',
+  PUBLISHING: 'PUBLISHING',
+  PUBLISHED: 'PUBLISHED',
+  FAILED: 'FAILED'
+};
+
+exports.SocialChannel = exports.$Enums.SocialChannel = {
+  TWITTER: 'TWITTER',
+  LINKEDIN: 'LINKEDIN'
+};
+
+exports.SocialChannelConnectionStatus = exports.$Enums.SocialChannelConnectionStatus = {
+  CONNECTED: 'CONNECTED',
+  DISCONNECTED: 'DISCONNECTED',
+  EXPIRED: 'EXPIRED',
+  ERROR: 'ERROR'
+};
+
+exports.PostChannelStatus = exports.$Enums.PostChannelStatus = {
+  PENDING: 'PENDING',
+  SCHEDULED: 'SCHEDULED',
+  PUBLISHING: 'PUBLISHING',
+  PUBLISHED: 'PUBLISHED',
+  FAILED: 'FAILED'
+};
+
+exports.OrganisationRole = exports.$Enums.OrganisationRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+};
+
+exports.AutomationFrequency = exports.$Enums.AutomationFrequency = {
+  DAILY: 'DAILY',
+  WEEKDAYS: 'WEEKDAYS',
+  WEEKLY: 'WEEKLY'
+};
+
+exports.AutomationOutputStage = exports.$Enums.AutomationOutputStage = {
+  DRAFT: 'DRAFT',
+  REVIEW: 'REVIEW',
+  PUBLISH: 'PUBLISH'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
-  Document: 'Document'
+  Document: 'Document',
+  Organisation: 'Organisation',
+  OrganisationMember: 'OrganisationMember',
+  SocialChannelConnection: 'SocialChannelConnection',
+  StyleProfile: 'StyleProfile',
+  Project: 'Project',
+  ProjectStyleProfile: 'ProjectStyleProfile',
+  GenerationRun: 'GenerationRun',
+  Automation: 'Automation',
+  Post: 'Post',
+  PostAttachment: 'PostAttachment',
+  PostChannel: 'PostChannel'
 };
 /**
  * Create the Client
@@ -168,10 +398,10 @@ const config = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum AuthRole {\n  USER\n  ADMIN\n  SUPER_ADMIN\n  SUPPORT\n}\n\nenum DocumentType {\n  LOGO\n  BANNER\n  IMAGE\n  VIDEO\n  AUDIO\n  PDF\n  DOCUMENT\n  OTHER\n}\n\nmodel User {\n  id       String  @id @default(uuid())\n  email    String  @unique\n  phone    String? @unique\n  password String\n\n  role       AuthRole\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  password_reset_tokens PasswordResetToken[]\n\n  @@index([email])\n  @@index([phone])\n  @@index([id])\n  @@map(\"users\")\n}\n\nmodel PasswordResetToken {\n  id         String    @id @default(uuid())\n  token_hash String    @unique\n  user_uuid  String\n  expires_at DateTime\n  used_at    DateTime?\n  created_at DateTime  @default(now())\n\n  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n\n  @@index([user_uuid])\n  @@index([expires_at])\n  @@map(\"password_reset_tokens\")\n}\n\nmodel Document {\n  id         String       @id @default(uuid())\n  user_uuid  String\n  filename   String\n  mimetype   String\n  size       Int\n  url        String\n  path       String\n  type       DocumentType @default(LOGO)\n  created_at DateTime     @default(now())\n\n  @@index([user_uuid])\n  @@index([id])\n  @@map(\"documents\")\n}\n"
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum AuthRole {\n  USER\n  ADMIN\n  SUPER_ADMIN\n  SUPPORT\n}\n\nenum DocumentType {\n  LOGO\n  BANNER\n  IMAGE\n  VIDEO\n  AUDIO\n  PDF\n  DOCUMENT\n  OTHER\n}\n\n// Also reused as the \"platform\" for StyleProfile and Project — all three\n// concepts (a post, the profile it's trained from, the project it's planned\n// under) share the same LinkedIn/X/Blog platform space.\nenum PostType {\n  TWITTER\n  LINKEDIN\n  BLOG\n}\n\nenum PostStatus {\n  DRAFT\n  REVIEW\n  READY\n  SCHEDULED\n  PUBLISHING\n  PUBLISHED\n  FAILED\n}\n\nenum SocialChannel {\n  TWITTER\n  LINKEDIN\n}\n\nenum SocialChannelConnectionStatus {\n  CONNECTED\n  DISCONNECTED\n  EXPIRED\n  ERROR\n}\n\nenum PostChannelStatus {\n  PENDING\n  SCHEDULED\n  PUBLISHING\n  PUBLISHED\n  FAILED\n}\n\nenum OrganisationRole {\n  OWNER\n  ADMIN\n  MEMBER\n}\n\nenum AutomationFrequency {\n  DAILY\n  WEEKDAYS\n  WEEKLY\n}\n\nenum AutomationOutputStage {\n  DRAFT\n  REVIEW\n  PUBLISH\n}\n\nmodel User {\n  id       String  @id @default(uuid())\n  name     String\n  email    String  @unique\n  phone    String? @unique\n  password String\n\n  role       AuthRole\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  password_reset_tokens    PasswordResetToken[]\n  documents                Document[]\n  organisations_created    Organisation[]\n  organisation_memberships OrganisationMember[]\n  authored_posts           Post[]\n  channel_connections      SocialChannelConnection[]\n  style_profiles           StyleProfile[]\n  projects                 Project[]\n\n  @@index([email])\n  @@index([phone])\n  @@index([id])\n  @@map(\"users\")\n}\n\nmodel PasswordResetToken {\n  id         String    @id @default(uuid())\n  token_hash String    @unique\n  user_uuid  String\n  expires_at DateTime\n  used_at    DateTime?\n  created_at DateTime  @default(now())\n\n  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n\n  @@index([user_uuid])\n  @@index([expires_at])\n  @@map(\"password_reset_tokens\")\n}\n\n// A Document belongs to a user OR an organisation, never both.\nmodel Document {\n  id              String       @id @default(uuid())\n  user_uuid       String?\n  organisation_id String?\n  filename        String\n  mimetype        String\n  size            Int\n  url             String\n  path            String\n  type            DocumentType @default(LOGO)\n  created_at      DateTime     @default(now())\n\n  user         User?         @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n  organisation Organisation? @relation(fields: [organisation_id], references: [id], onDelete: Cascade)\n\n  post_attachments PostAttachment[]\n  cover_of_posts   Post[]\n\n  @@index([user_uuid])\n  @@index([organisation_id])\n  @@index([id])\n  @@map(\"documents\")\n}\n\n// A named workspace, separate from a user's personal account, that owns its\n// own brand assets, connected social channels and posts. Created by one user\n// (the Owner), who can add other members via OrganisationMember — never\n// nested under another Organisation, and no cross-organisation sharing.\nmodel Organisation {\n  id                 String   @id @default(uuid())\n  name               String\n  slug               String   @unique\n  created_by_user_id String\n  created_at         DateTime @default(now())\n  updated_at         DateTime @updatedAt\n\n  created_by User @relation(fields: [created_by_user_id], references: [id], onDelete: Cascade)\n\n  members             OrganisationMember[]\n  documents           Document[]\n  posts               Post[]\n  channel_connections SocialChannelConnection[]\n  style_profiles      StyleProfile[]\n  projects            Project[]\n\n  @@index([created_by_user_id])\n  @@index([slug])\n  @@map(\"organisations\")\n}\n\n// Links a User to an Organisation with one of 3 fixed roles (§6.3) — no\n// invite/accept flow: members are created directly by an Owner/Admin.\n// Removing this row revokes access without touching the User account.\nmodel OrganisationMember {\n  id              String           @id @default(uuid())\n  organisation_id String\n  user_id         String\n  role            OrganisationRole\n  created_at      DateTime         @default(now())\n  updated_at      DateTime         @updatedAt\n\n  organisation Organisation @relation(fields: [organisation_id], references: [id], onDelete: Cascade)\n  user         User         @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  @@unique([organisation_id, user_id])\n  @@index([organisation_id])\n  @@index([user_id])\n  @@map(\"organisation_members\")\n}\n\n// A social account (Twitter/LinkedIn, etc.) connected for publishing.\n// Belongs to a user OR an organisation, never both — same ownership pattern\n// as Document.\nmodel SocialChannelConnection {\n  id                    String                        @id @default(uuid())\n  user_id               String?\n  organisation_id       String?\n  channel               SocialChannel\n  status                SocialChannelConnectionStatus @default(CONNECTED)\n  external_account_id   String\n  external_account_name String?\n  access_token          String\n  refresh_token         String?\n  token_expires_at      DateTime?\n  created_at            DateTime                      @default(now())\n  updated_at            DateTime                      @updatedAt\n\n  user         User?         @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  organisation Organisation? @relation(fields: [organisation_id], references: [id], onDelete: Cascade)\n\n  post_channels PostChannel[]\n\n  @@unique([channel, external_account_id])\n  @@index([user_id])\n  @@index([organisation_id])\n  @@map(\"social_channel_connections\")\n}\n\n// A reusable \"Style DNA\" fingerprint trained from a creator's own published\n// posts (tone, structure, hooks, vocabulary, rhythm), used to steer AI\n// drafting for a Project. Belongs to a user OR an organisation, never both.\nmodel StyleProfile {\n  id               String    @id @default(uuid())\n  user_id          String?\n  organisation_id  String?\n  name             String\n  platform         PostType\n  source_url       String?\n  posts_analyzed   Int       @default(0)\n  tone_score       Int?\n  structure_score  Int?\n  hooks_score      Int?\n  vocabulary_score Int?\n  rhythm_score     Int?\n  tone_description String?   @db.Text\n  dominant_hook    String?\n  vocabulary       String[]\n  pillars          String[]\n  last_analyzed_at DateTime?\n  created_at       DateTime  @default(now())\n  updated_at       DateTime  @updatedAt\n\n  user         User?         @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  organisation Organisation? @relation(fields: [organisation_id], references: [id], onDelete: Cascade)\n\n  projects        ProjectStyleProfile[]\n  generation_runs GenerationRun[]\n  automations     Automation[]\n  posts           Post[]\n\n  @@index([user_id])\n  @@index([organisation_id])\n  @@map(\"style_profiles\")\n}\n\n// Organizes AI generation and scheduling around a goal, audience and voice —\n// a platform, content pillars, freeform ideas/instructions the AI follows,\n// and one or more Style Profiles. Belongs to a user OR an organisation,\n// never both.\nmodel Project {\n  id              String   @id @default(uuid())\n  user_id         String?\n  organisation_id String?\n  title           String\n  description     String?  @db.Text\n  platform        PostType\n  pillars         String[]\n  ideas           String[]\n  instructions    String[]\n  is_archived     Boolean  @default(false)\n  created_at      DateTime @default(now())\n  updated_at      DateTime @updatedAt\n\n  user         User?         @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  organisation Organisation? @relation(fields: [organisation_id], references: [id], onDelete: Cascade)\n\n  style_profiles  ProjectStyleProfile[]\n  posts           Post[]\n  generation_runs GenerationRun[]\n  automations     Automation[]\n\n  @@index([user_id])\n  @@index([organisation_id])\n  @@map(\"projects\")\n}\n\nmodel ProjectStyleProfile {\n  id               String   @id @default(uuid())\n  project_id       String\n  style_profile_id String\n  created_at       DateTime @default(now())\n\n  project       Project      @relation(fields: [project_id], references: [id], onDelete: Cascade)\n  style_profile StyleProfile @relation(fields: [style_profile_id], references: [id], onDelete: Cascade)\n\n  @@unique([project_id, style_profile_id])\n  @@index([project_id])\n  @@index([style_profile_id])\n  @@map(\"project_style_profiles\")\n}\n\n// One AI generation batch within a Project: a set of Posts generated\n// together from the project's context and a chosen Style Profile. Triggered\n// either manually or by an Automation.\nmodel GenerationRun {\n  id               String   @id @default(uuid())\n  project_id       String\n  style_profile_id String?\n  automation_id    String?\n  label            String?\n  posts_requested  Int?\n  created_at       DateTime @default(now())\n\n  project       Project       @relation(fields: [project_id], references: [id], onDelete: Cascade)\n  style_profile StyleProfile? @relation(fields: [style_profile_id], references: [id], onDelete: SetNull)\n  automation    Automation?   @relation(fields: [automation_id], references: [id], onDelete: SetNull)\n\n  posts Post[]\n\n  @@index([project_id])\n  @@index([style_profile_id])\n  @@index([automation_id])\n  @@map(\"generation_runs\")\n}\n\n// A recurring, schedule-driven generation rule for a Project: runs on a\n// frequency/time, generates `posts_per_run` drafts with a Style Profile, and\n// drops them at `output_stage` (draft, pending review, or straight to\n// publish).\nmodel Automation {\n  id               String                @id @default(uuid())\n  project_id       String\n  style_profile_id String?\n  name             String\n  is_active        Boolean               @default(true)\n  frequency        AutomationFrequency   @default(WEEKLY)\n  days_of_week     Int[]\n  time_of_day      String\n  timezone         String                @default(\"UTC\")\n  posts_per_run    Int                   @default(1)\n  output_stage     AutomationOutputStage @default(DRAFT)\n  last_run_at      DateTime?\n  next_run_at      DateTime?\n  created_at       DateTime              @default(now())\n  updated_at       DateTime              @updatedAt\n\n  project       Project       @relation(fields: [project_id], references: [id], onDelete: Cascade)\n  style_profile StyleProfile? @relation(fields: [style_profile_id], references: [id], onDelete: SetNull)\n\n  generation_runs GenerationRun[]\n\n  @@index([project_id])\n  @@index([style_profile_id])\n  @@map(\"automations\")\n}\n\n// A Post always has both an author (`user_id`) and, when it's owned by an\n// Organisation workspace rather than the author's personal account, an\n// `organisation_id`. `type` determines valid publish targets; blog-specific\n// fields (title/slug/body/SEO) below are only populated for `BLOG` posts.\nmodel Post {\n  id                String     @id @default(uuid())\n  user_id           String\n  organisation_id   String?\n  project_id        String?\n  style_profile_id  String?\n  generation_run_id String?\n  source_post_id    String?\n  type              PostType\n  status            PostStatus @default(DRAFT)\n  hook              String?\n  body              String?    @db.Text\n  metadata          Json?\n\n  // Blog-specific fields (populated only when type = BLOG).\n  title             String?\n  excerpt           String? @db.Text\n  cover_document_id String?\n  seo_title         String?\n  seo_description   String?\n  canonical_url     String?\n\n  scheduled_at  DateTime?\n  published_at  DateTime?\n  failed_reason String?\n  created_at    DateTime  @default(now())\n  updated_at    DateTime  @updatedAt\n\n  // The author is never deleted while they still have authored posts —\n  // organisation-owned posts must not disappear just because the author's\n  // account is removed later; reassign or delete posts first.\n  user User @relation(fields: [user_id], references: [id], onDelete: Restrict)\n\n  organisation   Organisation?  @relation(fields: [organisation_id], references: [id], onDelete: Cascade)\n  project        Project?       @relation(fields: [project_id], references: [id], onDelete: SetNull)\n  style_profile  StyleProfile?  @relation(fields: [style_profile_id], references: [id], onDelete: SetNull)\n  generation_run GenerationRun? @relation(fields: [generation_run_id], references: [id], onDelete: SetNull)\n  cover_document Document?      @relation(fields: [cover_document_id], references: [id], onDelete: SetNull)\n\n  // Repurposing lineage: a post generated from another post (e.g. a blog\n  // repurposed into a Twitter thread) links back to its source.\n  source_post      Post?  @relation(\"PostRepurpose\", fields: [source_post_id], references: [id], onDelete: SetNull)\n  repurposed_posts Post[] @relation(\"PostRepurpose\")\n\n  attachments PostAttachment[]\n  channels    PostChannel[]\n\n  @@index([user_id])\n  @@index([organisation_id])\n  @@index([project_id])\n  @@index([style_profile_id])\n  @@index([generation_run_id])\n  @@index([source_post_id])\n  @@index([cover_document_id])\n  @@index([status])\n  @@index([scheduled_at])\n  @@map(\"posts\")\n}\n\n// Ordered media (image/video/etc.) attached to a post, e.g. Twitter/LinkedIn\n// media. Blog cover image is a separate 1:1 reference on\n// Post.cover_document_id.\nmodel PostAttachment {\n  id          String   @id @default(uuid())\n  post_id     String\n  document_id String\n  order       Int      @default(0)\n  created_at  DateTime @default(now())\n\n  post     Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)\n  document Document @relation(fields: [document_id], references: [id], onDelete: Cascade)\n\n  @@unique([post_id, document_id])\n  @@index([post_id])\n  @@index([document_id])\n  @@map(\"post_attachments\")\n}\n\n// Join between a Post and one of its owner context's connected social\n// channels, tracking per-channel publish state (a post can target several\n// channel connections at once).\nmodel PostChannel {\n  id                    String            @id @default(uuid())\n  post_id               String\n  channel_connection_id String\n  status                PostChannelStatus @default(PENDING)\n  external_post_id      String?\n  external_post_url     String?\n  published_at          DateTime?\n  failed_reason         String?\n  created_at            DateTime          @default(now())\n  updated_at            DateTime          @updatedAt\n\n  post               Post                    @relation(fields: [post_id], references: [id], onDelete: Cascade)\n  channel_connection SocialChannelConnection @relation(fields: [channel_connection_id], references: [id], onDelete: Cascade)\n\n  @@unique([post_id, channel_connection_id])\n  @@index([post_id])\n  @@index([channel_connection_id])\n  @@map(\"post_channels\")\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"AuthRole\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"password_reset_tokens\",\"kind\":\"object\",\"type\":\"PasswordResetToken\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"users\"},\"PasswordResetToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"used_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"password_reset_tokens\"},\"Document\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mimetype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"DocumentType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"documents\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"AuthRole\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"password_reset_tokens\",\"kind\":\"object\",\"type\":\"PasswordResetToken\",\"relationName\":\"PasswordResetTokenToUser\"},{\"name\":\"documents\",\"kind\":\"object\",\"type\":\"Document\",\"relationName\":\"DocumentToUser\"},{\"name\":\"organisations_created\",\"kind\":\"object\",\"type\":\"Organisation\",\"relationName\":\"OrganisationToUser\"},{\"name\":\"organisation_memberships\",\"kind\":\"object\",\"type\":\"OrganisationMember\",\"relationName\":\"OrganisationMemberToUser\"},{\"name\":\"authored_posts\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostToUser\"},{\"name\":\"channel_connections\",\"kind\":\"object\",\"type\":\"SocialChannelConnection\",\"relationName\":\"SocialChannelConnectionToUser\"},{\"name\":\"style_profiles\",\"kind\":\"object\",\"type\":\"StyleProfile\",\"relationName\":\"StyleProfileToUser\"},{\"name\":\"projects\",\"kind\":\"object\",\"type\":\"Project\",\"relationName\":\"ProjectToUser\"}],\"dbName\":\"users\"},\"PasswordResetToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"used_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"password_reset_tokens\"},\"Document\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"organisation_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mimetype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"DocumentType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"DocumentToUser\"},{\"name\":\"organisation\",\"kind\":\"object\",\"type\":\"Organisation\",\"relationName\":\"DocumentToOrganisation\"},{\"name\":\"post_attachments\",\"kind\":\"object\",\"type\":\"PostAttachment\",\"relationName\":\"DocumentToPostAttachment\"},{\"name\":\"cover_of_posts\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"DocumentToPost\"}],\"dbName\":\"documents\"},\"Organisation\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_by_user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_by\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"OrganisationToUser\"},{\"name\":\"members\",\"kind\":\"object\",\"type\":\"OrganisationMember\",\"relationName\":\"OrganisationToOrganisationMember\"},{\"name\":\"documents\",\"kind\":\"object\",\"type\":\"Document\",\"relationName\":\"DocumentToOrganisation\"},{\"name\":\"posts\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"OrganisationToPost\"},{\"name\":\"channel_connections\",\"kind\":\"object\",\"type\":\"SocialChannelConnection\",\"relationName\":\"OrganisationToSocialChannelConnection\"},{\"name\":\"style_profiles\",\"kind\":\"object\",\"type\":\"StyleProfile\",\"relationName\":\"OrganisationToStyleProfile\"},{\"name\":\"projects\",\"kind\":\"object\",\"type\":\"Project\",\"relationName\":\"OrganisationToProject\"}],\"dbName\":\"organisations\"},\"OrganisationMember\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"organisation_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"OrganisationRole\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"organisation\",\"kind\":\"object\",\"type\":\"Organisation\",\"relationName\":\"OrganisationToOrganisationMember\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"OrganisationMemberToUser\"}],\"dbName\":\"organisation_members\"},\"SocialChannelConnection\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"organisation_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"channel\",\"kind\":\"enum\",\"type\":\"SocialChannel\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"SocialChannelConnectionStatus\"},{\"name\":\"external_account_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_account_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"access_token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"refresh_token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SocialChannelConnectionToUser\"},{\"name\":\"organisation\",\"kind\":\"object\",\"type\":\"Organisation\",\"relationName\":\"OrganisationToSocialChannelConnection\"},{\"name\":\"post_channels\",\"kind\":\"object\",\"type\":\"PostChannel\",\"relationName\":\"PostChannelToSocialChannelConnection\"}],\"dbName\":\"social_channel_connections\"},\"StyleProfile\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"organisation_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"platform\",\"kind\":\"enum\",\"type\":\"PostType\"},{\"name\":\"source_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"posts_analyzed\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"tone_score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"structure_score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"hooks_score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"vocabulary_score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"rhythm_score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"tone_description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dominant_hook\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"vocabulary\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"pillars\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"last_analyzed_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"StyleProfileToUser\"},{\"name\":\"organisation\",\"kind\":\"object\",\"type\":\"Organisation\",\"relationName\":\"OrganisationToStyleProfile\"},{\"name\":\"projects\",\"kind\":\"object\",\"type\":\"ProjectStyleProfile\",\"relationName\":\"ProjectStyleProfileToStyleProfile\"},{\"name\":\"generation_runs\",\"kind\":\"object\",\"type\":\"GenerationRun\",\"relationName\":\"GenerationRunToStyleProfile\"},{\"name\":\"automations\",\"kind\":\"object\",\"type\":\"Automation\",\"relationName\":\"AutomationToStyleProfile\"},{\"name\":\"posts\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostToStyleProfile\"}],\"dbName\":\"style_profiles\"},\"Project\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"organisation_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"platform\",\"kind\":\"enum\",\"type\":\"PostType\"},{\"name\":\"pillars\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ideas\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"instructions\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_archived\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProjectToUser\"},{\"name\":\"organisation\",\"kind\":\"object\",\"type\":\"Organisation\",\"relationName\":\"OrganisationToProject\"},{\"name\":\"style_profiles\",\"kind\":\"object\",\"type\":\"ProjectStyleProfile\",\"relationName\":\"ProjectToProjectStyleProfile\"},{\"name\":\"posts\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostToProject\"},{\"name\":\"generation_runs\",\"kind\":\"object\",\"type\":\"GenerationRun\",\"relationName\":\"GenerationRunToProject\"},{\"name\":\"automations\",\"kind\":\"object\",\"type\":\"Automation\",\"relationName\":\"AutomationToProject\"}],\"dbName\":\"projects\"},\"ProjectStyleProfile\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"project_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"style_profile_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"project\",\"kind\":\"object\",\"type\":\"Project\",\"relationName\":\"ProjectToProjectStyleProfile\"},{\"name\":\"style_profile\",\"kind\":\"object\",\"type\":\"StyleProfile\",\"relationName\":\"ProjectStyleProfileToStyleProfile\"}],\"dbName\":\"project_style_profiles\"},\"GenerationRun\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"project_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"style_profile_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"automation_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"label\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"posts_requested\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"project\",\"kind\":\"object\",\"type\":\"Project\",\"relationName\":\"GenerationRunToProject\"},{\"name\":\"style_profile\",\"kind\":\"object\",\"type\":\"StyleProfile\",\"relationName\":\"GenerationRunToStyleProfile\"},{\"name\":\"automation\",\"kind\":\"object\",\"type\":\"Automation\",\"relationName\":\"AutomationToGenerationRun\"},{\"name\":\"posts\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"GenerationRunToPost\"}],\"dbName\":\"generation_runs\"},\"Automation\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"project_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"style_profile_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"frequency\",\"kind\":\"enum\",\"type\":\"AutomationFrequency\"},{\"name\":\"days_of_week\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"time_of_day\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timezone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"posts_per_run\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"output_stage\",\"kind\":\"enum\",\"type\":\"AutomationOutputStage\"},{\"name\":\"last_run_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"next_run_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"project\",\"kind\":\"object\",\"type\":\"Project\",\"relationName\":\"AutomationToProject\"},{\"name\":\"style_profile\",\"kind\":\"object\",\"type\":\"StyleProfile\",\"relationName\":\"AutomationToStyleProfile\"},{\"name\":\"generation_runs\",\"kind\":\"object\",\"type\":\"GenerationRun\",\"relationName\":\"AutomationToGenerationRun\"}],\"dbName\":\"automations\"},\"Post\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"organisation_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"project_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"style_profile_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"generation_run_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source_post_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"PostType\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"PostStatus\"},{\"name\":\"hook\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"body\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"excerpt\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cover_document_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"seo_title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"seo_description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"canonical_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"scheduled_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"published_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"failed_reason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PostToUser\"},{\"name\":\"organisation\",\"kind\":\"object\",\"type\":\"Organisation\",\"relationName\":\"OrganisationToPost\"},{\"name\":\"project\",\"kind\":\"object\",\"type\":\"Project\",\"relationName\":\"PostToProject\"},{\"name\":\"style_profile\",\"kind\":\"object\",\"type\":\"StyleProfile\",\"relationName\":\"PostToStyleProfile\"},{\"name\":\"generation_run\",\"kind\":\"object\",\"type\":\"GenerationRun\",\"relationName\":\"GenerationRunToPost\"},{\"name\":\"cover_document\",\"kind\":\"object\",\"type\":\"Document\",\"relationName\":\"DocumentToPost\"},{\"name\":\"source_post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostRepurpose\"},{\"name\":\"repurposed_posts\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostRepurpose\"},{\"name\":\"attachments\",\"kind\":\"object\",\"type\":\"PostAttachment\",\"relationName\":\"PostToPostAttachment\"},{\"name\":\"channels\",\"kind\":\"object\",\"type\":\"PostChannel\",\"relationName\":\"PostToPostChannel\"}],\"dbName\":\"posts\"},\"PostAttachment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"document_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostToPostAttachment\"},{\"name\":\"document\",\"kind\":\"object\",\"type\":\"Document\",\"relationName\":\"DocumentToPostAttachment\"}],\"dbName\":\"post_attachments\"},\"PostChannel\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"channel_connection_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"PostChannelStatus\"},{\"name\":\"external_post_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_post_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"published_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"failed_reason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostToPostChannel\"},{\"name\":\"channel_connection\",\"kind\":\"object\",\"type\":\"SocialChannelConnection\",\"relationName\":\"PostChannelToSocialChannelConnection\"}],\"dbName\":\"post_channels\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
   getRuntime: async () => require('./query_compiler_bg.js'),

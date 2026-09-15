@@ -152,7 +152,56 @@ every entity in `docs/Product_Specification.md`, the migration has been run
 successfully, and `npx prisma generate` types are available for the API to
 build against.
 
-## Step 5 — Implement the full API
+## Step 5 — Reconcile the mockups with the schema
+
+**Goal:** the Step 2 mockups were built from the spec before
+`api/prisma/schema.prisma` existed, so they can drift from the real data
+model — fields that don't exist, statuses/enum values the mockups never
+show, type-specific fields (e.g. one platform/type's extra fields) applied
+uniformly instead of only where the schema says they apply. This step closes
+that gap before real frontend work (Step 6+) gets built to visually match
+mockups that lie about the data model.
+
+**How:**
+
+1. Read `api/prisma/schema.prisma` model by model, side by side with every
+   page under `app/mockups/` and its shared mock data in
+   `app/mockups/assets/data.js`.
+2. For each model, check:
+   - Every field the mockups reference on an entity actually exists on that
+     model in the schema, and vice versa — no mock object inventing a field
+     the schema doesn't have.
+   - Every enum's full value set (statuses, roles, types) appears somewhere
+     in the mockups (dropdowns, filters, badges/labels) — not just the
+     happy-path subset (e.g. an in-progress or failed state the mockups
+     never render).
+   - Fields the schema documents as conditional or type-specific (e.g. only
+     populated for one variant of a polymorphic model) are actually shown
+     only for that variant in the UI, not applied to every record generically.
+   - Ownership/multi-tenancy patterns in the schema (e.g. personal-account vs.
+     organisation-owned records) are reflected consistently wherever the
+     mockups show a workspace switcher or ownership-scoped list.
+3. List every mismatch found before changing anything — this can range from
+   small (wiring an existing schema field into an already-built panel) to
+   large (a whole feature area the schema implies, like an asset/media
+   library, that no mockup page covers at all). If the list is long or the
+   fixes are substantial, confirm scope/priority with the client/stakeholder
+   before proceeding — not every gap needs fixing before Step 7.
+4. Update `app/mockups/**` (HTML pages, `assets/data.js`, `assets/styles.css`,
+   shared helpers in `assets/app.js`/`assets/nav.js`) to close the gaps in
+   scope. Keep the Step 2 shared-asset structure — reuse existing shared
+   color/status/label conventions rather than inventing new one-off styling
+   per page.
+5. Open each changed mockup page in a browser and click through the affected
+   flows to confirm the fix actually renders correctly (not just "the code
+   was written") and the browser console is free of new errors.
+
+**Done when:** every model, field, and enum value in
+`api/prisma/schema.prisma` is represented somewhere in `app/mockups/` (or any
+remaining gap has been explicitly deferred with stakeholder sign-off), and no
+mockup page implies data or states the schema doesn't actually support.
+
+## Step 6 — Implement the full API
 
 **Goal:** build a complete NestJS module in `api/src/modules/` for every model
 in `api/prisma/schema.prisma` (from Step 4), covering every operation
@@ -201,7 +250,7 @@ in `api/prisma/schema.prisma` (from Step 4), covering every operation
 corresponding module, every endpoint the spec calls for exists and is guarded
 correctly, and the API runs against `.env.staging` without errors.
 
-## Step 6 — Plan the frontend implementation
+## Step 7 — Plan the frontend implementation
 
 **Goal:** produce a complete, dependency-ordered frontend implementation plan
 before writing any real frontend code, so an AI coding agent (or a developer)
@@ -213,7 +262,7 @@ always knows exactly what to build next and why.
    Claude's `/goal` command to drive execution.
 2. Give it its required inputs: `docs/Product_Specification.md`,
    `api/prisma/schema.prisma`, `.cursor/rules/app-code-structure-and-best-practices.mdc`,
-   the now-complete API from Step 5, and the current state of `app/` (existing
+   the now-complete API from Step 6, and the current state of `app/` (existing
    pages, components, routes, navigation).
 3. Let it produce the two deliverables it defines:
    - Feature-by-feature frontend documentation under `docs/frontend/`
@@ -233,11 +282,11 @@ needs, `docs/frontend/PROGRESS.md` exists with phases, completion criteria,
 and a concrete "Next Action", and a coding agent could open `PROGRESS.md`
 alone and know exactly what to implement next.
 
-## Step 7 — Implement the full app from the plan (final step)
+## Step 8 — Implement the full app from the plan (final step)
 
 **Goal:** execute `docs/frontend/PROGRESS.md` task by task using Claude's
 `/goal` command until every phase — MVP and post-MVP — is complete and the
-product works end-to-end against the real API from Step 5.
+product works end-to-end against the real API from Step 6.
 
 **How:**
 
@@ -253,7 +302,7 @@ product works end-to-end against the real API from Step 5.
    - Build vertically end-to-end: UI → TanStack Query → real API endpoint →
      backend logic → database → response → UI update. A feature is not done
      because a form or a mock exists — it's done when it works against the
-     real backend from Step 5.
+     real backend from Step 6.
 2. After each task: verify its completion criteria for real (not just "code
    was written"), check the box in `PROGRESS.md`, update the progress
    counters and current phase, and update **Next Action** to the next
@@ -271,5 +320,5 @@ the real API — the app is complete.
 
 ---
 
-This is the final step. Once Step 7 is done, the app built from this starter
+This is the final step. Once Step 8 is done, the app built from this starter
 is complete and ready for review/QA.

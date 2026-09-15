@@ -7,6 +7,7 @@ const ICONS = {
   generate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" stroke-linecap="round"/></svg>',
   automation: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M4.2 7.5l2.6 1.5M17.2 15l2.6 1.5M4.2 16.5l2.6-1.5M17.2 9l2.6-1.5" stroke-linecap="round"/></svg>',
   org: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 21V7l8-4 8 4v14" stroke-linejoin="round"/><path d="M4 21h16M9 21v-6h6v6" stroke-linejoin="round"/></svg>',
+  profile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.4-3.6 4.4-5.5 7.5-5.5s6.1 1.9 7.5 5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 10a6 6 0 1 1 12 0c0 4 1.5 5.5 1.5 5.5H4.5S6 14 6 10Z"/><path d="M9.5 18a2.5 2.5 0 0 0 5 0"/></svg>',
   search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21" stroke-linecap="round"/></svg>',
   plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>',
@@ -26,6 +27,7 @@ const NAV_SECTIONS = [
     { id:'automation', label:'Automation', href:'automation.html', icon:'automation' },
   ]},
   { label:'Settings', items:[
+    { id:'profile', label:'My profile', href:'profile.html', icon:'profile' },
     { id:'settings', label:'Organisation', href:'settings.html', icon:'org' },
   ]},
 ];
@@ -79,6 +81,7 @@ function renderSidebar(activePage){
             </button>
           `).join('')}
           <div class="ws-menu-divider"></div>
+          <a class="ws-menu-item" href="profile.html">My profile</a>
           <a class="ws-menu-item" href="settings.html">Organisation settings</a>
           <button class="ws-menu-item" onclick="closeWorkspaceMenu(); toast('Creating additional organisations is coming soon.')">+ New organisation</button>
           <div class="ws-menu-divider"></div>

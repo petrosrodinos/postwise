@@ -17,9 +17,42 @@
       <main class="content">
 
         <div id="orgHeader"></div>
-        <div id="generalPanel"></div>
+
+        <div data-tabs="orgTabScope" class="tabs mt-24">
+          <button class="tab is-active" data-tab-target="general">General</button>
+          <button class="tab" data-tab-target="members">Members</button>
+        </div>
+
+        <div id="orgTabScope">
+          <div data-tab-panel="general"></div>
+          <div data-tab-panel="members" style="display:none;"></div>
+        </div>
 
       </main>
+    </div>
+  </div>
+
+  <!-- Add member modal -->
+  <div class="overlay" id="addMemberModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="card-title">Add member</div>
+        <button class="modal-close" onclick="closeOverlay('addMemberModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm text-muted mb-16">Creates the account immediately with the email and password below — no invite email is sent. Share the password with them directly.</p>
+        <div class="field"><label>Full name</label><input class="input" id="memberNameInput" placeholder="e.g. Priya Shah" /></div>
+        <div class="field"><label>Email</label><input class="input" type="email" id="memberEmailInput" placeholder="priya@acme.inc" /></div>
+        <div class="field"><label>Password</label><input class="input" type="password" id="memberPasswordInput" placeholder="Set a password for them" /></div>
+        <div class="field" style="margin-bottom:0;">
+          <label>Role</label>
+          <div class="flex-col gap-8" id="memberRoleCards"></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeOverlay('addMemberModal')">Cancel</button>
+        <button class="btn btn-brass" id="createMemberBtn">Add member</button>
+      </div>
     </div>
   </div>
 
@@ -28,6 +61,7 @@
   <script src="assets/app.js"></script>
   <script>
     const ws = getActiveWorkspace();
+    let selectedMemberRole = 'member';
 
     document.getElementById('orgHeader').innerHTML = `
       <a href="index.html" class="text-sm text-muted" style="display:inline-flex; align-items:center; gap:6px; margin-bottom:18px;">← Back to dashboard</a>
@@ -45,8 +79,8 @@
       </div>
     `;
 
-    document.getElementById('generalPanel').innerHTML = `
-      <div class="card card-pad mt-28" style="max-width:640px;">
+    document.querySelector('[data-tab-panel="general"]').innerHTML = `
+      <div class="card card-pad mt-4" style="max-width:640px;">
         <div class="field"><label>Organisation name</label><input class="input" id="orgNameInput" value="${ws.name}" /></div>
         <div class="field">
           <label>Slug <span class="text-muted" style="font-weight:400;">— used in shareable links</span></label>
@@ -56,13 +90,109 @@
         <div class="flex items-center justify-between">
           <div>
             <div style="font-weight:600; font-size:14px; color:var(--coral);">Delete organisation</div>
-            <div class="text-xs text-muted" style="max-width:420px;">Permanently deletes ${ws.name} along with its posts, brand assets and connected channels. This cannot be undone.</div>
+            <div class="text-xs text-muted" style="max-width:420px;">Permanently deletes ${ws.name} along with its posts, brand assets, members and connected channels. This cannot be undone.</div>
           </div>
           <button class="btn btn-danger-ghost btn-sm">Delete</button>
         </div>
       </div>
-      <p class="text-xs text-muted mt-16" style="max-width:640px;">This Organisation is private to your account — multi-person collaboration isn't available yet.</p>
     `;
+
+    function memberRow(m){
+      return `
+        <tr>
+          <td>
+            <div class="flex items-center gap-10">
+              <div class="avatar-xs">${initials(m.name)}</div>
+              <div>
+                <div class="cell-strong">${m.name}${m.email===CURRENT_USER.email ? ' <span class="text-xs text-muted">(you)</span>' : ''}</div>
+                <div class="text-xs text-muted">${m.email}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <select class="select" style="min-width:120px; padding:7px 30px 7px 12px; font-size:12.5px;" onchange="changeMemberRole('${m.id}', this.value)" ${m.role==='owner' ? 'disabled' : ''}>
+              ${ORGANISATION_ROLES.map(r => `<option value="${r.id}" ${r.id===m.role?'selected':''}>${r.label}</option>`).join('')}
+            </select>
+          </td>
+          <td class="cell-muted">${m.joined}</td>
+          <td>${m.role==='owner' ? '' : `<button class="btn btn-ghost btn-sm" onclick="removeMember('${m.id}')">Remove</button>`}</td>
+        </tr>
+      `;
+    }
+
+    function renderMembersPanel(){
+      document.querySelector('[data-tab-panel="members"]').innerHTML = `
+        <div class="flex items-center justify-between mt-4 mb-16">
+          <p class="text-sm text-muted" style="max-width:480px;">Everyone with access to ${ws.name}. Add a member directly with an email, name and password — no invite step.</p>
+          <button class="btn btn-brass" onclick="openAddMemberModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            Add member
+          </button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Member</th><th>Role</th><th>Joined</th><th></th></tr></thead>
+              <tbody>${ORG_MEMBERS.map(memberRow).join('')}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+    renderMembersPanel();
+
+    function changeMemberRole(id, role){
+      const m = ORG_MEMBERS.find(m => m.id === id);
+      if(!m) return;
+      m.role = role;
+      toast(`${m.name} is now ${roleLabel(role)}.`);
+    }
+
+    function removeMember(id){
+      const idx = ORG_MEMBERS.findIndex(m => m.id === id);
+      if(idx === -1) return;
+      const [removed] = ORG_MEMBERS.splice(idx, 1);
+      renderMembersPanel();
+      toast(`${removed.name} removed from ${ws.name}.`);
+    }
+
+    function renderRoleCards(){
+      document.getElementById('memberRoleCards').innerHTML = ORGANISATION_ROLES.map(r => `
+        <label class="radio-card ${r.id===selectedMemberRole?'is-selected':''}" data-role="${r.id}">
+          <input type="radio" name="memberRole" value="${r.id}" ${r.id===selectedMemberRole?'checked':''}/>
+          <div><div style="font-weight:600; font-size:13.5px;">${r.label}</div><div class="text-xs text-muted">${r.description}</div></div>
+        </label>
+      `).join('');
+      document.querySelectorAll('#memberRoleCards .radio-card').forEach(rc => rc.addEventListener('click', () => {
+        selectedMemberRole = rc.getAttribute('data-role');
+        document.querySelectorAll('#memberRoleCards .radio-card').forEach(x => x.classList.remove('is-selected'));
+        rc.classList.add('is-selected');
+        rc.querySelector('input').checked = true;
+      }));
+    }
+
+    function openAddMemberModal(){
+      document.getElementById('memberNameInput').value = '';
+      document.getElementById('memberEmailInput').value = '';
+      document.getElementById('memberPasswordInput').value = '';
+      selectedMemberRole = 'member';
+      renderRoleCards();
+      openOverlay('addMemberModal');
+    }
+
+    document.getElementById('createMemberBtn').addEventListener('click', () => {
+      const name = document.getElementById('memberNameInput').value.trim();
+      const email = document.getElementById('memberEmailInput').value.trim();
+      const password = document.getElementById('memberPasswordInput').value;
+      if(!name || !email || !password){
+        toast('Name, email and password are all required.');
+        return;
+      }
+      ORG_MEMBERS.push({ id:'m' + (ORG_MEMBERS.length + 1), name, email, role:selectedMemberRole, joined:'Just now' });
+      renderMembersPanel();
+      closeOverlay('addMemberModal');
+      toast(`${name} added as ${roleLabel(selectedMemberRole)}.`);
+    });
   </script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MailModule } from './modules/internal/mail/mail.module';
@@ -9,10 +10,21 @@ import { RedisCacheModule } from './modules/internal/redis-cache/redis-cache.mod
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
 import { ConfigModule } from './shared/config/env/env.module';
+import { UsersModule } from './modules/users/users.module';
+import { DocumentsModule } from './modules/documents/documents.module';
+import { OrganisationsModule } from './modules/organisations/organisations.module';
+import { SocialChannelConnectionsModule } from './modules/social-channel-connections/social-channel-connections.module';
+import { StyleProfilesModule } from './modules/style-profiles/style-profiles.module';
+import { ProjectsModule } from './modules/projects/projects.module';
+import { GenerationRunsModule } from './modules/generation-runs/generation-runs.module';
+import { AutomationsModule } from './modules/automations/automations.module';
+import { PostsModule } from './modules/posts/posts.module';
+import { BackgroundModule } from './background/background.module';
 
 @Module({
   imports: [
     ConfigModule,
+    ScheduleModule.forRoot(),
     MailModule,
     SmsModule,
     AiModule,
@@ -21,6 +33,16 @@ import { ConfigModule } from './shared/config/env/env.module';
     // GraphQLModule,
     AuthModule,
     HealthModule,
+    UsersModule,
+    DocumentsModule,
+    OrganisationsModule,
+    SocialChannelConnectionsModule,
+    StyleProfilesModule,
+    ProjectsModule,
+    GenerationRunsModule,
+    AutomationsModule,
+    PostsModule,
+    BackgroundModule,
   ],
   controllers: [AppController],
   providers: [AppService],

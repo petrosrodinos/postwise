@@ -122,6 +122,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
+  name: 'name',
   email: 'email',
   phone: 'phone',
   password: 'password',
@@ -142,6 +143,7 @@ exports.Prisma.PasswordResetTokenScalarFieldEnum = {
 exports.Prisma.DocumentScalarFieldEnum = {
   id: 'id',
   user_uuid: 'user_uuid',
+  organisation_id: 'organisation_id',
   filename: 'filename',
   mimetype: 'mimetype',
   size: 'size',
@@ -151,9 +153,166 @@ exports.Prisma.DocumentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.OrganisationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  created_by_user_id: 'created_by_user_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.OrganisationMemberScalarFieldEnum = {
+  id: 'id',
+  organisation_id: 'organisation_id',
+  user_id: 'user_id',
+  role: 'role',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.SocialChannelConnectionScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  organisation_id: 'organisation_id',
+  channel: 'channel',
+  status: 'status',
+  external_account_id: 'external_account_id',
+  external_account_name: 'external_account_name',
+  access_token: 'access_token',
+  refresh_token: 'refresh_token',
+  token_expires_at: 'token_expires_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.StyleProfileScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  organisation_id: 'organisation_id',
+  name: 'name',
+  platform: 'platform',
+  source_url: 'source_url',
+  posts_analyzed: 'posts_analyzed',
+  tone_score: 'tone_score',
+  structure_score: 'structure_score',
+  hooks_score: 'hooks_score',
+  vocabulary_score: 'vocabulary_score',
+  rhythm_score: 'rhythm_score',
+  tone_description: 'tone_description',
+  dominant_hook: 'dominant_hook',
+  vocabulary: 'vocabulary',
+  pillars: 'pillars',
+  last_analyzed_at: 'last_analyzed_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ProjectScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  organisation_id: 'organisation_id',
+  title: 'title',
+  description: 'description',
+  platform: 'platform',
+  pillars: 'pillars',
+  ideas: 'ideas',
+  instructions: 'instructions',
+  is_archived: 'is_archived',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ProjectStyleProfileScalarFieldEnum = {
+  id: 'id',
+  project_id: 'project_id',
+  style_profile_id: 'style_profile_id',
+  created_at: 'created_at'
+};
+
+exports.Prisma.GenerationRunScalarFieldEnum = {
+  id: 'id',
+  project_id: 'project_id',
+  style_profile_id: 'style_profile_id',
+  automation_id: 'automation_id',
+  label: 'label',
+  posts_requested: 'posts_requested',
+  created_at: 'created_at'
+};
+
+exports.Prisma.AutomationScalarFieldEnum = {
+  id: 'id',
+  project_id: 'project_id',
+  style_profile_id: 'style_profile_id',
+  name: 'name',
+  is_active: 'is_active',
+  frequency: 'frequency',
+  days_of_week: 'days_of_week',
+  time_of_day: 'time_of_day',
+  timezone: 'timezone',
+  posts_per_run: 'posts_per_run',
+  output_stage: 'output_stage',
+  last_run_at: 'last_run_at',
+  next_run_at: 'next_run_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  organisation_id: 'organisation_id',
+  project_id: 'project_id',
+  style_profile_id: 'style_profile_id',
+  generation_run_id: 'generation_run_id',
+  source_post_id: 'source_post_id',
+  type: 'type',
+  status: 'status',
+  hook: 'hook',
+  body: 'body',
+  metadata: 'metadata',
+  title: 'title',
+  excerpt: 'excerpt',
+  cover_document_id: 'cover_document_id',
+  seo_title: 'seo_title',
+  seo_description: 'seo_description',
+  canonical_url: 'canonical_url',
+  scheduled_at: 'scheduled_at',
+  published_at: 'published_at',
+  failed_reason: 'failed_reason',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.PostAttachmentScalarFieldEnum = {
+  id: 'id',
+  post_id: 'post_id',
+  document_id: 'document_id',
+  order: 'order',
+  created_at: 'created_at'
+};
+
+exports.Prisma.PostChannelScalarFieldEnum = {
+  id: 'id',
+  post_id: 'post_id',
+  channel_connection_id: 'channel_connection_id',
+  status: 'status',
+  external_post_id: 'external_post_id',
+  external_post_url: 'external_post_url',
+  published_at: 'published_at',
+  failed_reason: 'failed_reason',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -164,6 +323,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.AuthRole = exports.$Enums.AuthRole = {
   USER: 'USER',
@@ -183,10 +348,75 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   OTHER: 'OTHER'
 };
 
+exports.OrganisationRole = exports.$Enums.OrganisationRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+};
+
+exports.SocialChannel = exports.$Enums.SocialChannel = {
+  TWITTER: 'TWITTER',
+  LINKEDIN: 'LINKEDIN'
+};
+
+exports.SocialChannelConnectionStatus = exports.$Enums.SocialChannelConnectionStatus = {
+  CONNECTED: 'CONNECTED',
+  DISCONNECTED: 'DISCONNECTED',
+  EXPIRED: 'EXPIRED',
+  ERROR: 'ERROR'
+};
+
+exports.PostType = exports.$Enums.PostType = {
+  TWITTER: 'TWITTER',
+  LINKEDIN: 'LINKEDIN',
+  BLOG: 'BLOG'
+};
+
+exports.AutomationFrequency = exports.$Enums.AutomationFrequency = {
+  DAILY: 'DAILY',
+  WEEKDAYS: 'WEEKDAYS',
+  WEEKLY: 'WEEKLY'
+};
+
+exports.AutomationOutputStage = exports.$Enums.AutomationOutputStage = {
+  DRAFT: 'DRAFT',
+  REVIEW: 'REVIEW',
+  PUBLISH: 'PUBLISH'
+};
+
+exports.PostStatus = exports.$Enums.PostStatus = {
+  DRAFT: 'DRAFT',
+  REVIEW: 'REVIEW',
+  READY: 'READY',
+  SCHEDULED: 'SCHEDULED',
+  PUBLISHING: 'PUBLISHING',
+  PUBLISHED: 'PUBLISHED',
+  FAILED: 'FAILED'
+};
+
+exports.PostChannelStatus = exports.$Enums.PostChannelStatus = {
+  PENDING: 'PENDING',
+  SCHEDULED: 'SCHEDULED',
+  PUBLISHING: 'PUBLISHING',
+  PUBLISHED: 'PUBLISHED',
+  FAILED: 'FAILED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
-  Document: 'Document'
+  Document: 'Document',
+  Organisation: 'Organisation',
+  OrganisationMember: 'OrganisationMember',
+  SocialChannelConnection: 'SocialChannelConnection',
+  StyleProfile: 'StyleProfile',
+  Project: 'Project',
+  ProjectStyleProfile: 'ProjectStyleProfile',
+  GenerationRun: 'GenerationRun',
+  Automation: 'Automation',
+  Post: 'Post',
+  PostAttachment: 'PostAttachment',
+  PostChannel: 'PostChannel'
 };
 
 /**

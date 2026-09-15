@@ -81,6 +81,17 @@ const PROJECTS = [
     description:'Position our CEO as a credible voice on the future of async, remote-first engineering teams.',
     pillars:['Remote work','Engineering culture','Leadership'],
     styleProfiles:['sp-01','sp-05'],
+    ideas:[
+      'Our engineering team went fully async in Q2 — what actually broke, and what we\'d do differently.',
+      'Why "core hours" are a compromise nobody asked for.',
+      'The one meeting we refused to make async, and why.',
+    ],
+    instructions:[
+      'Never use emojis or hashtags.',
+      'Keep posts under 150 words.',
+      'Always end with a direct, answerable question.',
+      'Reference real team examples, never hypotheticals.',
+    ],
     counts:{ draft:4, review:2, ready:1, scheduled:3, published:8 },
     updated:'Updated 2h ago',
   },
@@ -89,7 +100,17 @@ const PROJECTS = [
     description:'Announce and sustain momentum for the Pulse 2.0 analytics launch across three weeks.',
     pillars:['Product updates','Customer stories','Metrics'],
     styleProfiles:['sp-03'],
-    counts:{ draft:2, review:3, ready:2, scheduled:5, published:1 },
+    ideas:[
+      'The metric our CFO finally understood after we redesigned the dashboard.',
+      'A customer story: how Pulse 2.0 cut their weekly reporting time from 4 hours to 20 minutes.',
+      'The most-requested feature we deliberately didn\'t build, and why.',
+    ],
+    instructions:[
+      'Lead every post with a number or a surprising result.',
+      'Tag the Pulse product page only once per week, never every post.',
+      'Avoid superlatives like "revolutionary" or "game-changing."',
+    ],
+    counts:{ draft:2, review:3, ready:2, scheduled:5, published:1, failed:1 },
     updated:'Updated yesterday',
   },
   {
@@ -97,6 +118,16 @@ const PROJECTS = [
     description:'Serialized, personal storytelling around the company\'s first 18 months for founder-led growth.',
     pillars:['Startup journey','Fundraising','Team culture'],
     styleProfiles:['sp-04'],
+    ideas:[
+      'Month 14: the round we almost didn\'t close.',
+      'The Slack message that changed how we hire.',
+      'What I got wrong about "founder-market fit" in year one.',
+    ],
+    instructions:[
+      'Write in first person, present tense where possible.',
+      'Keep sentences short — this voice runs on momentum, not polish.',
+      'Never mention specific investor names without sign-off.',
+    ],
     counts:{ draft:6, review:1, ready:0, scheduled:2, published:12 },
     updated:'Updated 3 days ago',
   },
@@ -105,6 +136,16 @@ const PROJECTS = [
     description:'Sharp, opinionated posts to attract senior engineering candidates during the Q3 hiring push.',
     pillars:['Hiring & talent','Engineering culture'],
     styleProfiles:['sp-01','sp-06'],
+    ideas:[
+      'The interview question that predicts retention better than any other.',
+      'Why we killed take-home assignments — and what replaced them.',
+      'What our best engineering hires had in common before we hired them.',
+    ],
+    instructions:[
+      'Open with a contrarian or unexpected claim.',
+      'Always link to the open roles page in the first comment, not the post body.',
+      'No corporate jargon — write like you\'re explaining it to a peer.',
+    ],
     counts:{ draft:1, review:0, ready:3, scheduled:1, published:6 },
     updated:'Updated 5 days ago',
   },
@@ -113,7 +154,17 @@ const PROJECTS = [
     description:'Daily and weekly X threads chronicling product decisions and metrics for an engaged founder audience.',
     pillars:['Build in public','Product decisions','Metrics'],
     styleProfiles:['sp-07'],
-    counts:{ draft:3, review:1, ready:2, scheduled:4, published:5 },
+    ideas:[
+      'The pricing page rewrite, in 7 posts.',
+      'What breaks first when you 10x signups.',
+      'A thread on the feature we shipped and then quietly removed a month later.',
+    ],
+    instructions:[
+      'Every thread opens with a bold, standalone claim in the first tweet.',
+      'Each tweet in a thread must work on its own, out of context.',
+      'Close every thread with a one-line takeaway, not a call to action.',
+    ],
+    counts:{ draft:3, review:1, ready:2, scheduled:4, published:5, publishing:1 },
     updated:'Updated 6h ago',
   },
   {
@@ -121,6 +172,16 @@ const PROJECTS = [
     description:'Long-form technical articles for the company blog that establish engineering credibility and support SEO.',
     pillars:['Engineering','Architecture','Case studies'],
     styleProfiles:['sp-08'],
+    ideas:[
+      'How we cut our p95 API latency by 60% without a rewrite.',
+      'A practical guide to feature flags at scale.',
+      'The incident that made us rethink our on-call rotation.',
+    ],
+    instructions:[
+      'Structure every post as: problem → investigation → fix → takeaway.',
+      'Include at least one concrete code snippet or diagram description.',
+      'Write a distinct SEO title and description for every post — never reuse the headline verbatim.',
+    ],
     counts:{ draft:2, review:1, ready:0, scheduled:1, published:4 },
     updated:'Updated yesterday',
   },
@@ -147,6 +208,32 @@ function setActiveWorkspace(id){
   if(typeof localStorage!=='undefined') localStorage.setItem('signal_workspace', id);
 }
 
+// The signed-in user (personal account + Owner of the Acme Inc organisation).
+const CURRENT_USER = { name:'Mira Kessler', email:'mira@acme.inc' };
+
+// Organisation members — exactly 3 fixed roles, no per-permission customization.
+const ORGANISATION_ROLES = [
+  { id:'owner', label:'Owner', description:'Full control, including billing and deleting the organisation.' },
+  { id:'admin', label:'Admin', description:'Manage members, brand assets, channels and all content.' },
+  { id:'member', label:'Member', description:'Create, edit, schedule and publish their own content.' },
+];
+
+const ORG_MEMBERS = [
+  { id:'m1', name:'Mira Kessler', email:'mira@acme.inc', role:'owner', joined:'Jan 14, 2025' },
+  { id:'m2', name:'Owen Petrov', email:'owen@acme.inc', role:'admin', joined:'Mar 2, 2025' },
+  { id:'m3', name:'Dana Whitfield', email:'dana@acme.inc', role:'member', joined:'Jun 20, 2025' },
+  { id:'m4', name:'Leo Sarkis', email:'leo@acme.inc', role:'member', joined:'Aug 5, 2025' },
+];
+
+function roleLabel(id){
+  const r = ORGANISATION_ROLES.find(r => r.id === id);
+  return r ? r.label : id;
+}
+
+function roleTagClass(id){
+  return { owner:'tag-brass', admin:'tag-violet', member:'tag' }[id] || 'tag';
+}
+
 const ACTIVITY = [
   { type:'schedule', text:'Scheduled a 7-part X thread for <b>Build in Public — X threads</b>', time:'8 min ago' },
   { type:'generate', text:'Generated 6 new drafts for <b>Q4 Thought Leadership</b> using Contrarian Operator', time:'12 min ago' },
@@ -168,13 +255,25 @@ function platformGlyph(platform){
   return `<span class="platform-glyph ${cls}">${label}</span>`;
 }
 
+function platformLabel(platform){
+  const map = { linkedin:'LinkedIn', x:'X', blog:'Blog', instagram:'Instagram', facebook:'Facebook' };
+  return map[platform] || platform;
+}
+
+// Shared PostStatus display — mirrors the Prisma PostStatus enum
+// (DRAFT, REVIEW, READY, SCHEDULED, PUBLISHING, PUBLISHED, FAILED).
+const STATUS_LABEL = { draft:'Draft', review:'Pending review', ready:'Ready', scheduled:'Scheduled', publishing:'Publishing', published:'Published', failed:'Failed' };
+const STATUS_TAG_CLASS = { draft:'tag', review:'tag-coral', ready:'tag-violet', scheduled:'tag-brass', publishing:'tag-brass', published:'tag-teal', failed:'tag-rust' };
+
 function workflowBar(counts){
   const stages = [
-    ['draft', counts.draft, 'var(--text-3)'],
-    ['review', counts.review, 'var(--coral)'],
-    ['ready', counts.ready, 'var(--violet)'],
-    ['scheduled', counts.scheduled, 'var(--brass)'],
-    ['published', counts.published, 'var(--teal)'],
+    ['draft', counts.draft||0, 'var(--text-3)'],
+    ['review', counts.review||0, 'var(--coral)'],
+    ['ready', counts.ready||0, 'var(--violet)'],
+    ['scheduled', counts.scheduled||0, 'var(--brass)'],
+    ['publishing', counts.publishing||0, 'var(--brass)'],
+    ['failed', counts.failed||0, 'var(--rust)'],
+    ['published', counts.published||0, 'var(--teal)'],
   ];
   const total = stages.reduce((s,[,v])=>s+v,0) || 1;
   return `<div style="display:flex; height:6px; border-radius:99px; overflow:hidden; background:var(--surface-2);">
@@ -213,22 +312,46 @@ const ACTIVITY_ICON = {
   generate:'✦', analysis:'◎', publish:'▲', review:'◐', schedule:'▤', automation:'⟳'
 };
 
+// `title`, `excerpt`, `seoTitle`, `seoDescription` and `canonicalUrl` mirror
+// the Post model's blog-only fields — only populated when the owning
+// project's platform is 'blog'. Every other post is identified by its
+// `hook` (see postLabel()), matching PostType TWITTER/LINKEDIN.
 const GENERATED_POSTS = [
-  { id:'g1', run:'r1', project:'pr-01', styleProfile:'sp-01', status:'draft', title:'The real reason your best hires leave in year one', body:'Unpopular opinion: exit interviews are the least honest data your company collects. Here\'s what actually predicts a resignation, six months before it happens...', hook:'Contrarian claim', updated:'2h ago' },
-  { id:'g2', run:'r2', project:'pr-01', styleProfile:'sp-05', status:'review', title:'What we got wrong about async standups', body:'Consider this: the mental model most teams use for async work is just synchronous work with worse latency. Here\'s the model I use instead...', hook:'Framing question', updated:'4h ago' },
-  { id:'g3', run:'r1', project:'pr-01', styleProfile:'sp-01', status:'ready', title:'Stop hiring for "10x engineers." Hire for this instead.', body:'Nobody wants to hear this, but the 10x engineer myth has cost more teams velocity than it\'s ever created. Here\'s the trait that actually compounds...', hook:'Contrarian claim', updated:'yesterday' },
-  { id:'g4', run:'r2', project:'pr-01', styleProfile:'sp-05', status:'scheduled', title:'How we cut onboarding time from 3 weeks to 4 days', body:'In practice, this means rethinking what "ready to ship" means for a new hire. Three changes, in order of impact...', hook:'Framing question', updated:'2 days ago' },
-  { id:'g5', run:'r3', project:'pr-02', styleProfile:'sp-03', status:'review', title:'Pulse 2.0: the metric that finally made sense to our CFO', body:'The data says most dashboards optimize for the person building them, not the person reading them. Here\'s what we changed...', hook:'Surprising statistic', updated:'5h ago' },
-  { id:'g6', run:'r3', project:'pr-02', styleProfile:'sp-03', status:'scheduled', title:'Customers keep asking for this Pulse 2.0 feature. Here\'s why we said no.', body:'We ran the numbers on the most requested feature of the year. Turns out saying no was the right call — here\'s the reasoning...', hook:'Surprising statistic', updated:'1 day ago' },
-  { id:'g7', run:'r4', project:'pr-03', styleProfile:'sp-04', status:'draft', title:'Month 14: the round we almost didn\'t close', body:'Real talk: we had eleven days of runway when the term sheet finally came through. Here\'s the messy version of how we got there...', hook:'In-the-moment story', updated:'1h ago' },
-  { id:'g8', run:'r4', project:'pr-03', styleProfile:'sp-04', status:'published', title:'Week 3 of building in public: the pricing page rewrite', body:'We almost didn\'t ship this. Three rewrites, one very honest Slack thread, and a pricing page that finally makes sense...', hook:'In-the-moment story', updated:'3 days ago' },
-  { id:'g9', run:'r5', project:'pr-04', styleProfile:'sp-06', status:'ready', title:'The interview question that predicts retention better than any other', body:'Hot take: "where do you see yourself in 5 years" is a wasted question. Ask this instead...', hook:'One-line declaration', updated:'6h ago' },
-  { id:'g10', run:'r6', project:'pr-04', styleProfile:'sp-01', status:'published', title:'Unpopular opinion: your culture deck is not your culture', body:'Let\'s be honest — nobody has ever quit a job because the values weren\'t laminated. Here\'s what actually keeps people...', hook:'Contrarian claim', updated:'4 days ago' },
-  { id:'g11', run:'r7', project:'pr-05', styleProfile:'sp-07', status:'draft', title:'Thread: the pricing page rewrite, in 7 posts', body:'1/ We rewrote our pricing page for the third time this year. Here\'s the messy version of why the first two attempts failed...', hook:'Numbered thread opener', updated:'3h ago' },
-  { id:'g12', run:'r7', project:'pr-05', styleProfile:'sp-07', status:'scheduled', title:'Thread: what breaks first when you 10x signups', body:'1/ Everyone warns you about scaling infra. Nobody warns you about scaling support. Here\'s what broke first...', hook:'Numbered thread opener', updated:'1 day ago' },
-  { id:'g13', run:'r8', project:'pr-06', styleProfile:'sp-08', status:'draft', title:'How we cut our p95 API latency by 60% without a rewrite', body:'The root cause was never the algorithm — it was three sequential calls that could run in parallel. Here\'s how we found it, and the two other changes that mattered most...', hook:'Problem statement opener', updated:'5h ago' },
-  { id:'g14', run:'r8', project:'pr-06', styleProfile:'sp-08', status:'review', title:'A practical guide to feature flags at scale', body:'In production, this meant treating feature flags as a first-class part of the architecture, not an afterthought bolted onto CI. Here\'s the system we landed on...', hook:'Problem statement opener', updated:'2 days ago' },
+  { id:'g1', run:'r1', project:'pr-01', styleProfile:'sp-01', status:'draft', body:'Unpopular opinion: exit interviews are the least honest data your company collects. Here\'s what actually predicts a resignation, six months before it happens...', hook:'Contrarian claim', updated:'2h ago' },
+  { id:'g2', run:'r2', project:'pr-01', styleProfile:'sp-05', status:'review', body:'Consider this: the mental model most teams use for async work is just synchronous work with worse latency. Here\'s the model I use instead...', hook:'Framing question', updated:'4h ago' },
+  { id:'g3', run:'r1', project:'pr-01', styleProfile:'sp-01', status:'ready', body:'Nobody wants to hear this, but the 10x engineer myth has cost more teams velocity than it\'s ever created. Here\'s the trait that actually compounds...', hook:'Contrarian claim', updated:'yesterday' },
+  { id:'g4', run:'r2', project:'pr-01', styleProfile:'sp-05', status:'scheduled', body:'In practice, this means rethinking what "ready to ship" means for a new hire. Three changes, in order of impact...', hook:'Framing question', updated:'2 days ago', channels:[{ channel:'linkedin', status:'scheduled' }] },
+  { id:'g5', run:'r3', project:'pr-02', styleProfile:'sp-03', status:'review', body:'The data says most dashboards optimize for the person building them, not the person reading them. Here\'s what we changed...', hook:'Surprising statistic', updated:'5h ago' },
+  { id:'g6', run:'r3', project:'pr-02', styleProfile:'sp-03', status:'scheduled', body:'We ran the numbers on the most requested feature of the year. Turns out saying no was the right call — here\'s the reasoning...', hook:'Surprising statistic', updated:'1 day ago', channels:[{ channel:'linkedin', status:'scheduled' }] },
+  { id:'g7', run:'r4', project:'pr-03', styleProfile:'sp-04', status:'draft', body:'Real talk: we had eleven days of runway when the term sheet finally came through. Here\'s the messy version of how we got there...', hook:'In-the-moment story', updated:'1h ago' },
+  { id:'g8', run:'r4', project:'pr-03', styleProfile:'sp-04', status:'published', body:'We almost didn\'t ship this. Three rewrites, one very honest Slack thread, and a pricing page that finally makes sense...', hook:'In-the-moment story', updated:'3 days ago', channels:[{ channel:'linkedin', status:'published', url:'linkedin.com/posts/acme_pricing-page-rewrite' }] },
+  { id:'g9', run:'r5', project:'pr-04', styleProfile:'sp-06', status:'ready', body:'Hot take: "where do you see yourself in 5 years" is a wasted question. Ask this instead...', hook:'One-line declaration', updated:'6h ago' },
+  { id:'g10', run:'r6', project:'pr-04', styleProfile:'sp-01', status:'published', body:'Let\'s be honest — nobody has ever quit a job because the values weren\'t laminated. Here\'s what actually keeps people...', hook:'Contrarian claim', updated:'4 days ago', channels:[{ channel:'linkedin', status:'published', url:'linkedin.com/posts/acme_culture-deck' }] },
+  { id:'g11', run:'r7', project:'pr-05', styleProfile:'sp-07', status:'draft', body:'1/ We rewrote our pricing page for the third time this year. Here\'s the messy version of why the first two attempts failed...', hook:'Numbered thread opener', updated:'3h ago' },
+  { id:'g12', run:'r7', project:'pr-05', styleProfile:'sp-07', status:'scheduled', body:'1/ Everyone warns you about scaling infra. Nobody warns you about scaling support. Here\'s what broke first...', hook:'Numbered thread opener', updated:'1 day ago', channels:[{ channel:'x', status:'scheduled' }] },
+  { id:'g13', run:'r8', project:'pr-06', styleProfile:'sp-08', status:'draft',
+    title:'How we cut our p95 API latency by 60% without a rewrite',
+    excerpt:'The root cause was never the algorithm — it was three sequential calls that could run in parallel.',
+    body:'The root cause was never the algorithm — it was three sequential calls that could run in parallel. Here\'s how we found it, and the two other changes that mattered most...',
+    hook:'Problem statement opener', updated:'5h ago',
+    seoTitle:'How We Cut p95 API Latency by 60% Without a Rewrite',
+    seoDescription:'A breakdown of the three changes — one of them a single line — that cut our p95 latency by 60% without touching the core algorithm.',
+    canonicalUrl:'blog.acme.io/p95-latency-60-percent' },
+  { id:'g14', run:'r8', project:'pr-06', styleProfile:'sp-08', status:'review',
+    title:'A practical guide to feature flags at scale',
+    excerpt:'Treating feature flags as a first-class part of the architecture, not an afterthought bolted onto CI.',
+    body:'In production, this meant treating feature flags as a first-class part of the architecture, not an afterthought bolted onto CI. Here\'s the system we landed on...',
+    hook:'Problem statement opener', updated:'2 days ago',
+    seoTitle:'A Practical Guide to Feature Flags at Scale',
+    seoDescription:'How we designed a feature-flag system that scales past a few dozen flags, and the pitfalls that broke our first two attempts.',
+    canonicalUrl:'blog.acme.io/feature-flags-at-scale' },
+  { id:'g15', run:'r3', project:'pr-02', styleProfile:'sp-03', status:'failed', body:'We ran the numbers on how long it actually takes customers to hit the "aha" moment in Pulse 2.0. The answer surprised even us...', hook:'Surprising statistic', updated:'20m ago', failedReason:'LinkedIn connection token expired — reconnect the channel to retry.', channels:[{ channel:'linkedin', status:'failed' }] },
+  { id:'g16', run:'r7', project:'pr-05', styleProfile:'sp-07', status:'publishing', body:'1/ We turned off our most-used internal dashboard for a week, on purpose. Here\'s what we learned about what actually mattered...', hook:'Numbered thread opener', updated:'just now', channels:[{ channel:'x', status:'publishing' }] },
 ];
+
+// Non-blog posts have no `title` (Post.title is blog-only per schema) — use
+// the hook as the display label everywhere a short post title is needed.
+function postLabel(p){ return p.title || p.hook; }
 
 // A generation is one AI Generation run within a project: a batch of posts
 // created together from the same project context and a chosen Style DNA.

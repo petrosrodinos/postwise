@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { parseCorsUrls, resolveCorsOrigins } from './shared/config/cors';
@@ -6,9 +7,17 @@ import { parseCorsUrls, resolveCorsOrigins } from './shared/config/cors';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: false,
+    }),
+  );
+
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Appointly API')
-    .setDescription('The Appointly API documentation')
+    .setTitle('Postwise API')
+    .setDescription('The Postwise API documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
