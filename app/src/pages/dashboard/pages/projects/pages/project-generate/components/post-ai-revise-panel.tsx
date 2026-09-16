@@ -14,12 +14,14 @@ import { PostTypeFormOptions } from "@/config/constants/dropdowns/posts/post-typ
 interface PostAiRevisePanelProps {
   postId: string;
   postType: PostType;
+  hasContent: boolean;
   onRevised: (draft: RevisedPostDraft) => void;
 }
 
 export function PostAiRevisePanel({
   postId,
   postType,
+  hasContent,
   onRevised,
 }: PostAiRevisePanelProps) {
   const { mutate: revise, isPending } = useRevisePost();
@@ -68,6 +70,7 @@ export function PostAiRevisePanel({
       onRevise={runRevise}
       instructions={instructions}
       onInstructionsChange={setInstructions}
+      hasContent={hasContent}
       repurposeTargets={repurposeTargets}
       isRepurposing={isRepurposing}
       activeRepurposeType={activeRepurposeType}

@@ -47,6 +47,11 @@ export interface AiAssistPanelProps<T extends string> {
   onRepurpose?: (targetType: T) => void;
   instructions: string;
   onInstructionsChange: (value: string) => void;
+  // Whether the content being revised/repurposed has anything in it —
+  // every action here needs something to act on, so the caller (which owns
+  // the actual title/hook/body fields) tells us instead of this generic
+  // component reaching into feature-specific content shapes.
+  hasContent: boolean;
 }
 
 // Purely presentational/controlled — no feature-specific hooks or API calls
@@ -63,6 +68,7 @@ export function AiAssistPanel<T extends string>({
   onRepurpose,
   instructions,
   onInstructionsChange,
+  hasContent,
 }: AiAssistPanelProps<T>) {
   return (
     <div className="flex flex-col gap-3 rounded-xl border border-dashed border-violet/40 bg-violet/5 p-4">
@@ -79,7 +85,7 @@ export function AiAssistPanel<T extends string>({
             size="sm"
             variant="outline"
             className="h-7 gap-1.5 bg-background px-2.5 text-xs"
-            disabled={isRevising}
+            disabled={isRevising || !hasContent}
             loading={isRevising && activeReviseAction === preset}
             onClick={() => onRevise(preset, { preset })}
           >
@@ -96,14 +102,14 @@ export function AiAssistPanel<T extends string>({
           placeholder="Give the AI instructions to modify this…"
           rows={2}
           className="bg-background text-xs"
-          disabled={isRevising}
+          disabled={isRevising || !hasContent}
         />
         <Button
           type="button"
           size="sm"
           variant="secondary"
           className="w-fit gap-1.5 text-xs"
-          disabled={isRevising || !instructions.trim()}
+          disabled={isRevising || !instructions.trim() || !hasContent}
           loading={isRevising && activeReviseAction === "custom"}
           onClick={() => onRevise("custom", { instructions: instructions.trim() })}
         >
@@ -123,7 +129,7 @@ export function AiAssistPanel<T extends string>({
                 size="sm"
                 variant="outline"
                 className="h-7 gap-1.5 bg-background px-2.5 text-xs"
-                disabled={isRepurposing}
+                disabled={isRepurposing || !hasContent}
                 loading={isRepurposing && activeRepurposeType === id}
                 onClick={() => onRepurpose(id)}
               >

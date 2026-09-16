@@ -35,6 +35,12 @@ export function ToolsAiAssistPanel({ content, onRevised, onRepurposed }: ToolsAi
     label: TOOL_CONTENT_TYPE_META[type].label,
   }));
 
+  // Body is rich HTML for Blog/Email, so a bare string check would treat an
+  // empty editor's "<p></p>" as content — strip tags before checking.
+  const hasContent = [content.title, content.hook, content.excerpt, content.body?.replace(/<[^>]*>/g, "")].some(
+    (value) => !!value?.trim(),
+  );
+
   function runRepurpose(targetType: ToolContentType) {
     setActiveRepurposeType(targetType);
     repurpose(
@@ -69,6 +75,7 @@ export function ToolsAiAssistPanel({ content, onRevised, onRepurposed }: ToolsAi
       onRevise={runRevise}
       instructions={instructions}
       onInstructionsChange={setInstructions}
+      hasContent={hasContent}
       repurposeTargets={repurposeTargets}
       isRepurposing={isRepurposing}
       activeRepurposeType={activeRepurposeType}
