@@ -174,6 +174,8 @@ export class PostsService {
         include: {
           automation: { select: { id: true, name: true } },
           project: { select: { id: true, title: true } },
+          generation_run: { select: { id: true, label: true, created_at: true, project_id: true } },
+          generation_item: { select: { id: true, topic: true, order: true } },
         },
       }),
       this.prisma.post.count({ where }),

@@ -50,6 +50,8 @@ export interface Post {
   automation_id?: string | null;
   automation?: { id: string; name: string } | null;
   project?: { id: string; title: string } | null;
+  generation_run?: { id: string; label?: string | null; created_at: string; project_id: string } | null;
+  generation_item?: { id: string; topic?: string | null; order: number } | null;
   type: PostType;
   status: PostStatus;
   hook?: string | null;
