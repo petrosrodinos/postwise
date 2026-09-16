@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
@@ -16,6 +16,7 @@ import {
   Redo2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 interface RichTextEditorProps {
@@ -25,11 +26,26 @@ interface RichTextEditorProps {
   className?: string;
 }
 
+// Shared by the editable ProseMirror content and the read-only preview so
+// rendered content (headings/lists/blockquotes/links) looks identical in
+// both modes.
+const CONTENT_CLASSNAME = cn(
+  "min-h-[220px] px-3 py-2 text-sm leading-relaxed",
+  "[&_h1]:mt-2 [&_h1]:text-xl [&_h1]:font-bold [&_h2]:mt-2 [&_h2]:text-lg [&_h2]:font-bold [&_h3]:mt-2 [&_h3]:text-base [&_h3]:font-semibold",
+  "[&_p]:mt-2 first:[&_p]:mt-0 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-2 [&_ol]:list-decimal [&_ol]:pl-5",
+  "[&_blockquote]:mt-2 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_blockquote]:text-muted-foreground",
+  "[&_a]:underline",
+);
+
 // Tools-only rich text editor for the Blog/Email body field — plain
 // Twitter/LinkedIn hooks stay on the regular Textarea, since short-form
 // social copy has no use for headings/lists/links. Content is stored and
-// sent to the AI endpoints as HTML.
+// sent to the AI endpoints as HTML. An Edit/Preview tab switches between
+// the editable toolbar view and a read-only render of the same HTML, so
+// the user can check how formatting will actually look.
 export function RichTextEditor({ value, onChange, placeholder, className }: RichTextEditorProps) {
+  const [mode, setMode] = useState<"edit" | "preview">("edit");
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -41,15 +57,7 @@ export function RichTextEditor({ value, onChange, placeholder, className }: Rich
     ],
     content: value,
     editorProps: {
-      attributes: {
-        class: cn(
-          "min-h-[220px] px-3 py-2 text-sm leading-relaxed focus-visible:outline-none",
-          "[&_h1]:mt-2 [&_h1]:text-xl [&_h1]:font-bold [&_h2]:mt-2 [&_h2]:text-lg [&_h2]:font-bold [&_h3]:mt-2 [&_h3]:text-base [&_h3]:font-semibold",
-          "[&_p]:mt-2 first:[&_p]:mt-0 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-2 [&_ol]:list-decimal [&_ol]:pl-5",
-          "[&_blockquote]:mt-2 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_blockquote]:text-muted-foreground",
-          "[&_a]:underline",
-        ),
-      },
+      attributes: { class: cn(CONTENT_CLASSNAME, "focus-visible:outline-none") },
     },
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
   });
@@ -78,57 +86,83 @@ export function RichTextEditor({ value, onChange, placeholder, className }: Rich
 
   return (
     <div className={cn("rounded-md border border-input bg-transparent shadow-sm", className)}>
-      <div className="flex flex-wrap items-center gap-0.5 border-b border-border p-1">
-        <ToolbarButton active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()} label="Bold">
-          <Bold className="h-3.5 w-3.5" />
-        </ToolbarButton>
-        <ToolbarButton active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()} label="Italic">
-          <Italic className="h-3.5 w-3.5" />
-        </ToolbarButton>
-        <ToolbarButton active={editor.isActive("strike")} onClick={() => editor.chain().focus().toggleStrike().run()} label="Strikethrough">
-          <Strikethrough className="h-3.5 w-3.5" />
-        </ToolbarButton>
-        <ToolbarButton
-          active={editor.isActive("heading", { level: 2 })}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          label="Heading"
-        >
-          <Heading2 className="h-3.5 w-3.5" />
-        </ToolbarButton>
-        <ToolbarButton
-          active={editor.isActive("heading", { level: 3 })}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          label="Subheading"
-        >
-          <Heading3 className="h-3.5 w-3.5" />
-        </ToolbarButton>
-        <ToolbarButton active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()} label="Bullet list">
-          <List className="h-3.5 w-3.5" />
-        </ToolbarButton>
-        <ToolbarButton active={editor.isActive("orderedList")} onClick={() => editor.chain().focus().toggleOrderedList().run()} label="Numbered list">
-          <ListOrdered className="h-3.5 w-3.5" />
-        </ToolbarButton>
-        <ToolbarButton active={editor.isActive("blockquote")} onClick={() => editor.chain().focus().toggleBlockquote().run()} label="Quote">
-          <Quote className="h-3.5 w-3.5" />
-        </ToolbarButton>
-        <ToolbarButton active={editor.isActive("link")} onClick={toggleLink} label={editor.isActive("link") ? "Remove link" : "Add link"}>
-          {editor.isActive("link") ? <Link2Off className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
-        </ToolbarButton>
-        <div className="mx-1 h-4 w-px bg-border" />
-        <ToolbarButton onClick={() => editor.chain().focus().undo().run()} label="Undo">
-          <Undo2 className="h-3.5 w-3.5" />
-        </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().redo().run()} label="Redo">
-          <Redo2 className="h-3.5 w-3.5" />
-        </ToolbarButton>
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border p-1">
+        <Tabs value={mode} onValueChange={(value) => setMode(value as "edit" | "preview")}>
+          <TabsList className="h-7">
+            <TabsTrigger value="edit" className="h-5 px-2.5 text-xs">
+              Edit
+            </TabsTrigger>
+            <TabsTrigger value="preview" className="h-5 px-2.5 text-xs">
+              Preview
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+
+        {mode === "edit" && (
+          <div className="flex flex-wrap items-center gap-0.5">
+            <ToolbarButton active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()} label="Bold">
+              <Bold className="h-3.5 w-3.5" />
+            </ToolbarButton>
+            <ToolbarButton active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()} label="Italic">
+              <Italic className="h-3.5 w-3.5" />
+            </ToolbarButton>
+            <ToolbarButton active={editor.isActive("strike")} onClick={() => editor.chain().focus().toggleStrike().run()} label="Strikethrough">
+              <Strikethrough className="h-3.5 w-3.5" />
+            </ToolbarButton>
+            <ToolbarButton
+              active={editor.isActive("heading", { level: 2 })}
+              onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+              label="Heading"
+            >
+              <Heading2 className="h-3.5 w-3.5" />
+            </ToolbarButton>
+            <ToolbarButton
+              active={editor.isActive("heading", { level: 3 })}
+              onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+              label="Subheading"
+            >
+              <Heading3 className="h-3.5 w-3.5" />
+            </ToolbarButton>
+            <ToolbarButton active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()} label="Bullet list">
+              <List className="h-3.5 w-3.5" />
+            </ToolbarButton>
+            <ToolbarButton
+              active={editor.isActive("orderedList")}
+              onClick={() => editor.chain().focus().toggleOrderedList().run()}
+              label="Numbered list"
+            >
+              <ListOrdered className="h-3.5 w-3.5" />
+            </ToolbarButton>
+            <ToolbarButton active={editor.isActive("blockquote")} onClick={() => editor.chain().focus().toggleBlockquote().run()} label="Quote">
+              <Quote className="h-3.5 w-3.5" />
+            </ToolbarButton>
+            <ToolbarButton active={editor.isActive("link")} onClick={toggleLink} label={editor.isActive("link") ? "Remove link" : "Add link"}>
+              {editor.isActive("link") ? <Link2Off className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
+            </ToolbarButton>
+            <div className="mx-1 h-4 w-px bg-border" />
+            <ToolbarButton onClick={() => editor.chain().focus().undo().run()} label="Undo">
+              <Undo2 className="h-3.5 w-3.5" />
+            </ToolbarButton>
+            <ToolbarButton onClick={() => editor.chain().focus().redo().run()} label="Redo">
+              <Redo2 className="h-3.5 w-3.5" />
+            </ToolbarButton>
+          </div>
+        )}
       </div>
 
-      <div className="relative">
-        {isEmpty && placeholder && (
-          <span className="pointer-events-none absolute left-3 top-2 text-sm text-muted-foreground">{placeholder}</span>
-        )}
-        <EditorContent editor={editor} />
-      </div>
+      {mode === "edit" ? (
+        <div className="relative">
+          {isEmpty && placeholder && (
+            <span className="pointer-events-none absolute left-3 top-2 text-sm text-muted-foreground">{placeholder}</span>
+          )}
+          <EditorContent editor={editor} />
+        </div>
+      ) : isEmpty ? (
+        <p className={cn(CONTENT_CLASSNAME, "text-muted-foreground")}>Nothing to preview yet.</p>
+      ) : (
+        // Rendering the editor's own HTML output here, not raw markup from elsewhere.
+        <div className={CONTENT_CLASSNAME} dangerouslySetInnerHTML={{ __html: value }} />
+      )}
     </div>
   );
 }

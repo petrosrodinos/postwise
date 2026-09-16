@@ -120,31 +120,17 @@ export default function ToolsPage() {
         </div>
 
         {isLongForm ? (
-          <>
-            <div className="flex flex-col gap-1.5">
-              <span className="text-xs font-semibold uppercase text-muted-foreground">
-                {draft.type === ToolContentTypes.EMAIL ? "Subject line" : "Title"}
-              </span>
-              <Input
-                value={draft.title}
-                onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
-                placeholder={draft.type === ToolContentTypes.EMAIL ? "Subject line" : "Title"}
-                className="font-display h-auto text-lg font-semibold"
-              />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <span className="text-xs font-semibold uppercase text-muted-foreground">
-                {draft.type === ToolContentTypes.EMAIL ? "Preview text" : "Excerpt"}
-              </span>
-              <Textarea
-                value={draft.excerpt}
-                onChange={(e) => setDraft((d) => ({ ...d, excerpt: e.target.value }))}
-                placeholder={draft.type === ToolContentTypes.EMAIL ? "Preview text" : "Excerpt"}
-                rows={2}
-                className="text-sm"
-              />
-            </div>
-          </>
+          <div className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold uppercase text-muted-foreground">
+              {draft.type === ToolContentTypes.EMAIL ? "Subject line" : "Title"}
+            </span>
+            <Input
+              value={draft.title}
+              onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
+              placeholder={draft.type === ToolContentTypes.EMAIL ? "Subject line" : "Title"}
+              className="font-display h-auto text-lg font-semibold"
+            />
+          </div>
         ) : (
           <div className="flex flex-col gap-1.5">
             <span className="text-xs font-semibold uppercase text-muted-foreground">Hook</span>
