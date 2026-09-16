@@ -19,6 +19,7 @@ import { ProjectsModule } from './modules/projects/projects.module';
 import { GenerationRunsModule } from './modules/generation-runs/generation-runs.module';
 import { AutomationsModule } from './modules/automations/automations.module';
 import { PostsModule } from './modules/posts/posts.module';
+import { ToolsModule } from './modules/tools/tools.module';
 import { RssFeedsModule } from './modules/rss-feeds/rss-feeds.module';
 import { ActivityLogsModule } from './modules/activity-logs/activity-logs.module';
 import { BackgroundModule } from './background/background.module';
@@ -44,6 +45,7 @@ import { BackgroundModule } from './background/background.module';
     GenerationRunsModule,
     AutomationsModule,
     PostsModule,
+    ToolsModule,
     RssFeedsModule,
     ActivityLogsModule,
     BackgroundModule,
@@ -51,4 +53,4 @@ import { BackgroundModule } from './background/background.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

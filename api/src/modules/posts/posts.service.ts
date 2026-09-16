@@ -5,11 +5,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
-import { AiService } from '@/integrations/ai/services/ai.service';
 import { TwitterService } from '@/integrations/social/twitter/services/twitter.service';
 import { LinkedInService } from '@/integrations/social/linkedin/services/linkedin.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
-import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
+import { AiContentAssistService } from '@/shared/services/ai-content-assist/ai-content-assist.service';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
 import { ErrorCodes } from '@/shared/config/error-codes';
 import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
@@ -27,50 +26,14 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { SchedulePostDto } from './dto/schedule-post.dto';
 import { AddPostAttachmentDto } from './dto/add-post-attachment.dto';
 import { AddPostChannelDto } from './dto/add-post-channel.dto';
-import { RepurposePostDto } from './dto/repurpose-post.dto';
-import { RevisePostDto, RevisePreset } from './dto/revise-post.dto';
+import { RepurposePostDto } from '@/shared/dto/repurpose-content.dto';
+import { RevisePostDto } from '@/shared/dto/revise-content.dto';
 import { PostsQueryType } from './dto/posts-query.schema';
-import { z } from 'zod';
 
-const MANAGE_ROLES: OrganisationRole[] = [OrganisationRole.OWNER, OrganisationRole.ADMIN];
-
-const RepurposeDraftSchema = z.object({
-  hook: z.string().optional(),
-  body: z.string(),
-  title: z.string().optional(),
-  excerpt: z.string().optional(),
-  seo_title: z.string().optional(),
-  seo_description: z.string().optional(),
-});
-
-const ReviseDraftSchema = z.object({
-  hook: z.string().optional(),
-  body: z.string(),
-  title: z.string().optional(),
-  excerpt: z.string().optional(),
-});
-
-const REVISE_PRESET_INSTRUCTIONS: Record<RevisePreset, string> = {
-  [RevisePreset.FRIENDLIER]: 'Rewrite it in a warmer, more approachable and friendly tone.',
-  [RevisePreset.MORE_FORMAL]: 'Rewrite it in a more formal, professional tone.',
-  [RevisePreset.LESS_FORMAL]: 'Rewrite it in a more casual, conversational tone.',
-  [RevisePreset.SHORTER]: 'Make it significantly shorter and more concise while keeping the key message.',
-  [RevisePreset.LONGER]: 'Expand it with more detail, examples or context while keeping the same core message.',
-  [RevisePreset.SIMPLIFY]: 'Simplify the language — shorter sentences, plainer words, easier to read.',
-  [RevisePreset.PUNCHIER]: 'Make the opening/hook more attention-grabbing and punchy, and tighten the rest.',
-  [RevisePreset.FIX_GRAMMAR]: 'Fix any grammar, spelling and clarity issues without changing the meaning or tone.',
-  [RevisePreset.HUMANIZE]:
-    'Rewrite it to remove common AI writing tells. Replace AI-tell vocabulary with plain words: ' +
-    'delve, leverage, robust, seamless, testament to, underscores, meticulous, game-changer, ' +
-    'cutting-edge, comprehensive, pivotal, and metaphors like landscape/realm/tapestry. Do not ' +
-    'stack words like harness, elevate, unleash, streamline, empower, crucial or myriad together ' +
-    'in one paragraph. Cut hedging and hollow intensifiers ("it\'s important to note", "to be ' +
-    'honest", "genuinely", "truly", "worth checking out") and the "it\'s not X — it\'s Y" reveal ' +
-    'pattern. Keep em dashes to at most one per 1,000 words. Vary sentence and paragraph length ' +
-    'instead of a uniform rhythm, avoid compulsive rule-of-three lists, and prefer concrete ' +
-    'specifics (numbers, names, examples) over vague superlatives. Use contractions and a ' +
-    'distinct, direct voice. Keep the meaning, facts and key points unchanged.',
-};
+const MANAGE_ROLES: OrganisationRole[] = [
+  OrganisationRole.OWNER,
+  OrganisationRole.ADMIN,
+];
 
 @Injectable()
 export class PostsService {
@@ -79,12 +42,18 @@ export class PostsService {
     private readonly ownershipService: OwnershipService,
     private readonly twitterService: TwitterService,
     private readonly linkedInService: LinkedInService,
-    private readonly aiService: AiService,
+    private readonly aiContentAssistService: AiContentAssistService,
     private readonly activityLogsService: ActivityLogsService,
   ) {}
 
-  private postLabel(post: { title?: string | null; hook?: string | null; type: PostType }): string {
-    return post.title ?? post.hook ?? `Untitled ${post.type.toLowerCase()} post`;
+  private postLabel(post: {
+    title?: string | null;
+    hook?: string | null;
+    type: PostType;
+  }): string {
+    return (
+      post.title ?? post.hook ?? `Untitled ${post.type.toLowerCase()} post`
+    );
   }
 
   private assertSameOrganisation(
@@ -100,10 +69,15 @@ export class PostsService {
   }
 
   async create(userId: string, dto: CreatePostDto) {
-    const context = await this.ownershipService.resolveContext(userId, dto.organisation_id);
+    const context = await this.ownershipService.resolveContext(
+      userId,
+      dto.organisation_id,
+    );
 
     if (dto.project_id) {
-      const project = await this.prisma.project.findUnique({ where: { id: dto.project_id } });
+      const project = await this.prisma.project.findUnique({
+        where: { id: dto.project_id },
+      });
       if (!project) throw new NotFoundException('Project not found');
       this.assertSameOrganisation(project, context.organisation_id);
     }
@@ -154,9 +128,17 @@ export class PostsService {
       case 'REPURPOSED':
         return { source_post_id: { not: null }, automation_id: null };
       case 'GENERATED':
-        return { generation_run_id: { not: null }, automation_id: null, source_post_id: null };
+        return {
+          generation_run_id: { not: null },
+          automation_id: null,
+          source_post_id: null,
+        };
       case 'MANUAL':
-        return { generation_run_id: null, automation_id: null, source_post_id: null };
+        return {
+          generation_run_id: null,
+          automation_id: null,
+          source_post_id: null,
+        };
       default:
         return {};
     }
@@ -212,19 +194,32 @@ export class PostsService {
     });
     if (!post) throw new NotFoundException('Post not found');
 
-    const context = await this.ownershipService.resolveContext(userId, post.organisation_id);
+    const context = await this.ownershipService.resolveContext(
+      userId,
+      post.organisation_id,
+    );
 
     return { post, role: context.role };
   }
 
-  private canManage(post: { user_id: string; organisation_id: string }, userId: string, role?: OrganisationRole) {
+  private canManage(
+    post: { user_id: string; organisation_id: string },
+    userId: string,
+    role?: OrganisationRole,
+  ) {
     if (post.user_id === userId) return true;
     return !!role && MANAGE_ROLES.includes(role);
   }
 
-  private assertCanManage(post: { user_id: string; organisation_id: string }, userId: string, role?: OrganisationRole) {
+  private assertCanManage(
+    post: { user_id: string; organisation_id: string },
+    userId: string,
+    role?: OrganisationRole,
+  ) {
     if (!this.canManage(post, userId, role)) {
-      throw new ForbiddenException('You do not have permission to modify this post');
+      throw new ForbiddenException(
+        'You do not have permission to modify this post',
+      );
     }
   }
 
@@ -305,18 +300,27 @@ export class PostsService {
     this.assertCanManage(post, userId, role);
 
     if (post.type !== PostType.BLOG) {
-      if (!dto.channel_connection_ids || dto.channel_connection_ids.length === 0) {
+      if (
+        !dto.channel_connection_ids ||
+        dto.channel_connection_ids.length === 0
+      ) {
         throw new BadRequestException({
-          message: 'At least one channel connection is required to schedule this post',
+          message:
+            'At least one channel connection is required to schedule this post',
           code: ErrorCodes.Posts.NO_CHANNELS_TO_PUBLISH,
         });
       }
 
       for (const connectionId of dto.channel_connection_ids) {
-        const connection = await this.prisma.socialChannelConnection.findUnique({
-          where: { id: connectionId },
-        });
-        if (!connection) throw new NotFoundException(`Channel connection ${connectionId} not found`);
+        const connection = await this.prisma.socialChannelConnection.findUnique(
+          {
+            where: { id: connectionId },
+          },
+        );
+        if (!connection)
+          throw new NotFoundException(
+            `Channel connection ${connectionId} not found`,
+          );
         this.assertSameOrganisation(connection, post.organisation_id);
 
         if (String(connection.channel) !== String(post.type)) {
@@ -327,7 +331,10 @@ export class PostsService {
 
         const existing = await this.prisma.postChannel.findUnique({
           where: {
-            post_id_channel_connection_id: { post_id: id, channel_connection_id: connectionId },
+            post_id_channel_connection_id: {
+              post_id: id,
+              channel_connection_id: connectionId,
+            },
           },
         });
         if (!existing) {
@@ -351,7 +358,9 @@ export class PostsService {
       entity_type: ActivityLogEntityType.POST,
       entity_id: post.id,
       description: `Scheduled "${this.postLabel(post)}" for ${scheduledAt.toISOString()}`,
-      metadata: { changes: { scheduled_at: { from: post.scheduled_at, to: scheduledAt } } },
+      metadata: {
+        changes: { scheduled_at: { from: post.scheduled_at, to: scheduledAt } },
+      },
     });
 
     return updated;
@@ -389,7 +398,11 @@ export class PostsService {
     if (post.type === PostType.BLOG) {
       return this.prisma.post.update({
         where: { id: postId },
-        data: { status: PostStatus.PUBLISHED, published_at: new Date(), failed_reason: null },
+        data: {
+          status: PostStatus.PUBLISHED,
+          published_at: new Date(),
+          failed_reason: null,
+        },
       });
     }
 
@@ -405,7 +418,10 @@ export class PostsService {
       });
     }
 
-    await this.prisma.post.update({ where: { id: postId }, data: { status: PostStatus.PUBLISHING } });
+    await this.prisma.post.update({
+      where: { id: postId },
+      data: { status: PostStatus.PUBLISHING },
+    });
 
     let successCount = 0;
 
@@ -438,7 +454,10 @@ export class PostsService {
       } catch (error) {
         await this.prisma.postChannel.update({
           where: { id: channel.id },
-          data: { status: PostChannelStatus.FAILED, failed_reason: error.message },
+          data: {
+            status: PostChannelStatus.FAILED,
+            failed_reason: error.message,
+          },
         });
       }
     }
@@ -467,12 +486,18 @@ export class PostsService {
     const { post, role } = await this.findOwned(userId, id);
     this.assertCanManage(post, userId, role);
 
-    const document = await this.prisma.document.findUnique({ where: { id: dto.document_id } });
+    const document = await this.prisma.document.findUnique({
+      where: { id: dto.document_id },
+    });
     if (!document) throw new NotFoundException('Document not found');
     this.assertSameOrganisation(document, post.organisation_id);
 
     const created = await this.prisma.postAttachment.create({
-      data: { post_id: id, document_id: dto.document_id, order: dto.order ?? 0 },
+      data: {
+        post_id: id,
+        document_id: dto.document_id,
+        order: dto.order ?? 0,
+      },
     });
 
     this.activityLogsService.log({
@@ -492,8 +517,11 @@ export class PostsService {
     const { post, role } = await this.findOwned(userId, id);
     this.assertCanManage(post, userId, role);
 
-    const attachment = await this.prisma.postAttachment.findUnique({ where: { id: attachmentId } });
-    if (!attachment || attachment.post_id !== id) throw new NotFoundException('Attachment not found');
+    const attachment = await this.prisma.postAttachment.findUnique({
+      where: { id: attachmentId },
+    });
+    if (!attachment || attachment.post_id !== id)
+      throw new NotFoundException('Attachment not found');
 
     await this.prisma.postAttachment.delete({ where: { id: attachmentId } });
 
@@ -515,17 +543,22 @@ export class PostsService {
     this.assertCanManage(post, userId, role);
 
     if (post.type === PostType.BLOG) {
-      throw new BadRequestException('Blog posts do not publish to social channels');
+      throw new BadRequestException(
+        'Blog posts do not publish to social channels',
+      );
     }
 
     const connection = await this.prisma.socialChannelConnection.findUnique({
       where: { id: dto.channel_connection_id },
     });
-    if (!connection) throw new NotFoundException('Channel connection not found');
+    if (!connection)
+      throw new NotFoundException('Channel connection not found');
     this.assertSameOrganisation(connection, post.organisation_id);
 
     if (String(connection.channel) !== String(post.type)) {
-      throw new BadRequestException("This channel connection does not match the post's content type");
+      throw new BadRequestException(
+        "This channel connection does not match the post's content type",
+      );
     }
 
     const created = await this.prisma.postChannel.create({
@@ -548,8 +581,11 @@ export class PostsService {
     const { post, role } = await this.findOwned(userId, id);
     this.assertCanManage(post, userId, role);
 
-    const channel = await this.prisma.postChannel.findUnique({ where: { id: channelId } });
-    if (!channel || channel.post_id !== id) throw new NotFoundException('Channel target not found');
+    const channel = await this.prisma.postChannel.findUnique({
+      where: { id: channelId },
+    });
+    if (!channel || channel.post_id !== id)
+      throw new NotFoundException('Channel target not found');
 
     await this.prisma.postChannel.delete({ where: { id: channelId } });
 
@@ -569,25 +605,16 @@ export class PostsService {
     const { post, role } = await this.findOwned(userId, id);
     this.assertCanManage(post, userId, role);
 
-    const source = [post.title, post.hook, post.body].filter(Boolean).join('\n\n');
-
     const created = await Promise.all(
       dto.target_types.map(async (targetType) => {
-        const isTargetBlog = targetType === PostType.BLOG;
-        const shape = isTargetBlog
-          ? '{ "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }'
-          : '{ "hook": string, "body": string }';
-        const seoGuidance = isTargetBlog
-          ? ' Also write "seo_title" (a search-optimized title, ideally under 60 characters) and "seo_description" (a compelling meta description, ideally under 160 characters).'
-          : '';
-
-        const { response } = await this.aiService.generateText({
-          prompt: `Repurpose the following content into a single ${targetType} post. Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${seoGuidance}\n\nSource content:\n${source}`,
-          system: 'You are an expert content repurposing assistant.',
-          temperature: 0.7,
+        const draft = await this.aiContentAssistService.repurposeContent({
+          sourceType: post.type,
+          targetType,
+          title: post.title,
+          hook: post.hook,
+          body: post.body,
+          excerpt: post.excerpt,
         });
-
-        const draft = parseAiJson(response, RepurposeDraftSchema);
 
         return this.prisma.post.create({
           data: {
@@ -616,7 +643,10 @@ export class PostsService {
       entity_type: ActivityLogEntityType.POST,
       entity_id: post.id,
       description: `Repurposed "${this.postLabel(post)}" into ${created.length} new post${created.length === 1 ? '' : 's'}`,
-      metadata: { target_types: dto.target_types, new_post_ids: created.map((c) => c.id) },
+      metadata: {
+        target_types: dto.target_types,
+        new_post_ids: created.map((c) => c.id),
+      },
     });
 
     return created;
@@ -627,37 +657,22 @@ export class PostsService {
   // the regular update endpoint, same as any other manual edit.
   async revise(userId: string, id: string, dto: RevisePostDto) {
     if (!dto.preset && !dto.instructions) {
-      throw new BadRequestException('Provide a preset or instructions to revise this post');
+      throw new BadRequestException(
+        'Provide a preset or instructions to revise this post',
+      );
     }
 
     const { post, role } = await this.findOwned(userId, id);
     this.assertCanManage(post, userId, role);
 
-    const directions = [
-      dto.preset ? REVISE_PRESET_INSTRUCTIONS[dto.preset] : null,
-      dto.instructions ? `Additional instructions: ${dto.instructions}` : null,
-    ]
-      .filter(Boolean)
-      .join(' ');
-
-    const isBlog = post.type === PostType.BLOG;
-    const shape = isBlog
-      ? '{ "title": string, "excerpt": string, "body": string }'
-      : '{ "hook": string, "body": string }';
-
-    const prompt = `Revise the following ${post.type} post. ${directions}
-
-Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}. Preserve the author's core message and intent.
-
-${isBlog ? `Current title: ${post.title ?? 'n/a'}\nCurrent excerpt: ${post.excerpt ?? 'n/a'}\n` : post.hook ? `Current hook: ${post.hook}\n` : ''}Current body:
-${post.body ?? ''}`;
-
-    const { response } = await this.aiService.generateText({
-      prompt,
-      system: 'You are an expert editor who revises social media and blog content on request.',
-      temperature: 0.6,
+    return this.aiContentAssistService.reviseContent({
+      type: post.type,
+      title: post.title,
+      hook: post.hook,
+      body: post.body,
+      excerpt: post.excerpt,
+      preset: dto.preset,
+      instructions: dto.instructions,
     });
-
-    return parseAiJson(response, ReviseDraftSchema);
   }
 }

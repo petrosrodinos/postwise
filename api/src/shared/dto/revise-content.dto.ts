@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 
+// Shared between the `posts` and `tools` modules — both revise a piece of
+// content via the same quick-action presets.
 export enum RevisePreset {
   FRIENDLIER = 'FRIENDLIER',
   MORE_FORMAL = 'MORE_FORMAL',
@@ -25,7 +27,8 @@ export class RevisePostDto {
 
   @ApiProperty({
     required: false,
-    description: 'Freeform instructions describing how the AI should change the post',
+    description:
+      'Freeform instructions describing how the AI should change the content',
   })
   @IsOptional()
   @IsString()

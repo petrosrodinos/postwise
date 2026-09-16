@@ -16,6 +16,7 @@ import ProjectDetailPage from "@/pages/dashboard/pages/projects/pages/project-de
 import ProjectGeneratePage from "@/pages/dashboard/pages/projects/pages/project-generate";
 import StyleProfilesPage from "@/pages/dashboard/pages/style-profiles";
 import PostsPage from "@/pages/dashboard/pages/posts";
+import ToolsPage from "@/pages/dashboard/pages/tools";
 import RssFeedsPage from "@/pages/dashboard/pages/rss-feeds";
 import AutomationPage from "@/pages/dashboard/pages/automation";
 import SettingsPage from "@/pages/dashboard/pages/settings";
@@ -67,6 +68,7 @@ export default function AppRoutes() {
         <Route path="projects/:id/generate" element={<ProjectGeneratePage />} />
         <Route path="style-profiles" element={<StyleProfilesPage />} />
         <Route path="posts" element={<PostsPage />} />
+        <Route path="tools" element={<ToolsPage />} />
         <Route path="rss-feeds" element={<RssFeedsPage />} />
         <Route path="automation" element={<AutomationPage />} />
         <Route path="settings" element={<SettingsPage />} />

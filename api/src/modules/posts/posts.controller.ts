@@ -9,7 +9,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtGuard } from '@/shared/guards/jwt.guard';
 import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
@@ -19,8 +25,8 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { SchedulePostDto } from './dto/schedule-post.dto';
 import { AddPostAttachmentDto } from './dto/add-post-attachment.dto';
 import { AddPostChannelDto } from './dto/add-post-channel.dto';
-import { RepurposePostDto } from './dto/repurpose-post.dto';
-import { RevisePostDto } from './dto/revise-post.dto';
+import { RepurposePostDto } from '@/shared/dto/repurpose-content.dto';
+import { RevisePostDto } from '@/shared/dto/revise-content.dto';
 import { PostsQuerySchema, PostsQueryType } from './dto/posts-query.schema';
 import { PostEntity } from './entities/post.entity';
 
@@ -46,8 +52,16 @@ export class PostsController {
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'search', required: false })
   @ApiQuery({ name: 'automation_id', required: false })
-  @ApiQuery({ name: 'source', required: false, enum: ['MANUAL', 'GENERATED', 'AUTOMATION', 'REPURPOSED'] })
-  @ApiQuery({ name: 'order_by', required: false, enum: ['created_at', 'updated_at', 'scheduled_at'] })
+  @ApiQuery({
+    name: 'source',
+    required: false,
+    enum: ['MANUAL', 'GENERATED', 'AUTOMATION', 'REPURPOSED'],
+  })
+  @ApiQuery({
+    name: 'order_by',
+    required: false,
+    enum: ['created_at', 'updated_at', 'scheduled_at'],
+  })
   @ApiQuery({ name: 'order_direction', required: false, enum: ['asc', 'desc'] })
   @ApiResponse({ status: 200 })
   findAll(
@@ -58,7 +72,9 @@ export class PostsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get a post, including its attachments and channel targets' })
+  @ApiOperation({
+    summary: 'Get a post, including its attachments and channel targets',
+  })
   @ApiResponse({ status: 200, type: PostEntity })
   findOne(@CurrentUser('id') userId: string, @Param('id') id: string) {
     return this.postsService.findOne(userId, id);
@@ -101,7 +117,9 @@ export class PostsController {
   }
 
   @Post(':id/repurpose')
-  @ApiOperation({ summary: 'Use AI to repurpose a post into other content types' })
+  @ApiOperation({
+    summary: 'Use AI to repurpose a post into other content types',
+  })
   @ApiResponse({ status: 201, type: [PostEntity] })
   repurpose(
     @CurrentUser('id') userId: string,
@@ -112,7 +130,10 @@ export class PostsController {
   }
 
   @Post(':id/revise')
-  @ApiOperation({ summary: 'Use AI to revise a post, returning a draft to review before saving' })
+  @ApiOperation({
+    summary:
+      'Use AI to revise a post, returning a draft to review before saving',
+  })
   @ApiResponse({ status: 201 })
   revise(
     @CurrentUser('id') userId: string,

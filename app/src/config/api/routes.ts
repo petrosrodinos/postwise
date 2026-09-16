@@ -63,6 +63,13 @@ export const ApiRoutes = {
         channels: (id: string) => `/posts/${id}/channels`,
         channel: (id: string, channel_id: string) => `/posts/${id}/channels/${channel_id}`,
     },
+    tools: {
+        revise: "/tools/revise",
+        repurpose: "/tools/repurpose",
+        title_variations: "/tools/title-variations",
+        meta_tags: "/tools/meta-tags",
+        images: "/tools/images",
+    },
     generation_runs: {
         prefix: "/generation-runs",
         from_rss: "/generation-runs/from-rss",
