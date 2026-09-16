@@ -90,7 +90,12 @@ export default function ToolsPage() {
       </div>
 
       <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6">
-        <ToolContentTypePicker value={draft.type} onChange={handleContentTypeChange} />
+        <div className="flex flex-col gap-1.5">
+          <span className="text-xs font-semibold uppercase text-muted-foreground">Channel</span>
+          <ToolContentTypePicker value={draft.type} onChange={handleContentTypeChange} />
+        </div>
+
+        <ToolsAiAssistPanel content={draft} onRevised={handleRevised} onRepurposed={handleRepurposed} />
 
         <div className="flex flex-col gap-1.5">
           <span className="text-xs font-semibold uppercase text-muted-foreground">Style profile (optional)</span>
@@ -116,67 +121,87 @@ export default function ToolsPage() {
 
         {isLongForm ? (
           <>
-            <Input
-              value={draft.title}
-              onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
-              placeholder={draft.type === ToolContentTypes.EMAIL ? "Subject line" : "Title"}
-              className="font-display h-auto text-lg font-semibold"
-            />
-            <Textarea
-              value={draft.excerpt}
-              onChange={(e) => setDraft((d) => ({ ...d, excerpt: e.target.value }))}
-              placeholder={draft.type === ToolContentTypes.EMAIL ? "Preview text" : "Excerpt"}
-              rows={2}
-              className="text-sm"
-            />
+            <div className="flex flex-col gap-1.5">
+              <span className="text-xs font-semibold uppercase text-muted-foreground">
+                {draft.type === ToolContentTypes.EMAIL ? "Subject line" : "Title"}
+              </span>
+              <Input
+                value={draft.title}
+                onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
+                placeholder={draft.type === ToolContentTypes.EMAIL ? "Subject line" : "Title"}
+                className="font-display h-auto text-lg font-semibold"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <span className="text-xs font-semibold uppercase text-muted-foreground">
+                {draft.type === ToolContentTypes.EMAIL ? "Preview text" : "Excerpt"}
+              </span>
+              <Textarea
+                value={draft.excerpt}
+                onChange={(e) => setDraft((d) => ({ ...d, excerpt: e.target.value }))}
+                placeholder={draft.type === ToolContentTypes.EMAIL ? "Preview text" : "Excerpt"}
+                rows={2}
+                className="text-sm"
+              />
+            </div>
           </>
         ) : (
-          <Input
-            value={draft.hook}
-            onChange={(e) => setDraft((d) => ({ ...d, hook: e.target.value }))}
-            placeholder="Hook / opening line"
-            className="text-sm"
-          />
+          <div className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold uppercase text-muted-foreground">Hook</span>
+            <Input
+              value={draft.hook}
+              onChange={(e) => setDraft((d) => ({ ...d, hook: e.target.value }))}
+              placeholder="Hook / opening line"
+              className="text-sm"
+            />
+          </div>
         )}
 
-        {isLongForm ? (
-          <RichTextEditor
-            value={draft.body}
-            onChange={(body) => setDraft((d) => ({ ...d, body }))}
-            placeholder="Body"
-          />
-        ) : (
-          <Textarea
-            value={draft.body}
-            onChange={(e) => setDraft((d) => ({ ...d, body: e.target.value }))}
-            placeholder="Body"
-            rows={10}
-            className="text-sm leading-relaxed"
-          />
-        )}
+        <div className="flex flex-col gap-1.5">
+          <span className="text-xs font-semibold uppercase text-muted-foreground">Body</span>
+          {isLongForm ? (
+            <RichTextEditor
+              value={draft.body}
+              onChange={(body) => setDraft((d) => ({ ...d, body }))}
+              placeholder="Body"
+            />
+          ) : (
+            <Textarea
+              value={draft.body}
+              onChange={(e) => setDraft((d) => ({ ...d, body: e.target.value }))}
+              placeholder="Body"
+              rows={10}
+              className="text-sm leading-relaxed"
+            />
+          )}
+        </div>
 
         {(draft.seo_title || draft.seo_description) && (
           <div className="flex flex-col gap-2 border-t border-border pt-3">
             <span className="text-xs font-semibold uppercase text-muted-foreground">SEO</span>
-            <Input
-              value={draft.seo_title}
-              onChange={(e) => setDraft((d) => ({ ...d, seo_title: e.target.value }))}
-              placeholder="SEO title"
-              className="text-xs"
-            />
-            <Input
-              value={draft.seo_description}
-              onChange={(e) => setDraft((d) => ({ ...d, seo_description: e.target.value }))}
-              placeholder="SEO description"
-              className="text-xs"
-            />
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-semibold uppercase text-muted-foreground">SEO title</span>
+              <Input
+                value={draft.seo_title}
+                onChange={(e) => setDraft((d) => ({ ...d, seo_title: e.target.value }))}
+                placeholder="SEO title"
+                className="text-xs"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-semibold uppercase text-muted-foreground">SEO description</span>
+              <Input
+                value={draft.seo_description}
+                onChange={(e) => setDraft((d) => ({ ...d, seo_description: e.target.value }))}
+                placeholder="SEO description"
+                className="text-xs"
+              />
+            </div>
           </div>
         )}
       </div>
 
       <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6">
-        <ToolsAiAssistPanel content={draft} onRevised={handleRevised} onRepurposed={handleRepurposed} />
-
         <Tabs defaultValue="titles">
           <TabsList>
             <TabsTrigger value="titles">Title variations</TabsTrigger>
