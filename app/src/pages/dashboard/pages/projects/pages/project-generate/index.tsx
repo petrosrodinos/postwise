@@ -142,7 +142,8 @@ export default function ProjectGeneratePage() {
     );
   }
 
-  const hasBlogChannel = project.channels.includes(PostTypes.BLOG);
+  const channels = project.channels.length ? project.channels : [project.platform];
+  const hasBlogChannel = channels.includes(PostTypes.BLOG);
 
   return (
     <div className="flex flex-col gap-6">
@@ -205,7 +206,7 @@ export default function ProjectGeneratePage() {
           )}
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex min-w-0 flex-col gap-4">
           <div className="flex items-baseline justify-between gap-4">
             <h2 className="text-lg font-semibold">{run ? run.label ?? "New batch" : "New generation"}</h2>
             <span className="text-sm text-muted-foreground">
@@ -223,27 +224,33 @@ export default function ProjectGeneratePage() {
               <p className="mx-auto mt-2 max-w-sm text-sm">Choose a style profile and a batch size, then generate this project's first drafts.</p>
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {items.map((item) => (
+            <div className="flex flex-col gap-3">
+              {items.map((item, index) => (
                 <GenerationItemCard
                   key={item.id}
                   item={item}
-                  platform={project.platform}
+                  index={index}
                   styleProfiles={project.style_profiles ?? []}
                   highlightedPostId={highlightedPostId}
                 />
               ))}
               {isGenerating &&
                 Array.from({ length: postsRequested }).map((_, i) => (
-                  <div key={`skeleton-${i}`} className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
-                    <div className="flex items-center justify-between gap-2">
-                      <Skeleton className="h-5 w-24 rounded-full" />
-                      <Skeleton className="h-5 w-16 rounded-full" />
+                  <div key={`skeleton-${i}`} className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                    <div className="border-b border-border px-4 py-2.5">
+                      <Skeleton className="h-4 w-40" />
                     </div>
-                    <Skeleton className="h-4 w-2/3" />
-                    <Skeleton className="h-3 w-full" />
-                    <Skeleton className="h-3 w-11/12" />
-                    <Skeleton className="h-3 w-3/4" />
+                    <div className="divide-y divide-border">
+                      {channels.map((channel) => (
+                        <div key={channel} className="flex items-center gap-3 px-4 py-2.5">
+                          <Skeleton className="h-4 w-20 flex-none rounded-full" />
+                          <div className="min-w-0 flex-1">
+                            <Skeleton className="h-3.5 w-2/3" />
+                          </div>
+                          <Skeleton className="h-5 w-16 flex-none rounded-full" />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
             </div>

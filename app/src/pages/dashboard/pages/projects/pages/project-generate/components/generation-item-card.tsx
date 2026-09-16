@@ -1,49 +1,34 @@
-import { PlatformChip } from "@/components/ui/platform-glyph";
-import { PLATFORM_META } from "@/components/ui/platform-picker";
 import type { PostType } from "@/features/posts/interfaces/posts.interfaces";
 import type { ProjectStyleProfileLink } from "@/features/projects/interfaces/projects.interfaces";
 import type { GenerationItem } from "@/features/generation-runs/interfaces/generation-runs.interfaces";
-import { GeneratedPostCard } from "./generated-post-card";
+import { PostRow } from "./post-row";
 
 interface GenerationItemCardProps {
   item: GenerationItem;
-  platform: PostType;
+  index: number;
   styleProfiles: ProjectStyleProfileLink[];
   highlightedPostId?: string;
 }
 
-// Renders one generated idea. A BLOG idea always wraps exactly one post, so
-// it renders exactly like before. A social idea wraps one post per target
-// channel (e.g. LinkedIn + Twitter variants of the same idea) — those are
-// grouped into a single card with a channel label above each variant.
-export function GenerationItemCard({ item, platform, styleProfiles, highlightedPostId }: GenerationItemCardProps) {
-  if (item.posts.length <= 1) {
-    const post = item.posts[0];
-    if (!post) return null;
-    return (
-      <GeneratedPostCard
-        post={post}
-        platform={platform}
-        styleProfiles={styleProfiles}
-        highlighted={post.id === highlightedPostId}
-      />
-    );
-  }
-
+// One generated idea, as a card: a title row identifying the idea, then one
+// full-width row per channel post (LinkedIn/X/Blog) underneath — each row is
+// its own clickable summary that opens the full editor. Keeps ideas visually
+// grouped without cramming several channels' content side by side.
+export function GenerationItemCard({ item, index, styleProfiles, highlightedPostId }: GenerationItemCardProps) {
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-dashed border-border/70 p-3 sm:col-span-2">
-      {item.topic && <p className="px-1 text-sm font-semibold text-foreground">{item.topic}</p>}
-      <div className="grid gap-3 sm:grid-cols-2">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <div className="border-b border-border px-4 py-2.5">
+        <p className="truncate text-sm font-semibold text-foreground">{item.topic || `Idea ${index + 1}`}</p>
+      </div>
+      <div className="divide-y divide-border">
         {item.posts.map((post) => (
-          <div key={post.id} className="flex flex-col gap-1.5">
-            <PlatformChip platform={post.type} label={PLATFORM_META[post.type].label} className="px-1" />
-            <GeneratedPostCard
-              post={post}
-              platform={post.type}
-              styleProfiles={styleProfiles}
-              highlighted={post.id === highlightedPostId}
-            />
-          </div>
+          <PostRow
+            key={post.id}
+            post={post}
+            platform={post.type as PostType}
+            styleProfiles={styleProfiles}
+            highlighted={post.id === highlightedPostId}
+          />
         ))}
       </div>
     </div>
