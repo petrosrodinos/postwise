@@ -60,8 +60,6 @@ export const ApiRoutes = {
         revise: (id: string) => `/posts/${id}/revise`,
         attachments: (id: string) => `/posts/${id}/attachments`,
         attachment: (id: string, attachment_id: string) => `/posts/${id}/attachments/${attachment_id}`,
-        channels: (id: string) => `/posts/${id}/channels`,
-        channel: (id: string, channel_id: string) => `/posts/${id}/channels/${channel_id}`,
     },
     tools: {
         revise: "/tools/revise",
@@ -81,7 +79,7 @@ export const ApiRoutes = {
     documents: {
         prefix: "/documents",
     },
-    social_channel_connections: {
-        prefix: "/social-channel-connections",
+    integrations: {
+        prefix: "/integrations",
     },
 }

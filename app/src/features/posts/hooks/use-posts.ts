@@ -3,14 +3,12 @@ import { toast } from "@/hooks/use-toast";
 import { useWorkspaceStore } from "@/stores/workspace";
 import {
   addPostAttachment,
-  addPostChannel,
   createPost,
   deletePost,
   getPost,
   getPosts,
   publishPost,
   removePostAttachment,
-  removePostChannel,
   repurposePost,
   revisePost,
   schedulePost,
@@ -18,7 +16,6 @@ import {
 } from "../services/posts.services";
 import type {
   AddPostAttachmentDto,
-  AddPostChannelDto,
   CreatePostDto,
   PostsQueryType,
   RepurposePostDto,
@@ -168,34 +165,6 @@ export const useRemovePostAttachment = () => {
     },
     onError: (error: Error) => {
       toast({ title: "Could not remove attachment", description: error.message, variant: "error" });
-    },
-  });
-};
-
-export const useAddPostChannel = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, dto }: { id: string; dto: AddPostChannelDto }) => addPostChannel(id, dto),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [POSTS_KEY] });
-      toast({ title: "Channel added", description: "This post will also publish to that channel.", duration: 2000 });
-    },
-    onError: (error: Error) => {
-      toast({ title: "Could not add channel", description: error.message, variant: "error" });
-    },
-  });
-};
-
-export const useRemovePostChannel = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, channelId }: { id: string; channelId: string }) => removePostChannel(id, channelId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [POSTS_KEY] });
-      toast({ title: "Channel removed", description: "This post will no longer publish to that channel.", duration: 2000 });
-    },
-    onError: (error: Error) => {
-      toast({ title: "Could not remove channel", description: error.message, variant: "error" });
     },
   });
 };

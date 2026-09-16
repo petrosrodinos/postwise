@@ -7,7 +7,9 @@ import {
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { TwitterService } from '@/integrations/social/twitter/services/twitter.service';
 import { LinkedInService } from '@/integrations/social/linkedin/services/linkedin.service';
+import { SanityService } from '@/integrations/cms/sanity/services/sanity.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
+import { EncryptionService } from '@/shared/services/encryption/encryption.service';
 import { AiContentAssistService } from '@/shared/services/ai-content-assist/ai-content-assist.service';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
 import { ErrorCodes } from '@/shared/config/error-codes';
@@ -16,24 +18,38 @@ import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
 import {
   ActivityLogAction,
   ActivityLogEntityType,
+  Integration,
+  IntegrationProvider,
+  IntegrationStatus,
   OrganisationRole,
-  PostChannelStatus,
+  PostIntegrationStatus,
   PostStatus,
   PostType,
+  Prisma,
 } from 'generated/prisma';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { SchedulePostDto } from './dto/schedule-post.dto';
 import { AddPostAttachmentDto } from './dto/add-post-attachment.dto';
-import { AddPostChannelDto } from './dto/add-post-channel.dto';
 import { RepurposePostDto } from '@/shared/dto/repurpose-content.dto';
 import { RevisePostDto } from '@/shared/dto/revise-content.dto';
 import { PostsQueryType } from './dto/posts-query.schema';
+
+type PostWithAttachments = Prisma.PostGetPayload<{
+  include: { attachments: { include: { document: true } } };
+}>;
 
 const MANAGE_ROLES: OrganisationRole[] = [
   OrganisationRole.OWNER,
   OrganisationRole.ADMIN,
 ];
+
+// Which provider a post's own connected integrations must match to publish.
+const PROVIDER_BY_TYPE: Record<PostType, IntegrationProvider> = {
+  [PostType.BLOG]: IntegrationProvider.SANITY,
+  [PostType.TWITTER]: IntegrationProvider.TWITTER,
+  [PostType.LINKEDIN]: IntegrationProvider.LINKEDIN,
+};
 
 @Injectable()
 export class PostsService {
@@ -42,6 +58,8 @@ export class PostsService {
     private readonly ownershipService: OwnershipService,
     private readonly twitterService: TwitterService,
     private readonly linkedInService: LinkedInService,
+    private readonly sanityService: SanityService,
+    private readonly encryptionService: EncryptionService,
     private readonly aiContentAssistService: AiContentAssistService,
     private readonly activityLogsService: ActivityLogsService,
   ) {}
@@ -174,7 +192,14 @@ export class PostsService {
         include: {
           automation: { select: { id: true, name: true } },
           project: { select: { id: true, title: true } },
-          generation_run: { select: { id: true, label: true, created_at: true, project_id: true } },
+          generation_run: {
+            select: {
+              id: true,
+              label: true,
+              created_at: true,
+              project_id: true,
+            },
+          },
           generation_item: { select: { id: true, topic: true, order: true } },
         },
       }),
@@ -189,7 +214,7 @@ export class PostsService {
       where: { id },
       include: {
         attachments: true,
-        channels: true,
+        integrations: true,
         automation: { select: { id: true, name: true } },
         project: { select: { id: true, title: true } },
       },
@@ -301,52 +326,6 @@ export class PostsService {
     const { post, role } = await this.findOwned(userId, id);
     this.assertCanManage(post, userId, role);
 
-    if (post.type !== PostType.BLOG) {
-      if (
-        !dto.channel_connection_ids ||
-        dto.channel_connection_ids.length === 0
-      ) {
-        throw new BadRequestException({
-          message:
-            'At least one channel connection is required to schedule this post',
-          code: ErrorCodes.Posts.NO_CHANNELS_TO_PUBLISH,
-        });
-      }
-
-      for (const connectionId of dto.channel_connection_ids) {
-        const connection = await this.prisma.socialChannelConnection.findUnique(
-          {
-            where: { id: connectionId },
-          },
-        );
-        if (!connection)
-          throw new NotFoundException(
-            `Channel connection ${connectionId} not found`,
-          );
-        this.assertSameOrganisation(connection, post.organisation_id);
-
-        if (String(connection.channel) !== String(post.type)) {
-          throw new BadRequestException(
-            `Channel connection ${connectionId} does not match the post's content type`,
-          );
-        }
-
-        const existing = await this.prisma.postChannel.findUnique({
-          where: {
-            post_id_channel_connection_id: {
-              post_id: id,
-              channel_connection_id: connectionId,
-            },
-          },
-        });
-        if (!existing) {
-          await this.prisma.postChannel.create({
-            data: { post_id: id, channel_connection_id: connectionId },
-          });
-        }
-      }
-    }
-
     const scheduledAt = new Date(dto.scheduled_at);
     const updated = await this.prisma.post.update({
       where: { id },
@@ -392,31 +371,128 @@ export class PostsService {
     return published;
   }
 
-  // Shared by the manual publish action and the scheduled-post background job.
+  // Calls the right provider wrapper for one connected integration, and
+  // normalizes every provider's response into the same {external_id,
+  // external_url} shape PostIntegration stores.
+  private async publishToIntegration(
+    post: PostWithAttachments,
+    integration: Integration,
+    coverImageUrl?: string,
+  ): Promise<{ external_id: string; external_url: string }> {
+    switch (integration.provider) {
+      case IntegrationProvider.SANITY: {
+        if (
+          !integration.api_token_encrypted ||
+          !integration.external_project_id ||
+          !integration.external_dataset
+        ) {
+          throw new Error('Sanity integration is not fully configured');
+        }
+        return this.sanityService.publishDocument({
+          projectId: integration.external_project_id,
+          dataset: integration.external_dataset,
+          apiToken: this.encryptionService.decrypt(
+            integration.api_token_encrypted,
+          ),
+          documentType: integration.document_type ?? 'post',
+          documentId: post.id,
+          title: post.title,
+          bodyHtml: post.body,
+          excerpt: post.excerpt,
+          seoTitle: post.seo_title,
+          seoDescription: post.seo_description,
+          canonicalUrl: post.canonical_url,
+          coverImageUrl,
+        });
+      }
+      case IntegrationProvider.TWITTER: {
+        if (!integration.access_token_encrypted) {
+          throw new Error('Twitter integration is not fully configured');
+        }
+        const result = await this.twitterService.publishTweet({
+          accessToken: this.encryptionService.decrypt(
+            integration.access_token_encrypted,
+          ),
+          text: [post.hook, post.body].filter(Boolean).join('\n\n'),
+        });
+        return {
+          external_id: result.external_post_id,
+          external_url: result.external_post_url,
+        };
+      }
+      case IntegrationProvider.LINKEDIN: {
+        if (
+          !integration.access_token_encrypted ||
+          !integration.external_account_id
+        ) {
+          throw new Error('LinkedIn integration is not fully configured');
+        }
+        const result = await this.linkedInService.publishPost({
+          accessToken: this.encryptionService.decrypt(
+            integration.access_token_encrypted,
+          ),
+          authorUrn: integration.external_account_id,
+          text: [post.hook, post.body].filter(Boolean).join('\n\n'),
+        });
+        return {
+          external_id: result.external_post_id,
+          external_url: result.external_post_url,
+        };
+      }
+    }
+  }
+
+  // Shared by the manual publish action and the scheduled-post background
+  // job. Auto-targets every one of the post's organisation's CONNECTED
+  // integrations matching the post's type — there is no manual per-post
+  // target picker (an org typically has one account per provider). BLOG
+  // posts with no connected Sanity integration just get an internal status
+  // flip; TWITTER/LINKEDIN posts require at least one connected integration,
+  // since a social post has no meaning without an external destination.
   async publishNow(postId: string) {
-    const post = await this.prisma.post.findUnique({ where: { id: postId } });
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId },
+      include: { attachments: { include: { document: true } } },
+    });
     if (!post) throw new NotFoundException('Post not found');
 
-    if (post.type === PostType.BLOG) {
-      return this.prisma.post.update({
-        where: { id: postId },
-        data: {
-          status: PostStatus.PUBLISHED,
-          published_at: new Date(),
-          failed_reason: null,
-        },
+    const provider = PROVIDER_BY_TYPE[post.type];
+    const integrations = await this.prisma.integration.findMany({
+      where: {
+        organisation_id: post.organisation_id,
+        provider,
+        status: IntegrationStatus.CONNECTED,
+      },
+    });
+
+    if (integrations.length === 0) {
+      if (post.type === PostType.BLOG) {
+        return this.prisma.post.update({
+          where: { id: postId },
+          data: {
+            status: PostStatus.PUBLISHED,
+            published_at: new Date(),
+            failed_reason: null,
+          },
+        });
+      }
+
+      throw new BadRequestException({
+        message: 'This post has no connected integrations to publish to',
+        code: ErrorCodes.Posts.NO_INTEGRATIONS_TO_PUBLISH,
       });
     }
 
-    const channels = await this.prisma.postChannel.findMany({
-      where: { post_id: postId },
-      include: { channel_connection: true },
-    });
-
-    if (channels.length === 0) {
-      throw new BadRequestException({
-        message: 'This post has no channels to publish to',
-        code: ErrorCodes.Posts.NO_CHANNELS_TO_PUBLISH,
+    for (const integration of integrations) {
+      await this.prisma.postIntegration.upsert({
+        where: {
+          post_id_integration_id: {
+            post_id: postId,
+            integration_id: integration.id,
+          },
+        },
+        update: {},
+        create: { post_id: postId, integration_id: integration.id },
       });
     }
 
@@ -425,39 +501,41 @@ export class PostsService {
       data: { status: PostStatus.PUBLISHING },
     });
 
+    const targets = await this.prisma.postIntegration.findMany({
+      where: { post_id: postId },
+      include: { integration: true },
+    });
+
+    const coverImageUrl = post.attachments.find(
+      (attachment) => attachment.document_id === post.cover_document_id,
+    )?.document?.url;
+
     let successCount = 0;
 
-    for (const channel of channels) {
+    for (const target of targets) {
       try {
-        const connection = channel.channel_connection;
-        const result =
-          String(connection.channel) === PostType.TWITTER
-            ? await this.twitterService.publishTweet({
-                accessToken: connection.access_token,
-                text: [post.hook, post.body].filter(Boolean).join('\n\n'),
-              })
-            : await this.linkedInService.publishPost({
-                accessToken: connection.access_token,
-                authorUrn: connection.external_account_id,
-                text: [post.hook, post.body].filter(Boolean).join('\n\n'),
-              });
+        const result = await this.publishToIntegration(
+          post,
+          target.integration,
+          coverImageUrl,
+        );
 
-        await this.prisma.postChannel.update({
-          where: { id: channel.id },
+        await this.prisma.postIntegration.update({
+          where: { id: target.id },
           data: {
-            status: PostChannelStatus.PUBLISHED,
-            external_post_id: result.external_post_id,
-            external_post_url: result.external_post_url,
+            status: PostIntegrationStatus.PUBLISHED,
+            external_id: result.external_id,
+            external_url: result.external_url,
             published_at: new Date(),
             failed_reason: null,
           },
         });
         successCount++;
       } catch (error) {
-        await this.prisma.postChannel.update({
-          where: { id: channel.id },
+        await this.prisma.postIntegration.update({
+          where: { id: target.id },
           data: {
-            status: PostChannelStatus.FAILED,
+            status: PostIntegrationStatus.FAILED,
             failed_reason: error.message,
           },
         });
@@ -471,14 +549,14 @@ export class PostsService {
       data: allFailed
         ? {
             status: PostStatus.FAILED,
-            failed_reason: 'All channels failed to publish',
+            failed_reason: 'All integrations failed to publish',
           }
         : {
             status: PostStatus.PUBLISHED,
             published_at: new Date(),
             failed_reason:
-              successCount < channels.length
-                ? `${channels.length - successCount} channel(s) failed to publish`
+              successCount < targets.length
+                ? `${targets.length - successCount} integration(s) failed to publish`
                 : null,
           },
     });
@@ -538,69 +616,6 @@ export class PostsService {
     });
 
     return { message: 'Attachment removed successfully' };
-  }
-
-  async addChannel(userId: string, id: string, dto: AddPostChannelDto) {
-    const { post, role } = await this.findOwned(userId, id);
-    this.assertCanManage(post, userId, role);
-
-    if (post.type === PostType.BLOG) {
-      throw new BadRequestException(
-        'Blog posts do not publish to social channels',
-      );
-    }
-
-    const connection = await this.prisma.socialChannelConnection.findUnique({
-      where: { id: dto.channel_connection_id },
-    });
-    if (!connection)
-      throw new NotFoundException('Channel connection not found');
-    this.assertSameOrganisation(connection, post.organisation_id);
-
-    if (String(connection.channel) !== String(post.type)) {
-      throw new BadRequestException(
-        "This channel connection does not match the post's content type",
-      );
-    }
-
-    const created = await this.prisma.postChannel.create({
-      data: { post_id: id, channel_connection_id: dto.channel_connection_id },
-    });
-
-    this.activityLogsService.log({
-      organisation_id: post.organisation_id,
-      user_id: userId,
-      action: ActivityLogAction.POST_CHANNEL_ADDED,
-      entity_type: ActivityLogEntityType.POST,
-      entity_id: post.id,
-      description: `Added a ${connection.channel.toLowerCase()} channel target to "${this.postLabel(post)}"`,
-    });
-
-    return created;
-  }
-
-  async removeChannel(userId: string, id: string, channelId: string) {
-    const { post, role } = await this.findOwned(userId, id);
-    this.assertCanManage(post, userId, role);
-
-    const channel = await this.prisma.postChannel.findUnique({
-      where: { id: channelId },
-    });
-    if (!channel || channel.post_id !== id)
-      throw new NotFoundException('Channel target not found');
-
-    await this.prisma.postChannel.delete({ where: { id: channelId } });
-
-    this.activityLogsService.log({
-      organisation_id: post.organisation_id,
-      user_id: userId,
-      action: ActivityLogAction.POST_CHANNEL_REMOVED,
-      entity_type: ActivityLogEntityType.POST,
-      entity_id: post.id,
-      description: `Removed a channel target from "${this.postLabel(post)}"`,
-    });
-
-    return { message: 'Channel target removed successfully' };
   }
 
   async repurpose(userId: string, id: string, dto: RepurposePostDto) {

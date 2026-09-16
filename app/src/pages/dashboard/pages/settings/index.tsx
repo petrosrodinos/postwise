@@ -10,14 +10,14 @@ import { OrganisationRoles } from "@/features/organisations/interfaces/organisat
 import { GeneralTab } from "./components/general-tab";
 import { MembersTab } from "./components/members-tab";
 import { ActivityTab } from "./components/activity-tab";
-import { ChannelConnectionsCard } from "@/pages/dashboard/components/channel-connections-card";
+import { IntegrationsCard } from "@/pages/dashboard/components/integrations-card";
 
 export default function SettingsPage() {
   const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
   const { data: organisation, isPending } = useOrganisation(activeOrganisationId ?? undefined);
   const { role } = useActiveOrganisationRole();
   // Regular members can only see the org-wide Activity feed — General,
-  // Members and Channels are management tabs restricted to Owner/Admin.
+  // Members and Integrations are management tabs restricted to Owner/Admin.
   const isMember = role === OrganisationRoles.MEMBER;
 
   if (!activeOrganisationId) {
@@ -79,7 +79,7 @@ export default function SettingsPage() {
           <TabsList>
             {!isMember && <TabsTrigger value="general">General</TabsTrigger>}
             {!isMember && <TabsTrigger value="members">Members</TabsTrigger>}
-            {!isMember && <TabsTrigger value="channels">Channels</TabsTrigger>}
+            {!isMember && <TabsTrigger value="integrations">Integrations</TabsTrigger>}
             <TabsTrigger value="activity">Activity</TabsTrigger>
           </TabsList>
           {!isMember && (
@@ -93,8 +93,8 @@ export default function SettingsPage() {
             </TabsContent>
           )}
           {!isMember && (
-            <TabsContent value="channels" className="max-w-lg">
-              <ChannelConnectionsCard title="Connected channels" description={`Social accounts for ${organisation.name}.`} />
+            <TabsContent value="integrations">
+              <IntegrationsCard title="Connected integrations" description={`External destinations for ${organisation.name}.`} />
             </TabsContent>
           )}
           <TabsContent value="activity">

@@ -13,7 +13,7 @@ import { ConfigModule } from './shared/config/env/env.module';
 import { UsersModule } from './modules/users/users.module';
 import { DocumentsModule } from './modules/documents/documents.module';
 import { OrganisationsModule } from './modules/organisations/organisations.module';
-import { SocialChannelConnectionsModule } from './modules/social-channel-connections/social-channel-connections.module';
+import { IntegrationsModule } from './modules/integrations/integrations.module';
 import { StyleProfilesModule } from './modules/style-profiles/style-profiles.module';
 import { ProjectsModule } from './modules/projects/projects.module';
 import { GenerationRunsModule } from './modules/generation-runs/generation-runs.module';
@@ -39,7 +39,7 @@ import { BackgroundModule } from './background/background.module';
     UsersModule,
     DocumentsModule,
     OrganisationsModule,
-    SocialChannelConnectionsModule,
+    IntegrationsModule,
     StyleProfilesModule,
     ProjectsModule,
     GenerationRunsModule,

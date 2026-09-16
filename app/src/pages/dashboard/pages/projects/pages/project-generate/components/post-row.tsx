@@ -3,6 +3,7 @@ import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -79,7 +80,7 @@ export function PostRow({ post, platform, styleProfiles, highlighted }: PostRowP
   const styleProfile = styleProfiles.find((link) => link.style_profile_id === post.style_profile_id)?.style_profile;
   const isEditableStatus = EDITABLE_STATUSES.includes(post.status as (typeof EDITABLE_STATUSES)[number]);
   const previewTitle = isBlog ? draft.title || "Untitled" : post.hook || draft.body.slice(0, 80) || "Untitled";
-  const previewSnippet = isBlog ? draft.excerpt || draft.body : draft.body;
+  const previewSnippet = isBlog ? draft.excerpt || draft.body.replace(/<[^>]*>/g, " ").trim() : draft.body;
   const hasContent = [draft.title, draft.body, draft.excerpt, post.hook].some((value) => !!value?.trim());
 
   function save() {
@@ -167,12 +168,16 @@ export function PostRow({ post, platform, styleProfiles, highlighted }: PostRowP
               </Badge>
             )}
 
-            <Textarea
-              value={draft.body}
-              onChange={(e) => setDraft((d) => ({ ...d, body: e.target.value }))}
-              rows={20}
-              className="flex-1 text-sm leading-relaxed"
-            />
+            {isBlog ? (
+              <RichTextEditor value={draft.body} onChange={(html) => setDraft((d) => ({ ...d, body: html }))} className="flex-1" />
+            ) : (
+              <Textarea
+                value={draft.body}
+                onChange={(e) => setDraft((d) => ({ ...d, body: e.target.value }))}
+                rows={20}
+                className="flex-1 text-sm leading-relaxed"
+              />
+            )}
 
             {isBlog && post.attachments && post.attachments.length > 0 && (
               <div className="flex flex-col gap-1.5">

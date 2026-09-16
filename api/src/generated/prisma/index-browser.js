@@ -181,16 +181,21 @@ exports.Prisma.OrganisationInviteTokenScalarFieldEnum = {
   created_at: 'created_at'
 };
 
-exports.Prisma.SocialChannelConnectionScalarFieldEnum = {
+exports.Prisma.IntegrationScalarFieldEnum = {
   id: 'id',
   organisation_id: 'organisation_id',
-  channel: 'channel',
+  provider: 'provider',
+  name: 'name',
   status: 'status',
   external_account_id: 'external_account_id',
   external_account_name: 'external_account_name',
-  access_token: 'access_token',
-  refresh_token: 'refresh_token',
+  access_token_encrypted: 'access_token_encrypted',
+  refresh_token_encrypted: 'refresh_token_encrypted',
   token_expires_at: 'token_expires_at',
+  external_project_id: 'external_project_id',
+  external_dataset: 'external_dataset',
+  document_type: 'document_type',
+  api_token_encrypted: 'api_token_encrypted',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -347,13 +352,13 @@ exports.Prisma.PostAttachmentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
-exports.Prisma.PostChannelScalarFieldEnum = {
+exports.Prisma.PostIntegrationScalarFieldEnum = {
   id: 'id',
   post_id: 'post_id',
-  channel_connection_id: 'channel_connection_id',
+  integration_id: 'integration_id',
   status: 'status',
-  external_post_id: 'external_post_id',
-  external_post_url: 'external_post_url',
+  external_id: 'external_id',
+  external_url: 'external_url',
   published_at: 'published_at',
   failed_reason: 'failed_reason',
   created_at: 'created_at',
@@ -426,15 +431,15 @@ exports.OrganisationMemberStatus = exports.$Enums.OrganisationMemberStatus = {
   ACTIVE: 'ACTIVE'
 };
 
-exports.SocialChannel = exports.$Enums.SocialChannel = {
+exports.IntegrationProvider = exports.$Enums.IntegrationProvider = {
+  SANITY: 'SANITY',
   TWITTER: 'TWITTER',
   LINKEDIN: 'LINKEDIN'
 };
 
-exports.SocialChannelConnectionStatus = exports.$Enums.SocialChannelConnectionStatus = {
+exports.IntegrationStatus = exports.$Enums.IntegrationStatus = {
   CONNECTED: 'CONNECTED',
   DISCONNECTED: 'DISCONNECTED',
-  EXPIRED: 'EXPIRED',
   ERROR: 'ERROR'
 };
 
@@ -466,9 +471,8 @@ exports.PostStatus = exports.$Enums.PostStatus = {
   FAILED: 'FAILED'
 };
 
-exports.PostChannelStatus = exports.$Enums.PostChannelStatus = {
+exports.PostIntegrationStatus = exports.$Enums.PostIntegrationStatus = {
   PENDING: 'PENDING',
-  SCHEDULED: 'SCHEDULED',
   PUBLISHING: 'PUBLISHING',
   PUBLISHED: 'PUBLISHED',
   FAILED: 'FAILED'
@@ -521,11 +525,9 @@ exports.ActivityLogAction = exports.$Enums.ActivityLogAction = {
   POST_REPURPOSED: 'POST_REPURPOSED',
   POST_ATTACHMENT_ADDED: 'POST_ATTACHMENT_ADDED',
   POST_ATTACHMENT_REMOVED: 'POST_ATTACHMENT_REMOVED',
-  POST_CHANNEL_ADDED: 'POST_CHANNEL_ADDED',
-  POST_CHANNEL_REMOVED: 'POST_CHANNEL_REMOVED',
-  CHANNEL_CONNECTION_CREATED: 'CHANNEL_CONNECTION_CREATED',
-  CHANNEL_CONNECTION_UPDATED: 'CHANNEL_CONNECTION_UPDATED',
-  CHANNEL_CONNECTION_REMOVED: 'CHANNEL_CONNECTION_REMOVED'
+  INTEGRATION_CONNECTED: 'INTEGRATION_CONNECTED',
+  INTEGRATION_UPDATED: 'INTEGRATION_UPDATED',
+  INTEGRATION_REMOVED: 'INTEGRATION_REMOVED'
 };
 
 exports.ActivityLogEntityType = exports.$Enums.ActivityLogEntityType = {
@@ -539,7 +541,7 @@ exports.ActivityLogEntityType = exports.$Enums.ActivityLogEntityType = {
   AUTOMATION: 'AUTOMATION',
   GENERATION_RUN: 'GENERATION_RUN',
   POST: 'POST',
-  SOCIAL_CHANNEL_CONNECTION: 'SOCIAL_CHANNEL_CONNECTION'
+  INTEGRATION: 'INTEGRATION'
 };
 
 exports.Prisma.ModelName = {
@@ -549,7 +551,7 @@ exports.Prisma.ModelName = {
   Organisation: 'Organisation',
   OrganisationMember: 'OrganisationMember',
   OrganisationInviteToken: 'OrganisationInviteToken',
-  SocialChannelConnection: 'SocialChannelConnection',
+  Integration: 'Integration',
   StyleProfile: 'StyleProfile',
   Project: 'Project',
   RssFeed: 'RssFeed',
@@ -561,7 +563,7 @@ exports.Prisma.ModelName = {
   Automation: 'Automation',
   Post: 'Post',
   PostAttachment: 'PostAttachment',
-  PostChannel: 'PostChannel',
+  PostIntegration: 'PostIntegration',
   ActivityLog: 'ActivityLog'
 };
 

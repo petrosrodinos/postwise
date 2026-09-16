@@ -44,10 +44,10 @@ export type OrganisationMember = $Result.DefaultSelection<Prisma.$OrganisationMe
  */
 export type OrganisationInviteToken = $Result.DefaultSelection<Prisma.$OrganisationInviteTokenPayload>
 /**
- * Model SocialChannelConnection
+ * Model Integration
  * 
  */
-export type SocialChannelConnection = $Result.DefaultSelection<Prisma.$SocialChannelConnectionPayload>
+export type Integration = $Result.DefaultSelection<Prisma.$IntegrationPayload>
 /**
  * Model StyleProfile
  * 
@@ -104,10 +104,10 @@ export type Post = $Result.DefaultSelection<Prisma.$PostPayload>
  */
 export type PostAttachment = $Result.DefaultSelection<Prisma.$PostAttachmentPayload>
 /**
- * Model PostChannel
+ * Model PostIntegration
  * 
  */
-export type PostChannel = $Result.DefaultSelection<Prisma.$PostChannelPayload>
+export type PostIntegration = $Result.DefaultSelection<Prisma.$PostIntegrationPayload>
 /**
  * Model ActivityLog
  * 
@@ -164,33 +164,32 @@ export const PostStatus: {
 export type PostStatus = (typeof PostStatus)[keyof typeof PostStatus]
 
 
-export const SocialChannel: {
+export const IntegrationProvider: {
+  SANITY: 'SANITY',
   TWITTER: 'TWITTER',
   LINKEDIN: 'LINKEDIN'
 };
 
-export type SocialChannel = (typeof SocialChannel)[keyof typeof SocialChannel]
+export type IntegrationProvider = (typeof IntegrationProvider)[keyof typeof IntegrationProvider]
 
 
-export const SocialChannelConnectionStatus: {
+export const IntegrationStatus: {
   CONNECTED: 'CONNECTED',
   DISCONNECTED: 'DISCONNECTED',
-  EXPIRED: 'EXPIRED',
   ERROR: 'ERROR'
 };
 
-export type SocialChannelConnectionStatus = (typeof SocialChannelConnectionStatus)[keyof typeof SocialChannelConnectionStatus]
+export type IntegrationStatus = (typeof IntegrationStatus)[keyof typeof IntegrationStatus]
 
 
-export const PostChannelStatus: {
+export const PostIntegrationStatus: {
   PENDING: 'PENDING',
-  SCHEDULED: 'SCHEDULED',
   PUBLISHING: 'PUBLISHING',
   PUBLISHED: 'PUBLISHED',
   FAILED: 'FAILED'
 };
 
-export type PostChannelStatus = (typeof PostChannelStatus)[keyof typeof PostChannelStatus]
+export type PostIntegrationStatus = (typeof PostIntegrationStatus)[keyof typeof PostIntegrationStatus]
 
 
 export const OrganisationRole: {
@@ -275,11 +274,9 @@ export const ActivityLogAction: {
   POST_REPURPOSED: 'POST_REPURPOSED',
   POST_ATTACHMENT_ADDED: 'POST_ATTACHMENT_ADDED',
   POST_ATTACHMENT_REMOVED: 'POST_ATTACHMENT_REMOVED',
-  POST_CHANNEL_ADDED: 'POST_CHANNEL_ADDED',
-  POST_CHANNEL_REMOVED: 'POST_CHANNEL_REMOVED',
-  CHANNEL_CONNECTION_CREATED: 'CHANNEL_CONNECTION_CREATED',
-  CHANNEL_CONNECTION_UPDATED: 'CHANNEL_CONNECTION_UPDATED',
-  CHANNEL_CONNECTION_REMOVED: 'CHANNEL_CONNECTION_REMOVED'
+  INTEGRATION_CONNECTED: 'INTEGRATION_CONNECTED',
+  INTEGRATION_UPDATED: 'INTEGRATION_UPDATED',
+  INTEGRATION_REMOVED: 'INTEGRATION_REMOVED'
 };
 
 export type ActivityLogAction = (typeof ActivityLogAction)[keyof typeof ActivityLogAction]
@@ -296,7 +293,7 @@ export const ActivityLogEntityType: {
   AUTOMATION: 'AUTOMATION',
   GENERATION_RUN: 'GENERATION_RUN',
   POST: 'POST',
-  SOCIAL_CHANNEL_CONNECTION: 'SOCIAL_CHANNEL_CONNECTION'
+  INTEGRATION: 'INTEGRATION'
 };
 
 export type ActivityLogEntityType = (typeof ActivityLogEntityType)[keyof typeof ActivityLogEntityType]
@@ -319,17 +316,17 @@ export type PostStatus = $Enums.PostStatus
 
 export const PostStatus: typeof $Enums.PostStatus
 
-export type SocialChannel = $Enums.SocialChannel
+export type IntegrationProvider = $Enums.IntegrationProvider
 
-export const SocialChannel: typeof $Enums.SocialChannel
+export const IntegrationProvider: typeof $Enums.IntegrationProvider
 
-export type SocialChannelConnectionStatus = $Enums.SocialChannelConnectionStatus
+export type IntegrationStatus = $Enums.IntegrationStatus
 
-export const SocialChannelConnectionStatus: typeof $Enums.SocialChannelConnectionStatus
+export const IntegrationStatus: typeof $Enums.IntegrationStatus
 
-export type PostChannelStatus = $Enums.PostChannelStatus
+export type PostIntegrationStatus = $Enums.PostIntegrationStatus
 
-export const PostChannelStatus: typeof $Enums.PostChannelStatus
+export const PostIntegrationStatus: typeof $Enums.PostIntegrationStatus
 
 export type OrganisationRole = $Enums.OrganisationRole
 
@@ -533,14 +530,14 @@ export class PrismaClient<
   get organisationInviteToken(): Prisma.OrganisationInviteTokenDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.socialChannelConnection`: Exposes CRUD operations for the **SocialChannelConnection** model.
+   * `prisma.integration`: Exposes CRUD operations for the **Integration** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more SocialChannelConnections
-    * const socialChannelConnections = await prisma.socialChannelConnection.findMany()
+    * // Fetch zero or more Integrations
+    * const integrations = await prisma.integration.findMany()
     * ```
     */
-  get socialChannelConnection(): Prisma.SocialChannelConnectionDelegate<ExtArgs, ClientOptions>;
+  get integration(): Prisma.IntegrationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.styleProfile`: Exposes CRUD operations for the **StyleProfile** model.
@@ -653,14 +650,14 @@ export class PrismaClient<
   get postAttachment(): Prisma.PostAttachmentDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.postChannel`: Exposes CRUD operations for the **PostChannel** model.
+   * `prisma.postIntegration`: Exposes CRUD operations for the **PostIntegration** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more PostChannels
-    * const postChannels = await prisma.postChannel.findMany()
+    * // Fetch zero or more PostIntegrations
+    * const postIntegrations = await prisma.postIntegration.findMany()
     * ```
     */
-  get postChannel(): Prisma.PostChannelDelegate<ExtArgs, ClientOptions>;
+  get postIntegration(): Prisma.PostIntegrationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.activityLog`: Exposes CRUD operations for the **ActivityLog** model.
@@ -1111,7 +1108,7 @@ export namespace Prisma {
     Organisation: 'Organisation',
     OrganisationMember: 'OrganisationMember',
     OrganisationInviteToken: 'OrganisationInviteToken',
-    SocialChannelConnection: 'SocialChannelConnection',
+    Integration: 'Integration',
     StyleProfile: 'StyleProfile',
     Project: 'Project',
     RssFeed: 'RssFeed',
@@ -1123,7 +1120,7 @@ export namespace Prisma {
     Automation: 'Automation',
     Post: 'Post',
     PostAttachment: 'PostAttachment',
-    PostChannel: 'PostChannel',
+    PostIntegration: 'PostIntegration',
     ActivityLog: 'ActivityLog'
   };
 
@@ -1140,7 +1137,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "passwordResetToken" | "document" | "organisation" | "organisationMember" | "organisationInviteToken" | "socialChannelConnection" | "styleProfile" | "project" | "rssFeed" | "projectRssFeed" | "rssFeedItem" | "projectStyleProfile" | "generationRun" | "generationItem" | "automation" | "post" | "postAttachment" | "postChannel" | "activityLog"
+      modelProps: "user" | "passwordResetToken" | "document" | "organisation" | "organisationMember" | "organisationInviteToken" | "integration" | "styleProfile" | "project" | "rssFeed" | "projectRssFeed" | "rssFeedItem" | "projectStyleProfile" | "generationRun" | "generationItem" | "automation" | "post" | "postAttachment" | "postIntegration" | "activityLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1588,77 +1585,77 @@ export namespace Prisma {
           }
         }
       }
-      SocialChannelConnection: {
-        payload: Prisma.$SocialChannelConnectionPayload<ExtArgs>
-        fields: Prisma.SocialChannelConnectionFieldRefs
+      Integration: {
+        payload: Prisma.$IntegrationPayload<ExtArgs>
+        fields: Prisma.IntegrationFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.SocialChannelConnectionFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload> | null
+            args: Prisma.IntegrationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.SocialChannelConnectionFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload>
+            args: Prisma.IntegrationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
           }
           findFirst: {
-            args: Prisma.SocialChannelConnectionFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload> | null
+            args: Prisma.IntegrationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.SocialChannelConnectionFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload>
+            args: Prisma.IntegrationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
           }
           findMany: {
-            args: Prisma.SocialChannelConnectionFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload>[]
+            args: Prisma.IntegrationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>[]
           }
           create: {
-            args: Prisma.SocialChannelConnectionCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload>
+            args: Prisma.IntegrationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
           }
           createMany: {
-            args: Prisma.SocialChannelConnectionCreateManyArgs<ExtArgs>
+            args: Prisma.IntegrationCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.SocialChannelConnectionCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload>[]
+            args: Prisma.IntegrationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>[]
           }
           delete: {
-            args: Prisma.SocialChannelConnectionDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload>
+            args: Prisma.IntegrationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
           }
           update: {
-            args: Prisma.SocialChannelConnectionUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload>
+            args: Prisma.IntegrationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
           }
           deleteMany: {
-            args: Prisma.SocialChannelConnectionDeleteManyArgs<ExtArgs>
+            args: Prisma.IntegrationDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.SocialChannelConnectionUpdateManyArgs<ExtArgs>
+            args: Prisma.IntegrationUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.SocialChannelConnectionUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload>[]
+            args: Prisma.IntegrationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>[]
           }
           upsert: {
-            args: Prisma.SocialChannelConnectionUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SocialChannelConnectionPayload>
+            args: Prisma.IntegrationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IntegrationPayload>
           }
           aggregate: {
-            args: Prisma.SocialChannelConnectionAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateSocialChannelConnection>
+            args: Prisma.IntegrationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIntegration>
           }
           groupBy: {
-            args: Prisma.SocialChannelConnectionGroupByArgs<ExtArgs>
-            result: $Utils.Optional<SocialChannelConnectionGroupByOutputType>[]
+            args: Prisma.IntegrationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IntegrationGroupByOutputType>[]
           }
           count: {
-            args: Prisma.SocialChannelConnectionCountArgs<ExtArgs>
-            result: $Utils.Optional<SocialChannelConnectionCountAggregateOutputType> | number
+            args: Prisma.IntegrationCountArgs<ExtArgs>
+            result: $Utils.Optional<IntegrationCountAggregateOutputType> | number
           }
         }
       }
@@ -2476,77 +2473,77 @@ export namespace Prisma {
           }
         }
       }
-      PostChannel: {
-        payload: Prisma.$PostChannelPayload<ExtArgs>
-        fields: Prisma.PostChannelFieldRefs
+      PostIntegration: {
+        payload: Prisma.$PostIntegrationPayload<ExtArgs>
+        fields: Prisma.PostIntegrationFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.PostChannelFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload> | null
+            args: Prisma.PostIntegrationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.PostChannelFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload>
+            args: Prisma.PostIntegrationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload>
           }
           findFirst: {
-            args: Prisma.PostChannelFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload> | null
+            args: Prisma.PostIntegrationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.PostChannelFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload>
+            args: Prisma.PostIntegrationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload>
           }
           findMany: {
-            args: Prisma.PostChannelFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload>[]
+            args: Prisma.PostIntegrationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload>[]
           }
           create: {
-            args: Prisma.PostChannelCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload>
+            args: Prisma.PostIntegrationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload>
           }
           createMany: {
-            args: Prisma.PostChannelCreateManyArgs<ExtArgs>
+            args: Prisma.PostIntegrationCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.PostChannelCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload>[]
+            args: Prisma.PostIntegrationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload>[]
           }
           delete: {
-            args: Prisma.PostChannelDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload>
+            args: Prisma.PostIntegrationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload>
           }
           update: {
-            args: Prisma.PostChannelUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload>
+            args: Prisma.PostIntegrationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload>
           }
           deleteMany: {
-            args: Prisma.PostChannelDeleteManyArgs<ExtArgs>
+            args: Prisma.PostIntegrationDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.PostChannelUpdateManyArgs<ExtArgs>
+            args: Prisma.PostIntegrationUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.PostChannelUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload>[]
+            args: Prisma.PostIntegrationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload>[]
           }
           upsert: {
-            args: Prisma.PostChannelUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PostChannelPayload>
+            args: Prisma.PostIntegrationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostIntegrationPayload>
           }
           aggregate: {
-            args: Prisma.PostChannelAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregatePostChannel>
+            args: Prisma.PostIntegrationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePostIntegration>
           }
           groupBy: {
-            args: Prisma.PostChannelGroupByArgs<ExtArgs>
-            result: $Utils.Optional<PostChannelGroupByOutputType>[]
+            args: Prisma.PostIntegrationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PostIntegrationGroupByOutputType>[]
           }
           count: {
-            args: Prisma.PostChannelCountArgs<ExtArgs>
-            result: $Utils.Optional<PostChannelCountAggregateOutputType> | number
+            args: Prisma.PostIntegrationCountArgs<ExtArgs>
+            result: $Utils.Optional<PostIntegrationCountAggregateOutputType> | number
           }
         }
       }
@@ -2738,7 +2735,7 @@ export namespace Prisma {
     organisation?: OrganisationOmit
     organisationMember?: OrganisationMemberOmit
     organisationInviteToken?: OrganisationInviteTokenOmit
-    socialChannelConnection?: SocialChannelConnectionOmit
+    integration?: IntegrationOmit
     styleProfile?: StyleProfileOmit
     project?: ProjectOmit
     rssFeed?: RssFeedOmit
@@ -2750,7 +2747,7 @@ export namespace Prisma {
     automation?: AutomationOmit
     post?: PostOmit
     postAttachment?: PostAttachmentOmit
-    postChannel?: PostChannelOmit
+    postIntegration?: PostIntegrationOmit
     activityLog?: ActivityLogOmit
   }
 
@@ -2942,7 +2939,7 @@ export namespace Prisma {
     members: number
     documents: number
     posts: number
-    channel_connections: number
+    integrations: number
     style_profiles: number
     projects: number
     rss_feeds: number
@@ -2953,7 +2950,7 @@ export namespace Prisma {
     members?: boolean | OrganisationCountOutputTypeCountMembersArgs
     documents?: boolean | OrganisationCountOutputTypeCountDocumentsArgs
     posts?: boolean | OrganisationCountOutputTypeCountPostsArgs
-    channel_connections?: boolean | OrganisationCountOutputTypeCountChannel_connectionsArgs
+    integrations?: boolean | OrganisationCountOutputTypeCountIntegrationsArgs
     style_profiles?: boolean | OrganisationCountOutputTypeCountStyle_profilesArgs
     projects?: boolean | OrganisationCountOutputTypeCountProjectsArgs
     rss_feeds?: boolean | OrganisationCountOutputTypeCountRss_feedsArgs
@@ -2995,8 +2992,8 @@ export namespace Prisma {
   /**
    * OrganisationCountOutputType without action
    */
-  export type OrganisationCountOutputTypeCountChannel_connectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SocialChannelConnectionWhereInput
+  export type OrganisationCountOutputTypeCountIntegrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IntegrationWhereInput
   }
 
   /**
@@ -3060,33 +3057,33 @@ export namespace Prisma {
 
 
   /**
-   * Count Type SocialChannelConnectionCountOutputType
+   * Count Type IntegrationCountOutputType
    */
 
-  export type SocialChannelConnectionCountOutputType = {
-    post_channels: number
+  export type IntegrationCountOutputType = {
+    post_integrations: number
   }
 
-  export type SocialChannelConnectionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    post_channels?: boolean | SocialChannelConnectionCountOutputTypeCountPost_channelsArgs
+  export type IntegrationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    post_integrations?: boolean | IntegrationCountOutputTypeCountPost_integrationsArgs
   }
 
   // Custom InputTypes
   /**
-   * SocialChannelConnectionCountOutputType without action
+   * IntegrationCountOutputType without action
    */
-  export type SocialChannelConnectionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnectionCountOutputType
+     * Select specific fields to fetch from the IntegrationCountOutputType
      */
-    select?: SocialChannelConnectionCountOutputTypeSelect<ExtArgs> | null
+    select?: IntegrationCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * SocialChannelConnectionCountOutputType without action
+   * IntegrationCountOutputType without action
    */
-  export type SocialChannelConnectionCountOutputTypeCountPost_channelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PostChannelWhereInput
+  export type IntegrationCountOutputTypeCountPost_integrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostIntegrationWhereInput
   }
 
 
@@ -3413,13 +3410,13 @@ export namespace Prisma {
   export type PostCountOutputType = {
     repurposed_posts: number
     attachments: number
-    channels: number
+    integrations: number
   }
 
   export type PostCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     repurposed_posts?: boolean | PostCountOutputTypeCountRepurposed_postsArgs
     attachments?: boolean | PostCountOutputTypeCountAttachmentsArgs
-    channels?: boolean | PostCountOutputTypeCountChannelsArgs
+    integrations?: boolean | PostCountOutputTypeCountIntegrationsArgs
   }
 
   // Custom InputTypes
@@ -3450,8 +3447,8 @@ export namespace Prisma {
   /**
    * PostCountOutputType without action
    */
-  export type PostCountOutputTypeCountChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PostChannelWhereInput
+  export type PostCountOutputTypeCountIntegrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostIntegrationWhereInput
   }
 
 
@@ -7129,7 +7126,7 @@ export namespace Prisma {
     members?: boolean | Organisation$membersArgs<ExtArgs>
     documents?: boolean | Organisation$documentsArgs<ExtArgs>
     posts?: boolean | Organisation$postsArgs<ExtArgs>
-    channel_connections?: boolean | Organisation$channel_connectionsArgs<ExtArgs>
+    integrations?: boolean | Organisation$integrationsArgs<ExtArgs>
     style_profiles?: boolean | Organisation$style_profilesArgs<ExtArgs>
     projects?: boolean | Organisation$projectsArgs<ExtArgs>
     rss_feeds?: boolean | Organisation$rss_feedsArgs<ExtArgs>
@@ -7172,7 +7169,7 @@ export namespace Prisma {
     members?: boolean | Organisation$membersArgs<ExtArgs>
     documents?: boolean | Organisation$documentsArgs<ExtArgs>
     posts?: boolean | Organisation$postsArgs<ExtArgs>
-    channel_connections?: boolean | Organisation$channel_connectionsArgs<ExtArgs>
+    integrations?: boolean | Organisation$integrationsArgs<ExtArgs>
     style_profiles?: boolean | Organisation$style_profilesArgs<ExtArgs>
     projects?: boolean | Organisation$projectsArgs<ExtArgs>
     rss_feeds?: boolean | Organisation$rss_feedsArgs<ExtArgs>
@@ -7193,7 +7190,7 @@ export namespace Prisma {
       members: Prisma.$OrganisationMemberPayload<ExtArgs>[]
       documents: Prisma.$DocumentPayload<ExtArgs>[]
       posts: Prisma.$PostPayload<ExtArgs>[]
-      channel_connections: Prisma.$SocialChannelConnectionPayload<ExtArgs>[]
+      integrations: Prisma.$IntegrationPayload<ExtArgs>[]
       style_profiles: Prisma.$StyleProfilePayload<ExtArgs>[]
       projects: Prisma.$ProjectPayload<ExtArgs>[]
       rss_feeds: Prisma.$RssFeedPayload<ExtArgs>[]
@@ -7604,7 +7601,7 @@ export namespace Prisma {
     members<T extends Organisation$membersArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganisationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     documents<T extends Organisation$documentsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     posts<T extends Organisation$postsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    channel_connections<T extends Organisation$channel_connectionsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$channel_connectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    integrations<T extends Organisation$integrationsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$integrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     style_profiles<T extends Organisation$style_profilesArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$style_profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StyleProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projects<T extends Organisation$projectsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     rss_feeds<T extends Organisation$rss_feedsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$rss_feedsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8112,27 +8109,27 @@ export namespace Prisma {
   }
 
   /**
-   * Organisation.channel_connections
+   * Organisation.integrations
    */
-  export type Organisation$channel_connectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Organisation$integrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
-    where?: SocialChannelConnectionWhereInput
-    orderBy?: SocialChannelConnectionOrderByWithRelationInput | SocialChannelConnectionOrderByWithRelationInput[]
-    cursor?: SocialChannelConnectionWhereUniqueInput
+    include?: IntegrationInclude<ExtArgs> | null
+    where?: IntegrationWhereInput
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
+    cursor?: IntegrationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: SocialChannelConnectionScalarFieldEnum | SocialChannelConnectionScalarFieldEnum[]
+    distinct?: IntegrationScalarFieldEnum | IntegrationScalarFieldEnum[]
   }
 
   /**
@@ -10457,427 +10454,487 @@ export namespace Prisma {
 
 
   /**
-   * Model SocialChannelConnection
+   * Model Integration
    */
 
-  export type AggregateSocialChannelConnection = {
-    _count: SocialChannelConnectionCountAggregateOutputType | null
-    _min: SocialChannelConnectionMinAggregateOutputType | null
-    _max: SocialChannelConnectionMaxAggregateOutputType | null
+  export type AggregateIntegration = {
+    _count: IntegrationCountAggregateOutputType | null
+    _min: IntegrationMinAggregateOutputType | null
+    _max: IntegrationMaxAggregateOutputType | null
   }
 
-  export type SocialChannelConnectionMinAggregateOutputType = {
+  export type IntegrationMinAggregateOutputType = {
     id: string | null
     organisation_id: string | null
-    channel: $Enums.SocialChannel | null
-    status: $Enums.SocialChannelConnectionStatus | null
+    provider: $Enums.IntegrationProvider | null
+    name: string | null
+    status: $Enums.IntegrationStatus | null
     external_account_id: string | null
     external_account_name: string | null
-    access_token: string | null
-    refresh_token: string | null
+    access_token_encrypted: string | null
+    refresh_token_encrypted: string | null
     token_expires_at: Date | null
+    external_project_id: string | null
+    external_dataset: string | null
+    document_type: string | null
+    api_token_encrypted: string | null
     created_at: Date | null
     updated_at: Date | null
   }
 
-  export type SocialChannelConnectionMaxAggregateOutputType = {
+  export type IntegrationMaxAggregateOutputType = {
     id: string | null
     organisation_id: string | null
-    channel: $Enums.SocialChannel | null
-    status: $Enums.SocialChannelConnectionStatus | null
+    provider: $Enums.IntegrationProvider | null
+    name: string | null
+    status: $Enums.IntegrationStatus | null
     external_account_id: string | null
     external_account_name: string | null
-    access_token: string | null
-    refresh_token: string | null
+    access_token_encrypted: string | null
+    refresh_token_encrypted: string | null
     token_expires_at: Date | null
+    external_project_id: string | null
+    external_dataset: string | null
+    document_type: string | null
+    api_token_encrypted: string | null
     created_at: Date | null
     updated_at: Date | null
   }
 
-  export type SocialChannelConnectionCountAggregateOutputType = {
+  export type IntegrationCountAggregateOutputType = {
     id: number
     organisation_id: number
-    channel: number
+    provider: number
+    name: number
     status: number
     external_account_id: number
     external_account_name: number
-    access_token: number
-    refresh_token: number
+    access_token_encrypted: number
+    refresh_token_encrypted: number
     token_expires_at: number
+    external_project_id: number
+    external_dataset: number
+    document_type: number
+    api_token_encrypted: number
     created_at: number
     updated_at: number
     _all: number
   }
 
 
-  export type SocialChannelConnectionMinAggregateInputType = {
+  export type IntegrationMinAggregateInputType = {
     id?: true
     organisation_id?: true
-    channel?: true
+    provider?: true
+    name?: true
     status?: true
     external_account_id?: true
     external_account_name?: true
-    access_token?: true
-    refresh_token?: true
+    access_token_encrypted?: true
+    refresh_token_encrypted?: true
     token_expires_at?: true
+    external_project_id?: true
+    external_dataset?: true
+    document_type?: true
+    api_token_encrypted?: true
     created_at?: true
     updated_at?: true
   }
 
-  export type SocialChannelConnectionMaxAggregateInputType = {
+  export type IntegrationMaxAggregateInputType = {
     id?: true
     organisation_id?: true
-    channel?: true
+    provider?: true
+    name?: true
     status?: true
     external_account_id?: true
     external_account_name?: true
-    access_token?: true
-    refresh_token?: true
+    access_token_encrypted?: true
+    refresh_token_encrypted?: true
     token_expires_at?: true
+    external_project_id?: true
+    external_dataset?: true
+    document_type?: true
+    api_token_encrypted?: true
     created_at?: true
     updated_at?: true
   }
 
-  export type SocialChannelConnectionCountAggregateInputType = {
+  export type IntegrationCountAggregateInputType = {
     id?: true
     organisation_id?: true
-    channel?: true
+    provider?: true
+    name?: true
     status?: true
     external_account_id?: true
     external_account_name?: true
-    access_token?: true
-    refresh_token?: true
+    access_token_encrypted?: true
+    refresh_token_encrypted?: true
     token_expires_at?: true
+    external_project_id?: true
+    external_dataset?: true
+    document_type?: true
+    api_token_encrypted?: true
     created_at?: true
     updated_at?: true
     _all?: true
   }
 
-  export type SocialChannelConnectionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which SocialChannelConnection to aggregate.
+     * Filter which Integration to aggregate.
      */
-    where?: SocialChannelConnectionWhereInput
+    where?: IntegrationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SocialChannelConnections to fetch.
+     * Determine the order of Integrations to fetch.
      */
-    orderBy?: SocialChannelConnectionOrderByWithRelationInput | SocialChannelConnectionOrderByWithRelationInput[]
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: SocialChannelConnectionWhereUniqueInput
+    cursor?: IntegrationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SocialChannelConnections from the position of the cursor.
+     * Take `±n` Integrations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SocialChannelConnections.
+     * Skip the first `n` Integrations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned SocialChannelConnections
+     * Count returned Integrations
     **/
-    _count?: true | SocialChannelConnectionCountAggregateInputType
+    _count?: true | IntegrationCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: SocialChannelConnectionMinAggregateInputType
+    _min?: IntegrationMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: SocialChannelConnectionMaxAggregateInputType
+    _max?: IntegrationMaxAggregateInputType
   }
 
-  export type GetSocialChannelConnectionAggregateType<T extends SocialChannelConnectionAggregateArgs> = {
-        [P in keyof T & keyof AggregateSocialChannelConnection]: P extends '_count' | 'count'
+  export type GetIntegrationAggregateType<T extends IntegrationAggregateArgs> = {
+        [P in keyof T & keyof AggregateIntegration]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateSocialChannelConnection[P]>
-      : GetScalarType<T[P], AggregateSocialChannelConnection[P]>
+        : GetScalarType<T[P], AggregateIntegration[P]>
+      : GetScalarType<T[P], AggregateIntegration[P]>
   }
 
 
 
 
-  export type SocialChannelConnectionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SocialChannelConnectionWhereInput
-    orderBy?: SocialChannelConnectionOrderByWithAggregationInput | SocialChannelConnectionOrderByWithAggregationInput[]
-    by: SocialChannelConnectionScalarFieldEnum[] | SocialChannelConnectionScalarFieldEnum
-    having?: SocialChannelConnectionScalarWhereWithAggregatesInput
+  export type IntegrationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IntegrationWhereInput
+    orderBy?: IntegrationOrderByWithAggregationInput | IntegrationOrderByWithAggregationInput[]
+    by: IntegrationScalarFieldEnum[] | IntegrationScalarFieldEnum
+    having?: IntegrationScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: SocialChannelConnectionCountAggregateInputType | true
-    _min?: SocialChannelConnectionMinAggregateInputType
-    _max?: SocialChannelConnectionMaxAggregateInputType
+    _count?: IntegrationCountAggregateInputType | true
+    _min?: IntegrationMinAggregateInputType
+    _max?: IntegrationMaxAggregateInputType
   }
 
-  export type SocialChannelConnectionGroupByOutputType = {
+  export type IntegrationGroupByOutputType = {
     id: string
     organisation_id: string
-    channel: $Enums.SocialChannel
-    status: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
+    provider: $Enums.IntegrationProvider
+    name: string
+    status: $Enums.IntegrationStatus
+    external_account_id: string | null
     external_account_name: string | null
-    access_token: string
-    refresh_token: string | null
+    access_token_encrypted: string | null
+    refresh_token_encrypted: string | null
     token_expires_at: Date | null
+    external_project_id: string | null
+    external_dataset: string | null
+    document_type: string | null
+    api_token_encrypted: string | null
     created_at: Date
     updated_at: Date
-    _count: SocialChannelConnectionCountAggregateOutputType | null
-    _min: SocialChannelConnectionMinAggregateOutputType | null
-    _max: SocialChannelConnectionMaxAggregateOutputType | null
+    _count: IntegrationCountAggregateOutputType | null
+    _min: IntegrationMinAggregateOutputType | null
+    _max: IntegrationMaxAggregateOutputType | null
   }
 
-  type GetSocialChannelConnectionGroupByPayload<T extends SocialChannelConnectionGroupByArgs> = Prisma.PrismaPromise<
+  type GetIntegrationGroupByPayload<T extends IntegrationGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<SocialChannelConnectionGroupByOutputType, T['by']> &
+      PickEnumerable<IntegrationGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof SocialChannelConnectionGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof IntegrationGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], SocialChannelConnectionGroupByOutputType[P]>
-            : GetScalarType<T[P], SocialChannelConnectionGroupByOutputType[P]>
+              : GetScalarType<T[P], IntegrationGroupByOutputType[P]>
+            : GetScalarType<T[P], IntegrationGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type SocialChannelConnectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type IntegrationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     organisation_id?: boolean
-    channel?: boolean
+    provider?: boolean
+    name?: boolean
     status?: boolean
     external_account_id?: boolean
     external_account_name?: boolean
-    access_token?: boolean
-    refresh_token?: boolean
+    access_token_encrypted?: boolean
+    refresh_token_encrypted?: boolean
     token_expires_at?: boolean
+    external_project_id?: boolean
+    external_dataset?: boolean
+    document_type?: boolean
+    api_token_encrypted?: boolean
     created_at?: boolean
     updated_at?: boolean
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
-    post_channels?: boolean | SocialChannelConnection$post_channelsArgs<ExtArgs>
-    _count?: boolean | SocialChannelConnectionCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["socialChannelConnection"]>
+    post_integrations?: boolean | Integration$post_integrationsArgs<ExtArgs>
+    _count?: boolean | IntegrationCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["integration"]>
 
-  export type SocialChannelConnectionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type IntegrationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     organisation_id?: boolean
-    channel?: boolean
+    provider?: boolean
+    name?: boolean
     status?: boolean
     external_account_id?: boolean
     external_account_name?: boolean
-    access_token?: boolean
-    refresh_token?: boolean
+    access_token_encrypted?: boolean
+    refresh_token_encrypted?: boolean
     token_expires_at?: boolean
+    external_project_id?: boolean
+    external_dataset?: boolean
+    document_type?: boolean
+    api_token_encrypted?: boolean
     created_at?: boolean
     updated_at?: boolean
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["socialChannelConnection"]>
+  }, ExtArgs["result"]["integration"]>
 
-  export type SocialChannelConnectionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type IntegrationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     organisation_id?: boolean
-    channel?: boolean
+    provider?: boolean
+    name?: boolean
     status?: boolean
     external_account_id?: boolean
     external_account_name?: boolean
-    access_token?: boolean
-    refresh_token?: boolean
+    access_token_encrypted?: boolean
+    refresh_token_encrypted?: boolean
     token_expires_at?: boolean
+    external_project_id?: boolean
+    external_dataset?: boolean
+    document_type?: boolean
+    api_token_encrypted?: boolean
     created_at?: boolean
     updated_at?: boolean
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["socialChannelConnection"]>
+  }, ExtArgs["result"]["integration"]>
 
-  export type SocialChannelConnectionSelectScalar = {
+  export type IntegrationSelectScalar = {
     id?: boolean
     organisation_id?: boolean
-    channel?: boolean
+    provider?: boolean
+    name?: boolean
     status?: boolean
     external_account_id?: boolean
     external_account_name?: boolean
-    access_token?: boolean
-    refresh_token?: boolean
+    access_token_encrypted?: boolean
+    refresh_token_encrypted?: boolean
     token_expires_at?: boolean
+    external_project_id?: boolean
+    external_dataset?: boolean
+    document_type?: boolean
+    api_token_encrypted?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type SocialChannelConnectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "channel" | "status" | "external_account_id" | "external_account_name" | "access_token" | "refresh_token" | "token_expires_at" | "created_at" | "updated_at", ExtArgs["result"]["socialChannelConnection"]>
-  export type SocialChannelConnectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "provider" | "name" | "status" | "external_account_id" | "external_account_name" | "access_token_encrypted" | "refresh_token_encrypted" | "token_expires_at" | "external_project_id" | "external_dataset" | "document_type" | "api_token_encrypted" | "created_at" | "updated_at", ExtArgs["result"]["integration"]>
+  export type IntegrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
-    post_channels?: boolean | SocialChannelConnection$post_channelsArgs<ExtArgs>
-    _count?: boolean | SocialChannelConnectionCountOutputTypeDefaultArgs<ExtArgs>
+    post_integrations?: boolean | Integration$post_integrationsArgs<ExtArgs>
+    _count?: boolean | IntegrationCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type SocialChannelConnectionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
-  export type SocialChannelConnectionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
   }
 
-  export type $SocialChannelConnectionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "SocialChannelConnection"
+  export type $IntegrationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Integration"
     objects: {
       organisation: Prisma.$OrganisationPayload<ExtArgs>
-      post_channels: Prisma.$PostChannelPayload<ExtArgs>[]
+      post_integrations: Prisma.$PostIntegrationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       organisation_id: string
-      channel: $Enums.SocialChannel
-      status: $Enums.SocialChannelConnectionStatus
-      external_account_id: string
+      provider: $Enums.IntegrationProvider
+      name: string
+      status: $Enums.IntegrationStatus
+      external_account_id: string | null
       external_account_name: string | null
-      access_token: string
-      refresh_token: string | null
+      access_token_encrypted: string | null
+      refresh_token_encrypted: string | null
       token_expires_at: Date | null
+      external_project_id: string | null
+      external_dataset: string | null
+      document_type: string | null
+      api_token_encrypted: string | null
       created_at: Date
       updated_at: Date
-    }, ExtArgs["result"]["socialChannelConnection"]>
+    }, ExtArgs["result"]["integration"]>
     composites: {}
   }
 
-  type SocialChannelConnectionGetPayload<S extends boolean | null | undefined | SocialChannelConnectionDefaultArgs> = $Result.GetResult<Prisma.$SocialChannelConnectionPayload, S>
+  type IntegrationGetPayload<S extends boolean | null | undefined | IntegrationDefaultArgs> = $Result.GetResult<Prisma.$IntegrationPayload, S>
 
-  type SocialChannelConnectionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<SocialChannelConnectionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: SocialChannelConnectionCountAggregateInputType | true
+  type IntegrationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IntegrationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IntegrationCountAggregateInputType | true
     }
 
-  export interface SocialChannelConnectionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SocialChannelConnection'], meta: { name: 'SocialChannelConnection' } }
+  export interface IntegrationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Integration'], meta: { name: 'Integration' } }
     /**
-     * Find zero or one SocialChannelConnection that matches the filter.
-     * @param {SocialChannelConnectionFindUniqueArgs} args - Arguments to find a SocialChannelConnection
+     * Find zero or one Integration that matches the filter.
+     * @param {IntegrationFindUniqueArgs} args - Arguments to find a Integration
      * @example
-     * // Get one SocialChannelConnection
-     * const socialChannelConnection = await prisma.socialChannelConnection.findUnique({
+     * // Get one Integration
+     * const integration = await prisma.integration.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends SocialChannelConnectionFindUniqueArgs>(args: SelectSubset<T, SocialChannelConnectionFindUniqueArgs<ExtArgs>>): Prisma__SocialChannelConnectionClient<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends IntegrationFindUniqueArgs>(args: SelectSubset<T, IntegrationFindUniqueArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one SocialChannelConnection that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Integration that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {SocialChannelConnectionFindUniqueOrThrowArgs} args - Arguments to find a SocialChannelConnection
+     * @param {IntegrationFindUniqueOrThrowArgs} args - Arguments to find a Integration
      * @example
-     * // Get one SocialChannelConnection
-     * const socialChannelConnection = await prisma.socialChannelConnection.findUniqueOrThrow({
+     * // Get one Integration
+     * const integration = await prisma.integration.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends SocialChannelConnectionFindUniqueOrThrowArgs>(args: SelectSubset<T, SocialChannelConnectionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SocialChannelConnectionClient<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends IntegrationFindUniqueOrThrowArgs>(args: SelectSubset<T, IntegrationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first SocialChannelConnection that matches the filter.
+     * Find the first Integration that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SocialChannelConnectionFindFirstArgs} args - Arguments to find a SocialChannelConnection
+     * @param {IntegrationFindFirstArgs} args - Arguments to find a Integration
      * @example
-     * // Get one SocialChannelConnection
-     * const socialChannelConnection = await prisma.socialChannelConnection.findFirst({
+     * // Get one Integration
+     * const integration = await prisma.integration.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends SocialChannelConnectionFindFirstArgs>(args?: SelectSubset<T, SocialChannelConnectionFindFirstArgs<ExtArgs>>): Prisma__SocialChannelConnectionClient<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends IntegrationFindFirstArgs>(args?: SelectSubset<T, IntegrationFindFirstArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first SocialChannelConnection that matches the filter or
+     * Find the first Integration that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SocialChannelConnectionFindFirstOrThrowArgs} args - Arguments to find a SocialChannelConnection
+     * @param {IntegrationFindFirstOrThrowArgs} args - Arguments to find a Integration
      * @example
-     * // Get one SocialChannelConnection
-     * const socialChannelConnection = await prisma.socialChannelConnection.findFirstOrThrow({
+     * // Get one Integration
+     * const integration = await prisma.integration.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends SocialChannelConnectionFindFirstOrThrowArgs>(args?: SelectSubset<T, SocialChannelConnectionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SocialChannelConnectionClient<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends IntegrationFindFirstOrThrowArgs>(args?: SelectSubset<T, IntegrationFindFirstOrThrowArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more SocialChannelConnections that matches the filter.
+     * Find zero or more Integrations that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SocialChannelConnectionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {IntegrationFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all SocialChannelConnections
-     * const socialChannelConnections = await prisma.socialChannelConnection.findMany()
+     * // Get all Integrations
+     * const integrations = await prisma.integration.findMany()
      * 
-     * // Get first 10 SocialChannelConnections
-     * const socialChannelConnections = await prisma.socialChannelConnection.findMany({ take: 10 })
+     * // Get first 10 Integrations
+     * const integrations = await prisma.integration.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const socialChannelConnectionWithIdOnly = await prisma.socialChannelConnection.findMany({ select: { id: true } })
+     * const integrationWithIdOnly = await prisma.integration.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends SocialChannelConnectionFindManyArgs>(args?: SelectSubset<T, SocialChannelConnectionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends IntegrationFindManyArgs>(args?: SelectSubset<T, IntegrationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a SocialChannelConnection.
-     * @param {SocialChannelConnectionCreateArgs} args - Arguments to create a SocialChannelConnection.
+     * Create a Integration.
+     * @param {IntegrationCreateArgs} args - Arguments to create a Integration.
      * @example
-     * // Create one SocialChannelConnection
-     * const SocialChannelConnection = await prisma.socialChannelConnection.create({
+     * // Create one Integration
+     * const Integration = await prisma.integration.create({
      *   data: {
-     *     // ... data to create a SocialChannelConnection
+     *     // ... data to create a Integration
      *   }
      * })
      * 
      */
-    create<T extends SocialChannelConnectionCreateArgs>(args: SelectSubset<T, SocialChannelConnectionCreateArgs<ExtArgs>>): Prisma__SocialChannelConnectionClient<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends IntegrationCreateArgs>(args: SelectSubset<T, IntegrationCreateArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many SocialChannelConnections.
-     * @param {SocialChannelConnectionCreateManyArgs} args - Arguments to create many SocialChannelConnections.
+     * Create many Integrations.
+     * @param {IntegrationCreateManyArgs} args - Arguments to create many Integrations.
      * @example
-     * // Create many SocialChannelConnections
-     * const socialChannelConnection = await prisma.socialChannelConnection.createMany({
+     * // Create many Integrations
+     * const integration = await prisma.integration.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends SocialChannelConnectionCreateManyArgs>(args?: SelectSubset<T, SocialChannelConnectionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends IntegrationCreateManyArgs>(args?: SelectSubset<T, IntegrationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many SocialChannelConnections and returns the data saved in the database.
-     * @param {SocialChannelConnectionCreateManyAndReturnArgs} args - Arguments to create many SocialChannelConnections.
+     * Create many Integrations and returns the data saved in the database.
+     * @param {IntegrationCreateManyAndReturnArgs} args - Arguments to create many Integrations.
      * @example
-     * // Create many SocialChannelConnections
-     * const socialChannelConnection = await prisma.socialChannelConnection.createManyAndReturn({
+     * // Create many Integrations
+     * const integration = await prisma.integration.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many SocialChannelConnections and only return the `id`
-     * const socialChannelConnectionWithIdOnly = await prisma.socialChannelConnection.createManyAndReturn({
+     * // Create many Integrations and only return the `id`
+     * const integrationWithIdOnly = await prisma.integration.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -10887,28 +10944,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends SocialChannelConnectionCreateManyAndReturnArgs>(args?: SelectSubset<T, SocialChannelConnectionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends IntegrationCreateManyAndReturnArgs>(args?: SelectSubset<T, IntegrationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a SocialChannelConnection.
-     * @param {SocialChannelConnectionDeleteArgs} args - Arguments to delete one SocialChannelConnection.
+     * Delete a Integration.
+     * @param {IntegrationDeleteArgs} args - Arguments to delete one Integration.
      * @example
-     * // Delete one SocialChannelConnection
-     * const SocialChannelConnection = await prisma.socialChannelConnection.delete({
+     * // Delete one Integration
+     * const Integration = await prisma.integration.delete({
      *   where: {
-     *     // ... filter to delete one SocialChannelConnection
+     *     // ... filter to delete one Integration
      *   }
      * })
      * 
      */
-    delete<T extends SocialChannelConnectionDeleteArgs>(args: SelectSubset<T, SocialChannelConnectionDeleteArgs<ExtArgs>>): Prisma__SocialChannelConnectionClient<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends IntegrationDeleteArgs>(args: SelectSubset<T, IntegrationDeleteArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one SocialChannelConnection.
-     * @param {SocialChannelConnectionUpdateArgs} args - Arguments to update one SocialChannelConnection.
+     * Update one Integration.
+     * @param {IntegrationUpdateArgs} args - Arguments to update one Integration.
      * @example
-     * // Update one SocialChannelConnection
-     * const socialChannelConnection = await prisma.socialChannelConnection.update({
+     * // Update one Integration
+     * const integration = await prisma.integration.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10918,30 +10975,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends SocialChannelConnectionUpdateArgs>(args: SelectSubset<T, SocialChannelConnectionUpdateArgs<ExtArgs>>): Prisma__SocialChannelConnectionClient<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends IntegrationUpdateArgs>(args: SelectSubset<T, IntegrationUpdateArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more SocialChannelConnections.
-     * @param {SocialChannelConnectionDeleteManyArgs} args - Arguments to filter SocialChannelConnections to delete.
+     * Delete zero or more Integrations.
+     * @param {IntegrationDeleteManyArgs} args - Arguments to filter Integrations to delete.
      * @example
-     * // Delete a few SocialChannelConnections
-     * const { count } = await prisma.socialChannelConnection.deleteMany({
+     * // Delete a few Integrations
+     * const { count } = await prisma.integration.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends SocialChannelConnectionDeleteManyArgs>(args?: SelectSubset<T, SocialChannelConnectionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends IntegrationDeleteManyArgs>(args?: SelectSubset<T, IntegrationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more SocialChannelConnections.
+     * Update zero or more Integrations.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SocialChannelConnectionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {IntegrationUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many SocialChannelConnections
-     * const socialChannelConnection = await prisma.socialChannelConnection.updateMany({
+     * // Update many Integrations
+     * const integration = await prisma.integration.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10951,14 +11008,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends SocialChannelConnectionUpdateManyArgs>(args: SelectSubset<T, SocialChannelConnectionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends IntegrationUpdateManyArgs>(args: SelectSubset<T, IntegrationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more SocialChannelConnections and returns the data updated in the database.
-     * @param {SocialChannelConnectionUpdateManyAndReturnArgs} args - Arguments to update many SocialChannelConnections.
+     * Update zero or more Integrations and returns the data updated in the database.
+     * @param {IntegrationUpdateManyAndReturnArgs} args - Arguments to update many Integrations.
      * @example
-     * // Update many SocialChannelConnections
-     * const socialChannelConnection = await prisma.socialChannelConnection.updateManyAndReturn({
+     * // Update many Integrations
+     * const integration = await prisma.integration.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10967,8 +11024,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more SocialChannelConnections and only return the `id`
-     * const socialChannelConnectionWithIdOnly = await prisma.socialChannelConnection.updateManyAndReturn({
+     * // Update zero or more Integrations and only return the `id`
+     * const integrationWithIdOnly = await prisma.integration.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -10981,56 +11038,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends SocialChannelConnectionUpdateManyAndReturnArgs>(args: SelectSubset<T, SocialChannelConnectionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends IntegrationUpdateManyAndReturnArgs>(args: SelectSubset<T, IntegrationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one SocialChannelConnection.
-     * @param {SocialChannelConnectionUpsertArgs} args - Arguments to update or create a SocialChannelConnection.
+     * Create or update one Integration.
+     * @param {IntegrationUpsertArgs} args - Arguments to update or create a Integration.
      * @example
-     * // Update or create a SocialChannelConnection
-     * const socialChannelConnection = await prisma.socialChannelConnection.upsert({
+     * // Update or create a Integration
+     * const integration = await prisma.integration.upsert({
      *   create: {
-     *     // ... data to create a SocialChannelConnection
+     *     // ... data to create a Integration
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the SocialChannelConnection we want to update
+     *     // ... the filter for the Integration we want to update
      *   }
      * })
      */
-    upsert<T extends SocialChannelConnectionUpsertArgs>(args: SelectSubset<T, SocialChannelConnectionUpsertArgs<ExtArgs>>): Prisma__SocialChannelConnectionClient<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends IntegrationUpsertArgs>(args: SelectSubset<T, IntegrationUpsertArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of SocialChannelConnections.
+     * Count the number of Integrations.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SocialChannelConnectionCountArgs} args - Arguments to filter SocialChannelConnections to count.
+     * @param {IntegrationCountArgs} args - Arguments to filter Integrations to count.
      * @example
-     * // Count the number of SocialChannelConnections
-     * const count = await prisma.socialChannelConnection.count({
+     * // Count the number of Integrations
+     * const count = await prisma.integration.count({
      *   where: {
-     *     // ... the filter for the SocialChannelConnections we want to count
+     *     // ... the filter for the Integrations we want to count
      *   }
      * })
     **/
-    count<T extends SocialChannelConnectionCountArgs>(
-      args?: Subset<T, SocialChannelConnectionCountArgs>,
+    count<T extends IntegrationCountArgs>(
+      args?: Subset<T, IntegrationCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], SocialChannelConnectionCountAggregateOutputType>
+          : GetScalarType<T['select'], IntegrationCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a SocialChannelConnection.
+     * Allows you to perform aggregations operations on a Integration.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SocialChannelConnectionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {IntegrationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -11050,13 +11107,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends SocialChannelConnectionAggregateArgs>(args: Subset<T, SocialChannelConnectionAggregateArgs>): Prisma.PrismaPromise<GetSocialChannelConnectionAggregateType<T>>
+    aggregate<T extends IntegrationAggregateArgs>(args: Subset<T, IntegrationAggregateArgs>): Prisma.PrismaPromise<GetIntegrationAggregateType<T>>
 
     /**
-     * Group by SocialChannelConnection.
+     * Group by Integration.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SocialChannelConnectionGroupByArgs} args - Group by arguments.
+     * @param {IntegrationGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -11071,14 +11128,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends SocialChannelConnectionGroupByArgs,
+      T extends IntegrationGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: SocialChannelConnectionGroupByArgs['orderBy'] }
-        : { orderBy?: SocialChannelConnectionGroupByArgs['orderBy'] },
+        ? { orderBy: IntegrationGroupByArgs['orderBy'] }
+        : { orderBy?: IntegrationGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -11127,23 +11184,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, SocialChannelConnectionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSocialChannelConnectionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, IntegrationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIntegrationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the SocialChannelConnection model
+   * Fields of the Integration model
    */
-  readonly fields: SocialChannelConnectionFieldRefs;
+  readonly fields: IntegrationFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for SocialChannelConnection.
+   * The delegate class that acts as a "Promise-like" for Integration.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__SocialChannelConnectionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__IntegrationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organisation<T extends OrganisationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganisationDefaultArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    post_channels<T extends SocialChannelConnection$post_channelsArgs<ExtArgs> = {}>(args?: Subset<T, SocialChannelConnection$post_channelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    post_integrations<T extends Integration$post_integrationsArgs<ExtArgs> = {}>(args?: Subset<T, Integration$post_integrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11170,455 +11227,460 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the SocialChannelConnection model
+   * Fields of the Integration model
    */
-  interface SocialChannelConnectionFieldRefs {
-    readonly id: FieldRef<"SocialChannelConnection", 'String'>
-    readonly organisation_id: FieldRef<"SocialChannelConnection", 'String'>
-    readonly channel: FieldRef<"SocialChannelConnection", 'SocialChannel'>
-    readonly status: FieldRef<"SocialChannelConnection", 'SocialChannelConnectionStatus'>
-    readonly external_account_id: FieldRef<"SocialChannelConnection", 'String'>
-    readonly external_account_name: FieldRef<"SocialChannelConnection", 'String'>
-    readonly access_token: FieldRef<"SocialChannelConnection", 'String'>
-    readonly refresh_token: FieldRef<"SocialChannelConnection", 'String'>
-    readonly token_expires_at: FieldRef<"SocialChannelConnection", 'DateTime'>
-    readonly created_at: FieldRef<"SocialChannelConnection", 'DateTime'>
-    readonly updated_at: FieldRef<"SocialChannelConnection", 'DateTime'>
+  interface IntegrationFieldRefs {
+    readonly id: FieldRef<"Integration", 'String'>
+    readonly organisation_id: FieldRef<"Integration", 'String'>
+    readonly provider: FieldRef<"Integration", 'IntegrationProvider'>
+    readonly name: FieldRef<"Integration", 'String'>
+    readonly status: FieldRef<"Integration", 'IntegrationStatus'>
+    readonly external_account_id: FieldRef<"Integration", 'String'>
+    readonly external_account_name: FieldRef<"Integration", 'String'>
+    readonly access_token_encrypted: FieldRef<"Integration", 'String'>
+    readonly refresh_token_encrypted: FieldRef<"Integration", 'String'>
+    readonly token_expires_at: FieldRef<"Integration", 'DateTime'>
+    readonly external_project_id: FieldRef<"Integration", 'String'>
+    readonly external_dataset: FieldRef<"Integration", 'String'>
+    readonly document_type: FieldRef<"Integration", 'String'>
+    readonly api_token_encrypted: FieldRef<"Integration", 'String'>
+    readonly created_at: FieldRef<"Integration", 'DateTime'>
+    readonly updated_at: FieldRef<"Integration", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * SocialChannelConnection findUnique
+   * Integration findUnique
    */
-  export type SocialChannelConnectionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which SocialChannelConnection to fetch.
+     * Filter, which Integration to fetch.
      */
-    where: SocialChannelConnectionWhereUniqueInput
+    where: IntegrationWhereUniqueInput
   }
 
   /**
-   * SocialChannelConnection findUniqueOrThrow
+   * Integration findUniqueOrThrow
    */
-  export type SocialChannelConnectionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which SocialChannelConnection to fetch.
+     * Filter, which Integration to fetch.
      */
-    where: SocialChannelConnectionWhereUniqueInput
+    where: IntegrationWhereUniqueInput
   }
 
   /**
-   * SocialChannelConnection findFirst
+   * Integration findFirst
    */
-  export type SocialChannelConnectionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which SocialChannelConnection to fetch.
+     * Filter, which Integration to fetch.
      */
-    where?: SocialChannelConnectionWhereInput
+    where?: IntegrationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SocialChannelConnections to fetch.
+     * Determine the order of Integrations to fetch.
      */
-    orderBy?: SocialChannelConnectionOrderByWithRelationInput | SocialChannelConnectionOrderByWithRelationInput[]
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for SocialChannelConnections.
+     * Sets the position for searching for Integrations.
      */
-    cursor?: SocialChannelConnectionWhereUniqueInput
+    cursor?: IntegrationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SocialChannelConnections from the position of the cursor.
+     * Take `±n` Integrations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SocialChannelConnections.
+     * Skip the first `n` Integrations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of SocialChannelConnections.
+     * Filter by unique combinations of Integrations.
      */
-    distinct?: SocialChannelConnectionScalarFieldEnum | SocialChannelConnectionScalarFieldEnum[]
+    distinct?: IntegrationScalarFieldEnum | IntegrationScalarFieldEnum[]
   }
 
   /**
-   * SocialChannelConnection findFirstOrThrow
+   * Integration findFirstOrThrow
    */
-  export type SocialChannelConnectionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which SocialChannelConnection to fetch.
+     * Filter, which Integration to fetch.
      */
-    where?: SocialChannelConnectionWhereInput
+    where?: IntegrationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SocialChannelConnections to fetch.
+     * Determine the order of Integrations to fetch.
      */
-    orderBy?: SocialChannelConnectionOrderByWithRelationInput | SocialChannelConnectionOrderByWithRelationInput[]
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for SocialChannelConnections.
+     * Sets the position for searching for Integrations.
      */
-    cursor?: SocialChannelConnectionWhereUniqueInput
+    cursor?: IntegrationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SocialChannelConnections from the position of the cursor.
+     * Take `±n` Integrations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SocialChannelConnections.
+     * Skip the first `n` Integrations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of SocialChannelConnections.
+     * Filter by unique combinations of Integrations.
      */
-    distinct?: SocialChannelConnectionScalarFieldEnum | SocialChannelConnectionScalarFieldEnum[]
+    distinct?: IntegrationScalarFieldEnum | IntegrationScalarFieldEnum[]
   }
 
   /**
-   * SocialChannelConnection findMany
+   * Integration findMany
    */
-  export type SocialChannelConnectionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which SocialChannelConnections to fetch.
+     * Filter, which Integrations to fetch.
      */
-    where?: SocialChannelConnectionWhereInput
+    where?: IntegrationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SocialChannelConnections to fetch.
+     * Determine the order of Integrations to fetch.
      */
-    orderBy?: SocialChannelConnectionOrderByWithRelationInput | SocialChannelConnectionOrderByWithRelationInput[]
+    orderBy?: IntegrationOrderByWithRelationInput | IntegrationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing SocialChannelConnections.
+     * Sets the position for listing Integrations.
      */
-    cursor?: SocialChannelConnectionWhereUniqueInput
+    cursor?: IntegrationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SocialChannelConnections from the position of the cursor.
+     * Take `±n` Integrations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SocialChannelConnections.
+     * Skip the first `n` Integrations.
      */
     skip?: number
-    distinct?: SocialChannelConnectionScalarFieldEnum | SocialChannelConnectionScalarFieldEnum[]
+    distinct?: IntegrationScalarFieldEnum | IntegrationScalarFieldEnum[]
   }
 
   /**
-   * SocialChannelConnection create
+   * Integration create
    */
-  export type SocialChannelConnectionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
     /**
-     * The data needed to create a SocialChannelConnection.
+     * The data needed to create a Integration.
      */
-    data: XOR<SocialChannelConnectionCreateInput, SocialChannelConnectionUncheckedCreateInput>
+    data: XOR<IntegrationCreateInput, IntegrationUncheckedCreateInput>
   }
 
   /**
-   * SocialChannelConnection createMany
+   * Integration createMany
    */
-  export type SocialChannelConnectionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many SocialChannelConnections.
+     * The data used to create many Integrations.
      */
-    data: SocialChannelConnectionCreateManyInput | SocialChannelConnectionCreateManyInput[]
+    data: IntegrationCreateManyInput | IntegrationCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * SocialChannelConnection createManyAndReturn
+   * Integration createManyAndReturn
    */
-  export type SocialChannelConnectionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelectCreateManyAndReturn<ExtArgs> | null
+    select?: IntegrationSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
-     * The data used to create many SocialChannelConnections.
+     * The data used to create many Integrations.
      */
-    data: SocialChannelConnectionCreateManyInput | SocialChannelConnectionCreateManyInput[]
+    data: IntegrationCreateManyInput | IntegrationCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: IntegrationIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * SocialChannelConnection update
+   * Integration update
    */
-  export type SocialChannelConnectionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
     /**
-     * The data needed to update a SocialChannelConnection.
+     * The data needed to update a Integration.
      */
-    data: XOR<SocialChannelConnectionUpdateInput, SocialChannelConnectionUncheckedUpdateInput>
+    data: XOR<IntegrationUpdateInput, IntegrationUncheckedUpdateInput>
     /**
-     * Choose, which SocialChannelConnection to update.
+     * Choose, which Integration to update.
      */
-    where: SocialChannelConnectionWhereUniqueInput
+    where: IntegrationWhereUniqueInput
   }
 
   /**
-   * SocialChannelConnection updateMany
+   * Integration updateMany
    */
-  export type SocialChannelConnectionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update SocialChannelConnections.
+     * The data used to update Integrations.
      */
-    data: XOR<SocialChannelConnectionUpdateManyMutationInput, SocialChannelConnectionUncheckedUpdateManyInput>
+    data: XOR<IntegrationUpdateManyMutationInput, IntegrationUncheckedUpdateManyInput>
     /**
-     * Filter which SocialChannelConnections to update
+     * Filter which Integrations to update
      */
-    where?: SocialChannelConnectionWhereInput
+    where?: IntegrationWhereInput
     /**
-     * Limit how many SocialChannelConnections to update.
+     * Limit how many Integrations to update.
      */
     limit?: number
   }
 
   /**
-   * SocialChannelConnection updateManyAndReturn
+   * Integration updateManyAndReturn
    */
-  export type SocialChannelConnectionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: IntegrationSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
-     * The data used to update SocialChannelConnections.
+     * The data used to update Integrations.
      */
-    data: XOR<SocialChannelConnectionUpdateManyMutationInput, SocialChannelConnectionUncheckedUpdateManyInput>
+    data: XOR<IntegrationUpdateManyMutationInput, IntegrationUncheckedUpdateManyInput>
     /**
-     * Filter which SocialChannelConnections to update
+     * Filter which Integrations to update
      */
-    where?: SocialChannelConnectionWhereInput
+    where?: IntegrationWhereInput
     /**
-     * Limit how many SocialChannelConnections to update.
+     * Limit how many Integrations to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: IntegrationIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * SocialChannelConnection upsert
+   * Integration upsert
    */
-  export type SocialChannelConnectionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
     /**
-     * The filter to search for the SocialChannelConnection to update in case it exists.
+     * The filter to search for the Integration to update in case it exists.
      */
-    where: SocialChannelConnectionWhereUniqueInput
+    where: IntegrationWhereUniqueInput
     /**
-     * In case the SocialChannelConnection found by the `where` argument doesn't exist, create a new SocialChannelConnection with this data.
+     * In case the Integration found by the `where` argument doesn't exist, create a new Integration with this data.
      */
-    create: XOR<SocialChannelConnectionCreateInput, SocialChannelConnectionUncheckedCreateInput>
+    create: XOR<IntegrationCreateInput, IntegrationUncheckedCreateInput>
     /**
-     * In case the SocialChannelConnection was found with the provided `where` argument, update it with this data.
+     * In case the Integration was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<SocialChannelConnectionUpdateInput, SocialChannelConnectionUncheckedUpdateInput>
+    update: XOR<IntegrationUpdateInput, IntegrationUncheckedUpdateInput>
   }
 
   /**
-   * SocialChannelConnection delete
+   * Integration delete
    */
-  export type SocialChannelConnectionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
     /**
-     * Filter which SocialChannelConnection to delete.
+     * Filter which Integration to delete.
      */
-    where: SocialChannelConnectionWhereUniqueInput
+    where: IntegrationWhereUniqueInput
   }
 
   /**
-   * SocialChannelConnection deleteMany
+   * Integration deleteMany
    */
-  export type SocialChannelConnectionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which SocialChannelConnections to delete
+     * Filter which Integrations to delete
      */
-    where?: SocialChannelConnectionWhereInput
+    where?: IntegrationWhereInput
     /**
-     * Limit how many SocialChannelConnections to delete.
+     * Limit how many Integrations to delete.
      */
     limit?: number
   }
 
   /**
-   * SocialChannelConnection.post_channels
+   * Integration.post_integrations
    */
-  export type SocialChannelConnection$post_channelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Integration$post_integrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
-    where?: PostChannelWhereInput
-    orderBy?: PostChannelOrderByWithRelationInput | PostChannelOrderByWithRelationInput[]
-    cursor?: PostChannelWhereUniqueInput
+    include?: PostIntegrationInclude<ExtArgs> | null
+    where?: PostIntegrationWhereInput
+    orderBy?: PostIntegrationOrderByWithRelationInput | PostIntegrationOrderByWithRelationInput[]
+    cursor?: PostIntegrationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: PostChannelScalarFieldEnum | PostChannelScalarFieldEnum[]
+    distinct?: PostIntegrationScalarFieldEnum | PostIntegrationScalarFieldEnum[]
   }
 
   /**
-   * SocialChannelConnection without action
+   * Integration without action
    */
-  export type SocialChannelConnectionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IntegrationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SocialChannelConnection
+     * Select specific fields to fetch from the Integration
      */
-    select?: SocialChannelConnectionSelect<ExtArgs> | null
+    select?: IntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SocialChannelConnection
+     * Omit specific fields from the Integration
      */
-    omit?: SocialChannelConnectionOmit<ExtArgs> | null
+    omit?: IntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SocialChannelConnectionInclude<ExtArgs> | null
+    include?: IntegrationInclude<ExtArgs> | null
   }
 
 
@@ -22821,7 +22883,7 @@ export namespace Prisma {
     source_post?: boolean | Post$source_postArgs<ExtArgs>
     repurposed_posts?: boolean | Post$repurposed_postsArgs<ExtArgs>
     attachments?: boolean | Post$attachmentsArgs<ExtArgs>
-    channels?: boolean | Post$channelsArgs<ExtArgs>
+    integrations?: boolean | Post$integrationsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
@@ -22946,7 +23008,7 @@ export namespace Prisma {
     source_post?: boolean | Post$source_postArgs<ExtArgs>
     repurposed_posts?: boolean | Post$repurposed_postsArgs<ExtArgs>
     attachments?: boolean | Post$attachmentsArgs<ExtArgs>
-    channels?: boolean | Post$channelsArgs<ExtArgs>
+    integrations?: boolean | Post$integrationsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22989,7 +23051,7 @@ export namespace Prisma {
       source_post: Prisma.$PostPayload<ExtArgs> | null
       repurposed_posts: Prisma.$PostPayload<ExtArgs>[]
       attachments: Prisma.$PostAttachmentPayload<ExtArgs>[]
-      channels: Prisma.$PostChannelPayload<ExtArgs>[]
+      integrations: Prisma.$PostIntegrationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -23424,7 +23486,7 @@ export namespace Prisma {
     source_post<T extends Post$source_postArgs<ExtArgs> = {}>(args?: Subset<T, Post$source_postArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     repurposed_posts<T extends Post$repurposed_postsArgs<ExtArgs> = {}>(args?: Subset<T, Post$repurposed_postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attachments<T extends Post$attachmentsArgs<ExtArgs> = {}>(args?: Subset<T, Post$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    channels<T extends Post$channelsArgs<ExtArgs> = {}>(args?: Subset<T, Post$channelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    integrations<T extends Post$integrationsArgs<ExtArgs> = {}>(args?: Subset<T, Post$integrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -24076,27 +24138,27 @@ export namespace Prisma {
   }
 
   /**
-   * Post.channels
+   * Post.integrations
    */
-  export type Post$channelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Post$integrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
-    where?: PostChannelWhereInput
-    orderBy?: PostChannelOrderByWithRelationInput | PostChannelOrderByWithRelationInput[]
-    cursor?: PostChannelWhereUniqueInput
+    include?: PostIntegrationInclude<ExtArgs> | null
+    where?: PostIntegrationWhereInput
+    orderBy?: PostIntegrationOrderByWithRelationInput | PostIntegrationOrderByWithRelationInput[]
+    cursor?: PostIntegrationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: PostChannelScalarFieldEnum | PostChannelScalarFieldEnum[]
+    distinct?: PostIntegrationScalarFieldEnum | PostIntegrationScalarFieldEnum[]
   }
 
   /**
@@ -25219,48 +25281,48 @@ export namespace Prisma {
 
 
   /**
-   * Model PostChannel
+   * Model PostIntegration
    */
 
-  export type AggregatePostChannel = {
-    _count: PostChannelCountAggregateOutputType | null
-    _min: PostChannelMinAggregateOutputType | null
-    _max: PostChannelMaxAggregateOutputType | null
+  export type AggregatePostIntegration = {
+    _count: PostIntegrationCountAggregateOutputType | null
+    _min: PostIntegrationMinAggregateOutputType | null
+    _max: PostIntegrationMaxAggregateOutputType | null
   }
 
-  export type PostChannelMinAggregateOutputType = {
+  export type PostIntegrationMinAggregateOutputType = {
     id: string | null
     post_id: string | null
-    channel_connection_id: string | null
-    status: $Enums.PostChannelStatus | null
-    external_post_id: string | null
-    external_post_url: string | null
+    integration_id: string | null
+    status: $Enums.PostIntegrationStatus | null
+    external_id: string | null
+    external_url: string | null
     published_at: Date | null
     failed_reason: string | null
     created_at: Date | null
     updated_at: Date | null
   }
 
-  export type PostChannelMaxAggregateOutputType = {
+  export type PostIntegrationMaxAggregateOutputType = {
     id: string | null
     post_id: string | null
-    channel_connection_id: string | null
-    status: $Enums.PostChannelStatus | null
-    external_post_id: string | null
-    external_post_url: string | null
+    integration_id: string | null
+    status: $Enums.PostIntegrationStatus | null
+    external_id: string | null
+    external_url: string | null
     published_at: Date | null
     failed_reason: string | null
     created_at: Date | null
     updated_at: Date | null
   }
 
-  export type PostChannelCountAggregateOutputType = {
+  export type PostIntegrationCountAggregateOutputType = {
     id: number
     post_id: number
-    channel_connection_id: number
+    integration_id: number
     status: number
-    external_post_id: number
-    external_post_url: number
+    external_id: number
+    external_url: number
     published_at: number
     failed_reason: number
     created_at: number
@@ -25269,39 +25331,39 @@ export namespace Prisma {
   }
 
 
-  export type PostChannelMinAggregateInputType = {
+  export type PostIntegrationMinAggregateInputType = {
     id?: true
     post_id?: true
-    channel_connection_id?: true
+    integration_id?: true
     status?: true
-    external_post_id?: true
-    external_post_url?: true
+    external_id?: true
+    external_url?: true
     published_at?: true
     failed_reason?: true
     created_at?: true
     updated_at?: true
   }
 
-  export type PostChannelMaxAggregateInputType = {
+  export type PostIntegrationMaxAggregateInputType = {
     id?: true
     post_id?: true
-    channel_connection_id?: true
+    integration_id?: true
     status?: true
-    external_post_id?: true
-    external_post_url?: true
+    external_id?: true
+    external_url?: true
     published_at?: true
     failed_reason?: true
     created_at?: true
     updated_at?: true
   }
 
-  export type PostChannelCountAggregateInputType = {
+  export type PostIntegrationCountAggregateInputType = {
     id?: true
     post_id?: true
-    channel_connection_id?: true
+    integration_id?: true
     status?: true
-    external_post_id?: true
-    external_post_url?: true
+    external_id?: true
+    external_url?: true
     published_at?: true
     failed_reason?: true
     created_at?: true
@@ -25309,327 +25371,327 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type PostChannelAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which PostChannel to aggregate.
+     * Filter which PostIntegration to aggregate.
      */
-    where?: PostChannelWhereInput
+    where?: PostIntegrationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of PostChannels to fetch.
+     * Determine the order of PostIntegrations to fetch.
      */
-    orderBy?: PostChannelOrderByWithRelationInput | PostChannelOrderByWithRelationInput[]
+    orderBy?: PostIntegrationOrderByWithRelationInput | PostIntegrationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: PostChannelWhereUniqueInput
+    cursor?: PostIntegrationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` PostChannels from the position of the cursor.
+     * Take `±n` PostIntegrations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` PostChannels.
+     * Skip the first `n` PostIntegrations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned PostChannels
+     * Count returned PostIntegrations
     **/
-    _count?: true | PostChannelCountAggregateInputType
+    _count?: true | PostIntegrationCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: PostChannelMinAggregateInputType
+    _min?: PostIntegrationMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: PostChannelMaxAggregateInputType
+    _max?: PostIntegrationMaxAggregateInputType
   }
 
-  export type GetPostChannelAggregateType<T extends PostChannelAggregateArgs> = {
-        [P in keyof T & keyof AggregatePostChannel]: P extends '_count' | 'count'
+  export type GetPostIntegrationAggregateType<T extends PostIntegrationAggregateArgs> = {
+        [P in keyof T & keyof AggregatePostIntegration]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregatePostChannel[P]>
-      : GetScalarType<T[P], AggregatePostChannel[P]>
+        : GetScalarType<T[P], AggregatePostIntegration[P]>
+      : GetScalarType<T[P], AggregatePostIntegration[P]>
   }
 
 
 
 
-  export type PostChannelGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PostChannelWhereInput
-    orderBy?: PostChannelOrderByWithAggregationInput | PostChannelOrderByWithAggregationInput[]
-    by: PostChannelScalarFieldEnum[] | PostChannelScalarFieldEnum
-    having?: PostChannelScalarWhereWithAggregatesInput
+  export type PostIntegrationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostIntegrationWhereInput
+    orderBy?: PostIntegrationOrderByWithAggregationInput | PostIntegrationOrderByWithAggregationInput[]
+    by: PostIntegrationScalarFieldEnum[] | PostIntegrationScalarFieldEnum
+    having?: PostIntegrationScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: PostChannelCountAggregateInputType | true
-    _min?: PostChannelMinAggregateInputType
-    _max?: PostChannelMaxAggregateInputType
+    _count?: PostIntegrationCountAggregateInputType | true
+    _min?: PostIntegrationMinAggregateInputType
+    _max?: PostIntegrationMaxAggregateInputType
   }
 
-  export type PostChannelGroupByOutputType = {
+  export type PostIntegrationGroupByOutputType = {
     id: string
     post_id: string
-    channel_connection_id: string
-    status: $Enums.PostChannelStatus
-    external_post_id: string | null
-    external_post_url: string | null
+    integration_id: string
+    status: $Enums.PostIntegrationStatus
+    external_id: string | null
+    external_url: string | null
     published_at: Date | null
     failed_reason: string | null
     created_at: Date
     updated_at: Date
-    _count: PostChannelCountAggregateOutputType | null
-    _min: PostChannelMinAggregateOutputType | null
-    _max: PostChannelMaxAggregateOutputType | null
+    _count: PostIntegrationCountAggregateOutputType | null
+    _min: PostIntegrationMinAggregateOutputType | null
+    _max: PostIntegrationMaxAggregateOutputType | null
   }
 
-  type GetPostChannelGroupByPayload<T extends PostChannelGroupByArgs> = Prisma.PrismaPromise<
+  type GetPostIntegrationGroupByPayload<T extends PostIntegrationGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<PostChannelGroupByOutputType, T['by']> &
+      PickEnumerable<PostIntegrationGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof PostChannelGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof PostIntegrationGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], PostChannelGroupByOutputType[P]>
-            : GetScalarType<T[P], PostChannelGroupByOutputType[P]>
+              : GetScalarType<T[P], PostIntegrationGroupByOutputType[P]>
+            : GetScalarType<T[P], PostIntegrationGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type PostChannelSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type PostIntegrationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     post_id?: boolean
-    channel_connection_id?: boolean
+    integration_id?: boolean
     status?: boolean
-    external_post_id?: boolean
-    external_post_url?: boolean
+    external_id?: boolean
+    external_url?: boolean
     published_at?: boolean
     failed_reason?: boolean
     created_at?: boolean
     updated_at?: boolean
     post?: boolean | PostDefaultArgs<ExtArgs>
-    channel_connection?: boolean | SocialChannelConnectionDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["postChannel"]>
+    integration?: boolean | IntegrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["postIntegration"]>
 
-  export type PostChannelSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type PostIntegrationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     post_id?: boolean
-    channel_connection_id?: boolean
+    integration_id?: boolean
     status?: boolean
-    external_post_id?: boolean
-    external_post_url?: boolean
+    external_id?: boolean
+    external_url?: boolean
     published_at?: boolean
     failed_reason?: boolean
     created_at?: boolean
     updated_at?: boolean
     post?: boolean | PostDefaultArgs<ExtArgs>
-    channel_connection?: boolean | SocialChannelConnectionDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["postChannel"]>
+    integration?: boolean | IntegrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["postIntegration"]>
 
-  export type PostChannelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type PostIntegrationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     post_id?: boolean
-    channel_connection_id?: boolean
+    integration_id?: boolean
     status?: boolean
-    external_post_id?: boolean
-    external_post_url?: boolean
+    external_id?: boolean
+    external_url?: boolean
     published_at?: boolean
     failed_reason?: boolean
     created_at?: boolean
     updated_at?: boolean
     post?: boolean | PostDefaultArgs<ExtArgs>
-    channel_connection?: boolean | SocialChannelConnectionDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["postChannel"]>
+    integration?: boolean | IntegrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["postIntegration"]>
 
-  export type PostChannelSelectScalar = {
+  export type PostIntegrationSelectScalar = {
     id?: boolean
     post_id?: boolean
-    channel_connection_id?: boolean
+    integration_id?: boolean
     status?: boolean
-    external_post_id?: boolean
-    external_post_url?: boolean
+    external_id?: boolean
+    external_url?: boolean
     published_at?: boolean
     failed_reason?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type PostChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "post_id" | "channel_connection_id" | "status" | "external_post_id" | "external_post_url" | "published_at" | "failed_reason" | "created_at" | "updated_at", ExtArgs["result"]["postChannel"]>
-  export type PostChannelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "post_id" | "integration_id" | "status" | "external_id" | "external_url" | "published_at" | "failed_reason" | "created_at" | "updated_at", ExtArgs["result"]["postIntegration"]>
+  export type PostIntegrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     post?: boolean | PostDefaultArgs<ExtArgs>
-    channel_connection?: boolean | SocialChannelConnectionDefaultArgs<ExtArgs>
+    integration?: boolean | IntegrationDefaultArgs<ExtArgs>
   }
-  export type PostChannelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     post?: boolean | PostDefaultArgs<ExtArgs>
-    channel_connection?: boolean | SocialChannelConnectionDefaultArgs<ExtArgs>
+    integration?: boolean | IntegrationDefaultArgs<ExtArgs>
   }
-  export type PostChannelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     post?: boolean | PostDefaultArgs<ExtArgs>
-    channel_connection?: boolean | SocialChannelConnectionDefaultArgs<ExtArgs>
+    integration?: boolean | IntegrationDefaultArgs<ExtArgs>
   }
 
-  export type $PostChannelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "PostChannel"
+  export type $PostIntegrationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PostIntegration"
     objects: {
       post: Prisma.$PostPayload<ExtArgs>
-      channel_connection: Prisma.$SocialChannelConnectionPayload<ExtArgs>
+      integration: Prisma.$IntegrationPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       post_id: string
-      channel_connection_id: string
-      status: $Enums.PostChannelStatus
-      external_post_id: string | null
-      external_post_url: string | null
+      integration_id: string
+      status: $Enums.PostIntegrationStatus
+      external_id: string | null
+      external_url: string | null
       published_at: Date | null
       failed_reason: string | null
       created_at: Date
       updated_at: Date
-    }, ExtArgs["result"]["postChannel"]>
+    }, ExtArgs["result"]["postIntegration"]>
     composites: {}
   }
 
-  type PostChannelGetPayload<S extends boolean | null | undefined | PostChannelDefaultArgs> = $Result.GetResult<Prisma.$PostChannelPayload, S>
+  type PostIntegrationGetPayload<S extends boolean | null | undefined | PostIntegrationDefaultArgs> = $Result.GetResult<Prisma.$PostIntegrationPayload, S>
 
-  type PostChannelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<PostChannelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: PostChannelCountAggregateInputType | true
+  type PostIntegrationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PostIntegrationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PostIntegrationCountAggregateInputType | true
     }
 
-  export interface PostChannelDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PostChannel'], meta: { name: 'PostChannel' } }
+  export interface PostIntegrationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PostIntegration'], meta: { name: 'PostIntegration' } }
     /**
-     * Find zero or one PostChannel that matches the filter.
-     * @param {PostChannelFindUniqueArgs} args - Arguments to find a PostChannel
+     * Find zero or one PostIntegration that matches the filter.
+     * @param {PostIntegrationFindUniqueArgs} args - Arguments to find a PostIntegration
      * @example
-     * // Get one PostChannel
-     * const postChannel = await prisma.postChannel.findUnique({
+     * // Get one PostIntegration
+     * const postIntegration = await prisma.postIntegration.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends PostChannelFindUniqueArgs>(args: SelectSubset<T, PostChannelFindUniqueArgs<ExtArgs>>): Prisma__PostChannelClient<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends PostIntegrationFindUniqueArgs>(args: SelectSubset<T, PostIntegrationFindUniqueArgs<ExtArgs>>): Prisma__PostIntegrationClient<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one PostChannel that matches the filter or throw an error with `error.code='P2025'`
+     * Find one PostIntegration that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {PostChannelFindUniqueOrThrowArgs} args - Arguments to find a PostChannel
+     * @param {PostIntegrationFindUniqueOrThrowArgs} args - Arguments to find a PostIntegration
      * @example
-     * // Get one PostChannel
-     * const postChannel = await prisma.postChannel.findUniqueOrThrow({
+     * // Get one PostIntegration
+     * const postIntegration = await prisma.postIntegration.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends PostChannelFindUniqueOrThrowArgs>(args: SelectSubset<T, PostChannelFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PostChannelClient<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends PostIntegrationFindUniqueOrThrowArgs>(args: SelectSubset<T, PostIntegrationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PostIntegrationClient<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first PostChannel that matches the filter.
+     * Find the first PostIntegration that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostChannelFindFirstArgs} args - Arguments to find a PostChannel
+     * @param {PostIntegrationFindFirstArgs} args - Arguments to find a PostIntegration
      * @example
-     * // Get one PostChannel
-     * const postChannel = await prisma.postChannel.findFirst({
+     * // Get one PostIntegration
+     * const postIntegration = await prisma.postIntegration.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends PostChannelFindFirstArgs>(args?: SelectSubset<T, PostChannelFindFirstArgs<ExtArgs>>): Prisma__PostChannelClient<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends PostIntegrationFindFirstArgs>(args?: SelectSubset<T, PostIntegrationFindFirstArgs<ExtArgs>>): Prisma__PostIntegrationClient<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first PostChannel that matches the filter or
+     * Find the first PostIntegration that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostChannelFindFirstOrThrowArgs} args - Arguments to find a PostChannel
+     * @param {PostIntegrationFindFirstOrThrowArgs} args - Arguments to find a PostIntegration
      * @example
-     * // Get one PostChannel
-     * const postChannel = await prisma.postChannel.findFirstOrThrow({
+     * // Get one PostIntegration
+     * const postIntegration = await prisma.postIntegration.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends PostChannelFindFirstOrThrowArgs>(args?: SelectSubset<T, PostChannelFindFirstOrThrowArgs<ExtArgs>>): Prisma__PostChannelClient<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends PostIntegrationFindFirstOrThrowArgs>(args?: SelectSubset<T, PostIntegrationFindFirstOrThrowArgs<ExtArgs>>): Prisma__PostIntegrationClient<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more PostChannels that matches the filter.
+     * Find zero or more PostIntegrations that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostChannelFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {PostIntegrationFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all PostChannels
-     * const postChannels = await prisma.postChannel.findMany()
+     * // Get all PostIntegrations
+     * const postIntegrations = await prisma.postIntegration.findMany()
      * 
-     * // Get first 10 PostChannels
-     * const postChannels = await prisma.postChannel.findMany({ take: 10 })
+     * // Get first 10 PostIntegrations
+     * const postIntegrations = await prisma.postIntegration.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const postChannelWithIdOnly = await prisma.postChannel.findMany({ select: { id: true } })
+     * const postIntegrationWithIdOnly = await prisma.postIntegration.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends PostChannelFindManyArgs>(args?: SelectSubset<T, PostChannelFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends PostIntegrationFindManyArgs>(args?: SelectSubset<T, PostIntegrationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a PostChannel.
-     * @param {PostChannelCreateArgs} args - Arguments to create a PostChannel.
+     * Create a PostIntegration.
+     * @param {PostIntegrationCreateArgs} args - Arguments to create a PostIntegration.
      * @example
-     * // Create one PostChannel
-     * const PostChannel = await prisma.postChannel.create({
+     * // Create one PostIntegration
+     * const PostIntegration = await prisma.postIntegration.create({
      *   data: {
-     *     // ... data to create a PostChannel
+     *     // ... data to create a PostIntegration
      *   }
      * })
      * 
      */
-    create<T extends PostChannelCreateArgs>(args: SelectSubset<T, PostChannelCreateArgs<ExtArgs>>): Prisma__PostChannelClient<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends PostIntegrationCreateArgs>(args: SelectSubset<T, PostIntegrationCreateArgs<ExtArgs>>): Prisma__PostIntegrationClient<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many PostChannels.
-     * @param {PostChannelCreateManyArgs} args - Arguments to create many PostChannels.
+     * Create many PostIntegrations.
+     * @param {PostIntegrationCreateManyArgs} args - Arguments to create many PostIntegrations.
      * @example
-     * // Create many PostChannels
-     * const postChannel = await prisma.postChannel.createMany({
+     * // Create many PostIntegrations
+     * const postIntegration = await prisma.postIntegration.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends PostChannelCreateManyArgs>(args?: SelectSubset<T, PostChannelCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends PostIntegrationCreateManyArgs>(args?: SelectSubset<T, PostIntegrationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many PostChannels and returns the data saved in the database.
-     * @param {PostChannelCreateManyAndReturnArgs} args - Arguments to create many PostChannels.
+     * Create many PostIntegrations and returns the data saved in the database.
+     * @param {PostIntegrationCreateManyAndReturnArgs} args - Arguments to create many PostIntegrations.
      * @example
-     * // Create many PostChannels
-     * const postChannel = await prisma.postChannel.createManyAndReturn({
+     * // Create many PostIntegrations
+     * const postIntegration = await prisma.postIntegration.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many PostChannels and only return the `id`
-     * const postChannelWithIdOnly = await prisma.postChannel.createManyAndReturn({
+     * // Create many PostIntegrations and only return the `id`
+     * const postIntegrationWithIdOnly = await prisma.postIntegration.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -25639,28 +25701,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends PostChannelCreateManyAndReturnArgs>(args?: SelectSubset<T, PostChannelCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends PostIntegrationCreateManyAndReturnArgs>(args?: SelectSubset<T, PostIntegrationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a PostChannel.
-     * @param {PostChannelDeleteArgs} args - Arguments to delete one PostChannel.
+     * Delete a PostIntegration.
+     * @param {PostIntegrationDeleteArgs} args - Arguments to delete one PostIntegration.
      * @example
-     * // Delete one PostChannel
-     * const PostChannel = await prisma.postChannel.delete({
+     * // Delete one PostIntegration
+     * const PostIntegration = await prisma.postIntegration.delete({
      *   where: {
-     *     // ... filter to delete one PostChannel
+     *     // ... filter to delete one PostIntegration
      *   }
      * })
      * 
      */
-    delete<T extends PostChannelDeleteArgs>(args: SelectSubset<T, PostChannelDeleteArgs<ExtArgs>>): Prisma__PostChannelClient<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends PostIntegrationDeleteArgs>(args: SelectSubset<T, PostIntegrationDeleteArgs<ExtArgs>>): Prisma__PostIntegrationClient<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one PostChannel.
-     * @param {PostChannelUpdateArgs} args - Arguments to update one PostChannel.
+     * Update one PostIntegration.
+     * @param {PostIntegrationUpdateArgs} args - Arguments to update one PostIntegration.
      * @example
-     * // Update one PostChannel
-     * const postChannel = await prisma.postChannel.update({
+     * // Update one PostIntegration
+     * const postIntegration = await prisma.postIntegration.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -25670,30 +25732,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends PostChannelUpdateArgs>(args: SelectSubset<T, PostChannelUpdateArgs<ExtArgs>>): Prisma__PostChannelClient<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends PostIntegrationUpdateArgs>(args: SelectSubset<T, PostIntegrationUpdateArgs<ExtArgs>>): Prisma__PostIntegrationClient<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more PostChannels.
-     * @param {PostChannelDeleteManyArgs} args - Arguments to filter PostChannels to delete.
+     * Delete zero or more PostIntegrations.
+     * @param {PostIntegrationDeleteManyArgs} args - Arguments to filter PostIntegrations to delete.
      * @example
-     * // Delete a few PostChannels
-     * const { count } = await prisma.postChannel.deleteMany({
+     * // Delete a few PostIntegrations
+     * const { count } = await prisma.postIntegration.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends PostChannelDeleteManyArgs>(args?: SelectSubset<T, PostChannelDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends PostIntegrationDeleteManyArgs>(args?: SelectSubset<T, PostIntegrationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more PostChannels.
+     * Update zero or more PostIntegrations.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostChannelUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {PostIntegrationUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many PostChannels
-     * const postChannel = await prisma.postChannel.updateMany({
+     * // Update many PostIntegrations
+     * const postIntegration = await prisma.postIntegration.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -25703,14 +25765,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends PostChannelUpdateManyArgs>(args: SelectSubset<T, PostChannelUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends PostIntegrationUpdateManyArgs>(args: SelectSubset<T, PostIntegrationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more PostChannels and returns the data updated in the database.
-     * @param {PostChannelUpdateManyAndReturnArgs} args - Arguments to update many PostChannels.
+     * Update zero or more PostIntegrations and returns the data updated in the database.
+     * @param {PostIntegrationUpdateManyAndReturnArgs} args - Arguments to update many PostIntegrations.
      * @example
-     * // Update many PostChannels
-     * const postChannel = await prisma.postChannel.updateManyAndReturn({
+     * // Update many PostIntegrations
+     * const postIntegration = await prisma.postIntegration.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -25719,8 +25781,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more PostChannels and only return the `id`
-     * const postChannelWithIdOnly = await prisma.postChannel.updateManyAndReturn({
+     * // Update zero or more PostIntegrations and only return the `id`
+     * const postIntegrationWithIdOnly = await prisma.postIntegration.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -25733,56 +25795,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends PostChannelUpdateManyAndReturnArgs>(args: SelectSubset<T, PostChannelUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends PostIntegrationUpdateManyAndReturnArgs>(args: SelectSubset<T, PostIntegrationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one PostChannel.
-     * @param {PostChannelUpsertArgs} args - Arguments to update or create a PostChannel.
+     * Create or update one PostIntegration.
+     * @param {PostIntegrationUpsertArgs} args - Arguments to update or create a PostIntegration.
      * @example
-     * // Update or create a PostChannel
-     * const postChannel = await prisma.postChannel.upsert({
+     * // Update or create a PostIntegration
+     * const postIntegration = await prisma.postIntegration.upsert({
      *   create: {
-     *     // ... data to create a PostChannel
+     *     // ... data to create a PostIntegration
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the PostChannel we want to update
+     *     // ... the filter for the PostIntegration we want to update
      *   }
      * })
      */
-    upsert<T extends PostChannelUpsertArgs>(args: SelectSubset<T, PostChannelUpsertArgs<ExtArgs>>): Prisma__PostChannelClient<$Result.GetResult<Prisma.$PostChannelPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends PostIntegrationUpsertArgs>(args: SelectSubset<T, PostIntegrationUpsertArgs<ExtArgs>>): Prisma__PostIntegrationClient<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of PostChannels.
+     * Count the number of PostIntegrations.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostChannelCountArgs} args - Arguments to filter PostChannels to count.
+     * @param {PostIntegrationCountArgs} args - Arguments to filter PostIntegrations to count.
      * @example
-     * // Count the number of PostChannels
-     * const count = await prisma.postChannel.count({
+     * // Count the number of PostIntegrations
+     * const count = await prisma.postIntegration.count({
      *   where: {
-     *     // ... the filter for the PostChannels we want to count
+     *     // ... the filter for the PostIntegrations we want to count
      *   }
      * })
     **/
-    count<T extends PostChannelCountArgs>(
-      args?: Subset<T, PostChannelCountArgs>,
+    count<T extends PostIntegrationCountArgs>(
+      args?: Subset<T, PostIntegrationCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], PostChannelCountAggregateOutputType>
+          : GetScalarType<T['select'], PostIntegrationCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a PostChannel.
+     * Allows you to perform aggregations operations on a PostIntegration.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostChannelAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {PostIntegrationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -25802,13 +25864,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends PostChannelAggregateArgs>(args: Subset<T, PostChannelAggregateArgs>): Prisma.PrismaPromise<GetPostChannelAggregateType<T>>
+    aggregate<T extends PostIntegrationAggregateArgs>(args: Subset<T, PostIntegrationAggregateArgs>): Prisma.PrismaPromise<GetPostIntegrationAggregateType<T>>
 
     /**
-     * Group by PostChannel.
+     * Group by PostIntegration.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PostChannelGroupByArgs} args - Group by arguments.
+     * @param {PostIntegrationGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -25823,14 +25885,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends PostChannelGroupByArgs,
+      T extends PostIntegrationGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PostChannelGroupByArgs['orderBy'] }
-        : { orderBy?: PostChannelGroupByArgs['orderBy'] },
+        ? { orderBy: PostIntegrationGroupByArgs['orderBy'] }
+        : { orderBy?: PostIntegrationGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -25879,23 +25941,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, PostChannelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPostChannelGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, PostIntegrationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPostIntegrationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the PostChannel model
+   * Fields of the PostIntegration model
    */
-  readonly fields: PostChannelFieldRefs;
+  readonly fields: PostIntegrationFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for PostChannel.
+   * The delegate class that acts as a "Promise-like" for PostIntegration.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__PostChannelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__PostIntegrationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     post<T extends PostDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PostDefaultArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    channel_connection<T extends SocialChannelConnectionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SocialChannelConnectionDefaultArgs<ExtArgs>>): Prisma__SocialChannelConnectionClient<$Result.GetResult<Prisma.$SocialChannelConnectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    integration<T extends IntegrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IntegrationDefaultArgs<ExtArgs>>): Prisma__IntegrationClient<$Result.GetResult<Prisma.$IntegrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25922,430 +25984,430 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the PostChannel model
+   * Fields of the PostIntegration model
    */
-  interface PostChannelFieldRefs {
-    readonly id: FieldRef<"PostChannel", 'String'>
-    readonly post_id: FieldRef<"PostChannel", 'String'>
-    readonly channel_connection_id: FieldRef<"PostChannel", 'String'>
-    readonly status: FieldRef<"PostChannel", 'PostChannelStatus'>
-    readonly external_post_id: FieldRef<"PostChannel", 'String'>
-    readonly external_post_url: FieldRef<"PostChannel", 'String'>
-    readonly published_at: FieldRef<"PostChannel", 'DateTime'>
-    readonly failed_reason: FieldRef<"PostChannel", 'String'>
-    readonly created_at: FieldRef<"PostChannel", 'DateTime'>
-    readonly updated_at: FieldRef<"PostChannel", 'DateTime'>
+  interface PostIntegrationFieldRefs {
+    readonly id: FieldRef<"PostIntegration", 'String'>
+    readonly post_id: FieldRef<"PostIntegration", 'String'>
+    readonly integration_id: FieldRef<"PostIntegration", 'String'>
+    readonly status: FieldRef<"PostIntegration", 'PostIntegrationStatus'>
+    readonly external_id: FieldRef<"PostIntegration", 'String'>
+    readonly external_url: FieldRef<"PostIntegration", 'String'>
+    readonly published_at: FieldRef<"PostIntegration", 'DateTime'>
+    readonly failed_reason: FieldRef<"PostIntegration", 'String'>
+    readonly created_at: FieldRef<"PostIntegration", 'DateTime'>
+    readonly updated_at: FieldRef<"PostIntegration", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * PostChannel findUnique
+   * PostIntegration findUnique
    */
-  export type PostChannelFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which PostChannel to fetch.
+     * Filter, which PostIntegration to fetch.
      */
-    where: PostChannelWhereUniqueInput
+    where: PostIntegrationWhereUniqueInput
   }
 
   /**
-   * PostChannel findUniqueOrThrow
+   * PostIntegration findUniqueOrThrow
    */
-  export type PostChannelFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which PostChannel to fetch.
+     * Filter, which PostIntegration to fetch.
      */
-    where: PostChannelWhereUniqueInput
+    where: PostIntegrationWhereUniqueInput
   }
 
   /**
-   * PostChannel findFirst
+   * PostIntegration findFirst
    */
-  export type PostChannelFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which PostChannel to fetch.
+     * Filter, which PostIntegration to fetch.
      */
-    where?: PostChannelWhereInput
+    where?: PostIntegrationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of PostChannels to fetch.
+     * Determine the order of PostIntegrations to fetch.
      */
-    orderBy?: PostChannelOrderByWithRelationInput | PostChannelOrderByWithRelationInput[]
+    orderBy?: PostIntegrationOrderByWithRelationInput | PostIntegrationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for PostChannels.
+     * Sets the position for searching for PostIntegrations.
      */
-    cursor?: PostChannelWhereUniqueInput
+    cursor?: PostIntegrationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` PostChannels from the position of the cursor.
+     * Take `±n` PostIntegrations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` PostChannels.
+     * Skip the first `n` PostIntegrations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of PostChannels.
+     * Filter by unique combinations of PostIntegrations.
      */
-    distinct?: PostChannelScalarFieldEnum | PostChannelScalarFieldEnum[]
+    distinct?: PostIntegrationScalarFieldEnum | PostIntegrationScalarFieldEnum[]
   }
 
   /**
-   * PostChannel findFirstOrThrow
+   * PostIntegration findFirstOrThrow
    */
-  export type PostChannelFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which PostChannel to fetch.
+     * Filter, which PostIntegration to fetch.
      */
-    where?: PostChannelWhereInput
+    where?: PostIntegrationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of PostChannels to fetch.
+     * Determine the order of PostIntegrations to fetch.
      */
-    orderBy?: PostChannelOrderByWithRelationInput | PostChannelOrderByWithRelationInput[]
+    orderBy?: PostIntegrationOrderByWithRelationInput | PostIntegrationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for PostChannels.
+     * Sets the position for searching for PostIntegrations.
      */
-    cursor?: PostChannelWhereUniqueInput
+    cursor?: PostIntegrationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` PostChannels from the position of the cursor.
+     * Take `±n` PostIntegrations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` PostChannels.
+     * Skip the first `n` PostIntegrations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of PostChannels.
+     * Filter by unique combinations of PostIntegrations.
      */
-    distinct?: PostChannelScalarFieldEnum | PostChannelScalarFieldEnum[]
+    distinct?: PostIntegrationScalarFieldEnum | PostIntegrationScalarFieldEnum[]
   }
 
   /**
-   * PostChannel findMany
+   * PostIntegration findMany
    */
-  export type PostChannelFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
     /**
-     * Filter, which PostChannels to fetch.
+     * Filter, which PostIntegrations to fetch.
      */
-    where?: PostChannelWhereInput
+    where?: PostIntegrationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of PostChannels to fetch.
+     * Determine the order of PostIntegrations to fetch.
      */
-    orderBy?: PostChannelOrderByWithRelationInput | PostChannelOrderByWithRelationInput[]
+    orderBy?: PostIntegrationOrderByWithRelationInput | PostIntegrationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing PostChannels.
+     * Sets the position for listing PostIntegrations.
      */
-    cursor?: PostChannelWhereUniqueInput
+    cursor?: PostIntegrationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` PostChannels from the position of the cursor.
+     * Take `±n` PostIntegrations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` PostChannels.
+     * Skip the first `n` PostIntegrations.
      */
     skip?: number
-    distinct?: PostChannelScalarFieldEnum | PostChannelScalarFieldEnum[]
+    distinct?: PostIntegrationScalarFieldEnum | PostIntegrationScalarFieldEnum[]
   }
 
   /**
-   * PostChannel create
+   * PostIntegration create
    */
-  export type PostChannelCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
     /**
-     * The data needed to create a PostChannel.
+     * The data needed to create a PostIntegration.
      */
-    data: XOR<PostChannelCreateInput, PostChannelUncheckedCreateInput>
+    data: XOR<PostIntegrationCreateInput, PostIntegrationUncheckedCreateInput>
   }
 
   /**
-   * PostChannel createMany
+   * PostIntegration createMany
    */
-  export type PostChannelCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many PostChannels.
+     * The data used to create many PostIntegrations.
      */
-    data: PostChannelCreateManyInput | PostChannelCreateManyInput[]
+    data: PostIntegrationCreateManyInput | PostIntegrationCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * PostChannel createManyAndReturn
+   * PostIntegration createManyAndReturn
    */
-  export type PostChannelCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelectCreateManyAndReturn<ExtArgs> | null
+    select?: PostIntegrationSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
-     * The data used to create many PostChannels.
+     * The data used to create many PostIntegrations.
      */
-    data: PostChannelCreateManyInput | PostChannelCreateManyInput[]
+    data: PostIntegrationCreateManyInput | PostIntegrationCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: PostIntegrationIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * PostChannel update
+   * PostIntegration update
    */
-  export type PostChannelUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
     /**
-     * The data needed to update a PostChannel.
+     * The data needed to update a PostIntegration.
      */
-    data: XOR<PostChannelUpdateInput, PostChannelUncheckedUpdateInput>
+    data: XOR<PostIntegrationUpdateInput, PostIntegrationUncheckedUpdateInput>
     /**
-     * Choose, which PostChannel to update.
+     * Choose, which PostIntegration to update.
      */
-    where: PostChannelWhereUniqueInput
+    where: PostIntegrationWhereUniqueInput
   }
 
   /**
-   * PostChannel updateMany
+   * PostIntegration updateMany
    */
-  export type PostChannelUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update PostChannels.
+     * The data used to update PostIntegrations.
      */
-    data: XOR<PostChannelUpdateManyMutationInput, PostChannelUncheckedUpdateManyInput>
+    data: XOR<PostIntegrationUpdateManyMutationInput, PostIntegrationUncheckedUpdateManyInput>
     /**
-     * Filter which PostChannels to update
+     * Filter which PostIntegrations to update
      */
-    where?: PostChannelWhereInput
+    where?: PostIntegrationWhereInput
     /**
-     * Limit how many PostChannels to update.
+     * Limit how many PostIntegrations to update.
      */
     limit?: number
   }
 
   /**
-   * PostChannel updateManyAndReturn
+   * PostIntegration updateManyAndReturn
    */
-  export type PostChannelUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: PostIntegrationSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
-     * The data used to update PostChannels.
+     * The data used to update PostIntegrations.
      */
-    data: XOR<PostChannelUpdateManyMutationInput, PostChannelUncheckedUpdateManyInput>
+    data: XOR<PostIntegrationUpdateManyMutationInput, PostIntegrationUncheckedUpdateManyInput>
     /**
-     * Filter which PostChannels to update
+     * Filter which PostIntegrations to update
      */
-    where?: PostChannelWhereInput
+    where?: PostIntegrationWhereInput
     /**
-     * Limit how many PostChannels to update.
+     * Limit how many PostIntegrations to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: PostIntegrationIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * PostChannel upsert
+   * PostIntegration upsert
    */
-  export type PostChannelUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
     /**
-     * The filter to search for the PostChannel to update in case it exists.
+     * The filter to search for the PostIntegration to update in case it exists.
      */
-    where: PostChannelWhereUniqueInput
+    where: PostIntegrationWhereUniqueInput
     /**
-     * In case the PostChannel found by the `where` argument doesn't exist, create a new PostChannel with this data.
+     * In case the PostIntegration found by the `where` argument doesn't exist, create a new PostIntegration with this data.
      */
-    create: XOR<PostChannelCreateInput, PostChannelUncheckedCreateInput>
+    create: XOR<PostIntegrationCreateInput, PostIntegrationUncheckedCreateInput>
     /**
-     * In case the PostChannel was found with the provided `where` argument, update it with this data.
+     * In case the PostIntegration was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<PostChannelUpdateInput, PostChannelUncheckedUpdateInput>
+    update: XOR<PostIntegrationUpdateInput, PostIntegrationUncheckedUpdateInput>
   }
 
   /**
-   * PostChannel delete
+   * PostIntegration delete
    */
-  export type PostChannelDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
     /**
-     * Filter which PostChannel to delete.
+     * Filter which PostIntegration to delete.
      */
-    where: PostChannelWhereUniqueInput
+    where: PostIntegrationWhereUniqueInput
   }
 
   /**
-   * PostChannel deleteMany
+   * PostIntegration deleteMany
    */
-  export type PostChannelDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which PostChannels to delete
+     * Filter which PostIntegrations to delete
      */
-    where?: PostChannelWhereInput
+    where?: PostIntegrationWhereInput
     /**
-     * Limit how many PostChannels to delete.
+     * Limit how many PostIntegrations to delete.
      */
     limit?: number
   }
 
   /**
-   * PostChannel without action
+   * PostIntegration without action
    */
-  export type PostChannelDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PostIntegrationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PostChannel
+     * Select specific fields to fetch from the PostIntegration
      */
-    select?: PostChannelSelect<ExtArgs> | null
+    select?: PostIntegrationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PostChannel
+     * Omit specific fields from the PostIntegration
      */
-    omit?: PostChannelOmit<ExtArgs> | null
+    omit?: PostIntegrationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PostChannelInclude<ExtArgs> | null
+    include?: PostIntegrationInclude<ExtArgs> | null
   }
 
 
@@ -27594,21 +27656,26 @@ export namespace Prisma {
   export type OrganisationInviteTokenScalarFieldEnum = (typeof OrganisationInviteTokenScalarFieldEnum)[keyof typeof OrganisationInviteTokenScalarFieldEnum]
 
 
-  export const SocialChannelConnectionScalarFieldEnum: {
+  export const IntegrationScalarFieldEnum: {
     id: 'id',
     organisation_id: 'organisation_id',
-    channel: 'channel',
+    provider: 'provider',
+    name: 'name',
     status: 'status',
     external_account_id: 'external_account_id',
     external_account_name: 'external_account_name',
-    access_token: 'access_token',
-    refresh_token: 'refresh_token',
+    access_token_encrypted: 'access_token_encrypted',
+    refresh_token_encrypted: 'refresh_token_encrypted',
     token_expires_at: 'token_expires_at',
+    external_project_id: 'external_project_id',
+    external_dataset: 'external_dataset',
+    document_type: 'document_type',
+    api_token_encrypted: 'api_token_encrypted',
     created_at: 'created_at',
     updated_at: 'updated_at'
   };
 
-  export type SocialChannelConnectionScalarFieldEnum = (typeof SocialChannelConnectionScalarFieldEnum)[keyof typeof SocialChannelConnectionScalarFieldEnum]
+  export type IntegrationScalarFieldEnum = (typeof IntegrationScalarFieldEnum)[keyof typeof IntegrationScalarFieldEnum]
 
 
   export const StyleProfileScalarFieldEnum: {
@@ -27796,20 +27863,20 @@ export namespace Prisma {
   export type PostAttachmentScalarFieldEnum = (typeof PostAttachmentScalarFieldEnum)[keyof typeof PostAttachmentScalarFieldEnum]
 
 
-  export const PostChannelScalarFieldEnum: {
+  export const PostIntegrationScalarFieldEnum: {
     id: 'id',
     post_id: 'post_id',
-    channel_connection_id: 'channel_connection_id',
+    integration_id: 'integration_id',
     status: 'status',
-    external_post_id: 'external_post_id',
-    external_post_url: 'external_post_url',
+    external_id: 'external_id',
+    external_url: 'external_url',
     published_at: 'published_at',
     failed_reason: 'failed_reason',
     created_at: 'created_at',
     updated_at: 'updated_at'
   };
 
-  export type PostChannelScalarFieldEnum = (typeof PostChannelScalarFieldEnum)[keyof typeof PostChannelScalarFieldEnum]
+  export type PostIntegrationScalarFieldEnum = (typeof PostIntegrationScalarFieldEnum)[keyof typeof PostIntegrationScalarFieldEnum]
 
 
   export const ActivityLogScalarFieldEnum: {
@@ -27972,30 +28039,30 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'SocialChannel'
+   * Reference to a field of type 'IntegrationProvider'
    */
-  export type EnumSocialChannelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SocialChannel'>
+  export type EnumIntegrationProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationProvider'>
     
 
 
   /**
-   * Reference to a field of type 'SocialChannel[]'
+   * Reference to a field of type 'IntegrationProvider[]'
    */
-  export type ListEnumSocialChannelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SocialChannel[]'>
+  export type ListEnumIntegrationProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationProvider[]'>
     
 
 
   /**
-   * Reference to a field of type 'SocialChannelConnectionStatus'
+   * Reference to a field of type 'IntegrationStatus'
    */
-  export type EnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SocialChannelConnectionStatus'>
+  export type EnumIntegrationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationStatus'>
     
 
 
   /**
-   * Reference to a field of type 'SocialChannelConnectionStatus[]'
+   * Reference to a field of type 'IntegrationStatus[]'
    */
-  export type ListEnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SocialChannelConnectionStatus[]'>
+  export type ListEnumIntegrationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationStatus[]'>
     
 
 
@@ -28077,16 +28144,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'PostChannelStatus'
+   * Reference to a field of type 'PostIntegrationStatus'
    */
-  export type EnumPostChannelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostChannelStatus'>
+  export type EnumPostIntegrationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostIntegrationStatus'>
     
 
 
   /**
-   * Reference to a field of type 'PostChannelStatus[]'
+   * Reference to a field of type 'PostIntegrationStatus[]'
    */
-  export type ListEnumPostChannelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostChannelStatus[]'>
+  export type ListEnumPostIntegrationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostIntegrationStatus[]'>
     
 
 
@@ -28374,7 +28441,7 @@ export namespace Prisma {
     members?: OrganisationMemberListRelationFilter
     documents?: DocumentListRelationFilter
     posts?: PostListRelationFilter
-    channel_connections?: SocialChannelConnectionListRelationFilter
+    integrations?: IntegrationListRelationFilter
     style_profiles?: StyleProfileListRelationFilter
     projects?: ProjectListRelationFilter
     rss_feeds?: RssFeedListRelationFilter
@@ -28392,7 +28459,7 @@ export namespace Prisma {
     members?: OrganisationMemberOrderByRelationAggregateInput
     documents?: DocumentOrderByRelationAggregateInput
     posts?: PostOrderByRelationAggregateInput
-    channel_connections?: SocialChannelConnectionOrderByRelationAggregateInput
+    integrations?: IntegrationOrderByRelationAggregateInput
     style_profiles?: StyleProfileOrderByRelationAggregateInput
     projects?: ProjectOrderByRelationAggregateInput
     rss_feeds?: RssFeedOrderByRelationAggregateInput
@@ -28413,7 +28480,7 @@ export namespace Prisma {
     members?: OrganisationMemberListRelationFilter
     documents?: DocumentListRelationFilter
     posts?: PostListRelationFilter
-    channel_connections?: SocialChannelConnectionListRelationFilter
+    integrations?: IntegrationListRelationFilter
     style_profiles?: StyleProfileListRelationFilter
     projects?: ProjectListRelationFilter
     rss_feeds?: RssFeedListRelationFilter
@@ -28581,93 +28648,118 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"OrganisationInviteToken"> | Date | string
   }
 
-  export type SocialChannelConnectionWhereInput = {
-    AND?: SocialChannelConnectionWhereInput | SocialChannelConnectionWhereInput[]
-    OR?: SocialChannelConnectionWhereInput[]
-    NOT?: SocialChannelConnectionWhereInput | SocialChannelConnectionWhereInput[]
-    id?: StringFilter<"SocialChannelConnection"> | string
-    organisation_id?: StringFilter<"SocialChannelConnection"> | string
-    channel?: EnumSocialChannelFilter<"SocialChannelConnection"> | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFilter<"SocialChannelConnection"> | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFilter<"SocialChannelConnection"> | string
-    external_account_name?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    access_token?: StringFilter<"SocialChannelConnection"> | string
-    refresh_token?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    token_expires_at?: DateTimeNullableFilter<"SocialChannelConnection"> | Date | string | null
-    created_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
-    updated_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
+  export type IntegrationWhereInput = {
+    AND?: IntegrationWhereInput | IntegrationWhereInput[]
+    OR?: IntegrationWhereInput[]
+    NOT?: IntegrationWhereInput | IntegrationWhereInput[]
+    id?: StringFilter<"Integration"> | string
+    organisation_id?: StringFilter<"Integration"> | string
+    provider?: EnumIntegrationProviderFilter<"Integration"> | $Enums.IntegrationProvider
+    name?: StringFilter<"Integration"> | string
+    status?: EnumIntegrationStatusFilter<"Integration"> | $Enums.IntegrationStatus
+    external_account_id?: StringNullableFilter<"Integration"> | string | null
+    external_account_name?: StringNullableFilter<"Integration"> | string | null
+    access_token_encrypted?: StringNullableFilter<"Integration"> | string | null
+    refresh_token_encrypted?: StringNullableFilter<"Integration"> | string | null
+    token_expires_at?: DateTimeNullableFilter<"Integration"> | Date | string | null
+    external_project_id?: StringNullableFilter<"Integration"> | string | null
+    external_dataset?: StringNullableFilter<"Integration"> | string | null
+    document_type?: StringNullableFilter<"Integration"> | string | null
+    api_token_encrypted?: StringNullableFilter<"Integration"> | string | null
+    created_at?: DateTimeFilter<"Integration"> | Date | string
+    updated_at?: DateTimeFilter<"Integration"> | Date | string
     organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
-    post_channels?: PostChannelListRelationFilter
+    post_integrations?: PostIntegrationListRelationFilter
   }
 
-  export type SocialChannelConnectionOrderByWithRelationInput = {
+  export type IntegrationOrderByWithRelationInput = {
     id?: SortOrder
     organisation_id?: SortOrder
-    channel?: SortOrder
+    provider?: SortOrder
+    name?: SortOrder
     status?: SortOrder
-    external_account_id?: SortOrder
+    external_account_id?: SortOrderInput | SortOrder
     external_account_name?: SortOrderInput | SortOrder
-    access_token?: SortOrder
-    refresh_token?: SortOrderInput | SortOrder
+    access_token_encrypted?: SortOrderInput | SortOrder
+    refresh_token_encrypted?: SortOrderInput | SortOrder
     token_expires_at?: SortOrderInput | SortOrder
+    external_project_id?: SortOrderInput | SortOrder
+    external_dataset?: SortOrderInput | SortOrder
+    document_type?: SortOrderInput | SortOrder
+    api_token_encrypted?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     organisation?: OrganisationOrderByWithRelationInput
-    post_channels?: PostChannelOrderByRelationAggregateInput
+    post_integrations?: PostIntegrationOrderByRelationAggregateInput
   }
 
-  export type SocialChannelConnectionWhereUniqueInput = Prisma.AtLeast<{
+  export type IntegrationWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    channel_external_account_id?: SocialChannelConnectionChannelExternal_account_idCompoundUniqueInput
-    AND?: SocialChannelConnectionWhereInput | SocialChannelConnectionWhereInput[]
-    OR?: SocialChannelConnectionWhereInput[]
-    NOT?: SocialChannelConnectionWhereInput | SocialChannelConnectionWhereInput[]
-    organisation_id?: StringFilter<"SocialChannelConnection"> | string
-    channel?: EnumSocialChannelFilter<"SocialChannelConnection"> | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFilter<"SocialChannelConnection"> | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFilter<"SocialChannelConnection"> | string
-    external_account_name?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    access_token?: StringFilter<"SocialChannelConnection"> | string
-    refresh_token?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    token_expires_at?: DateTimeNullableFilter<"SocialChannelConnection"> | Date | string | null
-    created_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
-    updated_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
+    provider_external_account_id?: IntegrationProviderExternal_account_idCompoundUniqueInput
+    AND?: IntegrationWhereInput | IntegrationWhereInput[]
+    OR?: IntegrationWhereInput[]
+    NOT?: IntegrationWhereInput | IntegrationWhereInput[]
+    organisation_id?: StringFilter<"Integration"> | string
+    provider?: EnumIntegrationProviderFilter<"Integration"> | $Enums.IntegrationProvider
+    name?: StringFilter<"Integration"> | string
+    status?: EnumIntegrationStatusFilter<"Integration"> | $Enums.IntegrationStatus
+    external_account_id?: StringNullableFilter<"Integration"> | string | null
+    external_account_name?: StringNullableFilter<"Integration"> | string | null
+    access_token_encrypted?: StringNullableFilter<"Integration"> | string | null
+    refresh_token_encrypted?: StringNullableFilter<"Integration"> | string | null
+    token_expires_at?: DateTimeNullableFilter<"Integration"> | Date | string | null
+    external_project_id?: StringNullableFilter<"Integration"> | string | null
+    external_dataset?: StringNullableFilter<"Integration"> | string | null
+    document_type?: StringNullableFilter<"Integration"> | string | null
+    api_token_encrypted?: StringNullableFilter<"Integration"> | string | null
+    created_at?: DateTimeFilter<"Integration"> | Date | string
+    updated_at?: DateTimeFilter<"Integration"> | Date | string
     organisation?: XOR<OrganisationScalarRelationFilter, OrganisationWhereInput>
-    post_channels?: PostChannelListRelationFilter
-  }, "id" | "channel_external_account_id">
+    post_integrations?: PostIntegrationListRelationFilter
+  }, "id" | "provider_external_account_id">
 
-  export type SocialChannelConnectionOrderByWithAggregationInput = {
+  export type IntegrationOrderByWithAggregationInput = {
     id?: SortOrder
     organisation_id?: SortOrder
-    channel?: SortOrder
+    provider?: SortOrder
+    name?: SortOrder
     status?: SortOrder
-    external_account_id?: SortOrder
+    external_account_id?: SortOrderInput | SortOrder
     external_account_name?: SortOrderInput | SortOrder
-    access_token?: SortOrder
-    refresh_token?: SortOrderInput | SortOrder
+    access_token_encrypted?: SortOrderInput | SortOrder
+    refresh_token_encrypted?: SortOrderInput | SortOrder
     token_expires_at?: SortOrderInput | SortOrder
+    external_project_id?: SortOrderInput | SortOrder
+    external_dataset?: SortOrderInput | SortOrder
+    document_type?: SortOrderInput | SortOrder
+    api_token_encrypted?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    _count?: SocialChannelConnectionCountOrderByAggregateInput
-    _max?: SocialChannelConnectionMaxOrderByAggregateInput
-    _min?: SocialChannelConnectionMinOrderByAggregateInput
+    _count?: IntegrationCountOrderByAggregateInput
+    _max?: IntegrationMaxOrderByAggregateInput
+    _min?: IntegrationMinOrderByAggregateInput
   }
 
-  export type SocialChannelConnectionScalarWhereWithAggregatesInput = {
-    AND?: SocialChannelConnectionScalarWhereWithAggregatesInput | SocialChannelConnectionScalarWhereWithAggregatesInput[]
-    OR?: SocialChannelConnectionScalarWhereWithAggregatesInput[]
-    NOT?: SocialChannelConnectionScalarWhereWithAggregatesInput | SocialChannelConnectionScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"SocialChannelConnection"> | string
-    organisation_id?: StringWithAggregatesFilter<"SocialChannelConnection"> | string
-    channel?: EnumSocialChannelWithAggregatesFilter<"SocialChannelConnection"> | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusWithAggregatesFilter<"SocialChannelConnection"> | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringWithAggregatesFilter<"SocialChannelConnection"> | string
-    external_account_name?: StringNullableWithAggregatesFilter<"SocialChannelConnection"> | string | null
-    access_token?: StringWithAggregatesFilter<"SocialChannelConnection"> | string
-    refresh_token?: StringNullableWithAggregatesFilter<"SocialChannelConnection"> | string | null
-    token_expires_at?: DateTimeNullableWithAggregatesFilter<"SocialChannelConnection"> | Date | string | null
-    created_at?: DateTimeWithAggregatesFilter<"SocialChannelConnection"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"SocialChannelConnection"> | Date | string
+  export type IntegrationScalarWhereWithAggregatesInput = {
+    AND?: IntegrationScalarWhereWithAggregatesInput | IntegrationScalarWhereWithAggregatesInput[]
+    OR?: IntegrationScalarWhereWithAggregatesInput[]
+    NOT?: IntegrationScalarWhereWithAggregatesInput | IntegrationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Integration"> | string
+    organisation_id?: StringWithAggregatesFilter<"Integration"> | string
+    provider?: EnumIntegrationProviderWithAggregatesFilter<"Integration"> | $Enums.IntegrationProvider
+    name?: StringWithAggregatesFilter<"Integration"> | string
+    status?: EnumIntegrationStatusWithAggregatesFilter<"Integration"> | $Enums.IntegrationStatus
+    external_account_id?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    external_account_name?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    access_token_encrypted?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    refresh_token_encrypted?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    token_expires_at?: DateTimeNullableWithAggregatesFilter<"Integration"> | Date | string | null
+    external_project_id?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    external_dataset?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    document_type?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    api_token_encrypted?: StringNullableWithAggregatesFilter<"Integration"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"Integration"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"Integration"> | Date | string
   }
 
   export type StyleProfileWhereInput = {
@@ -29505,7 +29597,7 @@ export namespace Prisma {
     source_post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
     repurposed_posts?: PostListRelationFilter
     attachments?: PostAttachmentListRelationFilter
-    channels?: PostChannelListRelationFilter
+    integrations?: PostIntegrationListRelationFilter
   }
 
   export type PostOrderByWithRelationInput = {
@@ -29547,7 +29639,7 @@ export namespace Prisma {
     source_post?: PostOrderByWithRelationInput
     repurposed_posts?: PostOrderByRelationAggregateInput
     attachments?: PostAttachmentOrderByRelationAggregateInput
-    channels?: PostChannelOrderByRelationAggregateInput
+    integrations?: PostIntegrationOrderByRelationAggregateInput
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
@@ -29592,7 +29684,7 @@ export namespace Prisma {
     source_post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
     repurposed_posts?: PostListRelationFilter
     attachments?: PostAttachmentListRelationFilter
-    channels?: PostChannelListRelationFilter
+    integrations?: PostIntegrationListRelationFilter
   }, "id">
 
   export type PostOrderByWithAggregationInput = {
@@ -29720,88 +29812,88 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"PostAttachment"> | Date | string
   }
 
-  export type PostChannelWhereInput = {
-    AND?: PostChannelWhereInput | PostChannelWhereInput[]
-    OR?: PostChannelWhereInput[]
-    NOT?: PostChannelWhereInput | PostChannelWhereInput[]
-    id?: StringFilter<"PostChannel"> | string
-    post_id?: StringFilter<"PostChannel"> | string
-    channel_connection_id?: StringFilter<"PostChannel"> | string
-    status?: EnumPostChannelStatusFilter<"PostChannel"> | $Enums.PostChannelStatus
-    external_post_id?: StringNullableFilter<"PostChannel"> | string | null
-    external_post_url?: StringNullableFilter<"PostChannel"> | string | null
-    published_at?: DateTimeNullableFilter<"PostChannel"> | Date | string | null
-    failed_reason?: StringNullableFilter<"PostChannel"> | string | null
-    created_at?: DateTimeFilter<"PostChannel"> | Date | string
-    updated_at?: DateTimeFilter<"PostChannel"> | Date | string
+  export type PostIntegrationWhereInput = {
+    AND?: PostIntegrationWhereInput | PostIntegrationWhereInput[]
+    OR?: PostIntegrationWhereInput[]
+    NOT?: PostIntegrationWhereInput | PostIntegrationWhereInput[]
+    id?: StringFilter<"PostIntegration"> | string
+    post_id?: StringFilter<"PostIntegration"> | string
+    integration_id?: StringFilter<"PostIntegration"> | string
+    status?: EnumPostIntegrationStatusFilter<"PostIntegration"> | $Enums.PostIntegrationStatus
+    external_id?: StringNullableFilter<"PostIntegration"> | string | null
+    external_url?: StringNullableFilter<"PostIntegration"> | string | null
+    published_at?: DateTimeNullableFilter<"PostIntegration"> | Date | string | null
+    failed_reason?: StringNullableFilter<"PostIntegration"> | string | null
+    created_at?: DateTimeFilter<"PostIntegration"> | Date | string
+    updated_at?: DateTimeFilter<"PostIntegration"> | Date | string
     post?: XOR<PostScalarRelationFilter, PostWhereInput>
-    channel_connection?: XOR<SocialChannelConnectionScalarRelationFilter, SocialChannelConnectionWhereInput>
+    integration?: XOR<IntegrationScalarRelationFilter, IntegrationWhereInput>
   }
 
-  export type PostChannelOrderByWithRelationInput = {
+  export type PostIntegrationOrderByWithRelationInput = {
     id?: SortOrder
     post_id?: SortOrder
-    channel_connection_id?: SortOrder
+    integration_id?: SortOrder
     status?: SortOrder
-    external_post_id?: SortOrderInput | SortOrder
-    external_post_url?: SortOrderInput | SortOrder
+    external_id?: SortOrderInput | SortOrder
+    external_url?: SortOrderInput | SortOrder
     published_at?: SortOrderInput | SortOrder
     failed_reason?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     post?: PostOrderByWithRelationInput
-    channel_connection?: SocialChannelConnectionOrderByWithRelationInput
+    integration?: IntegrationOrderByWithRelationInput
   }
 
-  export type PostChannelWhereUniqueInput = Prisma.AtLeast<{
+  export type PostIntegrationWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    post_id_channel_connection_id?: PostChannelPost_idChannel_connection_idCompoundUniqueInput
-    AND?: PostChannelWhereInput | PostChannelWhereInput[]
-    OR?: PostChannelWhereInput[]
-    NOT?: PostChannelWhereInput | PostChannelWhereInput[]
-    post_id?: StringFilter<"PostChannel"> | string
-    channel_connection_id?: StringFilter<"PostChannel"> | string
-    status?: EnumPostChannelStatusFilter<"PostChannel"> | $Enums.PostChannelStatus
-    external_post_id?: StringNullableFilter<"PostChannel"> | string | null
-    external_post_url?: StringNullableFilter<"PostChannel"> | string | null
-    published_at?: DateTimeNullableFilter<"PostChannel"> | Date | string | null
-    failed_reason?: StringNullableFilter<"PostChannel"> | string | null
-    created_at?: DateTimeFilter<"PostChannel"> | Date | string
-    updated_at?: DateTimeFilter<"PostChannel"> | Date | string
+    post_id_integration_id?: PostIntegrationPost_idIntegration_idCompoundUniqueInput
+    AND?: PostIntegrationWhereInput | PostIntegrationWhereInput[]
+    OR?: PostIntegrationWhereInput[]
+    NOT?: PostIntegrationWhereInput | PostIntegrationWhereInput[]
+    post_id?: StringFilter<"PostIntegration"> | string
+    integration_id?: StringFilter<"PostIntegration"> | string
+    status?: EnumPostIntegrationStatusFilter<"PostIntegration"> | $Enums.PostIntegrationStatus
+    external_id?: StringNullableFilter<"PostIntegration"> | string | null
+    external_url?: StringNullableFilter<"PostIntegration"> | string | null
+    published_at?: DateTimeNullableFilter<"PostIntegration"> | Date | string | null
+    failed_reason?: StringNullableFilter<"PostIntegration"> | string | null
+    created_at?: DateTimeFilter<"PostIntegration"> | Date | string
+    updated_at?: DateTimeFilter<"PostIntegration"> | Date | string
     post?: XOR<PostScalarRelationFilter, PostWhereInput>
-    channel_connection?: XOR<SocialChannelConnectionScalarRelationFilter, SocialChannelConnectionWhereInput>
-  }, "id" | "post_id_channel_connection_id">
+    integration?: XOR<IntegrationScalarRelationFilter, IntegrationWhereInput>
+  }, "id" | "post_id_integration_id">
 
-  export type PostChannelOrderByWithAggregationInput = {
+  export type PostIntegrationOrderByWithAggregationInput = {
     id?: SortOrder
     post_id?: SortOrder
-    channel_connection_id?: SortOrder
+    integration_id?: SortOrder
     status?: SortOrder
-    external_post_id?: SortOrderInput | SortOrder
-    external_post_url?: SortOrderInput | SortOrder
+    external_id?: SortOrderInput | SortOrder
+    external_url?: SortOrderInput | SortOrder
     published_at?: SortOrderInput | SortOrder
     failed_reason?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    _count?: PostChannelCountOrderByAggregateInput
-    _max?: PostChannelMaxOrderByAggregateInput
-    _min?: PostChannelMinOrderByAggregateInput
+    _count?: PostIntegrationCountOrderByAggregateInput
+    _max?: PostIntegrationMaxOrderByAggregateInput
+    _min?: PostIntegrationMinOrderByAggregateInput
   }
 
-  export type PostChannelScalarWhereWithAggregatesInput = {
-    AND?: PostChannelScalarWhereWithAggregatesInput | PostChannelScalarWhereWithAggregatesInput[]
-    OR?: PostChannelScalarWhereWithAggregatesInput[]
-    NOT?: PostChannelScalarWhereWithAggregatesInput | PostChannelScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"PostChannel"> | string
-    post_id?: StringWithAggregatesFilter<"PostChannel"> | string
-    channel_connection_id?: StringWithAggregatesFilter<"PostChannel"> | string
-    status?: EnumPostChannelStatusWithAggregatesFilter<"PostChannel"> | $Enums.PostChannelStatus
-    external_post_id?: StringNullableWithAggregatesFilter<"PostChannel"> | string | null
-    external_post_url?: StringNullableWithAggregatesFilter<"PostChannel"> | string | null
-    published_at?: DateTimeNullableWithAggregatesFilter<"PostChannel"> | Date | string | null
-    failed_reason?: StringNullableWithAggregatesFilter<"PostChannel"> | string | null
-    created_at?: DateTimeWithAggregatesFilter<"PostChannel"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"PostChannel"> | Date | string
+  export type PostIntegrationScalarWhereWithAggregatesInput = {
+    AND?: PostIntegrationScalarWhereWithAggregatesInput | PostIntegrationScalarWhereWithAggregatesInput[]
+    OR?: PostIntegrationScalarWhereWithAggregatesInput[]
+    NOT?: PostIntegrationScalarWhereWithAggregatesInput | PostIntegrationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PostIntegration"> | string
+    post_id?: StringWithAggregatesFilter<"PostIntegration"> | string
+    integration_id?: StringWithAggregatesFilter<"PostIntegration"> | string
+    status?: EnumPostIntegrationStatusWithAggregatesFilter<"PostIntegration"> | $Enums.PostIntegrationStatus
+    external_id?: StringNullableWithAggregatesFilter<"PostIntegration"> | string | null
+    external_url?: StringNullableWithAggregatesFilter<"PostIntegration"> | string | null
+    published_at?: DateTimeNullableWithAggregatesFilter<"PostIntegration"> | Date | string | null
+    failed_reason?: StringNullableWithAggregatesFilter<"PostIntegration"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"PostIntegration"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"PostIntegration"> | Date | string
   }
 
   export type ActivityLogWhereInput = {
@@ -30142,7 +30234,7 @@ export namespace Prisma {
     members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
     documents?: DocumentCreateNestedManyWithoutOrganisationInput
     posts?: PostCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
@@ -30159,7 +30251,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
     documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
@@ -30176,7 +30268,7 @@ export namespace Prisma {
     members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUpdateManyWithoutOrganisationNestedInput
     posts?: PostUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
@@ -30193,7 +30285,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
@@ -30367,103 +30459,138 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SocialChannelConnectionCreateInput = {
+  export type IntegrationCreateInput = {
     id?: string
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
+    provider: $Enums.IntegrationProvider
+    name: string
+    status?: $Enums.IntegrationStatus
+    external_account_id?: string | null
     external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
+    access_token_encrypted?: string | null
+    refresh_token_encrypted?: string | null
     token_expires_at?: Date | string | null
+    external_project_id?: string | null
+    external_dataset?: string | null
+    document_type?: string | null
+    api_token_encrypted?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organisation: OrganisationCreateNestedOneWithoutChannel_connectionsInput
-    post_channels?: PostChannelCreateNestedManyWithoutChannel_connectionInput
+    organisation: OrganisationCreateNestedOneWithoutIntegrationsInput
+    post_integrations?: PostIntegrationCreateNestedManyWithoutIntegrationInput
   }
 
-  export type SocialChannelConnectionUncheckedCreateInput = {
-    id?: string
-    organisation_id: string
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
-    external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
-    token_expires_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    post_channels?: PostChannelUncheckedCreateNestedManyWithoutChannel_connectionInput
-  }
-
-  export type SocialChannelConnectionUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
-    external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organisation?: OrganisationUpdateOneRequiredWithoutChannel_connectionsNestedInput
-    post_channels?: PostChannelUpdateManyWithoutChannel_connectionNestedInput
-  }
-
-  export type SocialChannelConnectionUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    organisation_id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
-    external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    post_channels?: PostChannelUncheckedUpdateManyWithoutChannel_connectionNestedInput
-  }
-
-  export type SocialChannelConnectionCreateManyInput = {
+  export type IntegrationUncheckedCreateInput = {
     id?: string
     organisation_id: string
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
+    provider: $Enums.IntegrationProvider
+    name: string
+    status?: $Enums.IntegrationStatus
+    external_account_id?: string | null
     external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
+    access_token_encrypted?: string | null
+    refresh_token_encrypted?: string | null
     token_expires_at?: Date | string | null
+    external_project_id?: string | null
+    external_dataset?: string | null
+    document_type?: string | null
+    api_token_encrypted?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    post_integrations?: PostIntegrationUncheckedCreateNestedManyWithoutIntegrationInput
+  }
+
+  export type IntegrationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    external_account_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    refresh_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    external_project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_dataset?: NullableStringFieldUpdateOperationsInput | string | null
+    document_type?: NullableStringFieldUpdateOperationsInput | string | null
+    api_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneRequiredWithoutIntegrationsNestedInput
+    post_integrations?: PostIntegrationUpdateManyWithoutIntegrationNestedInput
+  }
+
+  export type IntegrationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    external_account_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    refresh_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    external_project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_dataset?: NullableStringFieldUpdateOperationsInput | string | null
+    document_type?: NullableStringFieldUpdateOperationsInput | string | null
+    api_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    post_integrations?: PostIntegrationUncheckedUpdateManyWithoutIntegrationNestedInput
+  }
+
+  export type IntegrationCreateManyInput = {
+    id?: string
+    organisation_id: string
+    provider: $Enums.IntegrationProvider
+    name: string
+    status?: $Enums.IntegrationStatus
+    external_account_id?: string | null
+    external_account_name?: string | null
+    access_token_encrypted?: string | null
+    refresh_token_encrypted?: string | null
+    token_expires_at?: Date | string | null
+    external_project_id?: string | null
+    external_dataset?: string | null
+    document_type?: string | null
+    api_token_encrypted?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
 
-  export type SocialChannelConnectionUpdateManyMutationInput = {
+  export type IntegrationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    external_account_id?: NullableStringFieldUpdateOperationsInput | string | null
     external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    refresh_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    external_project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_dataset?: NullableStringFieldUpdateOperationsInput | string | null
+    document_type?: NullableStringFieldUpdateOperationsInput | string | null
+    api_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SocialChannelConnectionUncheckedUpdateManyInput = {
+  export type IntegrationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     organisation_id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    external_account_id?: NullableStringFieldUpdateOperationsInput | string | null
     external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    refresh_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    external_project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_dataset?: NullableStringFieldUpdateOperationsInput | string | null
+    document_type?: NullableStringFieldUpdateOperationsInput | string | null
+    api_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31359,7 +31486,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateInput = {
@@ -31391,7 +31518,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostUpdateInput = {
@@ -31423,7 +31550,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateInput = {
@@ -31455,7 +31582,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostCreateManyInput = {
@@ -31589,89 +31716,89 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PostChannelCreateInput = {
+  export type PostIntegrationCreateInput = {
     id?: string
-    status?: $Enums.PostChannelStatus
-    external_post_id?: string | null
-    external_post_url?: string | null
+    status?: $Enums.PostIntegrationStatus
+    external_id?: string | null
+    external_url?: string | null
     published_at?: Date | string | null
     failed_reason?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    post: PostCreateNestedOneWithoutChannelsInput
-    channel_connection: SocialChannelConnectionCreateNestedOneWithoutPost_channelsInput
+    post: PostCreateNestedOneWithoutIntegrationsInput
+    integration: IntegrationCreateNestedOneWithoutPost_integrationsInput
   }
 
-  export type PostChannelUncheckedCreateInput = {
-    id?: string
-    post_id: string
-    channel_connection_id: string
-    status?: $Enums.PostChannelStatus
-    external_post_id?: string | null
-    external_post_url?: string | null
-    published_at?: Date | string | null
-    failed_reason?: string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type PostChannelUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
-    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    post?: PostUpdateOneRequiredWithoutChannelsNestedInput
-    channel_connection?: SocialChannelConnectionUpdateOneRequiredWithoutPost_channelsNestedInput
-  }
-
-  export type PostChannelUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    post_id?: StringFieldUpdateOperationsInput | string
-    channel_connection_id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
-    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PostChannelCreateManyInput = {
+  export type PostIntegrationUncheckedCreateInput = {
     id?: string
     post_id: string
-    channel_connection_id: string
-    status?: $Enums.PostChannelStatus
-    external_post_id?: string | null
-    external_post_url?: string | null
+    integration_id: string
+    status?: $Enums.PostIntegrationStatus
+    external_id?: string | null
+    external_url?: string | null
     published_at?: Date | string | null
     failed_reason?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
 
-  export type PostChannelUpdateManyMutationInput = {
+  export type PostIntegrationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    post?: PostUpdateOneRequiredWithoutIntegrationsNestedInput
+    integration?: IntegrationUpdateOneRequiredWithoutPost_integrationsNestedInput
+  }
+
+  export type PostIntegrationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    post_id?: StringFieldUpdateOperationsInput | string
+    integration_id?: StringFieldUpdateOperationsInput | string
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
     published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PostChannelUncheckedUpdateManyInput = {
+  export type PostIntegrationCreateManyInput = {
+    id?: string
+    post_id: string
+    integration_id: string
+    status?: $Enums.PostIntegrationStatus
+    external_id?: string | null
+    external_url?: string | null
+    published_at?: Date | string | null
+    failed_reason?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type PostIntegrationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PostIntegrationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     post_id?: StringFieldUpdateOperationsInput | string
-    channel_connection_id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
+    integration_id?: StringFieldUpdateOperationsInput | string
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
     published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32122,10 +32249,10 @@ export namespace Prisma {
     none?: DocumentWhereInput
   }
 
-  export type SocialChannelConnectionListRelationFilter = {
-    every?: SocialChannelConnectionWhereInput
-    some?: SocialChannelConnectionWhereInput
-    none?: SocialChannelConnectionWhereInput
+  export type IntegrationListRelationFilter = {
+    every?: IntegrationWhereInput
+    some?: IntegrationWhereInput
+    none?: IntegrationWhereInput
   }
 
   export type StyleProfileListRelationFilter = {
@@ -32150,7 +32277,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type SocialChannelConnectionOrderByRelationAggregateInput = {
+  export type IntegrationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32307,95 +32434,110 @@ export namespace Prisma {
     created_at?: SortOrder
   }
 
-  export type EnumSocialChannelFilter<$PrismaModel = never> = {
-    equals?: $Enums.SocialChannel | EnumSocialChannelFieldRefInput<$PrismaModel>
-    in?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
-    not?: NestedEnumSocialChannelFilter<$PrismaModel> | $Enums.SocialChannel
+  export type EnumIntegrationProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationProviderFilter<$PrismaModel> | $Enums.IntegrationProvider
   }
 
-  export type EnumSocialChannelConnectionStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.SocialChannelConnectionStatus | EnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SocialChannelConnectionStatus[] | ListEnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SocialChannelConnectionStatus[] | ListEnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSocialChannelConnectionStatusFilter<$PrismaModel> | $Enums.SocialChannelConnectionStatus
+  export type EnumIntegrationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationStatus | EnumIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationStatusFilter<$PrismaModel> | $Enums.IntegrationStatus
   }
 
-  export type PostChannelListRelationFilter = {
-    every?: PostChannelWhereInput
-    some?: PostChannelWhereInput
-    none?: PostChannelWhereInput
+  export type PostIntegrationListRelationFilter = {
+    every?: PostIntegrationWhereInput
+    some?: PostIntegrationWhereInput
+    none?: PostIntegrationWhereInput
   }
 
-  export type PostChannelOrderByRelationAggregateInput = {
+  export type PostIntegrationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type SocialChannelConnectionChannelExternal_account_idCompoundUniqueInput = {
-    channel: $Enums.SocialChannel
+  export type IntegrationProviderExternal_account_idCompoundUniqueInput = {
+    provider: $Enums.IntegrationProvider
     external_account_id: string
   }
 
-  export type SocialChannelConnectionCountOrderByAggregateInput = {
+  export type IntegrationCountOrderByAggregateInput = {
     id?: SortOrder
     organisation_id?: SortOrder
-    channel?: SortOrder
+    provider?: SortOrder
+    name?: SortOrder
     status?: SortOrder
     external_account_id?: SortOrder
     external_account_name?: SortOrder
-    access_token?: SortOrder
-    refresh_token?: SortOrder
+    access_token_encrypted?: SortOrder
+    refresh_token_encrypted?: SortOrder
     token_expires_at?: SortOrder
+    external_project_id?: SortOrder
+    external_dataset?: SortOrder
+    document_type?: SortOrder
+    api_token_encrypted?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
-  export type SocialChannelConnectionMaxOrderByAggregateInput = {
+  export type IntegrationMaxOrderByAggregateInput = {
     id?: SortOrder
     organisation_id?: SortOrder
-    channel?: SortOrder
+    provider?: SortOrder
+    name?: SortOrder
     status?: SortOrder
     external_account_id?: SortOrder
     external_account_name?: SortOrder
-    access_token?: SortOrder
-    refresh_token?: SortOrder
+    access_token_encrypted?: SortOrder
+    refresh_token_encrypted?: SortOrder
     token_expires_at?: SortOrder
+    external_project_id?: SortOrder
+    external_dataset?: SortOrder
+    document_type?: SortOrder
+    api_token_encrypted?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
-  export type SocialChannelConnectionMinOrderByAggregateInput = {
+  export type IntegrationMinOrderByAggregateInput = {
     id?: SortOrder
     organisation_id?: SortOrder
-    channel?: SortOrder
+    provider?: SortOrder
+    name?: SortOrder
     status?: SortOrder
     external_account_id?: SortOrder
     external_account_name?: SortOrder
-    access_token?: SortOrder
-    refresh_token?: SortOrder
+    access_token_encrypted?: SortOrder
+    refresh_token_encrypted?: SortOrder
     token_expires_at?: SortOrder
+    external_project_id?: SortOrder
+    external_dataset?: SortOrder
+    document_type?: SortOrder
+    api_token_encrypted?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
-  export type EnumSocialChannelWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SocialChannel | EnumSocialChannelFieldRefInput<$PrismaModel>
-    in?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
-    not?: NestedEnumSocialChannelWithAggregatesFilter<$PrismaModel> | $Enums.SocialChannel
+  export type EnumIntegrationProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationProviderWithAggregatesFilter<$PrismaModel> | $Enums.IntegrationProvider
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSocialChannelFilter<$PrismaModel>
-    _max?: NestedEnumSocialChannelFilter<$PrismaModel>
+    _min?: NestedEnumIntegrationProviderFilter<$PrismaModel>
+    _max?: NestedEnumIntegrationProviderFilter<$PrismaModel>
   }
 
-  export type EnumSocialChannelConnectionStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SocialChannelConnectionStatus | EnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SocialChannelConnectionStatus[] | ListEnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SocialChannelConnectionStatus[] | ListEnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSocialChannelConnectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SocialChannelConnectionStatus
+  export type EnumIntegrationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationStatus | EnumIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationStatusWithAggregatesFilter<$PrismaModel> | $Enums.IntegrationStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSocialChannelConnectionStatusFilter<$PrismaModel>
-    _max?: NestedEnumSocialChannelConnectionStatusFilter<$PrismaModel>
+    _min?: NestedEnumIntegrationStatusFilter<$PrismaModel>
+    _max?: NestedEnumIntegrationStatusFilter<$PrismaModel>
   }
 
   export type EnumPostTypeFilter<$PrismaModel = never> = {
@@ -33228,70 +33370,70 @@ export namespace Prisma {
     order?: SortOrder
   }
 
-  export type EnumPostChannelStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.PostChannelStatus | EnumPostChannelStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PostChannelStatus[] | ListEnumPostChannelStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PostChannelStatus[] | ListEnumPostChannelStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPostChannelStatusFilter<$PrismaModel> | $Enums.PostChannelStatus
+  export type EnumPostIntegrationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PostIntegrationStatus | EnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PostIntegrationStatus[] | ListEnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PostIntegrationStatus[] | ListEnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPostIntegrationStatusFilter<$PrismaModel> | $Enums.PostIntegrationStatus
   }
 
-  export type SocialChannelConnectionScalarRelationFilter = {
-    is?: SocialChannelConnectionWhereInput
-    isNot?: SocialChannelConnectionWhereInput
+  export type IntegrationScalarRelationFilter = {
+    is?: IntegrationWhereInput
+    isNot?: IntegrationWhereInput
   }
 
-  export type PostChannelPost_idChannel_connection_idCompoundUniqueInput = {
+  export type PostIntegrationPost_idIntegration_idCompoundUniqueInput = {
     post_id: string
-    channel_connection_id: string
+    integration_id: string
   }
 
-  export type PostChannelCountOrderByAggregateInput = {
+  export type PostIntegrationCountOrderByAggregateInput = {
     id?: SortOrder
     post_id?: SortOrder
-    channel_connection_id?: SortOrder
+    integration_id?: SortOrder
     status?: SortOrder
-    external_post_id?: SortOrder
-    external_post_url?: SortOrder
+    external_id?: SortOrder
+    external_url?: SortOrder
     published_at?: SortOrder
     failed_reason?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
-  export type PostChannelMaxOrderByAggregateInput = {
+  export type PostIntegrationMaxOrderByAggregateInput = {
     id?: SortOrder
     post_id?: SortOrder
-    channel_connection_id?: SortOrder
+    integration_id?: SortOrder
     status?: SortOrder
-    external_post_id?: SortOrder
-    external_post_url?: SortOrder
+    external_id?: SortOrder
+    external_url?: SortOrder
     published_at?: SortOrder
     failed_reason?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
-  export type PostChannelMinOrderByAggregateInput = {
+  export type PostIntegrationMinOrderByAggregateInput = {
     id?: SortOrder
     post_id?: SortOrder
-    channel_connection_id?: SortOrder
+    integration_id?: SortOrder
     status?: SortOrder
-    external_post_id?: SortOrder
-    external_post_url?: SortOrder
+    external_id?: SortOrder
+    external_url?: SortOrder
     published_at?: SortOrder
     failed_reason?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
-  export type EnumPostChannelStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PostChannelStatus | EnumPostChannelStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PostChannelStatus[] | ListEnumPostChannelStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PostChannelStatus[] | ListEnumPostChannelStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPostChannelStatusWithAggregatesFilter<$PrismaModel> | $Enums.PostChannelStatus
+  export type EnumPostIntegrationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PostIntegrationStatus | EnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PostIntegrationStatus[] | ListEnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PostIntegrationStatus[] | ListEnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPostIntegrationStatusWithAggregatesFilter<$PrismaModel> | $Enums.PostIntegrationStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPostChannelStatusFilter<$PrismaModel>
-    _max?: NestedEnumPostChannelStatusFilter<$PrismaModel>
+    _min?: NestedEnumPostIntegrationStatusFilter<$PrismaModel>
+    _max?: NestedEnumPostIntegrationStatusFilter<$PrismaModel>
   }
 
   export type EnumActivityLogActionFilter<$PrismaModel = never> = {
@@ -33753,11 +33895,11 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
-  export type SocialChannelConnectionCreateNestedManyWithoutOrganisationInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutOrganisationInput, SocialChannelConnectionUncheckedCreateWithoutOrganisationInput> | SocialChannelConnectionCreateWithoutOrganisationInput[] | SocialChannelConnectionUncheckedCreateWithoutOrganisationInput[]
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutOrganisationInput | SocialChannelConnectionCreateOrConnectWithoutOrganisationInput[]
-    createMany?: SocialChannelConnectionCreateManyOrganisationInputEnvelope
-    connect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
+  export type IntegrationCreateNestedManyWithoutOrganisationInput = {
+    create?: XOR<IntegrationCreateWithoutOrganisationInput, IntegrationUncheckedCreateWithoutOrganisationInput> | IntegrationCreateWithoutOrganisationInput[] | IntegrationUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: IntegrationCreateOrConnectWithoutOrganisationInput | IntegrationCreateOrConnectWithoutOrganisationInput[]
+    createMany?: IntegrationCreateManyOrganisationInputEnvelope
+    connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
   }
 
   export type StyleProfileCreateNestedManyWithoutOrganisationInput = {
@@ -33809,11 +33951,11 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
-  export type SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutOrganisationInput, SocialChannelConnectionUncheckedCreateWithoutOrganisationInput> | SocialChannelConnectionCreateWithoutOrganisationInput[] | SocialChannelConnectionUncheckedCreateWithoutOrganisationInput[]
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutOrganisationInput | SocialChannelConnectionCreateOrConnectWithoutOrganisationInput[]
-    createMany?: SocialChannelConnectionCreateManyOrganisationInputEnvelope
-    connect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
+  export type IntegrationUncheckedCreateNestedManyWithoutOrganisationInput = {
+    create?: XOR<IntegrationCreateWithoutOrganisationInput, IntegrationUncheckedCreateWithoutOrganisationInput> | IntegrationCreateWithoutOrganisationInput[] | IntegrationUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: IntegrationCreateOrConnectWithoutOrganisationInput | IntegrationCreateOrConnectWithoutOrganisationInput[]
+    createMany?: IntegrationCreateManyOrganisationInputEnvelope
+    connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
   }
 
   export type StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput = {
@@ -33894,18 +34036,18 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
-  export type SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutOrganisationInput, SocialChannelConnectionUncheckedCreateWithoutOrganisationInput> | SocialChannelConnectionCreateWithoutOrganisationInput[] | SocialChannelConnectionUncheckedCreateWithoutOrganisationInput[]
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutOrganisationInput | SocialChannelConnectionCreateOrConnectWithoutOrganisationInput[]
-    upsert?: SocialChannelConnectionUpsertWithWhereUniqueWithoutOrganisationInput | SocialChannelConnectionUpsertWithWhereUniqueWithoutOrganisationInput[]
-    createMany?: SocialChannelConnectionCreateManyOrganisationInputEnvelope
-    set?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    disconnect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    delete?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    connect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    update?: SocialChannelConnectionUpdateWithWhereUniqueWithoutOrganisationInput | SocialChannelConnectionUpdateWithWhereUniqueWithoutOrganisationInput[]
-    updateMany?: SocialChannelConnectionUpdateManyWithWhereWithoutOrganisationInput | SocialChannelConnectionUpdateManyWithWhereWithoutOrganisationInput[]
-    deleteMany?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
+  export type IntegrationUpdateManyWithoutOrganisationNestedInput = {
+    create?: XOR<IntegrationCreateWithoutOrganisationInput, IntegrationUncheckedCreateWithoutOrganisationInput> | IntegrationCreateWithoutOrganisationInput[] | IntegrationUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: IntegrationCreateOrConnectWithoutOrganisationInput | IntegrationCreateOrConnectWithoutOrganisationInput[]
+    upsert?: IntegrationUpsertWithWhereUniqueWithoutOrganisationInput | IntegrationUpsertWithWhereUniqueWithoutOrganisationInput[]
+    createMany?: IntegrationCreateManyOrganisationInputEnvelope
+    set?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    disconnect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    delete?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    update?: IntegrationUpdateWithWhereUniqueWithoutOrganisationInput | IntegrationUpdateWithWhereUniqueWithoutOrganisationInput[]
+    updateMany?: IntegrationUpdateManyWithWhereWithoutOrganisationInput | IntegrationUpdateManyWithWhereWithoutOrganisationInput[]
+    deleteMany?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
   }
 
   export type StyleProfileUpdateManyWithoutOrganisationNestedInput = {
@@ -34006,18 +34148,18 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
-  export type SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutOrganisationInput, SocialChannelConnectionUncheckedCreateWithoutOrganisationInput> | SocialChannelConnectionCreateWithoutOrganisationInput[] | SocialChannelConnectionUncheckedCreateWithoutOrganisationInput[]
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutOrganisationInput | SocialChannelConnectionCreateOrConnectWithoutOrganisationInput[]
-    upsert?: SocialChannelConnectionUpsertWithWhereUniqueWithoutOrganisationInput | SocialChannelConnectionUpsertWithWhereUniqueWithoutOrganisationInput[]
-    createMany?: SocialChannelConnectionCreateManyOrganisationInputEnvelope
-    set?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    disconnect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    delete?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    connect?: SocialChannelConnectionWhereUniqueInput | SocialChannelConnectionWhereUniqueInput[]
-    update?: SocialChannelConnectionUpdateWithWhereUniqueWithoutOrganisationInput | SocialChannelConnectionUpdateWithWhereUniqueWithoutOrganisationInput[]
-    updateMany?: SocialChannelConnectionUpdateManyWithWhereWithoutOrganisationInput | SocialChannelConnectionUpdateManyWithWhereWithoutOrganisationInput[]
-    deleteMany?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
+  export type IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput = {
+    create?: XOR<IntegrationCreateWithoutOrganisationInput, IntegrationUncheckedCreateWithoutOrganisationInput> | IntegrationCreateWithoutOrganisationInput[] | IntegrationUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: IntegrationCreateOrConnectWithoutOrganisationInput | IntegrationCreateOrConnectWithoutOrganisationInput[]
+    upsert?: IntegrationUpsertWithWhereUniqueWithoutOrganisationInput | IntegrationUpsertWithWhereUniqueWithoutOrganisationInput[]
+    createMany?: IntegrationCreateManyOrganisationInputEnvelope
+    set?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    disconnect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    delete?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    connect?: IntegrationWhereUniqueInput | IntegrationWhereUniqueInput[]
+    update?: IntegrationUpdateWithWhereUniqueWithoutOrganisationInput | IntegrationUpdateWithWhereUniqueWithoutOrganisationInput[]
+    updateMany?: IntegrationUpdateManyWithWhereWithoutOrganisationInput | IntegrationUpdateManyWithWhereWithoutOrganisationInput[]
+    deleteMany?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
   }
 
   export type StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput = {
@@ -34168,68 +34310,68 @@ export namespace Prisma {
     update?: XOR<XOR<OrganisationMemberUpdateToOneWithWhereWithoutInvite_tokensInput, OrganisationMemberUpdateWithoutInvite_tokensInput>, OrganisationMemberUncheckedUpdateWithoutInvite_tokensInput>
   }
 
-  export type OrganisationCreateNestedOneWithoutChannel_connectionsInput = {
-    create?: XOR<OrganisationCreateWithoutChannel_connectionsInput, OrganisationUncheckedCreateWithoutChannel_connectionsInput>
-    connectOrCreate?: OrganisationCreateOrConnectWithoutChannel_connectionsInput
+  export type OrganisationCreateNestedOneWithoutIntegrationsInput = {
+    create?: XOR<OrganisationCreateWithoutIntegrationsInput, OrganisationUncheckedCreateWithoutIntegrationsInput>
+    connectOrCreate?: OrganisationCreateOrConnectWithoutIntegrationsInput
     connect?: OrganisationWhereUniqueInput
   }
 
-  export type PostChannelCreateNestedManyWithoutChannel_connectionInput = {
-    create?: XOR<PostChannelCreateWithoutChannel_connectionInput, PostChannelUncheckedCreateWithoutChannel_connectionInput> | PostChannelCreateWithoutChannel_connectionInput[] | PostChannelUncheckedCreateWithoutChannel_connectionInput[]
-    connectOrCreate?: PostChannelCreateOrConnectWithoutChannel_connectionInput | PostChannelCreateOrConnectWithoutChannel_connectionInput[]
-    createMany?: PostChannelCreateManyChannel_connectionInputEnvelope
-    connect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
+  export type PostIntegrationCreateNestedManyWithoutIntegrationInput = {
+    create?: XOR<PostIntegrationCreateWithoutIntegrationInput, PostIntegrationUncheckedCreateWithoutIntegrationInput> | PostIntegrationCreateWithoutIntegrationInput[] | PostIntegrationUncheckedCreateWithoutIntegrationInput[]
+    connectOrCreate?: PostIntegrationCreateOrConnectWithoutIntegrationInput | PostIntegrationCreateOrConnectWithoutIntegrationInput[]
+    createMany?: PostIntegrationCreateManyIntegrationInputEnvelope
+    connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
   }
 
-  export type PostChannelUncheckedCreateNestedManyWithoutChannel_connectionInput = {
-    create?: XOR<PostChannelCreateWithoutChannel_connectionInput, PostChannelUncheckedCreateWithoutChannel_connectionInput> | PostChannelCreateWithoutChannel_connectionInput[] | PostChannelUncheckedCreateWithoutChannel_connectionInput[]
-    connectOrCreate?: PostChannelCreateOrConnectWithoutChannel_connectionInput | PostChannelCreateOrConnectWithoutChannel_connectionInput[]
-    createMany?: PostChannelCreateManyChannel_connectionInputEnvelope
-    connect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
+  export type PostIntegrationUncheckedCreateNestedManyWithoutIntegrationInput = {
+    create?: XOR<PostIntegrationCreateWithoutIntegrationInput, PostIntegrationUncheckedCreateWithoutIntegrationInput> | PostIntegrationCreateWithoutIntegrationInput[] | PostIntegrationUncheckedCreateWithoutIntegrationInput[]
+    connectOrCreate?: PostIntegrationCreateOrConnectWithoutIntegrationInput | PostIntegrationCreateOrConnectWithoutIntegrationInput[]
+    createMany?: PostIntegrationCreateManyIntegrationInputEnvelope
+    connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
   }
 
-  export type EnumSocialChannelFieldUpdateOperationsInput = {
-    set?: $Enums.SocialChannel
+  export type EnumIntegrationProviderFieldUpdateOperationsInput = {
+    set?: $Enums.IntegrationProvider
   }
 
-  export type EnumSocialChannelConnectionStatusFieldUpdateOperationsInput = {
-    set?: $Enums.SocialChannelConnectionStatus
+  export type EnumIntegrationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.IntegrationStatus
   }
 
-  export type OrganisationUpdateOneRequiredWithoutChannel_connectionsNestedInput = {
-    create?: XOR<OrganisationCreateWithoutChannel_connectionsInput, OrganisationUncheckedCreateWithoutChannel_connectionsInput>
-    connectOrCreate?: OrganisationCreateOrConnectWithoutChannel_connectionsInput
-    upsert?: OrganisationUpsertWithoutChannel_connectionsInput
+  export type OrganisationUpdateOneRequiredWithoutIntegrationsNestedInput = {
+    create?: XOR<OrganisationCreateWithoutIntegrationsInput, OrganisationUncheckedCreateWithoutIntegrationsInput>
+    connectOrCreate?: OrganisationCreateOrConnectWithoutIntegrationsInput
+    upsert?: OrganisationUpsertWithoutIntegrationsInput
     connect?: OrganisationWhereUniqueInput
-    update?: XOR<XOR<OrganisationUpdateToOneWithWhereWithoutChannel_connectionsInput, OrganisationUpdateWithoutChannel_connectionsInput>, OrganisationUncheckedUpdateWithoutChannel_connectionsInput>
+    update?: XOR<XOR<OrganisationUpdateToOneWithWhereWithoutIntegrationsInput, OrganisationUpdateWithoutIntegrationsInput>, OrganisationUncheckedUpdateWithoutIntegrationsInput>
   }
 
-  export type PostChannelUpdateManyWithoutChannel_connectionNestedInput = {
-    create?: XOR<PostChannelCreateWithoutChannel_connectionInput, PostChannelUncheckedCreateWithoutChannel_connectionInput> | PostChannelCreateWithoutChannel_connectionInput[] | PostChannelUncheckedCreateWithoutChannel_connectionInput[]
-    connectOrCreate?: PostChannelCreateOrConnectWithoutChannel_connectionInput | PostChannelCreateOrConnectWithoutChannel_connectionInput[]
-    upsert?: PostChannelUpsertWithWhereUniqueWithoutChannel_connectionInput | PostChannelUpsertWithWhereUniqueWithoutChannel_connectionInput[]
-    createMany?: PostChannelCreateManyChannel_connectionInputEnvelope
-    set?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    disconnect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    delete?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    connect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    update?: PostChannelUpdateWithWhereUniqueWithoutChannel_connectionInput | PostChannelUpdateWithWhereUniqueWithoutChannel_connectionInput[]
-    updateMany?: PostChannelUpdateManyWithWhereWithoutChannel_connectionInput | PostChannelUpdateManyWithWhereWithoutChannel_connectionInput[]
-    deleteMany?: PostChannelScalarWhereInput | PostChannelScalarWhereInput[]
+  export type PostIntegrationUpdateManyWithoutIntegrationNestedInput = {
+    create?: XOR<PostIntegrationCreateWithoutIntegrationInput, PostIntegrationUncheckedCreateWithoutIntegrationInput> | PostIntegrationCreateWithoutIntegrationInput[] | PostIntegrationUncheckedCreateWithoutIntegrationInput[]
+    connectOrCreate?: PostIntegrationCreateOrConnectWithoutIntegrationInput | PostIntegrationCreateOrConnectWithoutIntegrationInput[]
+    upsert?: PostIntegrationUpsertWithWhereUniqueWithoutIntegrationInput | PostIntegrationUpsertWithWhereUniqueWithoutIntegrationInput[]
+    createMany?: PostIntegrationCreateManyIntegrationInputEnvelope
+    set?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    disconnect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    delete?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    update?: PostIntegrationUpdateWithWhereUniqueWithoutIntegrationInput | PostIntegrationUpdateWithWhereUniqueWithoutIntegrationInput[]
+    updateMany?: PostIntegrationUpdateManyWithWhereWithoutIntegrationInput | PostIntegrationUpdateManyWithWhereWithoutIntegrationInput[]
+    deleteMany?: PostIntegrationScalarWhereInput | PostIntegrationScalarWhereInput[]
   }
 
-  export type PostChannelUncheckedUpdateManyWithoutChannel_connectionNestedInput = {
-    create?: XOR<PostChannelCreateWithoutChannel_connectionInput, PostChannelUncheckedCreateWithoutChannel_connectionInput> | PostChannelCreateWithoutChannel_connectionInput[] | PostChannelUncheckedCreateWithoutChannel_connectionInput[]
-    connectOrCreate?: PostChannelCreateOrConnectWithoutChannel_connectionInput | PostChannelCreateOrConnectWithoutChannel_connectionInput[]
-    upsert?: PostChannelUpsertWithWhereUniqueWithoutChannel_connectionInput | PostChannelUpsertWithWhereUniqueWithoutChannel_connectionInput[]
-    createMany?: PostChannelCreateManyChannel_connectionInputEnvelope
-    set?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    disconnect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    delete?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    connect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    update?: PostChannelUpdateWithWhereUniqueWithoutChannel_connectionInput | PostChannelUpdateWithWhereUniqueWithoutChannel_connectionInput[]
-    updateMany?: PostChannelUpdateManyWithWhereWithoutChannel_connectionInput | PostChannelUpdateManyWithWhereWithoutChannel_connectionInput[]
-    deleteMany?: PostChannelScalarWhereInput | PostChannelScalarWhereInput[]
+  export type PostIntegrationUncheckedUpdateManyWithoutIntegrationNestedInput = {
+    create?: XOR<PostIntegrationCreateWithoutIntegrationInput, PostIntegrationUncheckedCreateWithoutIntegrationInput> | PostIntegrationCreateWithoutIntegrationInput[] | PostIntegrationUncheckedCreateWithoutIntegrationInput[]
+    connectOrCreate?: PostIntegrationCreateOrConnectWithoutIntegrationInput | PostIntegrationCreateOrConnectWithoutIntegrationInput[]
+    upsert?: PostIntegrationUpsertWithWhereUniqueWithoutIntegrationInput | PostIntegrationUpsertWithWhereUniqueWithoutIntegrationInput[]
+    createMany?: PostIntegrationCreateManyIntegrationInputEnvelope
+    set?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    disconnect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    delete?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    update?: PostIntegrationUpdateWithWhereUniqueWithoutIntegrationInput | PostIntegrationUpdateWithWhereUniqueWithoutIntegrationInput[]
+    updateMany?: PostIntegrationUpdateManyWithWhereWithoutIntegrationInput | PostIntegrationUpdateManyWithWhereWithoutIntegrationInput[]
+    deleteMany?: PostIntegrationScalarWhereInput | PostIntegrationScalarWhereInput[]
   }
 
   export type StyleProfileCreatevocabularyInput = {
@@ -35367,11 +35509,11 @@ export namespace Prisma {
     connect?: PostAttachmentWhereUniqueInput | PostAttachmentWhereUniqueInput[]
   }
 
-  export type PostChannelCreateNestedManyWithoutPostInput = {
-    create?: XOR<PostChannelCreateWithoutPostInput, PostChannelUncheckedCreateWithoutPostInput> | PostChannelCreateWithoutPostInput[] | PostChannelUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: PostChannelCreateOrConnectWithoutPostInput | PostChannelCreateOrConnectWithoutPostInput[]
-    createMany?: PostChannelCreateManyPostInputEnvelope
-    connect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
+  export type PostIntegrationCreateNestedManyWithoutPostInput = {
+    create?: XOR<PostIntegrationCreateWithoutPostInput, PostIntegrationUncheckedCreateWithoutPostInput> | PostIntegrationCreateWithoutPostInput[] | PostIntegrationUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: PostIntegrationCreateOrConnectWithoutPostInput | PostIntegrationCreateOrConnectWithoutPostInput[]
+    createMany?: PostIntegrationCreateManyPostInputEnvelope
+    connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
   }
 
   export type PostUncheckedCreateNestedManyWithoutSource_postInput = {
@@ -35388,11 +35530,11 @@ export namespace Prisma {
     connect?: PostAttachmentWhereUniqueInput | PostAttachmentWhereUniqueInput[]
   }
 
-  export type PostChannelUncheckedCreateNestedManyWithoutPostInput = {
-    create?: XOR<PostChannelCreateWithoutPostInput, PostChannelUncheckedCreateWithoutPostInput> | PostChannelCreateWithoutPostInput[] | PostChannelUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: PostChannelCreateOrConnectWithoutPostInput | PostChannelCreateOrConnectWithoutPostInput[]
-    createMany?: PostChannelCreateManyPostInputEnvelope
-    connect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
+  export type PostIntegrationUncheckedCreateNestedManyWithoutPostInput = {
+    create?: XOR<PostIntegrationCreateWithoutPostInput, PostIntegrationUncheckedCreateWithoutPostInput> | PostIntegrationCreateWithoutPostInput[] | PostIntegrationUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: PostIntegrationCreateOrConnectWithoutPostInput | PostIntegrationCreateOrConnectWithoutPostInput[]
+    createMany?: PostIntegrationCreateManyPostInputEnvelope
+    connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
   }
 
   export type EnumPostStatusFieldUpdateOperationsInput = {
@@ -35523,18 +35665,18 @@ export namespace Prisma {
     deleteMany?: PostAttachmentScalarWhereInput | PostAttachmentScalarWhereInput[]
   }
 
-  export type PostChannelUpdateManyWithoutPostNestedInput = {
-    create?: XOR<PostChannelCreateWithoutPostInput, PostChannelUncheckedCreateWithoutPostInput> | PostChannelCreateWithoutPostInput[] | PostChannelUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: PostChannelCreateOrConnectWithoutPostInput | PostChannelCreateOrConnectWithoutPostInput[]
-    upsert?: PostChannelUpsertWithWhereUniqueWithoutPostInput | PostChannelUpsertWithWhereUniqueWithoutPostInput[]
-    createMany?: PostChannelCreateManyPostInputEnvelope
-    set?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    disconnect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    delete?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    connect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    update?: PostChannelUpdateWithWhereUniqueWithoutPostInput | PostChannelUpdateWithWhereUniqueWithoutPostInput[]
-    updateMany?: PostChannelUpdateManyWithWhereWithoutPostInput | PostChannelUpdateManyWithWhereWithoutPostInput[]
-    deleteMany?: PostChannelScalarWhereInput | PostChannelScalarWhereInput[]
+  export type PostIntegrationUpdateManyWithoutPostNestedInput = {
+    create?: XOR<PostIntegrationCreateWithoutPostInput, PostIntegrationUncheckedCreateWithoutPostInput> | PostIntegrationCreateWithoutPostInput[] | PostIntegrationUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: PostIntegrationCreateOrConnectWithoutPostInput | PostIntegrationCreateOrConnectWithoutPostInput[]
+    upsert?: PostIntegrationUpsertWithWhereUniqueWithoutPostInput | PostIntegrationUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: PostIntegrationCreateManyPostInputEnvelope
+    set?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    disconnect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    delete?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    update?: PostIntegrationUpdateWithWhereUniqueWithoutPostInput | PostIntegrationUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: PostIntegrationUpdateManyWithWhereWithoutPostInput | PostIntegrationUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: PostIntegrationScalarWhereInput | PostIntegrationScalarWhereInput[]
   }
 
   export type PostUncheckedUpdateManyWithoutSource_postNestedInput = {
@@ -35565,18 +35707,18 @@ export namespace Prisma {
     deleteMany?: PostAttachmentScalarWhereInput | PostAttachmentScalarWhereInput[]
   }
 
-  export type PostChannelUncheckedUpdateManyWithoutPostNestedInput = {
-    create?: XOR<PostChannelCreateWithoutPostInput, PostChannelUncheckedCreateWithoutPostInput> | PostChannelCreateWithoutPostInput[] | PostChannelUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: PostChannelCreateOrConnectWithoutPostInput | PostChannelCreateOrConnectWithoutPostInput[]
-    upsert?: PostChannelUpsertWithWhereUniqueWithoutPostInput | PostChannelUpsertWithWhereUniqueWithoutPostInput[]
-    createMany?: PostChannelCreateManyPostInputEnvelope
-    set?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    disconnect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    delete?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    connect?: PostChannelWhereUniqueInput | PostChannelWhereUniqueInput[]
-    update?: PostChannelUpdateWithWhereUniqueWithoutPostInput | PostChannelUpdateWithWhereUniqueWithoutPostInput[]
-    updateMany?: PostChannelUpdateManyWithWhereWithoutPostInput | PostChannelUpdateManyWithWhereWithoutPostInput[]
-    deleteMany?: PostChannelScalarWhereInput | PostChannelScalarWhereInput[]
+  export type PostIntegrationUncheckedUpdateManyWithoutPostNestedInput = {
+    create?: XOR<PostIntegrationCreateWithoutPostInput, PostIntegrationUncheckedCreateWithoutPostInput> | PostIntegrationCreateWithoutPostInput[] | PostIntegrationUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: PostIntegrationCreateOrConnectWithoutPostInput | PostIntegrationCreateOrConnectWithoutPostInput[]
+    upsert?: PostIntegrationUpsertWithWhereUniqueWithoutPostInput | PostIntegrationUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: PostIntegrationCreateManyPostInputEnvelope
+    set?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    disconnect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    delete?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+    update?: PostIntegrationUpdateWithWhereUniqueWithoutPostInput | PostIntegrationUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: PostIntegrationUpdateManyWithWhereWithoutPostInput | PostIntegrationUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: PostIntegrationScalarWhereInput | PostIntegrationScalarWhereInput[]
   }
 
   export type PostCreateNestedOneWithoutAttachmentsInput = {
@@ -35607,36 +35749,36 @@ export namespace Prisma {
     update?: XOR<XOR<DocumentUpdateToOneWithWhereWithoutPost_attachmentsInput, DocumentUpdateWithoutPost_attachmentsInput>, DocumentUncheckedUpdateWithoutPost_attachmentsInput>
   }
 
-  export type PostCreateNestedOneWithoutChannelsInput = {
-    create?: XOR<PostCreateWithoutChannelsInput, PostUncheckedCreateWithoutChannelsInput>
-    connectOrCreate?: PostCreateOrConnectWithoutChannelsInput
+  export type PostCreateNestedOneWithoutIntegrationsInput = {
+    create?: XOR<PostCreateWithoutIntegrationsInput, PostUncheckedCreateWithoutIntegrationsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutIntegrationsInput
     connect?: PostWhereUniqueInput
   }
 
-  export type SocialChannelConnectionCreateNestedOneWithoutPost_channelsInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutPost_channelsInput, SocialChannelConnectionUncheckedCreateWithoutPost_channelsInput>
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutPost_channelsInput
-    connect?: SocialChannelConnectionWhereUniqueInput
+  export type IntegrationCreateNestedOneWithoutPost_integrationsInput = {
+    create?: XOR<IntegrationCreateWithoutPost_integrationsInput, IntegrationUncheckedCreateWithoutPost_integrationsInput>
+    connectOrCreate?: IntegrationCreateOrConnectWithoutPost_integrationsInput
+    connect?: IntegrationWhereUniqueInput
   }
 
-  export type EnumPostChannelStatusFieldUpdateOperationsInput = {
-    set?: $Enums.PostChannelStatus
+  export type EnumPostIntegrationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PostIntegrationStatus
   }
 
-  export type PostUpdateOneRequiredWithoutChannelsNestedInput = {
-    create?: XOR<PostCreateWithoutChannelsInput, PostUncheckedCreateWithoutChannelsInput>
-    connectOrCreate?: PostCreateOrConnectWithoutChannelsInput
-    upsert?: PostUpsertWithoutChannelsInput
+  export type PostUpdateOneRequiredWithoutIntegrationsNestedInput = {
+    create?: XOR<PostCreateWithoutIntegrationsInput, PostUncheckedCreateWithoutIntegrationsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutIntegrationsInput
+    upsert?: PostUpsertWithoutIntegrationsInput
     connect?: PostWhereUniqueInput
-    update?: XOR<XOR<PostUpdateToOneWithWhereWithoutChannelsInput, PostUpdateWithoutChannelsInput>, PostUncheckedUpdateWithoutChannelsInput>
+    update?: XOR<XOR<PostUpdateToOneWithWhereWithoutIntegrationsInput, PostUpdateWithoutIntegrationsInput>, PostUncheckedUpdateWithoutIntegrationsInput>
   }
 
-  export type SocialChannelConnectionUpdateOneRequiredWithoutPost_channelsNestedInput = {
-    create?: XOR<SocialChannelConnectionCreateWithoutPost_channelsInput, SocialChannelConnectionUncheckedCreateWithoutPost_channelsInput>
-    connectOrCreate?: SocialChannelConnectionCreateOrConnectWithoutPost_channelsInput
-    upsert?: SocialChannelConnectionUpsertWithoutPost_channelsInput
-    connect?: SocialChannelConnectionWhereUniqueInput
-    update?: XOR<XOR<SocialChannelConnectionUpdateToOneWithWhereWithoutPost_channelsInput, SocialChannelConnectionUpdateWithoutPost_channelsInput>, SocialChannelConnectionUncheckedUpdateWithoutPost_channelsInput>
+  export type IntegrationUpdateOneRequiredWithoutPost_integrationsNestedInput = {
+    create?: XOR<IntegrationCreateWithoutPost_integrationsInput, IntegrationUncheckedCreateWithoutPost_integrationsInput>
+    connectOrCreate?: IntegrationCreateOrConnectWithoutPost_integrationsInput
+    upsert?: IntegrationUpsertWithoutPost_integrationsInput
+    connect?: IntegrationWhereUniqueInput
+    update?: XOR<XOR<IntegrationUpdateToOneWithWhereWithoutPost_integrationsInput, IntegrationUpdateWithoutPost_integrationsInput>, IntegrationUncheckedUpdateWithoutPost_integrationsInput>
   }
 
   export type OrganisationCreateNestedOneWithoutActivity_logsInput = {
@@ -35908,38 +36050,38 @@ export namespace Prisma {
     _max?: NestedEnumOrganisationMemberStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumSocialChannelFilter<$PrismaModel = never> = {
-    equals?: $Enums.SocialChannel | EnumSocialChannelFieldRefInput<$PrismaModel>
-    in?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
-    not?: NestedEnumSocialChannelFilter<$PrismaModel> | $Enums.SocialChannel
+  export type NestedEnumIntegrationProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationProviderFilter<$PrismaModel> | $Enums.IntegrationProvider
   }
 
-  export type NestedEnumSocialChannelConnectionStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.SocialChannelConnectionStatus | EnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SocialChannelConnectionStatus[] | ListEnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SocialChannelConnectionStatus[] | ListEnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSocialChannelConnectionStatusFilter<$PrismaModel> | $Enums.SocialChannelConnectionStatus
+  export type NestedEnumIntegrationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationStatus | EnumIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationStatusFilter<$PrismaModel> | $Enums.IntegrationStatus
   }
 
-  export type NestedEnumSocialChannelWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SocialChannel | EnumSocialChannelFieldRefInput<$PrismaModel>
-    in?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
-    not?: NestedEnumSocialChannelWithAggregatesFilter<$PrismaModel> | $Enums.SocialChannel
+  export type NestedEnumIntegrationProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationProviderWithAggregatesFilter<$PrismaModel> | $Enums.IntegrationProvider
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSocialChannelFilter<$PrismaModel>
-    _max?: NestedEnumSocialChannelFilter<$PrismaModel>
+    _min?: NestedEnumIntegrationProviderFilter<$PrismaModel>
+    _max?: NestedEnumIntegrationProviderFilter<$PrismaModel>
   }
 
-  export type NestedEnumSocialChannelConnectionStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SocialChannelConnectionStatus | EnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SocialChannelConnectionStatus[] | ListEnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SocialChannelConnectionStatus[] | ListEnumSocialChannelConnectionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSocialChannelConnectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SocialChannelConnectionStatus
+  export type NestedEnumIntegrationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IntegrationStatus | EnumIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IntegrationStatus[] | ListEnumIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumIntegrationStatusWithAggregatesFilter<$PrismaModel> | $Enums.IntegrationStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSocialChannelConnectionStatusFilter<$PrismaModel>
-    _max?: NestedEnumSocialChannelConnectionStatusFilter<$PrismaModel>
+    _min?: NestedEnumIntegrationStatusFilter<$PrismaModel>
+    _max?: NestedEnumIntegrationStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumPostTypeFilter<$PrismaModel = never> = {
@@ -36073,21 +36215,21 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type NestedEnumPostChannelStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.PostChannelStatus | EnumPostChannelStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PostChannelStatus[] | ListEnumPostChannelStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PostChannelStatus[] | ListEnumPostChannelStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPostChannelStatusFilter<$PrismaModel> | $Enums.PostChannelStatus
+  export type NestedEnumPostIntegrationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PostIntegrationStatus | EnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PostIntegrationStatus[] | ListEnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PostIntegrationStatus[] | ListEnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPostIntegrationStatusFilter<$PrismaModel> | $Enums.PostIntegrationStatus
   }
 
-  export type NestedEnumPostChannelStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PostChannelStatus | EnumPostChannelStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PostChannelStatus[] | ListEnumPostChannelStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PostChannelStatus[] | ListEnumPostChannelStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPostChannelStatusWithAggregatesFilter<$PrismaModel> | $Enums.PostChannelStatus
+  export type NestedEnumPostIntegrationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PostIntegrationStatus | EnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PostIntegrationStatus[] | ListEnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PostIntegrationStatus[] | ListEnumPostIntegrationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPostIntegrationStatusWithAggregatesFilter<$PrismaModel> | $Enums.PostIntegrationStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPostChannelStatusFilter<$PrismaModel>
-    _max?: NestedEnumPostChannelStatusFilter<$PrismaModel>
+    _min?: NestedEnumPostIntegrationStatusFilter<$PrismaModel>
+    _max?: NestedEnumPostIntegrationStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumActivityLogActionFilter<$PrismaModel = never> = {
@@ -36159,7 +36301,7 @@ export namespace Prisma {
     members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
     documents?: DocumentCreateNestedManyWithoutOrganisationInput
     posts?: PostCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
@@ -36175,7 +36317,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
     documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
@@ -36250,7 +36392,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutUserInput = {
@@ -36281,7 +36423,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutUserInput = {
@@ -36575,7 +36717,7 @@ export namespace Prisma {
     created_by: UserCreateNestedOneWithoutOrganisations_createdInput
     members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
     posts?: PostCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
@@ -36591,7 +36733,7 @@ export namespace Prisma {
     updated_at?: Date | string
     members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
@@ -36655,7 +36797,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutCover_documentInput = {
@@ -36686,7 +36828,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutCover_documentInput = {
@@ -36719,7 +36861,7 @@ export namespace Prisma {
     created_by?: UserUpdateOneRequiredWithoutOrganisations_createdNestedInput
     members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
     posts?: PostUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
@@ -36735,7 +36877,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
@@ -36914,7 +37056,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutOrganisationInput = {
@@ -36945,7 +37087,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutOrganisationInput = {
@@ -36958,41 +37100,51 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SocialChannelConnectionCreateWithoutOrganisationInput = {
+  export type IntegrationCreateWithoutOrganisationInput = {
     id?: string
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
+    provider: $Enums.IntegrationProvider
+    name: string
+    status?: $Enums.IntegrationStatus
+    external_account_id?: string | null
     external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
+    access_token_encrypted?: string | null
+    refresh_token_encrypted?: string | null
     token_expires_at?: Date | string | null
+    external_project_id?: string | null
+    external_dataset?: string | null
+    document_type?: string | null
+    api_token_encrypted?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    post_channels?: PostChannelCreateNestedManyWithoutChannel_connectionInput
+    post_integrations?: PostIntegrationCreateNestedManyWithoutIntegrationInput
   }
 
-  export type SocialChannelConnectionUncheckedCreateWithoutOrganisationInput = {
+  export type IntegrationUncheckedCreateWithoutOrganisationInput = {
     id?: string
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
+    provider: $Enums.IntegrationProvider
+    name: string
+    status?: $Enums.IntegrationStatus
+    external_account_id?: string | null
     external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
+    access_token_encrypted?: string | null
+    refresh_token_encrypted?: string | null
     token_expires_at?: Date | string | null
+    external_project_id?: string | null
+    external_dataset?: string | null
+    document_type?: string | null
+    api_token_encrypted?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    post_channels?: PostChannelUncheckedCreateNestedManyWithoutChannel_connectionInput
+    post_integrations?: PostIntegrationUncheckedCreateNestedManyWithoutIntegrationInput
   }
 
-  export type SocialChannelConnectionCreateOrConnectWithoutOrganisationInput = {
-    where: SocialChannelConnectionWhereUniqueInput
-    create: XOR<SocialChannelConnectionCreateWithoutOrganisationInput, SocialChannelConnectionUncheckedCreateWithoutOrganisationInput>
+  export type IntegrationCreateOrConnectWithoutOrganisationInput = {
+    where: IntegrationWhereUniqueInput
+    create: XOR<IntegrationCreateWithoutOrganisationInput, IntegrationUncheckedCreateWithoutOrganisationInput>
   }
 
-  export type SocialChannelConnectionCreateManyOrganisationInputEnvelope = {
-    data: SocialChannelConnectionCreateManyOrganisationInput | SocialChannelConnectionCreateManyOrganisationInput[]
+  export type IntegrationCreateManyOrganisationInputEnvelope = {
+    data: IntegrationCreateManyOrganisationInput | IntegrationCreateManyOrganisationInput[]
     skipDuplicates?: boolean
   }
 
@@ -37276,37 +37428,42 @@ export namespace Prisma {
     data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutOrganisationInput>
   }
 
-  export type SocialChannelConnectionUpsertWithWhereUniqueWithoutOrganisationInput = {
-    where: SocialChannelConnectionWhereUniqueInput
-    update: XOR<SocialChannelConnectionUpdateWithoutOrganisationInput, SocialChannelConnectionUncheckedUpdateWithoutOrganisationInput>
-    create: XOR<SocialChannelConnectionCreateWithoutOrganisationInput, SocialChannelConnectionUncheckedCreateWithoutOrganisationInput>
+  export type IntegrationUpsertWithWhereUniqueWithoutOrganisationInput = {
+    where: IntegrationWhereUniqueInput
+    update: XOR<IntegrationUpdateWithoutOrganisationInput, IntegrationUncheckedUpdateWithoutOrganisationInput>
+    create: XOR<IntegrationCreateWithoutOrganisationInput, IntegrationUncheckedCreateWithoutOrganisationInput>
   }
 
-  export type SocialChannelConnectionUpdateWithWhereUniqueWithoutOrganisationInput = {
-    where: SocialChannelConnectionWhereUniqueInput
-    data: XOR<SocialChannelConnectionUpdateWithoutOrganisationInput, SocialChannelConnectionUncheckedUpdateWithoutOrganisationInput>
+  export type IntegrationUpdateWithWhereUniqueWithoutOrganisationInput = {
+    where: IntegrationWhereUniqueInput
+    data: XOR<IntegrationUpdateWithoutOrganisationInput, IntegrationUncheckedUpdateWithoutOrganisationInput>
   }
 
-  export type SocialChannelConnectionUpdateManyWithWhereWithoutOrganisationInput = {
-    where: SocialChannelConnectionScalarWhereInput
-    data: XOR<SocialChannelConnectionUpdateManyMutationInput, SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationInput>
+  export type IntegrationUpdateManyWithWhereWithoutOrganisationInput = {
+    where: IntegrationScalarWhereInput
+    data: XOR<IntegrationUpdateManyMutationInput, IntegrationUncheckedUpdateManyWithoutOrganisationInput>
   }
 
-  export type SocialChannelConnectionScalarWhereInput = {
-    AND?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
-    OR?: SocialChannelConnectionScalarWhereInput[]
-    NOT?: SocialChannelConnectionScalarWhereInput | SocialChannelConnectionScalarWhereInput[]
-    id?: StringFilter<"SocialChannelConnection"> | string
-    organisation_id?: StringFilter<"SocialChannelConnection"> | string
-    channel?: EnumSocialChannelFilter<"SocialChannelConnection"> | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFilter<"SocialChannelConnection"> | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFilter<"SocialChannelConnection"> | string
-    external_account_name?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    access_token?: StringFilter<"SocialChannelConnection"> | string
-    refresh_token?: StringNullableFilter<"SocialChannelConnection"> | string | null
-    token_expires_at?: DateTimeNullableFilter<"SocialChannelConnection"> | Date | string | null
-    created_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
-    updated_at?: DateTimeFilter<"SocialChannelConnection"> | Date | string
+  export type IntegrationScalarWhereInput = {
+    AND?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
+    OR?: IntegrationScalarWhereInput[]
+    NOT?: IntegrationScalarWhereInput | IntegrationScalarWhereInput[]
+    id?: StringFilter<"Integration"> | string
+    organisation_id?: StringFilter<"Integration"> | string
+    provider?: EnumIntegrationProviderFilter<"Integration"> | $Enums.IntegrationProvider
+    name?: StringFilter<"Integration"> | string
+    status?: EnumIntegrationStatusFilter<"Integration"> | $Enums.IntegrationStatus
+    external_account_id?: StringNullableFilter<"Integration"> | string | null
+    external_account_name?: StringNullableFilter<"Integration"> | string | null
+    access_token_encrypted?: StringNullableFilter<"Integration"> | string | null
+    refresh_token_encrypted?: StringNullableFilter<"Integration"> | string | null
+    token_expires_at?: DateTimeNullableFilter<"Integration"> | Date | string | null
+    external_project_id?: StringNullableFilter<"Integration"> | string | null
+    external_dataset?: StringNullableFilter<"Integration"> | string | null
+    document_type?: StringNullableFilter<"Integration"> | string | null
+    api_token_encrypted?: StringNullableFilter<"Integration"> | string | null
+    created_at?: DateTimeFilter<"Integration"> | Date | string
+    updated_at?: DateTimeFilter<"Integration"> | Date | string
   }
 
   export type StyleProfileUpsertWithWhereUniqueWithoutOrganisationInput = {
@@ -37439,7 +37596,7 @@ export namespace Prisma {
     created_by: UserCreateNestedOneWithoutOrganisations_createdInput
     documents?: DocumentCreateNestedManyWithoutOrganisationInput
     posts?: PostCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
@@ -37455,7 +37612,7 @@ export namespace Prisma {
     updated_at?: Date | string
     documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
@@ -37550,7 +37707,7 @@ export namespace Prisma {
     created_by?: UserUpdateOneRequiredWithoutOrganisations_createdNestedInput
     documents?: DocumentUpdateManyWithoutOrganisationNestedInput
     posts?: PostUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
@@ -37566,7 +37723,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
@@ -37699,7 +37856,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type OrganisationCreateWithoutChannel_connectionsInput = {
+  export type OrganisationCreateWithoutIntegrationsInput = {
     id?: string
     name: string
     slug: string
@@ -37715,7 +37872,7 @@ export namespace Prisma {
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
   }
 
-  export type OrganisationUncheckedCreateWithoutChannel_connectionsInput = {
+  export type OrganisationUncheckedCreateWithoutIntegrationsInput = {
     id?: string
     name: string
     slug: string
@@ -37731,57 +37888,57 @@ export namespace Prisma {
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
-  export type OrganisationCreateOrConnectWithoutChannel_connectionsInput = {
+  export type OrganisationCreateOrConnectWithoutIntegrationsInput = {
     where: OrganisationWhereUniqueInput
-    create: XOR<OrganisationCreateWithoutChannel_connectionsInput, OrganisationUncheckedCreateWithoutChannel_connectionsInput>
+    create: XOR<OrganisationCreateWithoutIntegrationsInput, OrganisationUncheckedCreateWithoutIntegrationsInput>
   }
 
-  export type PostChannelCreateWithoutChannel_connectionInput = {
+  export type PostIntegrationCreateWithoutIntegrationInput = {
     id?: string
-    status?: $Enums.PostChannelStatus
-    external_post_id?: string | null
-    external_post_url?: string | null
+    status?: $Enums.PostIntegrationStatus
+    external_id?: string | null
+    external_url?: string | null
     published_at?: Date | string | null
     failed_reason?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    post: PostCreateNestedOneWithoutChannelsInput
+    post: PostCreateNestedOneWithoutIntegrationsInput
   }
 
-  export type PostChannelUncheckedCreateWithoutChannel_connectionInput = {
+  export type PostIntegrationUncheckedCreateWithoutIntegrationInput = {
     id?: string
     post_id: string
-    status?: $Enums.PostChannelStatus
-    external_post_id?: string | null
-    external_post_url?: string | null
+    status?: $Enums.PostIntegrationStatus
+    external_id?: string | null
+    external_url?: string | null
     published_at?: Date | string | null
     failed_reason?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
 
-  export type PostChannelCreateOrConnectWithoutChannel_connectionInput = {
-    where: PostChannelWhereUniqueInput
-    create: XOR<PostChannelCreateWithoutChannel_connectionInput, PostChannelUncheckedCreateWithoutChannel_connectionInput>
+  export type PostIntegrationCreateOrConnectWithoutIntegrationInput = {
+    where: PostIntegrationWhereUniqueInput
+    create: XOR<PostIntegrationCreateWithoutIntegrationInput, PostIntegrationUncheckedCreateWithoutIntegrationInput>
   }
 
-  export type PostChannelCreateManyChannel_connectionInputEnvelope = {
-    data: PostChannelCreateManyChannel_connectionInput | PostChannelCreateManyChannel_connectionInput[]
+  export type PostIntegrationCreateManyIntegrationInputEnvelope = {
+    data: PostIntegrationCreateManyIntegrationInput | PostIntegrationCreateManyIntegrationInput[]
     skipDuplicates?: boolean
   }
 
-  export type OrganisationUpsertWithoutChannel_connectionsInput = {
-    update: XOR<OrganisationUpdateWithoutChannel_connectionsInput, OrganisationUncheckedUpdateWithoutChannel_connectionsInput>
-    create: XOR<OrganisationCreateWithoutChannel_connectionsInput, OrganisationUncheckedCreateWithoutChannel_connectionsInput>
+  export type OrganisationUpsertWithoutIntegrationsInput = {
+    update: XOR<OrganisationUpdateWithoutIntegrationsInput, OrganisationUncheckedUpdateWithoutIntegrationsInput>
+    create: XOR<OrganisationCreateWithoutIntegrationsInput, OrganisationUncheckedCreateWithoutIntegrationsInput>
     where?: OrganisationWhereInput
   }
 
-  export type OrganisationUpdateToOneWithWhereWithoutChannel_connectionsInput = {
+  export type OrganisationUpdateToOneWithWhereWithoutIntegrationsInput = {
     where?: OrganisationWhereInput
-    data: XOR<OrganisationUpdateWithoutChannel_connectionsInput, OrganisationUncheckedUpdateWithoutChannel_connectionsInput>
+    data: XOR<OrganisationUpdateWithoutIntegrationsInput, OrganisationUncheckedUpdateWithoutIntegrationsInput>
   }
 
-  export type OrganisationUpdateWithoutChannel_connectionsInput = {
+  export type OrganisationUpdateWithoutIntegrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -37797,7 +37954,7 @@ export namespace Prisma {
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
   }
 
-  export type OrganisationUncheckedUpdateWithoutChannel_connectionsInput = {
+  export type OrganisationUncheckedUpdateWithoutIntegrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
@@ -37813,36 +37970,36 @@ export namespace Prisma {
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
-  export type PostChannelUpsertWithWhereUniqueWithoutChannel_connectionInput = {
-    where: PostChannelWhereUniqueInput
-    update: XOR<PostChannelUpdateWithoutChannel_connectionInput, PostChannelUncheckedUpdateWithoutChannel_connectionInput>
-    create: XOR<PostChannelCreateWithoutChannel_connectionInput, PostChannelUncheckedCreateWithoutChannel_connectionInput>
+  export type PostIntegrationUpsertWithWhereUniqueWithoutIntegrationInput = {
+    where: PostIntegrationWhereUniqueInput
+    update: XOR<PostIntegrationUpdateWithoutIntegrationInput, PostIntegrationUncheckedUpdateWithoutIntegrationInput>
+    create: XOR<PostIntegrationCreateWithoutIntegrationInput, PostIntegrationUncheckedCreateWithoutIntegrationInput>
   }
 
-  export type PostChannelUpdateWithWhereUniqueWithoutChannel_connectionInput = {
-    where: PostChannelWhereUniqueInput
-    data: XOR<PostChannelUpdateWithoutChannel_connectionInput, PostChannelUncheckedUpdateWithoutChannel_connectionInput>
+  export type PostIntegrationUpdateWithWhereUniqueWithoutIntegrationInput = {
+    where: PostIntegrationWhereUniqueInput
+    data: XOR<PostIntegrationUpdateWithoutIntegrationInput, PostIntegrationUncheckedUpdateWithoutIntegrationInput>
   }
 
-  export type PostChannelUpdateManyWithWhereWithoutChannel_connectionInput = {
-    where: PostChannelScalarWhereInput
-    data: XOR<PostChannelUpdateManyMutationInput, PostChannelUncheckedUpdateManyWithoutChannel_connectionInput>
+  export type PostIntegrationUpdateManyWithWhereWithoutIntegrationInput = {
+    where: PostIntegrationScalarWhereInput
+    data: XOR<PostIntegrationUpdateManyMutationInput, PostIntegrationUncheckedUpdateManyWithoutIntegrationInput>
   }
 
-  export type PostChannelScalarWhereInput = {
-    AND?: PostChannelScalarWhereInput | PostChannelScalarWhereInput[]
-    OR?: PostChannelScalarWhereInput[]
-    NOT?: PostChannelScalarWhereInput | PostChannelScalarWhereInput[]
-    id?: StringFilter<"PostChannel"> | string
-    post_id?: StringFilter<"PostChannel"> | string
-    channel_connection_id?: StringFilter<"PostChannel"> | string
-    status?: EnumPostChannelStatusFilter<"PostChannel"> | $Enums.PostChannelStatus
-    external_post_id?: StringNullableFilter<"PostChannel"> | string | null
-    external_post_url?: StringNullableFilter<"PostChannel"> | string | null
-    published_at?: DateTimeNullableFilter<"PostChannel"> | Date | string | null
-    failed_reason?: StringNullableFilter<"PostChannel"> | string | null
-    created_at?: DateTimeFilter<"PostChannel"> | Date | string
-    updated_at?: DateTimeFilter<"PostChannel"> | Date | string
+  export type PostIntegrationScalarWhereInput = {
+    AND?: PostIntegrationScalarWhereInput | PostIntegrationScalarWhereInput[]
+    OR?: PostIntegrationScalarWhereInput[]
+    NOT?: PostIntegrationScalarWhereInput | PostIntegrationScalarWhereInput[]
+    id?: StringFilter<"PostIntegration"> | string
+    post_id?: StringFilter<"PostIntegration"> | string
+    integration_id?: StringFilter<"PostIntegration"> | string
+    status?: EnumPostIntegrationStatusFilter<"PostIntegration"> | $Enums.PostIntegrationStatus
+    external_id?: StringNullableFilter<"PostIntegration"> | string | null
+    external_url?: StringNullableFilter<"PostIntegration"> | string | null
+    published_at?: DateTimeNullableFilter<"PostIntegration"> | Date | string | null
+    failed_reason?: StringNullableFilter<"PostIntegration"> | string | null
+    created_at?: DateTimeFilter<"PostIntegration"> | Date | string
+    updated_at?: DateTimeFilter<"PostIntegration"> | Date | string
   }
 
   export type OrganisationCreateWithoutStyle_profilesInput = {
@@ -37855,7 +38012,7 @@ export namespace Prisma {
     members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
     documents?: DocumentCreateNestedManyWithoutOrganisationInput
     posts?: PostCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
@@ -37871,7 +38028,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
     documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
@@ -38020,7 +38177,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutStyle_profileInput = {
@@ -38051,7 +38208,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutStyle_profileInput = {
@@ -38085,7 +38242,7 @@ export namespace Prisma {
     members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUpdateManyWithoutOrganisationNestedInput
     posts?: PostUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
@@ -38101,7 +38258,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
@@ -38229,7 +38386,7 @@ export namespace Prisma {
     members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
     documents?: DocumentCreateNestedManyWithoutOrganisationInput
     posts?: PostCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
@@ -38245,7 +38402,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
     documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
@@ -38328,7 +38485,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutProjectInput = {
@@ -38359,7 +38516,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutProjectInput = {
@@ -38481,7 +38638,7 @@ export namespace Prisma {
     members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUpdateManyWithoutOrganisationNestedInput
     posts?: PostUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
@@ -38497,7 +38654,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
@@ -38603,7 +38760,7 @@ export namespace Prisma {
     members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
     documents?: DocumentCreateNestedManyWithoutOrganisationInput
     posts?: PostCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
@@ -38619,7 +38776,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
     documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
@@ -38763,7 +38920,7 @@ export namespace Prisma {
     members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUpdateManyWithoutOrganisationNestedInput
     posts?: PostUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
@@ -38779,7 +38936,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
@@ -39072,7 +39229,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutRss_feed_itemInput = {
@@ -39103,7 +39260,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutRss_feed_itemInput = {
@@ -39552,7 +39709,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutGeneration_runInput = {
@@ -39583,7 +39740,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutGeneration_runInput = {
@@ -39887,7 +40044,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutGeneration_itemInput = {
@@ -39918,7 +40075,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutGeneration_itemInput = {
@@ -40173,7 +40330,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutAutomationInput = {
@@ -40204,7 +40361,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutAutomationInput = {
@@ -40440,7 +40597,7 @@ export namespace Prisma {
     created_by: UserCreateNestedOneWithoutOrganisations_createdInput
     members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
     documents?: DocumentCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
@@ -40456,7 +40613,7 @@ export namespace Prisma {
     updated_at?: Date | string
     members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
     documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
@@ -40755,7 +40912,7 @@ export namespace Prisma {
     automation?: AutomationCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutRepurposed_postsInput = {
@@ -40786,7 +40943,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutRepurposed_postsInput = {
@@ -40822,7 +40979,7 @@ export namespace Prisma {
     automation?: AutomationCreateNestedOneWithoutPostsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutSource_postInput = {
@@ -40853,7 +41010,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutSource_postInput = {
@@ -40890,37 +41047,37 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PostChannelCreateWithoutPostInput = {
+  export type PostIntegrationCreateWithoutPostInput = {
     id?: string
-    status?: $Enums.PostChannelStatus
-    external_post_id?: string | null
-    external_post_url?: string | null
+    status?: $Enums.PostIntegrationStatus
+    external_id?: string | null
+    external_url?: string | null
     published_at?: Date | string | null
     failed_reason?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    channel_connection: SocialChannelConnectionCreateNestedOneWithoutPost_channelsInput
+    integration: IntegrationCreateNestedOneWithoutPost_integrationsInput
   }
 
-  export type PostChannelUncheckedCreateWithoutPostInput = {
+  export type PostIntegrationUncheckedCreateWithoutPostInput = {
     id?: string
-    channel_connection_id: string
-    status?: $Enums.PostChannelStatus
-    external_post_id?: string | null
-    external_post_url?: string | null
+    integration_id: string
+    status?: $Enums.PostIntegrationStatus
+    external_id?: string | null
+    external_url?: string | null
     published_at?: Date | string | null
     failed_reason?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
 
-  export type PostChannelCreateOrConnectWithoutPostInput = {
-    where: PostChannelWhereUniqueInput
-    create: XOR<PostChannelCreateWithoutPostInput, PostChannelUncheckedCreateWithoutPostInput>
+  export type PostIntegrationCreateOrConnectWithoutPostInput = {
+    where: PostIntegrationWhereUniqueInput
+    create: XOR<PostIntegrationCreateWithoutPostInput, PostIntegrationUncheckedCreateWithoutPostInput>
   }
 
-  export type PostChannelCreateManyPostInputEnvelope = {
-    data: PostChannelCreateManyPostInput | PostChannelCreateManyPostInput[]
+  export type PostIntegrationCreateManyPostInputEnvelope = {
+    data: PostIntegrationCreateManyPostInput | PostIntegrationCreateManyPostInput[]
     skipDuplicates?: boolean
   }
 
@@ -40985,7 +41142,7 @@ export namespace Prisma {
     created_by?: UserUpdateOneRequiredWithoutOrganisations_createdNestedInput
     members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
@@ -41001,7 +41158,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
@@ -41348,7 +41505,7 @@ export namespace Prisma {
     automation?: AutomationUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutRepurposed_postsInput = {
@@ -41379,7 +41536,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutSource_postInput = {
@@ -41414,20 +41571,20 @@ export namespace Prisma {
     data: XOR<PostAttachmentUpdateManyMutationInput, PostAttachmentUncheckedUpdateManyWithoutPostInput>
   }
 
-  export type PostChannelUpsertWithWhereUniqueWithoutPostInput = {
-    where: PostChannelWhereUniqueInput
-    update: XOR<PostChannelUpdateWithoutPostInput, PostChannelUncheckedUpdateWithoutPostInput>
-    create: XOR<PostChannelCreateWithoutPostInput, PostChannelUncheckedCreateWithoutPostInput>
+  export type PostIntegrationUpsertWithWhereUniqueWithoutPostInput = {
+    where: PostIntegrationWhereUniqueInput
+    update: XOR<PostIntegrationUpdateWithoutPostInput, PostIntegrationUncheckedUpdateWithoutPostInput>
+    create: XOR<PostIntegrationCreateWithoutPostInput, PostIntegrationUncheckedCreateWithoutPostInput>
   }
 
-  export type PostChannelUpdateWithWhereUniqueWithoutPostInput = {
-    where: PostChannelWhereUniqueInput
-    data: XOR<PostChannelUpdateWithoutPostInput, PostChannelUncheckedUpdateWithoutPostInput>
+  export type PostIntegrationUpdateWithWhereUniqueWithoutPostInput = {
+    where: PostIntegrationWhereUniqueInput
+    data: XOR<PostIntegrationUpdateWithoutPostInput, PostIntegrationUncheckedUpdateWithoutPostInput>
   }
 
-  export type PostChannelUpdateManyWithWhereWithoutPostInput = {
-    where: PostChannelScalarWhereInput
-    data: XOR<PostChannelUpdateManyMutationInput, PostChannelUncheckedUpdateManyWithoutPostInput>
+  export type PostIntegrationUpdateManyWithWhereWithoutPostInput = {
+    where: PostIntegrationScalarWhereInput
+    data: XOR<PostIntegrationUpdateManyMutationInput, PostIntegrationUncheckedUpdateManyWithoutPostInput>
   }
 
   export type PostCreateWithoutAttachmentsInput = {
@@ -41458,7 +41615,7 @@ export namespace Prisma {
     automation?: AutomationCreateNestedOneWithoutPostsInput
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
-    channels?: PostChannelCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutAttachmentsInput = {
@@ -41489,7 +41646,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
-    channels?: PostChannelUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutAttachmentsInput = {
@@ -41567,7 +41724,7 @@ export namespace Prisma {
     automation?: AutomationUpdateOneWithoutPostsNestedInput
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutAttachmentsInput = {
@@ -41598,7 +41755,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type DocumentUpsertWithoutPost_attachmentsInput = {
@@ -41638,7 +41795,7 @@ export namespace Prisma {
     cover_of_posts?: PostUncheckedUpdateManyWithoutCover_documentNestedInput
   }
 
-  export type PostCreateWithoutChannelsInput = {
+  export type PostCreateWithoutIntegrationsInput = {
     id?: string
     type: $Enums.PostType
     status?: $Enums.PostStatus
@@ -41669,7 +41826,7 @@ export namespace Prisma {
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
   }
 
-  export type PostUncheckedCreateWithoutChannelsInput = {
+  export type PostUncheckedCreateWithoutIntegrationsInput = {
     id?: string
     user_id: string
     organisation_id: string
@@ -41700,56 +41857,66 @@ export namespace Prisma {
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
   }
 
-  export type PostCreateOrConnectWithoutChannelsInput = {
+  export type PostCreateOrConnectWithoutIntegrationsInput = {
     where: PostWhereUniqueInput
-    create: XOR<PostCreateWithoutChannelsInput, PostUncheckedCreateWithoutChannelsInput>
+    create: XOR<PostCreateWithoutIntegrationsInput, PostUncheckedCreateWithoutIntegrationsInput>
   }
 
-  export type SocialChannelConnectionCreateWithoutPost_channelsInput = {
+  export type IntegrationCreateWithoutPost_integrationsInput = {
     id?: string
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
+    provider: $Enums.IntegrationProvider
+    name: string
+    status?: $Enums.IntegrationStatus
+    external_account_id?: string | null
     external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
+    access_token_encrypted?: string | null
+    refresh_token_encrypted?: string | null
     token_expires_at?: Date | string | null
+    external_project_id?: string | null
+    external_dataset?: string | null
+    document_type?: string | null
+    api_token_encrypted?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organisation: OrganisationCreateNestedOneWithoutChannel_connectionsInput
+    organisation: OrganisationCreateNestedOneWithoutIntegrationsInput
   }
 
-  export type SocialChannelConnectionUncheckedCreateWithoutPost_channelsInput = {
+  export type IntegrationUncheckedCreateWithoutPost_integrationsInput = {
     id?: string
     organisation_id: string
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
+    provider: $Enums.IntegrationProvider
+    name: string
+    status?: $Enums.IntegrationStatus
+    external_account_id?: string | null
     external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
+    access_token_encrypted?: string | null
+    refresh_token_encrypted?: string | null
     token_expires_at?: Date | string | null
+    external_project_id?: string | null
+    external_dataset?: string | null
+    document_type?: string | null
+    api_token_encrypted?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
 
-  export type SocialChannelConnectionCreateOrConnectWithoutPost_channelsInput = {
-    where: SocialChannelConnectionWhereUniqueInput
-    create: XOR<SocialChannelConnectionCreateWithoutPost_channelsInput, SocialChannelConnectionUncheckedCreateWithoutPost_channelsInput>
+  export type IntegrationCreateOrConnectWithoutPost_integrationsInput = {
+    where: IntegrationWhereUniqueInput
+    create: XOR<IntegrationCreateWithoutPost_integrationsInput, IntegrationUncheckedCreateWithoutPost_integrationsInput>
   }
 
-  export type PostUpsertWithoutChannelsInput = {
-    update: XOR<PostUpdateWithoutChannelsInput, PostUncheckedUpdateWithoutChannelsInput>
-    create: XOR<PostCreateWithoutChannelsInput, PostUncheckedCreateWithoutChannelsInput>
+  export type PostUpsertWithoutIntegrationsInput = {
+    update: XOR<PostUpdateWithoutIntegrationsInput, PostUncheckedUpdateWithoutIntegrationsInput>
+    create: XOR<PostCreateWithoutIntegrationsInput, PostUncheckedCreateWithoutIntegrationsInput>
     where?: PostWhereInput
   }
 
-  export type PostUpdateToOneWithWhereWithoutChannelsInput = {
+  export type PostUpdateToOneWithWhereWithoutIntegrationsInput = {
     where?: PostWhereInput
-    data: XOR<PostUpdateWithoutChannelsInput, PostUncheckedUpdateWithoutChannelsInput>
+    data: XOR<PostUpdateWithoutIntegrationsInput, PostUncheckedUpdateWithoutIntegrationsInput>
   }
 
-  export type PostUpdateWithoutChannelsInput = {
+  export type PostUpdateWithoutIntegrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
     status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
@@ -41780,7 +41947,7 @@ export namespace Prisma {
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
   }
 
-  export type PostUncheckedUpdateWithoutChannelsInput = {
+  export type PostUncheckedUpdateWithoutIntegrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     organisation_id?: StringFieldUpdateOperationsInput | string
@@ -41811,41 +41978,51 @@ export namespace Prisma {
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
   }
 
-  export type SocialChannelConnectionUpsertWithoutPost_channelsInput = {
-    update: XOR<SocialChannelConnectionUpdateWithoutPost_channelsInput, SocialChannelConnectionUncheckedUpdateWithoutPost_channelsInput>
-    create: XOR<SocialChannelConnectionCreateWithoutPost_channelsInput, SocialChannelConnectionUncheckedCreateWithoutPost_channelsInput>
-    where?: SocialChannelConnectionWhereInput
+  export type IntegrationUpsertWithoutPost_integrationsInput = {
+    update: XOR<IntegrationUpdateWithoutPost_integrationsInput, IntegrationUncheckedUpdateWithoutPost_integrationsInput>
+    create: XOR<IntegrationCreateWithoutPost_integrationsInput, IntegrationUncheckedCreateWithoutPost_integrationsInput>
+    where?: IntegrationWhereInput
   }
 
-  export type SocialChannelConnectionUpdateToOneWithWhereWithoutPost_channelsInput = {
-    where?: SocialChannelConnectionWhereInput
-    data: XOR<SocialChannelConnectionUpdateWithoutPost_channelsInput, SocialChannelConnectionUncheckedUpdateWithoutPost_channelsInput>
+  export type IntegrationUpdateToOneWithWhereWithoutPost_integrationsInput = {
+    where?: IntegrationWhereInput
+    data: XOR<IntegrationUpdateWithoutPost_integrationsInput, IntegrationUncheckedUpdateWithoutPost_integrationsInput>
   }
 
-  export type SocialChannelConnectionUpdateWithoutPost_channelsInput = {
+  export type IntegrationUpdateWithoutPost_integrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    external_account_id?: NullableStringFieldUpdateOperationsInput | string | null
     external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    refresh_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    external_project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_dataset?: NullableStringFieldUpdateOperationsInput | string | null
+    document_type?: NullableStringFieldUpdateOperationsInput | string | null
+    api_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organisation?: OrganisationUpdateOneRequiredWithoutChannel_connectionsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutIntegrationsNestedInput
   }
 
-  export type SocialChannelConnectionUncheckedUpdateWithoutPost_channelsInput = {
+  export type IntegrationUncheckedUpdateWithoutPost_integrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     organisation_id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    external_account_id?: NullableStringFieldUpdateOperationsInput | string | null
     external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    refresh_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    external_project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_dataset?: NullableStringFieldUpdateOperationsInput | string | null
+    document_type?: NullableStringFieldUpdateOperationsInput | string | null
+    api_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41860,7 +42037,7 @@ export namespace Prisma {
     members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
     documents?: DocumentCreateNestedManyWithoutOrganisationInput
     posts?: PostCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
@@ -41876,7 +42053,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
     documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
     posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
-    channel_connections?: SocialChannelConnectionUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
@@ -41943,7 +42120,7 @@ export namespace Prisma {
     members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUpdateManyWithoutOrganisationNestedInput
     posts?: PostUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
@@ -41959,7 +42136,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
@@ -42103,7 +42280,7 @@ export namespace Prisma {
     members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUpdateManyWithoutOrganisationNestedInput
     posts?: PostUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
@@ -42119,7 +42296,7 @@ export namespace Prisma {
     members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
     posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
-    channel_connections?: SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
@@ -42191,7 +42368,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutUserInput = {
@@ -42222,7 +42399,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutUserInput = {
@@ -42370,7 +42547,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutCover_documentInput = {
@@ -42401,7 +42578,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutCover_documentInput = {
@@ -42480,15 +42657,20 @@ export namespace Prisma {
     updated_at?: Date | string
   }
 
-  export type SocialChannelConnectionCreateManyOrganisationInput = {
+  export type IntegrationCreateManyOrganisationInput = {
     id?: string
-    channel: $Enums.SocialChannel
-    status?: $Enums.SocialChannelConnectionStatus
-    external_account_id: string
+    provider: $Enums.IntegrationProvider
+    name: string
+    status?: $Enums.IntegrationStatus
+    external_account_id?: string | null
     external_account_name?: string | null
-    access_token: string
-    refresh_token?: string | null
+    access_token_encrypted?: string | null
+    refresh_token_encrypted?: string | null
     token_expires_at?: Date | string | null
+    external_project_id?: string | null
+    external_dataset?: string | null
+    document_type?: string | null
+    api_token_encrypted?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -42643,7 +42825,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutOrganisationInput = {
@@ -42674,7 +42856,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutOrganisationInput = {
@@ -42705,43 +42887,58 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SocialChannelConnectionUpdateWithoutOrganisationInput = {
+  export type IntegrationUpdateWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    external_account_id?: NullableStringFieldUpdateOperationsInput | string | null
     external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    refresh_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    external_project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_dataset?: NullableStringFieldUpdateOperationsInput | string | null
+    document_type?: NullableStringFieldUpdateOperationsInput | string | null
+    api_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    post_channels?: PostChannelUpdateManyWithoutChannel_connectionNestedInput
+    post_integrations?: PostIntegrationUpdateManyWithoutIntegrationNestedInput
   }
 
-  export type SocialChannelConnectionUncheckedUpdateWithoutOrganisationInput = {
+  export type IntegrationUncheckedUpdateWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    external_account_id?: NullableStringFieldUpdateOperationsInput | string | null
     external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    refresh_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    external_project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_dataset?: NullableStringFieldUpdateOperationsInput | string | null
+    document_type?: NullableStringFieldUpdateOperationsInput | string | null
+    api_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    post_channels?: PostChannelUncheckedUpdateManyWithoutChannel_connectionNestedInput
+    post_integrations?: PostIntegrationUncheckedUpdateManyWithoutIntegrationNestedInput
   }
 
-  export type SocialChannelConnectionUncheckedUpdateManyWithoutOrganisationInput = {
+  export type IntegrationUncheckedUpdateManyWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    channel?: EnumSocialChannelFieldUpdateOperationsInput | $Enums.SocialChannel
-    status?: EnumSocialChannelConnectionStatusFieldUpdateOperationsInput | $Enums.SocialChannelConnectionStatus
-    external_account_id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumIntegrationStatusFieldUpdateOperationsInput | $Enums.IntegrationStatus
+    external_account_id?: NullableStringFieldUpdateOperationsInput | string | null
     external_account_name?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
+    refresh_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    external_project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_dataset?: NullableStringFieldUpdateOperationsInput | string | null
+    document_type?: NullableStringFieldUpdateOperationsInput | string | null
+    api_token_encrypted?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -42974,48 +43171,48 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PostChannelCreateManyChannel_connectionInput = {
+  export type PostIntegrationCreateManyIntegrationInput = {
     id?: string
     post_id: string
-    status?: $Enums.PostChannelStatus
-    external_post_id?: string | null
-    external_post_url?: string | null
+    status?: $Enums.PostIntegrationStatus
+    external_id?: string | null
+    external_url?: string | null
     published_at?: Date | string | null
     failed_reason?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
 
-  export type PostChannelUpdateWithoutChannel_connectionInput = {
+  export type PostIntegrationUpdateWithoutIntegrationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
     published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    post?: PostUpdateOneRequiredWithoutChannelsNestedInput
+    post?: PostUpdateOneRequiredWithoutIntegrationsNestedInput
   }
 
-  export type PostChannelUncheckedUpdateWithoutChannel_connectionInput = {
+  export type PostIntegrationUncheckedUpdateWithoutIntegrationInput = {
     id?: StringFieldUpdateOperationsInput | string
     post_id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
     published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PostChannelUncheckedUpdateManyWithoutChannel_connectionInput = {
+  export type PostIntegrationUncheckedUpdateManyWithoutIntegrationInput = {
     id?: StringFieldUpdateOperationsInput | string
     post_id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
     published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43230,7 +43427,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutStyle_profileInput = {
@@ -43261,7 +43458,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutStyle_profileInput = {
@@ -43426,7 +43623,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutProjectInput = {
@@ -43457,7 +43654,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutProjectInput = {
@@ -43800,7 +43997,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutRss_feed_itemInput = {
@@ -43831,7 +44028,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutRss_feed_itemInput = {
@@ -43925,7 +44122,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutGeneration_runInput = {
@@ -43956,7 +44153,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutGeneration_runInput = {
@@ -44066,7 +44263,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutGeneration_itemInput = {
@@ -44097,7 +44294,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutGeneration_itemInput = {
@@ -44228,7 +44425,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutAutomationInput = {
@@ -44259,7 +44456,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutAutomationInput = {
@@ -44325,12 +44522,12 @@ export namespace Prisma {
     created_at?: Date | string
   }
 
-  export type PostChannelCreateManyPostInput = {
+  export type PostIntegrationCreateManyPostInput = {
     id?: string
-    channel_connection_id: string
-    status?: $Enums.PostChannelStatus
-    external_post_id?: string | null
-    external_post_url?: string | null
+    integration_id: string
+    status?: $Enums.PostIntegrationStatus
+    external_id?: string | null
+    external_url?: string | null
     published_at?: Date | string | null
     failed_reason?: string | null
     created_at?: Date | string
@@ -44365,7 +44562,7 @@ export namespace Prisma {
     automation?: AutomationUpdateOneWithoutPostsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutSource_postInput = {
@@ -44396,7 +44593,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
-    channels?: PostChannelUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutSource_postInput = {
@@ -44448,36 +44645,36 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PostChannelUpdateWithoutPostInput = {
+  export type PostIntegrationUpdateWithoutPostInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
     published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    channel_connection?: SocialChannelConnectionUpdateOneRequiredWithoutPost_channelsNestedInput
+    integration?: IntegrationUpdateOneRequiredWithoutPost_integrationsNestedInput
   }
 
-  export type PostChannelUncheckedUpdateWithoutPostInput = {
+  export type PostIntegrationUncheckedUpdateWithoutPostInput = {
     id?: StringFieldUpdateOperationsInput | string
-    channel_connection_id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
+    integration_id?: StringFieldUpdateOperationsInput | string
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
     published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PostChannelUncheckedUpdateManyWithoutPostInput = {
+  export type PostIntegrationUncheckedUpdateManyWithoutPostInput = {
     id?: StringFieldUpdateOperationsInput | string
-    channel_connection_id?: StringFieldUpdateOperationsInput | string
-    status?: EnumPostChannelStatusFieldUpdateOperationsInput | $Enums.PostChannelStatus
-    external_post_id?: NullableStringFieldUpdateOperationsInput | string | null
-    external_post_url?: NullableStringFieldUpdateOperationsInput | string | null
+    integration_id?: StringFieldUpdateOperationsInput | string
+    status?: EnumPostIntegrationStatusFieldUpdateOperationsInput | $Enums.PostIntegrationStatus
+    external_id?: NullableStringFieldUpdateOperationsInput | string | null
+    external_url?: NullableStringFieldUpdateOperationsInput | string | null
     published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string

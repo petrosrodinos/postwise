@@ -39,6 +39,7 @@ const EnvSchema = z.object({
     BULL_BOARD_PASSWORD: z.string().optional(),
     APIFY_TOKEN: z.string().optional(),
     APIFY_LINKEDIN_ACTOR_ID: z.string().optional(),
+    CREDENTIALS_ENCRYPTION_KEY: z.string().optional(),
 });
 
 export function validateEnv(config: Record<string, unknown>) {

@@ -4,11 +4,9 @@ import { getApiErrorMessage } from "@/lib/api-error.utils";
 import type { PaginatedResponse } from "@/interfaces/pagination.interfaces";
 import type {
   AddPostAttachmentDto,
-  AddPostChannelDto,
   CreatePostDto,
   Post,
   PostAttachment,
-  PostChannel,
   PostsQueryType,
   RepurposePostDto,
   RevisePostDto,
@@ -113,23 +111,5 @@ export const removePostAttachment = async (id: string, attachmentId: string): Pr
     return response.data;
   } catch (error) {
     throw new Error("Failed to remove attachment. Please try again.");
-  }
-};
-
-export const addPostChannel = async (id: string, dto: AddPostChannelDto): Promise<PostChannel> => {
-  try {
-    const response = await axiosInstance.post(ApiRoutes.posts.channels(id), dto);
-    return response.data;
-  } catch (error) {
-    throw new Error(getApiErrorMessage(error, "Failed to add channel target. Please try again."));
-  }
-};
-
-export const removePostChannel = async (id: string, channelId: string): Promise<{ message: string }> => {
-  try {
-    const response = await axiosInstance.delete(ApiRoutes.posts.channel(id, channelId));
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to remove channel target. Please try again.");
   }
 };

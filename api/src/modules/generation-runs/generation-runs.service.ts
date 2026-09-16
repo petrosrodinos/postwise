@@ -59,7 +59,7 @@ export class GenerationRunsService {
 
   private channelShape(channel: PostType): string {
     return channel === PostType.BLOG
-      ? '{ "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }'
+      ? '{ "title": string, "excerpt": string, "body": string (simple HTML using only <p>, <h2>, <h3>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a> tags — no other markup), "seo_title": string, "seo_description": string }'
       : '{ "hook": string, "body": string }';
   }
 
@@ -120,7 +120,7 @@ ${voiceGuidance}`;
       GENERATION_LANGUAGES[DEFAULT_GENERATION_LANGUAGE];
     const sourceText = item.content || item.summary || 'n/a';
 
-    return `Write a full, original BLOG post inspired by the following source article. Do not copy it verbatim — rewrite and expand on it in your own words. Return ONLY a raw JSON object (no markdown) shaped exactly like { "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }. Write every field in ${languageName}. "seo_title" should be a search-optimized title (ideally under 60 characters) and "seo_description" a compelling meta description (ideally under 160 characters).
+    return `Write a full, original BLOG post inspired by the following source article. Do not copy it verbatim — rewrite and expand on it in your own words. Return ONLY a raw JSON object (no markdown) shaped exactly like { "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }. Write every field in ${languageName}. "body" must be simple HTML using only <p>, <h2>, <h3>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a> tags — no other markup. "seo_title" should be a search-optimized title (ideally under 60 characters) and "seo_description" a compelling meta description (ideally under 160 characters).
 
 Source title: ${item.title}
 Source URL: ${item.link ?? 'n/a'}

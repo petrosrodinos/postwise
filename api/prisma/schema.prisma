@@ -50,21 +50,20 @@ enum PostStatus {
   FAILED
 }
 
-enum SocialChannel {
+enum IntegrationProvider {
+  SANITY
   TWITTER
   LINKEDIN
 }
 
-enum SocialChannelConnectionStatus {
+enum IntegrationStatus {
   CONNECTED
   DISCONNECTED
-  EXPIRED
   ERROR
 }
 
-enum PostChannelStatus {
+enum PostIntegrationStatus {
   PENDING
-  SCHEDULED
   PUBLISHING
   PUBLISHED
   FAILED
@@ -140,11 +139,9 @@ enum ActivityLogAction {
   POST_REPURPOSED
   POST_ATTACHMENT_ADDED
   POST_ATTACHMENT_REMOVED
-  POST_CHANNEL_ADDED
-  POST_CHANNEL_REMOVED
-  CHANNEL_CONNECTION_CREATED
-  CHANNEL_CONNECTION_UPDATED
-  CHANNEL_CONNECTION_REMOVED
+  INTEGRATION_CONNECTED
+  INTEGRATION_UPDATED
+  INTEGRATION_REMOVED
 }
 
 enum ActivityLogEntityType {
@@ -158,7 +155,7 @@ enum ActivityLogEntityType {
   AUTOMATION
   GENERATION_RUN
   POST
-  SOCIAL_CHANNEL_CONNECTION
+  INTEGRATION
 }
 
 model User {
@@ -236,14 +233,14 @@ model Organisation {
 
   created_by User @relation(fields: [created_by_user_id], references: [id], onDelete: Cascade)
 
-  members             OrganisationMember[]
-  documents           Document[]
-  posts               Post[]
-  channel_connections SocialChannelConnection[]
-  style_profiles      StyleProfile[]
-  projects            Project[]
-  rss_feeds           RssFeed[]
-  activity_logs       ActivityLog[]
+  members        OrganisationMember[]
+  documents      Document[]
+  posts          Post[]
+  integrations   Integration[]
+  style_profiles StyleProfile[]
+  projects       Project[]
+  rss_feeds      RssFeed[]
+  activity_logs  ActivityLog[]
 
   @@index([created_by_user_id])
   @@index([slug])
@@ -295,28 +292,37 @@ model OrganisationInviteToken {
   @@map("organisation_invite_tokens")
 }
 
-// A social account (Twitter/LinkedIn, etc.) connected for publishing.
-// Always belongs to an Organisation.
-model SocialChannelConnection {
-  id                    String                        @id @default(uuid())
-  organisation_id       String
-  channel               SocialChannel
-  status                SocialChannelConnectionStatus @default(CONNECTED)
-  external_account_id   String
-  external_account_name String?
-  access_token          String
-  refresh_token         String?
-  token_expires_at      DateTime?
-  created_at            DateTime                      @default(now())
-  updated_at            DateTime                      @updatedAt
+// An external destination content can be published to — a social account
+// (Twitter/LinkedIn) or a CMS (Sanity). Always belongs to an Organisation.
+// Fields not used by a given provider stay null (e.g. Sanity rows never
+// populate access_token_encrypted; social rows never populate
+// external_project_id/external_dataset).
+model Integration {
+  id                      String              @id @default(uuid())
+  organisation_id         String
+  provider                IntegrationProvider
+  name                    String
+  status                  IntegrationStatus   @default(CONNECTED)
+  // Social (Twitter/LinkedIn)
+  external_account_id     String?
+  external_account_name   String?
+  access_token_encrypted  String?
+  refresh_token_encrypted String?
+  token_expires_at        DateTime?
+  // Sanity
+  external_project_id     String?
+  external_dataset        String?
+  document_type           String?
+  api_token_encrypted     String?
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt
 
-  organisation Organisation @relation(fields: [organisation_id], references: [id], onDelete: Cascade)
+  organisation      Organisation      @relation(fields: [organisation_id], references: [id], onDelete: Cascade)
+  post_integrations PostIntegration[]
 
-  post_channels PostChannel[]
-
-  @@unique([channel, external_account_id])
+  @@unique([provider, external_account_id])
   @@index([organisation_id])
-  @@map("social_channel_connections")
+  @@map("integrations")
 }
 
 // A reusable "Style DNA" fingerprint trained from a creator's own published
@@ -357,10 +363,10 @@ model StyleProfile {
 // a platform, content pillars, freeform ideas/instructions the AI follows,
 // and one or more Style Profiles. Always belongs to an Organisation.
 model Project {
-  id              String          @id @default(uuid())
+  id              String     @id @default(uuid())
   organisation_id String
   title           String
-  description     String?         @db.Text
+  description     String?    @db.Text
   // Denormalized primary channel, always equal to channels[0].
   platform        PostType
   // Target content channels this project generates for, e.g. [LINKEDIN, X,
@@ -369,10 +375,10 @@ model Project {
   pillars         String[]
   ideas           String[]
   instructions    String[]
-  ai_directions   String?         @db.Text
-  is_archived     Boolean         @default(false)
-  created_at      DateTime        @default(now())
-  updated_at      DateTime        @updatedAt
+  ai_directions   String?    @db.Text
+  is_archived     Boolean    @default(false)
+  created_at      DateTime   @default(now())
+  updated_at      DateTime   @updatedAt
 
   organisation Organisation @relation(fields: [organisation_id], references: [id], onDelete: Cascade)
 
@@ -597,8 +603,8 @@ model Post {
   source_post      Post?  @relation("PostRepurpose", fields: [source_post_id], references: [id], onDelete: SetNull)
   repurposed_posts Post[] @relation("PostRepurpose")
 
-  attachments PostAttachment[]
-  channels    PostChannel[]
+  attachments  PostAttachment[]
+  integrations PostIntegration[]
 
   @@index([user_id])
   @@index([organisation_id])
@@ -634,28 +640,28 @@ model PostAttachment {
   @@map("post_attachments")
 }
 
-// Join between a Post and one of its owner context's connected social
-// channels, tracking per-channel publish state (a post can target several
-// channel connections at once).
-model PostChannel {
-  id                    String            @id @default(uuid())
-  post_id               String
-  channel_connection_id String
-  status                PostChannelStatus @default(PENDING)
-  external_post_id      String?
-  external_post_url     String?
-  published_at          DateTime?
-  failed_reason         String?
-  created_at            DateTime          @default(now())
-  updated_at            DateTime          @updatedAt
+// Join between a Post and one of its owner context's connected integrations
+// (a social account or a CMS), tracking per-integration publish state — a
+// post can target several integrations at once (e.g. two LinkedIn accounts).
+model PostIntegration {
+  id             String                @id @default(uuid())
+  post_id        String
+  integration_id String
+  status         PostIntegrationStatus @default(PENDING)
+  external_id    String?
+  external_url   String?
+  published_at   DateTime?
+  failed_reason  String?
+  created_at     DateTime              @default(now())
+  updated_at     DateTime              @updatedAt
 
-  post               Post                    @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  channel_connection SocialChannelConnection @relation(fields: [channel_connection_id], references: [id], onDelete: Cascade)
+  post        Post        @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  integration Integration @relation(fields: [integration_id], references: [id], onDelete: Cascade)
 
-  @@unique([post_id, channel_connection_id])
+  @@unique([post_id, integration_id])
   @@index([post_id])
-  @@index([channel_connection_id])
-  @@map("post_channels")
+  @@index([integration_id])
+  @@map("post_integrations")
 }
 
 // A single recorded action, written fire-and-forget from the service that

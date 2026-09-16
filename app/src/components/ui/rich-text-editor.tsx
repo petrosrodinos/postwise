@@ -29,7 +29,7 @@ interface RichTextEditorProps {
 // Shared by the editable ProseMirror content and the read-only preview so
 // rendered content (headings/lists/blockquotes/links) looks identical in
 // both modes.
-const CONTENT_CLASSNAME = cn(
+export const RICH_TEXT_CONTENT_CLASSNAME = cn(
   "min-h-[220px] px-3 py-2 text-sm leading-relaxed",
   "[&_h1]:mt-2 [&_h1]:text-xl [&_h1]:font-bold [&_h2]:mt-2 [&_h2]:text-lg [&_h2]:font-bold [&_h3]:mt-2 [&_h3]:text-base [&_h3]:font-semibold",
   "[&_p]:mt-2 first:[&_p]:mt-0 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-2 [&_ol]:list-decimal [&_ol]:pl-5",
@@ -37,12 +37,12 @@ const CONTENT_CLASSNAME = cn(
   "[&_a]:underline",
 );
 
-// Tools-only rich text editor for the Blog/Email body field — plain
-// Twitter/LinkedIn hooks stay on the regular Textarea, since short-form
-// social copy has no use for headings/lists/links. Content is stored and
-// sent to the AI endpoints as HTML. An Edit/Preview tab switches between
-// the editable toolbar view and a read-only render of the same HTML, so
-// the user can check how formatting will actually look.
+// Shared rich text editor for blog-style body fields — plain Twitter/LinkedIn
+// hooks stay on the regular Textarea, since short-form social copy has no use
+// for headings/lists/links. Content is stored and sent to the AI/publish
+// endpoints as HTML. An Edit/Preview tab switches between the editable
+// toolbar view and a read-only render of the same HTML, so the user can
+// check how formatting will actually look.
 export function RichTextEditor({ value, onChange, placeholder, className }: RichTextEditorProps) {
   const [mode, setMode] = useState<"edit" | "preview">("edit");
 
@@ -57,7 +57,7 @@ export function RichTextEditor({ value, onChange, placeholder, className }: Rich
     ],
     content: value,
     editorProps: {
-      attributes: { class: cn(CONTENT_CLASSNAME, "focus-visible:outline-none") },
+      attributes: { class: cn(RICH_TEXT_CONTENT_CLASSNAME, "focus-visible:outline-none") },
     },
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
   });
@@ -158,10 +158,10 @@ export function RichTextEditor({ value, onChange, placeholder, className }: Rich
           <EditorContent editor={editor} />
         </div>
       ) : isEmpty ? (
-        <p className={cn(CONTENT_CLASSNAME, "text-muted-foreground")}>Nothing to preview yet.</p>
+        <p className={cn(RICH_TEXT_CONTENT_CLASSNAME, "text-muted-foreground")}>Nothing to preview yet.</p>
       ) : (
         // Rendering the editor's own HTML output here, not raw markup from elsewhere.
-        <div className={CONTENT_CLASSNAME} dangerouslySetInnerHTML={{ __html: value }} />
+        <div className={RICH_TEXT_CONTENT_CLASSNAME} dangerouslySetInnerHTML={{ __html: value }} />
       )}
     </div>
   );

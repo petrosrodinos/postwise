@@ -24,7 +24,6 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { SchedulePostDto } from './dto/schedule-post.dto';
 import { AddPostAttachmentDto } from './dto/add-post-attachment.dto';
-import { AddPostChannelDto } from './dto/add-post-channel.dto';
 import { RepurposePostDto } from '@/shared/dto/repurpose-content.dto';
 import { RevisePostDto } from '@/shared/dto/revise-content.dto';
 import { PostsQuerySchema, PostsQueryType } from './dto/posts-query.schema';
@@ -163,27 +162,5 @@ export class PostsController {
     @Param('attachmentId') attachmentId: string,
   ) {
     return this.postsService.removeAttachment(userId, id, attachmentId);
-  }
-
-  @Post(':id/channels')
-  @ApiOperation({ summary: 'Add a social channel target to a post' })
-  @ApiResponse({ status: 201 })
-  addChannel(
-    @CurrentUser('id') userId: string,
-    @Param('id') id: string,
-    @Body() dto: AddPostChannelDto,
-  ) {
-    return this.postsService.addChannel(userId, id, dto);
-  }
-
-  @Delete(':id/channels/:channelId')
-  @ApiOperation({ summary: 'Remove a social channel target from a post' })
-  @ApiResponse({ status: 200 })
-  removeChannel(
-    @CurrentUser('id') userId: string,
-    @Param('id') id: string,
-    @Param('channelId') channelId: string,
-  ) {
-    return this.postsService.removeChannel(userId, id, channelId);
   }
 }

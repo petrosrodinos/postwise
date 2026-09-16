@@ -12,7 +12,7 @@ import {
   type ToolContentType,
 } from "@/features/tools/interfaces/tools.interfaces";
 import { ToolContentTypePicker } from "./components/tool-content-type-picker";
-import { RichTextEditor } from "./components/rich-text-editor";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { ToolsAiAssistPanel } from "./components/tools-ai-assist-panel";
 import { TitleVariationsPanel } from "./components/title-variations-panel";
 import { MetaTagsPanel } from "./components/meta-tags-panel";

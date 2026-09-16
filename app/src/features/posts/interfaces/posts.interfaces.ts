@@ -20,14 +20,13 @@ export const PostStatuses = {
 } as const;
 export type PostStatus = (typeof PostStatuses)[keyof typeof PostStatuses];
 
-export const PostChannelStatuses = {
+export const PostIntegrationStatuses = {
   PENDING: "PENDING",
-  SCHEDULED: "SCHEDULED",
   PUBLISHING: "PUBLISHING",
   PUBLISHED: "PUBLISHED",
   FAILED: "FAILED",
 } as const;
-export type PostChannelStatus = (typeof PostChannelStatuses)[keyof typeof PostChannelStatuses];
+export type PostIntegrationStatus = (typeof PostIntegrationStatuses)[keyof typeof PostIntegrationStatuses];
 
 export const PostSources = {
   MANUAL: "MANUAL",
@@ -69,7 +68,7 @@ export interface Post {
   created_at: string;
   updated_at: string;
   attachments?: PostAttachment[];
-  channels?: PostChannel[];
+  integrations?: PostIntegration[];
 }
 
 export interface PostAttachment {
@@ -81,13 +80,13 @@ export interface PostAttachment {
   document?: Document;
 }
 
-export interface PostChannel {
+export interface PostIntegration {
   id: string;
   post_id: string;
-  channel_connection_id: string;
-  status: PostChannelStatus;
-  external_post_id?: string | null;
-  external_post_url?: string | null;
+  integration_id: string;
+  status: PostIntegrationStatus;
+  external_id?: string | null;
+  external_url?: string | null;
   published_at?: string | null;
   failed_reason?: string | null;
   created_at: string;
@@ -116,7 +115,6 @@ export type UpdatePostDto = Partial<Omit<CreatePostDto, "type" | "organisation_i
 
 export interface SchedulePostDto {
   scheduled_at: string;
-  channel_connection_ids?: string[];
 }
 
 export interface RepurposePostDto {
@@ -151,10 +149,6 @@ export interface RevisedPostDraft {
 export interface AddPostAttachmentDto {
   document_id: string;
   order?: number;
-}
-
-export interface AddPostChannelDto {
-  channel_connection_id: string;
 }
 
 export interface PostsQueryType {

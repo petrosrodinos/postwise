@@ -48,11 +48,9 @@ export const ActivityLogActionFilterOptions: { id: ActivityLogAction | "all"; la
   { id: ActivityLogActions.POST_REPURPOSED, label: "Repurposed post" },
   { id: ActivityLogActions.POST_ATTACHMENT_ADDED, label: "Added post attachment" },
   { id: ActivityLogActions.POST_ATTACHMENT_REMOVED, label: "Removed post attachment" },
-  { id: ActivityLogActions.POST_CHANNEL_ADDED, label: "Added post channel" },
-  { id: ActivityLogActions.POST_CHANNEL_REMOVED, label: "Removed post channel" },
-  { id: ActivityLogActions.CHANNEL_CONNECTION_CREATED, label: "Connected channel" },
-  { id: ActivityLogActions.CHANNEL_CONNECTION_UPDATED, label: "Updated channel connection" },
-  { id: ActivityLogActions.CHANNEL_CONNECTION_REMOVED, label: "Disconnected channel" },
+  { id: ActivityLogActions.INTEGRATION_CONNECTED, label: "Connected integration" },
+  { id: ActivityLogActions.INTEGRATION_UPDATED, label: "Updated integration" },
+  { id: ActivityLogActions.INTEGRATION_REMOVED, label: "Disconnected integration" },
 ];
 
 export function getActivityLogActionLabel(action: ActivityLogAction | string): string {

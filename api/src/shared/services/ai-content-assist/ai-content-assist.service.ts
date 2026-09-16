@@ -101,10 +101,13 @@ export class AiContentAssistService {
     const shape = isLongForm
       ? '{ "title": string, "excerpt": string, "body": string }'
       : '{ "hook": string, "body": string }';
+    const bodyFormatGuidance = isLongForm
+      ? ' "body" must be simple HTML using only <p>, <h2>, <h3>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a> tags — no other markup.'
+      : '';
 
     const prompt = `Revise the following ${params.type} post. ${directions}
 
-Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}. Preserve the author's core message and intent.
+Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${bodyFormatGuidance} Preserve the author's core message and intent.
 
 ${isLongForm ? `Current title: ${params.title ?? 'n/a'}\nCurrent excerpt: ${params.excerpt ?? 'n/a'}\n` : params.hook ? `Current hook: ${params.hook}\n` : ''}Current body:
 ${params.body ?? ''}`;
@@ -137,13 +140,16 @@ ${params.body ?? ''}`;
     const seoGuidance = isTargetBlog
       ? ' Also write "seo_title" (a search-optimized title, ideally under 60 characters) and "seo_description" (a compelling meta description, ideally under 160 characters).'
       : '';
+    const bodyFormatGuidance = isTargetLongForm
+      ? ' "body" must be simple HTML using only <p>, <h2>, <h3>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a> tags — no other markup.'
+      : '';
 
     const voiceGuidance = params.styleGuidance
       ? ` Voice to write in: ${params.styleGuidance}`
       : '';
 
     const { response } = await this.aiService.generateText({
-      prompt: `Repurpose the following content into a single ${params.targetType} post. Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${seoGuidance}${voiceGuidance}\n\nSource content:\n${source}`,
+      prompt: `Repurpose the following content into a single ${params.targetType} post. Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${seoGuidance}${bodyFormatGuidance}${voiceGuidance}\n\nSource content:\n${source}`,
       system: 'You are an expert content repurposing assistant.',
       temperature: 0.7,
     });

@@ -5,13 +5,14 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor, RICH_TEXT_CONTENT_CLASSNAME } from "@/components/ui/rich-text-editor";
 import { PostStatusTag } from "@/components/ui/post-status-tag";
 import { PlatformChip } from "@/components/ui/platform-glyph";
 import { getPostTypeLabel } from "@/config/constants/dropdowns/posts/post-type-form.options";
 import { getPostSourceLabel } from "@/config/constants/dropdowns/posts/post-source-filter.options";
 import { useUpdatePost } from "@/features/posts/hooks/use-posts";
 import { getPostSource } from "@/features/posts/utils/post-source.utils";
-import { PostStatuses, type Post } from "@/features/posts/interfaces/posts.interfaces";
+import { PostIntegrationStatuses, PostStatuses, PostTypes, type Post } from "@/features/posts/interfaces/posts.interfaces";
 import { Routes } from "@/routes/routes";
 import { PostRowActions } from "./post-row-actions";
 import { EditablePostTitle } from "./editable-post-title";
@@ -32,8 +33,12 @@ export function PostPreviewDrawer({ post, onClose }: PostPreviewDrawerProps) {
   }, [post?.id, post?.body]);
 
   const isOpen = !!post;
+  const isBlog = post?.type === PostTypes.BLOG;
   const isEditable = post ? EDITABLE_STATUSES.includes(post.status) : false;
   const isDirty = post ? body !== (post.body ?? "") : false;
+  const publishedSanityIntegration = post?.integrations?.find(
+    (integration) => integration.status === PostIntegrationStatuses.PUBLISHED && integration.external_url,
+  );
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -91,7 +96,13 @@ export function PostPreviewDrawer({ post, onClose }: PostPreviewDrawerProps) {
               <div>
                 <div className="mb-1 text-xs font-semibold uppercase text-muted-foreground">Body</div>
                 {isEditable ? (
-                  <Textarea value={body} onChange={(e) => setBody(e.target.value)} rows={10} className="text-sm leading-relaxed" />
+                  isBlog ? (
+                    <RichTextEditor value={body} onChange={setBody} />
+                  ) : (
+                    <Textarea value={body} onChange={(e) => setBody(e.target.value)} rows={10} className="text-sm leading-relaxed" />
+                  )
+                ) : isBlog ? (
+                  <div className={RICH_TEXT_CONTENT_CLASSNAME} dangerouslySetInnerHTML={{ __html: post.body ?? "" }} />
                 ) : (
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">{post.body}</p>
                 )}
@@ -101,6 +112,16 @@ export function PostPreviewDrawer({ post, onClose }: PostPreviewDrawerProps) {
                 <div className="flex flex-col gap-1 text-xs text-muted-foreground">
                   {post.scheduled_at && <span>Scheduled for {format(new Date(post.scheduled_at), "MMM d, yyyy 'at' h:mm a")}</span>}
                   {post.published_at && <span>Published {format(new Date(post.published_at), "MMM d, yyyy 'at' h:mm a")}</span>}
+                  {publishedSanityIntegration?.external_url && (
+                    <a
+                      href={publishedSanityIntegration.external_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-semibold text-brass-ink hover:underline"
+                    >
+                      View in Sanity
+                    </a>
+                  )}
                 </div>
               )}
             </div>
