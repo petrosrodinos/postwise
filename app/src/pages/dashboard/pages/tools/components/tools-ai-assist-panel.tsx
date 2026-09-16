@@ -11,6 +11,7 @@ interface ToolsContentSnapshot {
   hook?: string;
   body?: string;
   excerpt?: string;
+  style_profile_id?: string;
 }
 
 interface ToolsAiAssistPanelProps {

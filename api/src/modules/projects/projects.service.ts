@@ -39,6 +39,15 @@ export class ProjectsService {
   ) {}
 
   async generateDetails(dto: GenerateProjectDetailsDto) {
+    const voiceDescription = dto.style_profiles?.length
+      ? dto.style_profiles
+          .map(
+            (profile) =>
+              `- ${profile.name} (${profile.platform}): tone — ${profile.tone_description ?? 'n/a'}; dominant hook — ${profile.dominant_hook ?? 'n/a'}; signature vocabulary — ${profile.vocabulary?.join(', ') || 'n/a'}; pillars — ${profile.pillars?.join(', ') || 'n/a'}`,
+          )
+          .join('\n')
+      : 'n/a';
+
     const prompt = `Plan a content strategy for the following project. Return ONLY a raw JSON object (no markdown) with this exact shape:
 {
   "pillars": string[] (3-6 short, recurring content themes/topics for this project),
@@ -48,8 +57,13 @@ export class ProjectsService {
 
 Project title: ${dto.title}
 Project description: ${dto.description ?? 'n/a'}
-Platform: ${dto.platform ?? 'general social media'}
-Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
+Channels: ${dto.channels?.length ? dto.channels.join(', ') : 'general social media'}
+Additional directions from the user: ${dto.ai_directions ?? 'n/a'}
+Voice to draft in (from attached style profiles):
+${voiceDescription}
+Existing content pillars (build on these, avoid exact duplicates): ${dto.pillars?.length ? dto.pillars.join(', ') : 'none yet'}
+Existing ideas (build on these, avoid exact duplicates): ${dto.ideas?.length ? dto.ideas.join(', ') : 'none yet'}
+Existing instructions (build on these, avoid exact duplicates): ${dto.instructions?.length ? dto.instructions.join(', ') : 'none yet'}`;
 
     const { response } = await this.aiService.generateText({
       prompt,

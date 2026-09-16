@@ -52,6 +52,11 @@ export class ToolsService {
 
     await this.ownershipService.resolveContext(userId, dto.organisation_id);
 
+    const styleGuidance = await this.styleGuidance(
+      dto.organisation_id,
+      dto.style_profile_id,
+    );
+
     return this.aiContentAssistService.reviseContent({
       type: dto.type,
       title: dto.title,
@@ -60,11 +65,17 @@ export class ToolsService {
       excerpt: dto.excerpt,
       preset: dto.preset,
       instructions: dto.instructions,
+      styleGuidance: styleGuidance || undefined,
     });
   }
 
   async repurpose(userId: string, dto: RepurposeToolContentDto) {
     await this.ownershipService.resolveContext(userId, dto.organisation_id);
+
+    const styleGuidance = await this.styleGuidance(
+      dto.organisation_id,
+      dto.style_profile_id,
+    );
 
     const drafts = await Promise.all(
       dto.target_types.map(async (targetType) => ({
@@ -76,6 +87,7 @@ export class ToolsService {
           hook: dto.hook,
           body: dto.body,
           excerpt: dto.excerpt,
+          styleGuidance: styleGuidance || undefined,
         }),
       })),
     );

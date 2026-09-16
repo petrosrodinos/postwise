@@ -60,11 +60,24 @@ export interface AttachRssFeedDto {
   rss_feed_id: string;
 }
 
+export interface GenerateProjectDetailsStyleProfile {
+  name: string;
+  platform: PostType;
+  tone_description?: string | null;
+  dominant_hook?: string | null;
+  vocabulary?: string[];
+  pillars?: string[];
+}
+
 export interface GenerateProjectDetailsDto {
   title: string;
   description?: string;
-  platform?: PostType;
+  channels?: PostType[];
   ai_directions?: string;
+  pillars?: string[];
+  ideas?: string[];
+  instructions?: string[];
+  style_profiles?: GenerateProjectDetailsStyleProfile[];
 }
 
 export interface ProjectAiSuggestions {

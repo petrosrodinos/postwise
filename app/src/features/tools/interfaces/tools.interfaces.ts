@@ -28,10 +28,12 @@ export interface ToolContent {
 export interface ReviseToolContentDto extends ToolContent {
   preset?: RevisePreset;
   instructions?: string;
+  style_profile_id?: string;
 }
 
 export interface RepurposeToolContentDto extends ToolContent {
   target_types: ToolContentType[];
+  style_profile_id?: string;
 }
 
 export interface RepurposedContentDraft extends RevisedPostDraft {

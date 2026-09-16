@@ -46,8 +46,28 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
     const titleValid = await form.trigger("title");
     if (!titleValid) return;
 
+    const selectedStyleProfiles = styleProfiles
+      .filter((profile) => styleProfileIds.includes(profile.id))
+      .map((profile) => ({
+        name: profile.name,
+        platform: profile.platform,
+        tone_description: profile.tone_description,
+        dominant_hook: profile.dominant_hook,
+        vocabulary: profile.vocabulary,
+        pillars: profile.pillars,
+      }));
+
     generateDetails(
-      { title, description: description || undefined, platform: channels[0], ai_directions: aiDirections || undefined },
+      {
+        title,
+        description: description || undefined,
+        channels,
+        ai_directions: aiDirections || undefined,
+        pillars,
+        ideas,
+        instructions,
+        style_profiles: selectedStyleProfiles.length ? selectedStyleProfiles : undefined,
+      },
       {
         onSuccess: (suggestions) => {
           form.setValue("pillars", suggestions.pillars, { shouldDirty: true });

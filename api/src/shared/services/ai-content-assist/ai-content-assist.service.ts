@@ -65,6 +65,7 @@ export interface ReviseContentParams {
   excerpt?: string | null;
   preset?: RevisePreset;
   instructions?: string;
+  styleGuidance?: string;
 }
 
 export interface RepurposeContentParams {
@@ -74,6 +75,7 @@ export interface RepurposeContentParams {
   hook?: string | null;
   body?: string | null;
   excerpt?: string | null;
+  styleGuidance?: string;
 }
 
 // Revise/repurpose prompt-building and AI calls shared by anything that
@@ -86,6 +88,7 @@ export class AiContentAssistService {
 
   async reviseContent(params: ReviseContentParams): Promise<ReviseDraft> {
     const directions = [
+      params.styleGuidance ? `Voice to write in: ${params.styleGuidance}` : null,
       params.preset ? REVISE_PRESET_INSTRUCTIONS[params.preset] : null,
       params.instructions
         ? `Additional instructions: ${params.instructions}`
@@ -135,8 +138,12 @@ ${params.body ?? ''}`;
       ? ' Also write "seo_title" (a search-optimized title, ideally under 60 characters) and "seo_description" (a compelling meta description, ideally under 160 characters).'
       : '';
 
+    const voiceGuidance = params.styleGuidance
+      ? ` Voice to write in: ${params.styleGuidance}`
+      : '';
+
     const { response } = await this.aiService.generateText({
-      prompt: `Repurpose the following content into a single ${params.targetType} post. Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${seoGuidance}\n\nSource content:\n${source}`,
+      prompt: `Repurpose the following content into a single ${params.targetType} post. Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${seoGuidance}${voiceGuidance}\n\nSource content:\n${source}`,
       system: 'You are an expert content repurposing assistant.',
       temperature: 0.7,
     });

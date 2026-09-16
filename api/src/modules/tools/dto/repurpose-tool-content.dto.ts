@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ArrayMinSize, IsArray, IsIn } from 'class-validator';
+import { ArrayMinSize, IsArray, IsIn, IsOptional, IsString } from 'class-validator';
 import {
   TOOL_CONTENT_TYPES,
   ToolContentDto,
@@ -19,4 +19,12 @@ export class RepurposeToolContentDto extends ToolContentDto {
   @ArrayMinSize(1)
   @IsIn(TOOL_CONTENT_TYPES, { each: true })
   target_types: ToolContentType[];
+
+  @ApiProperty({
+    required: false,
+    description: 'Style profile to optionally steer the tone with',
+  })
+  @IsOptional()
+  @IsString()
+  style_profile_id?: string;
 }
