@@ -62,7 +62,9 @@ export function GenerationContextCard({
         <Label className="mb-1.5 block text-xs font-semibold text-foreground">Generating for</Label>
         <div className="flex flex-col gap-1.5 rounded-lg border border-input bg-muted/50 p-2.5">
           {channels.map((channel) => {
-            const matchedProfile = styleProfiles.find((link) => link.style_profile.platform === channel)?.style_profile;
+            const matchedProfile =
+              styleProfiles.find((link) => link.style_profile.platform === channel)?.style_profile ??
+              styleProfiles[0]?.style_profile;
             return (
               <div key={channel} className="flex items-center justify-between gap-2 text-xs">
                 <PlatformChip platform={channel} label={PLATFORM_META[channel].label} />

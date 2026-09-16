@@ -188,16 +188,22 @@ ${
   // For each channel a project targets (including BLOG), finds the project's
   // attached style profile trained for that channel's platform, if any
   // (auto-match — no manual per-channel selection).
+  // Prefer the profile trained for this exact channel's platform; if the
+  // project has no such profile but does have others attached, fall back to
+  // the first one rather than leaving the channel with no voice guidance —
+  // a project with a single attached style profile should apply it to every
+  // channel, not just the one matching its training platform.
   private resolveChannelStyleProfiles(
     project: OwnedProject,
     channels: PostType[],
   ): Partial<Record<PostType, StyleProfile | null>> {
     const result: Partial<Record<PostType, StyleProfile | null>> = {};
+    const fallback = project.style_profiles[0]?.style_profile ?? null;
     for (const channel of channels) {
       const link = project.style_profiles.find(
         (link) => link.style_profile.platform === channel,
       );
-      result[channel] = link?.style_profile ?? null;
+      result[channel] = link?.style_profile ?? fallback;
     }
     return result;
   }
