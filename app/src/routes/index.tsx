@@ -21,6 +21,7 @@ import RssFeedsPage from "@/pages/dashboard/pages/rss-feeds";
 import AutomationPage from "@/pages/dashboard/pages/automation";
 import SettingsPage from "@/pages/dashboard/pages/settings";
 import ProfilePage from "@/pages/dashboard/pages/profile";
+import LandingPage from "@/pages/landing";
 import { RoleTypes } from "@/features/user/interfaces/user.interface";
 
 export default function AppRoutes() {
@@ -75,7 +76,7 @@ export default function AppRoutes() {
         <Route path="profile" element={<ProfilePage />} />
       </Route>
 
-      <Route path="/" element={<Navigate to={RoutePaths.dashboard.root} replace />} />
+      <Route path="/" element={<LandingPage />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

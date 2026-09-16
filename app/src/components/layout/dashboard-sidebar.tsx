@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { BrandMark } from "@/components/layout/brand-mark";
 import { NavGroup } from "@/components/layout/nav-group";
@@ -20,13 +21,16 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
   return (
     <Sidebar collapsible="icon" className="group-data-[side=left]:border-r-0" {...props}>
       <SidebarHeader className="gap-0 px-2 pb-0 pt-3">
-        <div className="mb-1 flex items-center gap-2.5 px-2 pb-4 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+        <Link
+          to="/"
+          className="mb-1 flex items-center gap-2.5 rounded-md px-2 pb-4 transition-opacity hover:opacity-80 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+        >
           <BrandMark size={30} />
           <div className="font-display text-lg font-semibold text-sidebar-foreground group-data-[collapsible=icon]:hidden">
             {environments.APP_NAME}
             <span className="text-brass">.</span>
           </div>
-        </div>
+        </Link>
       </SidebarHeader>
       <SidebarContent className="gap-0">
         {navGroups.map((group) => (
