@@ -117,7 +117,6 @@ export default function ProjectGeneratePage() {
       addPosts({
         id: run.id,
         dto: {
-          style_profile_id: styleProfileId || undefined,
           posts_requested: postsRequested,
           language,
           generate_images: generateImages,
@@ -130,7 +129,6 @@ export default function ProjectGeneratePage() {
     createRun(
       {
         project_id: id!,
-        style_profile_id: styleProfileId || undefined,
         posts_requested: postsRequested,
         language,
         generate_images: generateImages,
@@ -144,7 +142,7 @@ export default function ProjectGeneratePage() {
     );
   }
 
-  const isBlog = project.platform === PostTypes.BLOG;
+  const hasBlogChannel = project.channels.includes(PostTypes.BLOG);
 
   return (
     <div className="flex flex-col gap-6">
@@ -158,7 +156,7 @@ export default function ProjectGeneratePage() {
 
       <div className="grid items-start gap-6" style={{ gridTemplateColumns: "320px 1fr" }}>
         <div className="flex flex-col gap-4">
-          {isBlog && !run && (
+          {hasBlogChannel && !run && (
             <div className="inline-flex rounded-lg border border-input p-1">
               {(
                 [
@@ -180,7 +178,7 @@ export default function ProjectGeneratePage() {
             </div>
           )}
 
-          {source === "rss" && isBlog && !run ? (
+          {source === "rss" && hasBlogChannel && !run ? (
             <RssItemPickerCard
               project={project}
               styleProfileId={styleProfileId}
@@ -193,8 +191,6 @@ export default function ProjectGeneratePage() {
             <GenerationContextCard
               project={project}
               isExistingRun={!!run}
-              styleProfileId={styleProfileId}
-              onStyleProfileChange={setStyleProfileId}
               postsRequested={postsRequested}
               onPostsRequestedChange={setPostsRequested}
               language={language}

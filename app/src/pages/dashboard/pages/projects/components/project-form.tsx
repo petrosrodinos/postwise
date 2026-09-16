@@ -7,11 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TagInput } from "@/components/ui/tag-input";
 import { ChipListEditor } from "@/components/ui/chip-list-editor";
-import { ChannelMultiPicker } from "@/components/ui/platform-picker";
+import { ContentChannelsPicker } from "@/components/ui/platform-picker";
 import { cn } from "@/lib/utils";
 import { useGenerateProjectDetails } from "@/features/projects/hooks/use-projects";
-import { PostTypes, type PostType } from "@/features/posts/interfaces/posts.interfaces";
-import { SocialChannels, type SocialChannel } from "@/features/social-channel-connections/interfaces/social-channel-connections.interfaces";
+import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import type { StyleProfile } from "@/features/style-profiles/interfaces/style-profiles.interfaces";
 import type { RssFeed } from "@/features/rss-feeds/interfaces/rss-feeds.interfaces";
 import type { CreateProjectFormData } from "@/pages/dashboard/validation-schemas/project.schema";
@@ -32,7 +31,6 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
 
   const title = form.watch("title");
   const description = form.watch("description");
-  const platform = form.watch("platform");
   const channels = form.watch("channels");
   const pillars = form.watch("pillars");
   const ideas = form.watch("ideas");
@@ -40,24 +38,8 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
   const aiDirections = form.watch("ai_directions");
   const styleProfileIds = form.watch("style_profile_ids");
 
-  const isBlogContent = platform === PostTypes.BLOG;
-
-  function handleContentTypeChange(type: "blog" | "social") {
-    if (type === "blog") {
-      form.setValue("platform", PostTypes.BLOG, { shouldDirty: true });
-      form.setValue("channels", [], { shouldDirty: true });
-      return;
-    }
-    const nextChannels = channels.length ? channels : [SocialChannels.LINKEDIN];
-    form.setValue("channels", nextChannels, { shouldDirty: true });
-    form.setValue("platform", nextChannels[0] as PostType, { shouldDirty: true });
-  }
-
-  function handleChannelsChange(next: SocialChannel[]) {
+  function handleChannelsChange(next: typeof channels) {
     form.setValue("channels", next, { shouldDirty: true, shouldValidate: true });
-    if (next.length) {
-      form.setValue("platform", next[0] as PostType, { shouldDirty: true });
-    }
   }
 
   async function handleGenerateWithAi() {
@@ -65,7 +47,7 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
     if (!titleValid) return;
 
     generateDetails(
-      { title, description: description || undefined, platform, ai_directions: aiDirections || undefined },
+      { title, description: description || undefined, platform: channels[0], ai_directions: aiDirections || undefined },
       {
         onSuccess: (suggestions) => {
           form.setValue("pillars", suggestions.pillars, { shouldDirty: true });
@@ -112,49 +94,19 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
                   </FormItem>
                 )}
               />
-              <FormItem>
-                <FormLabel>Content type</FormLabel>
-                <FormControl>
-                  <div className="inline-flex rounded-lg border border-input p-1">
-                    {(
-                      [
-                        { id: "social", label: "Social posts" },
-                        { id: "blog", label: "Blog" },
-                      ] as const
-                    ).map((option) => (
-                      <button
-                        key={option.id}
-                        type="button"
-                        className={cn(
-                          "flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-                          (option.id === "blog") === isBlogContent
-                            ? "bg-foreground text-background"
-                            : "text-muted-foreground hover:text-foreground",
-                        )}
-                        onClick={() => handleContentTypeChange(option.id)}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </FormControl>
-              </FormItem>
-
-              {!isBlogContent && (
-                <FormField
-                  control={form.control}
-                  name="channels"
-                  render={() => (
-                    <FormItem>
-                      <FormLabel>Channels</FormLabel>
-                      <FormControl>
-                        <ChannelMultiPicker value={channels} onChange={handleChannelsChange} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+              <FormField
+                control={form.control}
+                name="channels"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Channels</FormLabel>
+                    <FormControl>
+                      <ContentChannelsPicker value={channels} onChange={handleChannelsChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </CardContent>
           </Card>
 
@@ -201,7 +153,7 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
             </Card>
           )}
 
-          {platform === PostTypes.BLOG && rssFeeds.length > 0 && (
+          {channels.includes(PostTypes.BLOG) && rssFeeds.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Sources</CardTitle>
@@ -328,7 +280,6 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
 
         <ProjectPreviewCard
           title={title}
-          platform={platform}
           channels={channels}
           pillars={pillars}
           ideasCount={ideas.length}

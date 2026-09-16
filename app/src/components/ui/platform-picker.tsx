@@ -1,7 +1,6 @@
 import { Linkedin, Newspaper, Twitter, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PostTypes, type PostType } from "@/features/posts/interfaces/posts.interfaces";
-import { SocialChannels, type SocialChannel } from "@/features/social-channel-connections/interfaces/social-channel-connections.interfaces";
 
 interface PlatformMeta {
   label: string;
@@ -70,35 +69,39 @@ export function PlatformPicker({ value, onChange, className }: PlatformPickerPro
   );
 }
 
-const SOCIAL_CHANNELS: SocialChannel[] = [SocialChannels.LINKEDIN, SocialChannels.TWITTER];
+const ALL_OPTIONS: PostType[] = [PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG];
 
-interface ChannelMultiPickerProps {
-  value: SocialChannel[];
-  onChange: (value: SocialChannel[]) => void;
+interface ContentChannelsPickerProps {
+  value: PostType[];
+  onChange: (value: PostType[]) => void;
   className?: string;
 }
 
-// Multi-select variant of PlatformPicker, restricted to social channels
-// (LinkedIn/Twitter) — used to pick a project's target channels for
-// multi-channel generation, as opposed to the single content-type choice
-// PlatformPicker makes.
-export function ChannelMultiPicker({ value, onChange, className }: ChannelMultiPickerProps) {
-  function toggle(channel: SocialChannel) {
-    onChange(value.includes(channel) ? value.filter((c) => c !== channel) : [...value, channel]);
+// Plain multi-select over every content channel a project can target —
+// LinkedIn, X and Blog can all be picked together, fanning one AI batch's
+// idea out across all of them (a Post row per channel, sharing the idea).
+// Always keeps at least one channel selected.
+export function ContentChannelsPicker({ value, onChange, className }: ContentChannelsPickerProps) {
+  function toggle(option: PostType) {
+    const isSelected = value.includes(option);
+    const next = isSelected ? value.filter((c) => c !== option) : [...value, option];
+    if (next.length === 0) return; // keep at least one channel selected
+
+    onChange(next);
   }
 
   return (
-    <div className={cn("grid gap-3 sm:grid-cols-2", className)}>
-      {SOCIAL_CHANNELS.map((channel) => {
-        const meta = PLATFORM_META[channel];
+    <div className={cn("grid gap-3 sm:grid-cols-3", className)}>
+      {ALL_OPTIONS.map((option) => {
+        const meta = PLATFORM_META[option];
         const Icon = meta.icon;
-        const selected = value.includes(channel);
+        const selected = value.includes(option);
 
         return (
           <button
-            key={channel}
+            key={option}
             type="button"
-            onClick={() => toggle(channel)}
+            onClick={() => toggle(option)}
             aria-pressed={selected}
             className={cn(
               "flex flex-col items-start gap-3 rounded-2xl border-2 p-4 text-left transition-all",

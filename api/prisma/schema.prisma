@@ -361,10 +361,11 @@ model Project {
   organisation_id String
   title           String
   description     String?         @db.Text
+  // Denormalized primary channel, always equal to channels[0].
   platform        PostType
-  // Target social channels for generation/publishing when platform is not
-  // BLOG (e.g. [LINKEDIN, TWITTER]); empty for BLOG projects.
-  channels        SocialChannel[]
+  // Target content channels this project generates for, e.g. [LINKEDIN, X,
+  // BLOG] together — one AI batch fans an idea out across all of them.
+  channels        PostType[]
   pillars         String[]
   ideas           String[]
   instructions    String[]

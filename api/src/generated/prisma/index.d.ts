@@ -13180,7 +13180,7 @@ export namespace Prisma {
     title: string
     description: string | null
     platform: $Enums.PostType
-    channels: $Enums.SocialChannel[]
+    channels: $Enums.PostType[]
     pillars: string[]
     ideas: string[]
     instructions: string[]
@@ -13313,7 +13313,7 @@ export namespace Prisma {
       title: string
       description: string | null
       platform: $Enums.PostType
-      channels: $Enums.SocialChannel[]
+      channels: $Enums.PostType[]
       pillars: string[]
       ideas: string[]
       instructions: string[]
@@ -13755,7 +13755,7 @@ export namespace Prisma {
     readonly title: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
     readonly platform: FieldRef<"Project", 'PostType'>
-    readonly channels: FieldRef<"Project", 'SocialChannel[]'>
+    readonly channels: FieldRef<"Project", 'PostType[]'>
     readonly pillars: FieldRef<"Project", 'String[]'>
     readonly ideas: FieldRef<"Project", 'String[]'>
     readonly instructions: FieldRef<"Project", 'String[]'>
@@ -28813,7 +28813,7 @@ export namespace Prisma {
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
-    channels?: EnumSocialChannelNullableListFilter<"Project">
+    channels?: EnumPostTypeNullableListFilter<"Project">
     pillars?: StringNullableListFilter<"Project">
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
@@ -28860,7 +28860,7 @@ export namespace Prisma {
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
-    channels?: EnumSocialChannelNullableListFilter<"Project">
+    channels?: EnumPostTypeNullableListFilter<"Project">
     pillars?: StringNullableListFilter<"Project">
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
@@ -28904,7 +28904,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Project"> | string
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
     platform?: EnumPostTypeWithAggregatesFilter<"Project"> | $Enums.PostType
-    channels?: EnumSocialChannelNullableListFilter<"Project">
+    channels?: EnumPostTypeNullableListFilter<"Project">
     pillars?: StringNullableListFilter<"Project">
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
@@ -30635,7 +30635,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -30657,7 +30657,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -30677,7 +30677,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -30699,7 +30699,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -30720,7 +30720,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -30735,7 +30735,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -30751,7 +30751,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -32557,11 +32557,11 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type EnumSocialChannelNullableListFilter<$PrismaModel = never> = {
-    equals?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel> | null
-    has?: $Enums.SocialChannel | EnumSocialChannelFieldRefInput<$PrismaModel> | null
-    hasEvery?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
-    hasSome?: $Enums.SocialChannel[] | ListEnumSocialChannelFieldRefInput<$PrismaModel>
+  export type EnumPostTypeNullableListFilter<$PrismaModel = never> = {
+    equals?: $Enums.PostType[] | ListEnumPostTypeFieldRefInput<$PrismaModel> | null
+    has?: $Enums.PostType | EnumPostTypeFieldRefInput<$PrismaModel> | null
+    hasEvery?: $Enums.PostType[] | ListEnumPostTypeFieldRefInput<$PrismaModel>
+    hasSome?: $Enums.PostType[] | ListEnumPostTypeFieldRefInput<$PrismaModel>
     isEmpty?: boolean
   }
 
@@ -34445,7 +34445,7 @@ export namespace Prisma {
   }
 
   export type ProjectCreatechannelsInput = {
-    set: $Enums.SocialChannel[]
+    set: $Enums.PostType[]
   }
 
   export type ProjectCreatepillarsInput = {
@@ -34537,8 +34537,8 @@ export namespace Prisma {
   }
 
   export type ProjectUpdatechannelsInput = {
-    set?: $Enums.SocialChannel[]
-    push?: $Enums.SocialChannel | $Enums.SocialChannel[]
+    set?: $Enums.PostType[]
+    push?: $Enums.PostType | $Enums.PostType[]
   }
 
   export type ProjectUpdatepillarsInput = {
@@ -37059,7 +37059,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -37079,7 +37079,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -37374,7 +37374,7 @@ export namespace Prisma {
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     platform?: EnumPostTypeFilter<"Project"> | $Enums.PostType
-    channels?: EnumSocialChannelNullableListFilter<"Project">
+    channels?: EnumPostTypeNullableListFilter<"Project">
     pillars?: StringNullableListFilter<"Project">
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
@@ -38854,7 +38854,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -38875,7 +38875,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -38941,7 +38941,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -38962,7 +38962,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -39174,7 +39174,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -39195,7 +39195,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -39283,7 +39283,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -39304,7 +39304,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -39382,7 +39382,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -39403,7 +39403,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -39638,7 +39638,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -39659,7 +39659,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -39987,7 +39987,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -40008,7 +40008,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -40233,7 +40233,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -40254,7 +40254,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -40473,7 +40473,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -40494,7 +40494,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -41024,7 +41024,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -41045,7 +41045,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -42518,7 +42518,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     platform: $Enums.PostType
-    channels?: ProjectCreatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectCreatechannelsInput | $Enums.PostType[]
     pillars?: ProjectCreatepillarsInput | string[]
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
@@ -42819,7 +42819,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -42839,7 +42839,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
@@ -42859,7 +42859,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
-    channels?: ProjectUpdatechannelsInput | $Enums.SocialChannel[]
+    channels?: ProjectUpdatechannelsInput | $Enums.PostType[]
     pillars?: ProjectUpdatepillarsInput | string[]
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]

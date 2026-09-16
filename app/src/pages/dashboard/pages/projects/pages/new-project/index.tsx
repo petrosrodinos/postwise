@@ -24,7 +24,6 @@ export default function NewProjectPage() {
     defaultValues: {
       title: "",
       description: "",
-      platform: undefined,
       channels: [],
       style_profile_ids: [],
       rss_feed_ids: [],
@@ -40,7 +39,6 @@ export default function NewProjectPage() {
       {
         title: data.title,
         description: data.description || undefined,
-        platform: data.platform,
         channels: data.channels,
         pillars: data.pillars,
         ideas: data.ideas,

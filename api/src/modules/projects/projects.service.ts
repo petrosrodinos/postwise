@@ -14,8 +14,6 @@ import {
   ActivityLogAction,
   ActivityLogEntityType,
   OrganisationRole,
-  PostType,
-  SocialChannel,
 } from 'generated/prisma';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -26,7 +24,10 @@ import { ProjectsQueryType } from './dto/projects-query.schema';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
 import { ProjectAiSuggestionsSchema } from './interfaces/project-ai-suggestions.interface';
 
-const MANAGE_ROLES: OrganisationRole[] = [OrganisationRole.OWNER, OrganisationRole.ADMIN];
+const MANAGE_ROLES: OrganisationRole[] = [
+  OrganisationRole.OWNER,
+  OrganisationRole.ADMIN,
+];
 
 @Injectable()
 export class ProjectsService {
@@ -52,24 +53,19 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
 
     const { response } = await this.aiService.generateText({
       prompt,
-      system: 'You are an expert content strategist who plans social media and blog content.',
+      system:
+        'You are an expert content strategist who plans social media and blog content.',
       temperature: 0.7,
     });
 
     return parseAiJson(response, ProjectAiSuggestionsSchema);
   }
 
-  // BLOG projects don't target social channels; social projects always have
-  // at least one — default to the (legacy) single `platform` field when the
-  // caller doesn't specify channels explicitly, so older clients keep working.
-  private resolveChannels(platform: PostType, channels?: SocialChannel[]): SocialChannel[] {
-    if (platform === PostType.BLOG) return [];
-    if (channels?.length) return channels;
-    return [platform === PostType.LINKEDIN ? SocialChannel.LINKEDIN : SocialChannel.TWITTER];
-  }
-
   async create(userId: string, dto: CreateProjectDto) {
-    const context = await this.ownershipService.resolveContext(userId, dto.organisation_id);
+    const context = await this.ownershipService.resolveContext(
+      userId,
+      dto.organisation_id,
+    );
     this.ownershipService.assertRole(context, MANAGE_ROLES);
 
     const project = await this.prisma.project.create({
@@ -77,8 +73,10 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
         organisation_id: context.organisation_id,
         title: dto.title,
         description: dto.description,
-        platform: dto.platform,
-        channels: this.resolveChannels(dto.platform, dto.channels),
+        // `platform` is denormalized from channels[0] — legacy read paths
+        // (filters, glyphs) still key off a single value.
+        platform: dto.channels[0],
+        channels: dto.channels,
         pillars: dto.pillars ?? [],
         ideas: dto.ideas ?? [],
         instructions: dto.instructions ?? [],
@@ -104,7 +102,9 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
     const where = {
       organisation_id: query.organisation_id,
       ...(query.platform && { platform: query.platform }),
-      ...(query.is_archived !== undefined && { is_archived: query.is_archived }),
+      ...(query.is_archived !== undefined && {
+        is_archived: query.is_archived,
+      }),
     };
 
     const { skip, take } = paginate(query.page, query.limit);
@@ -179,8 +179,14 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
     return { ...project, post_status_counts };
   }
 
-  private async assertManage(userId: string, project: { organisation_id: string }) {
-    const context = await this.ownershipService.resolveContext(userId, project.organisation_id);
+  private async assertManage(
+    userId: string,
+    project: { organisation_id: string },
+  ) {
+    const context = await this.ownershipService.resolveContext(
+      userId,
+      project.organisation_id,
+    );
     this.ownershipService.assertRole(context, MANAGE_ROLES);
   }
 
@@ -188,17 +194,13 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
     const project = await this.findOwned(userId, id);
     await this.assertManage(userId, project);
 
-    const platform = dto.platform ?? project.platform;
     const updated = await this.prisma.project.update({
       where: { id },
       data: {
         title: dto.title,
         description: dto.description,
-        platform: dto.platform,
-        channels:
-          dto.platform !== undefined || dto.channels !== undefined
-            ? this.resolveChannels(platform, dto.channels ?? (platform === project.platform ? project.channels : undefined))
-            : undefined,
+        platform: dto.channels?.length ? dto.channels[0] : undefined,
+        channels: dto.channels,
         pillars: dto.pillars,
         ideas: dto.ideas,
         instructions: dto.instructions,
@@ -250,7 +252,11 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
     return { message: 'Project deleted successfully' };
   }
 
-  async attachStyleProfile(userId: string, id: string, dto: AttachStyleProfileDto) {
+  async attachStyleProfile(
+    userId: string,
+    id: string,
+    dto: AttachStyleProfileDto,
+  ) {
     const project = await this.findOwned(userId, id);
     await this.assertManage(userId, project);
 
@@ -275,7 +281,9 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
       },
     });
     if (existing) {
-      throw new ConflictException('This style profile is already attached to the project');
+      throw new ConflictException(
+        'This style profile is already attached to the project',
+      );
     }
 
     const link = await this.prisma.projectStyleProfile.create({
@@ -301,11 +309,17 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
 
     const link = await this.prisma.projectStyleProfile.findUnique({
       where: {
-        project_id_style_profile_id: { project_id: id, style_profile_id: styleProfileId },
+        project_id_style_profile_id: {
+          project_id: id,
+          style_profile_id: styleProfileId,
+        },
       },
       include: { style_profile: true },
     });
-    if (!link) throw new NotFoundException('This style profile is not attached to the project');
+    if (!link)
+      throw new NotFoundException(
+        'This style profile is not attached to the project',
+      );
 
     await this.prisma.projectStyleProfile.delete({ where: { id: link.id } });
 
@@ -339,11 +353,16 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
 
     const existing = await this.prisma.projectRssFeed.findUnique({
       where: {
-        project_id_rss_feed_id: { project_id: id, rss_feed_id: dto.rss_feed_id },
+        project_id_rss_feed_id: {
+          project_id: id,
+          rss_feed_id: dto.rss_feed_id,
+        },
       },
     });
     if (existing) {
-      throw new ConflictException('This RSS feed is already attached to the project');
+      throw new ConflictException(
+        'This RSS feed is already attached to the project',
+      );
     }
 
     const link = await this.prisma.projectRssFeed.create({
@@ -368,10 +387,15 @@ Additional directions from the user: ${dto.ai_directions ?? 'n/a'}`;
     await this.assertManage(userId, project);
 
     const link = await this.prisma.projectRssFeed.findUnique({
-      where: { project_id_rss_feed_id: { project_id: id, rss_feed_id: rssFeedId } },
+      where: {
+        project_id_rss_feed_id: { project_id: id, rss_feed_id: rssFeedId },
+      },
       include: { rss_feed: true },
     });
-    if (!link) throw new NotFoundException('This RSS feed is not attached to the project');
+    if (!link)
+      throw new NotFoundException(
+        'This RSS feed is not attached to the project',
+      );
 
     await this.prisma.projectRssFeed.delete({ where: { id: link.id } });
 

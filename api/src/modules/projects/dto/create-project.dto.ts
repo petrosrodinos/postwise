@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ArrayMinSize, IsArray, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { PostType, SocialChannel } from 'generated/prisma';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { PostType } from 'generated/prisma';
 
 export class CreateProjectDto {
   @ApiProperty({ description: 'Project title', example: 'Q1 Product Launch' })
@@ -12,36 +19,43 @@ export class CreateProjectDto {
   @IsString()
   description?: string;
 
-  @ApiProperty({ enum: PostType, example: PostType.LINKEDIN })
-  @IsEnum(PostType)
-  platform: PostType;
-
   @ApiProperty({
-    enum: SocialChannel,
+    enum: PostType,
     isArray: true,
-    required: false,
+    example: [PostType.LINKEDIN, PostType.TWITTER],
     description:
-      'Target social channels to generate/publish for (ignored for BLOG projects). Defaults to [platform] when omitted.',
+      'Content channels this project generates for — any mix of LINKEDIN/TWITTER/BLOG. One AI batch fans an idea out across all of them.',
   })
-  @IsOptional()
   @IsArray()
   @ArrayMinSize(1)
-  @IsEnum(SocialChannel, { each: true })
-  channels?: SocialChannel[];
+  @IsEnum(PostType, { each: true })
+  channels: PostType[];
 
-  @ApiProperty({ type: [String], required: false, description: 'Content pillars/themes' })
+  @ApiProperty({
+    type: [String],
+    required: false,
+    description: 'Content pillars/themes',
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   pillars?: string[];
 
-  @ApiProperty({ type: [String], required: false, description: 'Freeform content ideas' })
+  @ApiProperty({
+    type: [String],
+    required: false,
+    description: 'Freeform content ideas',
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   ideas?: string[];
 
-  @ApiProperty({ type: [String], required: false, description: 'Instructions the AI should follow' })
+  @ApiProperty({
+    type: [String],
+    required: false,
+    description: 'Instructions the AI should follow',
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })

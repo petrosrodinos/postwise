@@ -33,11 +33,21 @@ export default function EditProjectPage() {
 
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      channels: [],
+      style_profile_ids: [],
+      rss_feed_ids: [],
+      pillars: [],
+      ideas: [],
+      instructions: [],
+      ai_directions: "",
+    },
     values: project
       ? {
           title: project.title,
           description: project.description ?? "",
-          platform: project.platform,
           channels: project.channels ?? [],
           style_profile_ids: project.style_profiles?.map((link) => link.style_profile_id) ?? [],
           rss_feed_ids: project.rss_feeds?.map((link) => link.rss_feed_id) ?? [],
@@ -125,7 +135,6 @@ export default function EditProjectPage() {
         dto: {
           title: data.title,
           description: data.description || undefined,
-          platform: data.platform,
           channels: data.channels,
           pillars: data.pillars,
           ideas: data.ideas,

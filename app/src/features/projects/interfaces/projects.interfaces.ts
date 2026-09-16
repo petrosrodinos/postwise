@@ -1,7 +1,6 @@
 import type { PostStatus, PostType } from "@/features/posts/interfaces/posts.interfaces";
 import type { StyleProfile } from "@/features/style-profiles/interfaces/style-profiles.interfaces";
 import type { RssFeed } from "@/features/rss-feeds/interfaces/rss-feeds.interfaces";
-import type { SocialChannel } from "@/features/social-channel-connections/interfaces/social-channel-connections.interfaces";
 
 export interface ProjectStyleProfileLink {
   id: string;
@@ -25,7 +24,7 @@ export interface Project {
   title: string;
   description?: string | null;
   platform: PostType;
-  channels: SocialChannel[];
+  channels: PostType[];
   pillars: string[];
   ideas: string[];
   instructions: string[];
@@ -41,8 +40,7 @@ export interface Project {
 export interface CreateProjectDto {
   title: string;
   description?: string;
-  platform: PostType;
-  channels?: SocialChannel[];
+  channels: PostType[];
   pillars?: string[];
   ideas?: string[];
   instructions?: string[];

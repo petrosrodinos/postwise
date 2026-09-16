@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PostType, SocialChannel } from 'generated/prisma';
+import { PostType } from 'generated/prisma';
 
 export class ProjectEntity {
   @ApiProperty()
@@ -17,8 +17,8 @@ export class ProjectEntity {
   @ApiProperty({ enum: PostType })
   platform: PostType;
 
-  @ApiProperty({ enum: SocialChannel, isArray: true })
-  channels: SocialChannel[];
+  @ApiProperty({ enum: PostType, isArray: true })
+  channels: PostType[];
 
   @ApiProperty({ type: [String] })
   pillars: string[];
@@ -43,7 +43,8 @@ export class ProjectEntity {
 
   @ApiProperty({
     required: false,
-    description: 'Count of posts by status, keyed by PostStatus (list/detail responses only)',
+    description:
+      'Count of posts by status, keyed by PostStatus (list/detail responses only)',
   })
   post_status_counts?: Record<string, number>;
 }

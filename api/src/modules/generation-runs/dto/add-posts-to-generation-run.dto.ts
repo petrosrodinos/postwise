@@ -1,16 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsBoolean, IsIn, IsInt, IsOptional, Max, Min } from 'class-validator';
 import { GENERATION_LANGUAGE_CODES } from '../constants/languages.constant';
 
 export class AddPostsToGenerationRunDto {
-  @ApiProperty({
-    required: false,
-    description: 'Style profile override; defaults to the run\'s existing style profile',
-  })
-  @IsOptional()
-  @IsString()
-  style_profile_id?: string;
-
   @ApiProperty({ required: false, minimum: 1, maximum: 10, default: 3 })
   @IsOptional()
   @IsInt()
@@ -27,7 +19,11 @@ export class AddPostsToGenerationRunDto {
   @IsIn(GENERATION_LANGUAGE_CODES)
   language?: string;
 
-  @ApiProperty({ required: false, default: false, description: 'Generate AI cover image candidates for each post' })
+  @ApiProperty({
+    required: false,
+    default: false,
+    description: 'Generate AI cover image candidates for each post',
+  })
   @IsOptional()
   @IsBoolean()
   generate_images?: boolean;

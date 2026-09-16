@@ -10,13 +10,9 @@ import { LanguageFormOptions } from "@/config/constants/dropdowns/generation-run
 import { PostTypes } from "@/features/posts/interfaces/posts.interfaces";
 import type { Project } from "@/features/projects/interfaces/projects.interfaces";
 
-const NONE_VALUE = "__none__";
-
 interface GenerationContextCardProps {
   project: Project;
   isExistingRun: boolean;
-  styleProfileId: string;
-  onStyleProfileChange: (value: string) => void;
   postsRequested: number;
   onPostsRequestedChange: (value: number) => void;
   language: string;
@@ -32,8 +28,6 @@ interface GenerationContextCardProps {
 export function GenerationContextCard({
   project,
   isExistingRun,
-  styleProfileId,
-  onStyleProfileChange,
   postsRequested,
   onPostsRequestedChange,
   language,
@@ -46,8 +40,8 @@ export function GenerationContextCard({
   isGenerating,
 }: GenerationContextCardProps) {
   const styleProfiles = project.style_profiles ?? [];
-  const isBlog = project.platform === PostTypes.BLOG;
-  const channels = isBlog ? [] : project.channels?.length ? project.channels : [project.platform];
+  const channels = project.channels.length ? project.channels : [project.platform];
+  const hasBlogChannel = channels.includes(PostTypes.BLOG);
 
   return (
     <div className="sticky top-20 flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -64,39 +58,20 @@ export function GenerationContextCard({
         </div>
       </div>
 
-      {isBlog ? (
-        <div>
-          <Label className="mb-1.5 block text-xs font-semibold text-foreground">Style profile</Label>
-          <Select value={styleProfileId || NONE_VALUE} onValueChange={(value) => onStyleProfileChange(value === NONE_VALUE ? "" : value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="No style profile" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={NONE_VALUE}>No style profile</SelectItem>
-              {styleProfiles.map((link) => (
-                <SelectItem key={link.style_profile_id} value={link.style_profile_id}>
-                  {link.style_profile.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      <div>
+        <Label className="mb-1.5 block text-xs font-semibold text-foreground">Generating for</Label>
+        <div className="flex flex-col gap-1.5 rounded-lg border border-input bg-muted/50 p-2.5">
+          {channels.map((channel) => {
+            const matchedProfile = styleProfiles.find((link) => link.style_profile.platform === channel)?.style_profile;
+            return (
+              <div key={channel} className="flex items-center justify-between gap-2 text-xs">
+                <PlatformChip platform={channel} label={PLATFORM_META[channel].label} />
+                <span className="truncate text-muted-foreground">{matchedProfile ? matchedProfile.name : "No style profile"}</span>
+              </div>
+            );
+          })}
         </div>
-      ) : (
-        <div>
-          <Label className="mb-1.5 block text-xs font-semibold text-foreground">Generating for</Label>
-          <div className="flex flex-col gap-1.5 rounded-lg border border-input bg-muted/50 p-2.5">
-            {channels.map((channel) => {
-              const matchedProfile = styleProfiles.find((link) => link.style_profile.platform === channel)?.style_profile;
-              return (
-                <div key={channel} className="flex items-center justify-between gap-2 text-xs">
-                  <PlatformChip platform={channel} label={PLATFORM_META[channel].label} />
-                  <span className="truncate text-muted-foreground">{matchedProfile ? matchedProfile.name : "No style profile"}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      </div>
 
       <div>
         <Label className="mb-1.5 block text-xs font-semibold text-foreground">{isExistingRun ? "Posts to add" : "Number of posts"}</Label>
@@ -125,7 +100,7 @@ export function GenerationContextCard({
         </Select>
       </div>
 
-      {isBlog && (
+      {hasBlogChannel && (
         <div className="flex flex-col gap-3 rounded-lg border border-input p-3">
           <div className="flex items-center gap-2">
             <Checkbox

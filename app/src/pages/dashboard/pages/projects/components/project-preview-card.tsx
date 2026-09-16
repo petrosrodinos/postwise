@@ -2,13 +2,11 @@ import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PLATFORM_META } from "@/components/ui/platform-picker";
-import { PostTypes, type PostType } from "@/features/posts/interfaces/posts.interfaces";
-import type { SocialChannel } from "@/features/social-channel-connections/interfaces/social-channel-connections.interfaces";
+import type { PostType } from "@/features/posts/interfaces/posts.interfaces";
 
 interface ProjectPreviewCardProps {
   title: string;
-  platform?: PostType;
-  channels?: SocialChannel[];
+  channels: PostType[];
   pillars: string[];
   ideasCount: number;
   instructionsCount: number;
@@ -20,7 +18,6 @@ interface ProjectPreviewCardProps {
 
 export function ProjectPreviewCard({
   title,
-  platform,
   channels,
   pillars,
   ideasCount,
@@ -30,10 +27,7 @@ export function ProjectPreviewCard({
   isSubmitting,
   onCancel,
 }: ProjectPreviewCardProps) {
-  const meta = platform ? PLATFORM_META[platform] : undefined;
-  const Icon = meta?.icon;
-  const isSocial = platform && platform !== PostTypes.BLOG;
-  const channelMetas = isSocial && channels?.length ? channels.map((channel) => PLATFORM_META[channel]) : [];
+  const channelMetas = channels.map((channel) => PLATFORM_META[channel]);
 
   return (
     <div className="sticky top-20 flex flex-col gap-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -56,14 +50,8 @@ export function ProjectPreviewCard({
         </div>
       ) : (
         <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2.5 text-sm">
-          {Icon ? (
-            <span className={`inline-flex h-7 w-7 flex-none items-center justify-center rounded-full ${meta!.accentClassName}`}>
-              <Icon className="h-3.5 w-3.5" />
-            </span>
-          ) : (
-            <span className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-muted text-muted-foreground">?</span>
-          )}
-          <span className="font-medium">{isSocial ? "Choose at least one channel" : (meta?.label ?? "No platform chosen yet")}</span>
+          <span className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-muted text-muted-foreground">?</span>
+          <span className="font-medium">Choose at least one channel</span>
         </div>
       )}
 
