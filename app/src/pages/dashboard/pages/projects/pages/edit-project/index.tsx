@@ -43,6 +43,7 @@ export default function EditProjectPage() {
       ideas: [],
       instructions: [],
       ai_directions: "",
+      humanize_by_default: false,
     },
     values: project
       ? {
@@ -55,6 +56,7 @@ export default function EditProjectPage() {
           ideas: project.ideas,
           instructions: project.instructions,
           ai_directions: project.ai_directions ?? "",
+          humanize_by_default: project.humanize_by_default,
         }
       : undefined,
   });
@@ -140,6 +142,7 @@ export default function EditProjectPage() {
           ideas: data.ideas,
           instructions: data.instructions,
           ai_directions: data.ai_directions || undefined,
+          humanize_by_default: data.humanize_by_default,
         },
       },
       {

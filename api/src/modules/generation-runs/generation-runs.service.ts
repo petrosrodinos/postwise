@@ -13,6 +13,7 @@ import { RssFeedsService } from '@/modules/rss-feeds/rss-feeds.service';
 import { ProjectsService } from '@/modules/projects/projects.service';
 import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
+import { HUMANIZE_INSTRUCTIONS } from '@/shared/services/ai-content-assist/ai-content-assist.service';
 import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
 import {
   ActivityLogAction,
@@ -78,6 +79,7 @@ export class GenerationRunsService {
       | 'ideas'
       | 'instructions'
       | 'ai_directions'
+      | 'humanize_by_default'
     >,
     channels: PostType[],
     styleProfiles: Partial<Record<PostType, StyleProfile | null>>,
@@ -108,13 +110,14 @@ Content pillars: ${project.pillars.join(', ') || 'n/a'}
 Ideas to draw from: ${project.ideas.join('; ') || 'n/a'}
 Instructions the AI must follow: ${project.instructions.join('; ') || 'n/a'}
 Additional directions from the user: ${project.ai_directions ?? 'n/a'}
-${voiceGuidance}`;
+${voiceGuidance}${project.humanize_by_default ? `\n${HUMANIZE_INSTRUCTIONS}` : ''}`;
   }
 
   private buildRssPrompt(
     item: Pick<RssFeedItem, 'title' | 'link' | 'summary' | 'content'>,
     styleProfile: StyleProfile | null,
     language: string,
+    humanize: boolean,
   ) {
     const languageName =
       GENERATION_LANGUAGES[language] ??
@@ -130,7 +133,7 @@ ${
   styleProfile
     ? `Voice to emulate: ${styleProfile.tone_description ?? 'n/a'}. Dominant hook style: ${styleProfile.dominant_hook ?? 'n/a'}. Signature vocabulary: ${styleProfile.vocabulary.join(', ') || 'n/a'}.`
     : 'No specific voice profile provided — use a clear, engaging, professional tone.'
-}`;
+}${humanize ? `\n${HUMANIZE_INSTRUCTIONS}` : ''}`;
   }
 
   private async generateMultiChannelDrafts(
@@ -143,6 +146,7 @@ ${
       | 'ideas'
       | 'instructions'
       | 'ai_directions'
+      | 'humanize_by_default'
     >,
     channels: PostType[],
     styleProfiles: Partial<Record<PostType, StyleProfile | null>>,
@@ -182,8 +186,9 @@ ${
     language: string,
     organisationId: string,
     authorUserId: string | null,
+    humanize: boolean,
   ): Promise<Draft> {
-    const prompt = this.buildRssPrompt(item, styleProfile, language);
+    const prompt = this.buildRssPrompt(item, styleProfile, language, humanize);
 
     const { response } = await this.aiService.generateText({
       prompt,
@@ -423,6 +428,7 @@ ${
           language,
           project.organisation_id,
           userId,
+          project.humanize_by_default,
         ),
       ),
     );
@@ -595,6 +601,7 @@ ${
           language,
           project.organisation_id,
           null,
+          project.humanize_by_default,
         ),
       ),
     );

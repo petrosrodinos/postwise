@@ -232,6 +232,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   ideas: 'ideas',
   instructions: 'instructions',
   ai_directions: 'ai_directions',
+  humanize_by_default: 'humanize_by_default',
   is_archived: 'is_archived',
   created_at: 'created_at',
   updated_at: 'updated_at'

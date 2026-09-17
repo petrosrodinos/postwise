@@ -4,6 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TagInput } from "@/components/ui/tag-input";
 import { ChipListEditor } from "@/components/ui/chip-list-editor";
@@ -242,6 +243,23 @@ export function ProjectForm({ form, onSubmit, submitLabel, isSubmitting, onCance
                       />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="humanize_by_default"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between gap-4 rounded-lg border border-input p-3 space-y-0">
+                    <div>
+                      <FormLabel>Humanize by default</FormLabel>
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        Automatically remove common AI writing tells from every post this project generates, including automation runs.
+                      </p>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
                   </FormItem>
                 )}
               />

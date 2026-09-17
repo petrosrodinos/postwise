@@ -400,6 +400,9 @@ model Project {
   ideas           String[]
   instructions    String[]
   ai_directions   String?    @db.Text
+  // When true, generation (manual and automation) applies the same
+  // "remove AI writing tells" instructions as the HUMANIZE revise preset.
+  humanize_by_default Boolean @default(false)
   is_archived     Boolean    @default(false)
   created_at      DateTime   @default(now())
   updated_at      DateTime   @updatedAt

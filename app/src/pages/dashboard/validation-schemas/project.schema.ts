@@ -13,6 +13,7 @@ export const createProjectSchema = z.object({
   ideas: z.array(z.string()),
   instructions: z.array(z.string()),
   ai_directions: z.string().optional(),
+  humanize_by_default: z.boolean(),
 });
 
 export type CreateProjectFormData = z.infer<typeof createProjectSchema>;

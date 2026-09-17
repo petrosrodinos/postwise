@@ -29,6 +29,7 @@ export interface Project {
   ideas: string[];
   instructions: string[];
   ai_directions?: string | null;
+  humanize_by_default: boolean;
   is_archived: boolean;
   created_at: string;
   updated_at: string;
@@ -45,6 +46,7 @@ export interface CreateProjectDto {
   ideas?: string[];
   instructions?: string[];
   ai_directions?: string;
+  humanize_by_default?: boolean;
   organisation_id: string;
 }
 

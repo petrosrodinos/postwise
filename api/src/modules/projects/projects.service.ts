@@ -103,6 +103,7 @@ Existing instructions (build on these, avoid exact duplicates): ${dto.instructio
         ideas: dto.ideas ?? [],
         instructions: dto.instructions ?? [],
         ai_directions: dto.ai_directions,
+        humanize_by_default: dto.humanize_by_default ?? false,
       },
     });
 
@@ -227,6 +228,7 @@ Existing instructions (build on these, avoid exact duplicates): ${dto.instructio
         ideas: dto.ideas,
         instructions: dto.instructions,
         ai_directions: dto.ai_directions,
+        humanize_by_default: dto.humanize_by_default,
         is_archived: dto.is_archived,
       },
     });
@@ -248,6 +250,7 @@ Existing instructions (build on these, avoid exact duplicates): ${dto.instructio
           'ideas',
           'instructions',
           'ai_directions',
+          'humanize_by_default',
           'is_archived',
         ]),
       },

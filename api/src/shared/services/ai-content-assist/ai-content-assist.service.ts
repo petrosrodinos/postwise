@@ -23,6 +23,21 @@ export const RepurposeDraftSchema = z.object({
 });
 export type RepurposeDraft = z.infer<typeof RepurposeDraftSchema>;
 
+// Also used to steer initial generation (manual and automated) toward the
+// same "sounds human" voice when a project has humanize_by_default enabled —
+// see GenerationRunsService.
+export const HUMANIZE_INSTRUCTIONS =
+  'Rewrite it to remove common AI writing tells. Replace AI-tell vocabulary with plain words: ' +
+  'delve, leverage, robust, seamless, testament to, underscores, meticulous, game-changer, ' +
+  'cutting-edge, comprehensive, pivotal, and metaphors like landscape/realm/tapestry. Do not ' +
+  'stack words like harness, elevate, unleash, streamline, empower, crucial or myriad together ' +
+  'in one paragraph. Cut hedging and hollow intensifiers ("it\'s important to note", "to be ' +
+  'honest", "genuinely", "truly", "worth checking out") and the "it\'s not X — it\'s Y" reveal ' +
+  'pattern. Keep em dashes to at most one per 1,000 words. Vary sentence and paragraph length ' +
+  'instead of a uniform rhythm, avoid compulsive rule-of-three lists, and prefer concrete ' +
+  'specifics (numbers, names, examples) over vague superlatives. Use contractions and a ' +
+  'distinct, direct voice. Keep the meaning, facts and key points unchanged.';
+
 const REVISE_PRESET_INSTRUCTIONS: Record<RevisePreset, string> = {
   [RevisePreset.FRIENDLIER]:
     'Rewrite it in a warmer, more approachable and friendly tone.',
@@ -39,17 +54,7 @@ const REVISE_PRESET_INSTRUCTIONS: Record<RevisePreset, string> = {
     'Make the opening/hook more attention-grabbing and punchy, and tighten the rest.',
   [RevisePreset.FIX_GRAMMAR]:
     'Fix any grammar, spelling and clarity issues without changing the meaning or tone.',
-  [RevisePreset.HUMANIZE]:
-    'Rewrite it to remove common AI writing tells. Replace AI-tell vocabulary with plain words: ' +
-    'delve, leverage, robust, seamless, testament to, underscores, meticulous, game-changer, ' +
-    'cutting-edge, comprehensive, pivotal, and metaphors like landscape/realm/tapestry. Do not ' +
-    'stack words like harness, elevate, unleash, streamline, empower, crucial or myriad together ' +
-    'in one paragraph. Cut hedging and hollow intensifiers ("it\'s important to note", "to be ' +
-    'honest", "genuinely", "truly", "worth checking out") and the "it\'s not X — it\'s Y" reveal ' +
-    'pattern. Keep em dashes to at most one per 1,000 words. Vary sentence and paragraph length ' +
-    'instead of a uniform rhythm, avoid compulsive rule-of-three lists, and prefer concrete ' +
-    'specifics (numbers, names, examples) over vague superlatives. Use contractions and a ' +
-    'distinct, direct voice. Keep the meaning, facts and key points unchanged.',
+  [RevisePreset.HUMANIZE]: HUMANIZE_INSTRUCTIONS,
 };
 
 // `type`/`sourceType`/`targetType` are plain strings rather than the Prisma

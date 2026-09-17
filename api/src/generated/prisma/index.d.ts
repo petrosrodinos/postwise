@@ -13307,6 +13307,7 @@ export namespace Prisma {
     description: string | null
     platform: $Enums.PostType | null
     ai_directions: string | null
+    humanize_by_default: boolean | null
     is_archived: boolean | null
     created_at: Date | null
     updated_at: Date | null
@@ -13319,6 +13320,7 @@ export namespace Prisma {
     description: string | null
     platform: $Enums.PostType | null
     ai_directions: string | null
+    humanize_by_default: boolean | null
     is_archived: boolean | null
     created_at: Date | null
     updated_at: Date | null
@@ -13335,6 +13337,7 @@ export namespace Prisma {
     ideas: number
     instructions: number
     ai_directions: number
+    humanize_by_default: number
     is_archived: number
     created_at: number
     updated_at: number
@@ -13349,6 +13352,7 @@ export namespace Prisma {
     description?: true
     platform?: true
     ai_directions?: true
+    humanize_by_default?: true
     is_archived?: true
     created_at?: true
     updated_at?: true
@@ -13361,6 +13365,7 @@ export namespace Prisma {
     description?: true
     platform?: true
     ai_directions?: true
+    humanize_by_default?: true
     is_archived?: true
     created_at?: true
     updated_at?: true
@@ -13377,6 +13382,7 @@ export namespace Prisma {
     ideas?: true
     instructions?: true
     ai_directions?: true
+    humanize_by_default?: true
     is_archived?: true
     created_at?: true
     updated_at?: true
@@ -13466,6 +13472,7 @@ export namespace Prisma {
     ideas: string[]
     instructions: string[]
     ai_directions: string | null
+    humanize_by_default: boolean
     is_archived: boolean
     created_at: Date
     updated_at: Date
@@ -13499,6 +13506,7 @@ export namespace Prisma {
     ideas?: boolean
     instructions?: boolean
     ai_directions?: boolean
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -13522,6 +13530,7 @@ export namespace Prisma {
     ideas?: boolean
     instructions?: boolean
     ai_directions?: boolean
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -13539,6 +13548,7 @@ export namespace Prisma {
     ideas?: boolean
     instructions?: boolean
     ai_directions?: boolean
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -13556,12 +13566,13 @@ export namespace Prisma {
     ideas?: boolean
     instructions?: boolean
     ai_directions?: boolean
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "title" | "description" | "platform" | "channels" | "pillars" | "ideas" | "instructions" | "ai_directions" | "is_archived" | "created_at" | "updated_at", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "title" | "description" | "platform" | "channels" | "pillars" | "ideas" | "instructions" | "ai_directions" | "humanize_by_default" | "is_archived" | "created_at" | "updated_at", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organisation?: boolean | OrganisationDefaultArgs<ExtArgs>
     style_profiles?: boolean | Project$style_profilesArgs<ExtArgs>
@@ -13599,6 +13610,7 @@ export namespace Prisma {
       ideas: string[]
       instructions: string[]
       ai_directions: string | null
+      humanize_by_default: boolean
       is_archived: boolean
       created_at: Date
       updated_at: Date
@@ -14041,6 +14053,7 @@ export namespace Prisma {
     readonly ideas: FieldRef<"Project", 'String[]'>
     readonly instructions: FieldRef<"Project", 'String[]'>
     readonly ai_directions: FieldRef<"Project", 'String'>
+    readonly humanize_by_default: FieldRef<"Project", 'Boolean'>
     readonly is_archived: FieldRef<"Project", 'Boolean'>
     readonly created_at: FieldRef<"Project", 'DateTime'>
     readonly updated_at: FieldRef<"Project", 'DateTime'>
@@ -29369,6 +29382,7 @@ export namespace Prisma {
     ideas: 'ideas',
     instructions: 'instructions',
     ai_directions: 'ai_directions',
+    humanize_by_default: 'humanize_by_default',
     is_archived: 'is_archived',
     created_at: 'created_at',
     updated_at: 'updated_at'
@@ -30638,6 +30652,7 @@ export namespace Prisma {
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
     ai_directions?: StringNullableFilter<"Project"> | string | null
+    humanize_by_default?: BoolFilter<"Project"> | boolean
     is_archived?: BoolFilter<"Project"> | boolean
     created_at?: DateTimeFilter<"Project"> | Date | string
     updated_at?: DateTimeFilter<"Project"> | Date | string
@@ -30660,6 +30675,7 @@ export namespace Prisma {
     ideas?: SortOrder
     instructions?: SortOrder
     ai_directions?: SortOrderInput | SortOrder
+    humanize_by_default?: SortOrder
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -30685,6 +30701,7 @@ export namespace Prisma {
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
     ai_directions?: StringNullableFilter<"Project"> | string | null
+    humanize_by_default?: BoolFilter<"Project"> | boolean
     is_archived?: BoolFilter<"Project"> | boolean
     created_at?: DateTimeFilter<"Project"> | Date | string
     updated_at?: DateTimeFilter<"Project"> | Date | string
@@ -30707,6 +30724,7 @@ export namespace Prisma {
     ideas?: SortOrder
     instructions?: SortOrder
     ai_directions?: SortOrderInput | SortOrder
+    humanize_by_default?: SortOrder
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -30729,6 +30747,7 @@ export namespace Prisma {
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
     ai_directions?: StringNullableWithAggregatesFilter<"Project"> | string | null
+    humanize_by_default?: BoolWithAggregatesFilter<"Project"> | boolean
     is_archived?: BoolWithAggregatesFilter<"Project"> | boolean
     created_at?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Project"> | Date | string
@@ -32640,6 +32659,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -32662,6 +32682,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -32682,6 +32703,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32704,6 +32726,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32725,6 +32748,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -32740,6 +32764,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32756,6 +32781,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34767,6 +34793,7 @@ export namespace Prisma {
     ideas?: SortOrder
     instructions?: SortOrder
     ai_directions?: SortOrder
+    humanize_by_default?: SortOrder
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -34779,6 +34806,7 @@ export namespace Prisma {
     description?: SortOrder
     platform?: SortOrder
     ai_directions?: SortOrder
+    humanize_by_default?: SortOrder
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -34791,6 +34819,7 @@ export namespace Prisma {
     description?: SortOrder
     platform?: SortOrder
     ai_directions?: SortOrder
+    humanize_by_default?: SortOrder
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -39809,6 +39838,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -39829,6 +39859,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -40181,6 +40212,7 @@ export namespace Prisma {
     ideas?: StringNullableListFilter<"Project">
     instructions?: StringNullableListFilter<"Project">
     ai_directions?: StringNullableFilter<"Project"> | string | null
+    humanize_by_default?: BoolFilter<"Project"> | boolean
     is_archived?: BoolFilter<"Project"> | boolean
     created_at?: DateTimeFilter<"Project"> | Date | string
     updated_at?: DateTimeFilter<"Project"> | Date | string
@@ -41709,6 +41741,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -41730,6 +41763,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -41796,6 +41830,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41817,6 +41852,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42031,6 +42067,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -42052,6 +42089,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -42140,6 +42178,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42161,6 +42200,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42239,6 +42279,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -42260,6 +42301,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -42547,6 +42589,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42568,6 +42611,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42918,6 +42962,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -42939,6 +42984,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -43168,6 +43214,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43189,6 +43236,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43412,6 +43460,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -43433,6 +43482,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -44023,6 +44073,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44044,6 +44095,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -46040,6 +46092,7 @@ export namespace Prisma {
     ideas?: ProjectCreateideasInput | string[]
     instructions?: ProjectCreateinstructionsInput | string[]
     ai_directions?: string | null
+    humanize_by_default?: boolean
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -46378,6 +46431,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -46398,6 +46452,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -46418,6 +46473,7 @@ export namespace Prisma {
     ideas?: ProjectUpdateideasInput | string[]
     instructions?: ProjectUpdateinstructionsInput | string[]
     ai_directions?: NullableStringFieldUpdateOperationsInput | string | null
+    humanize_by_default?: BoolFieldUpdateOperationsInput | boolean
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string

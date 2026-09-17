@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   ArrayMinSize,
   IsArray,
+  IsBoolean,
   IsEnum,
   IsNotEmpty,
   IsOptional,
@@ -68,6 +69,16 @@ export class CreateProjectDto {
   @IsOptional()
   @IsString()
   ai_directions?: string;
+
+  @ApiProperty({
+    required: false,
+    default: false,
+    description:
+      "Apply the humanizer (remove common AI writing tells) to this project's generations by default, including automation runs",
+  })
+  @IsOptional()
+  @IsBoolean()
+  humanize_by_default?: boolean;
 
   @ApiProperty({ description: 'Organisation workspace that owns this project' })
   @IsNotEmpty()

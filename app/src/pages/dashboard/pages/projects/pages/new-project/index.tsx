@@ -31,6 +31,7 @@ export default function NewProjectPage() {
       ideas: [],
       instructions: [],
       ai_directions: "",
+      humanize_by_default: false,
     },
   });
 
@@ -44,6 +45,7 @@ export default function NewProjectPage() {
         ideas: data.ideas,
         instructions: data.instructions,
         ai_directions: data.ai_directions || undefined,
+        humanize_by_default: data.humanize_by_default,
       },
       {
         onSuccess: (project) => {
