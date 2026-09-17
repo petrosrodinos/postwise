@@ -16,11 +16,11 @@ const schema = z.object({
   name: z.string().min(1, "Name is required"),
   platform: z.enum([PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG]),
   source_url: z.string().url("Enter a valid URL").optional().or(z.literal("")),
-  tone_score: z.coerce.number().min(0).max(100),
-  structure_score: z.coerce.number().min(0).max(100),
-  hooks_score: z.coerce.number().min(0).max(100),
-  vocabulary_score: z.coerce.number().min(0).max(100),
-  rhythm_score: z.coerce.number().min(0).max(100),
+  tone_score: z.number().min(0).max(100),
+  structure_score: z.number().min(0).max(100),
+  hooks_score: z.number().min(0).max(100),
+  vocabulary_score: z.number().min(0).max(100),
+  rhythm_score: z.number().min(0).max(100),
   tone_description: z.string(),
   dominant_hook: z.string(),
   vocabulary: z.array(z.string()),
@@ -151,7 +151,13 @@ export function EditStyleProfileForm({ profile, onCancel, onSaved }: EditStylePr
                 <FormItem>
                   <FormLabel>Tone</FormLabel>
                   <FormControl>
-                    <Input type="number" min={0} max={100} {...field} />
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -164,7 +170,13 @@ export function EditStyleProfileForm({ profile, onCancel, onSaved }: EditStylePr
                 <FormItem>
                   <FormLabel>Structure</FormLabel>
                   <FormControl>
-                    <Input type="number" min={0} max={100} {...field} />
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -177,7 +189,13 @@ export function EditStyleProfileForm({ profile, onCancel, onSaved }: EditStylePr
                 <FormItem>
                   <FormLabel>Hooks</FormLabel>
                   <FormControl>
-                    <Input type="number" min={0} max={100} {...field} />
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -190,7 +208,13 @@ export function EditStyleProfileForm({ profile, onCancel, onSaved }: EditStylePr
                 <FormItem>
                   <FormLabel>Vocabulary</FormLabel>
                   <FormControl>
-                    <Input type="number" min={0} max={100} {...field} />
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -203,7 +227,13 @@ export function EditStyleProfileForm({ profile, onCancel, onSaved }: EditStylePr
                 <FormItem>
                   <FormLabel>Rhythm</FormLabel>
                   <FormControl>
-                    <Input type="number" min={0} max={100} {...field} />
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
