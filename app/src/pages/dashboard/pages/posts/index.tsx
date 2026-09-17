@@ -13,9 +13,9 @@ import { usePosts } from "@/features/posts/hooks/use-posts";
 import { getPostSource } from "@/features/posts/utils/post-source.utils";
 import { Routes } from "@/routes/routes";
 import type { Post } from "@/features/posts/interfaces/posts.interfaces";
+import { PostEditorSheet } from "@/pages/dashboard/components/post-editor-sheet";
 import { PostsFilters, type PostsFilterState } from "./components/posts-filters";
 import { PostRowActions } from "./components/post-row-actions";
-import { PostPreviewDrawer } from "./components/post-preview-drawer";
 
 const DEFAULT_FILTERS: PostsFilterState = {
   search: "",
@@ -93,7 +93,7 @@ export default function PostsPage() {
 
   const { data: postsPage, isPending } = usePosts({
     page,
-    limit: 50,
+    limit: 20,
     search: filters.search || undefined,
     status: filters.status === "all" ? undefined : filters.status,
     type: filters.type === "all" ? undefined : filters.type,
@@ -225,7 +225,7 @@ export default function PostsPage() {
         </>
       )}
 
-      <PostPreviewDrawer post={selectedPost} onClose={() => setSelectedPost(null)} />
+      <PostEditorSheet post={selectedPost} open={!!selectedPost} onOpenChange={(open) => !open && setSelectedPost(null)} />
     </div>
   );
 }
@@ -262,7 +262,7 @@ function PostTableRow({ post, onSelect }: { post: Post; onSelect: (post: Post) =
       <TableCell>
         <PostStatusTag status={post.status} title={post.status === "FAILED" ? (post.failed_reason ?? undefined) : undefined} />
       </TableCell>
-      <TableCell className="text-sm text-muted-foreground">{format(new Date(post.updated_at), "MMM d, yyyy")}</TableCell>
+      <TableCell className="text-sm text-muted-foreground">{format(new Date(post.updated_at), "MMM d, yyyy 'at' h:mm a")}</TableCell>
       <TableCell onClick={(e) => e.stopPropagation()}>
         <PostRowActions post={post} onPreview={() => onSelect(post)} />
       </TableCell>
