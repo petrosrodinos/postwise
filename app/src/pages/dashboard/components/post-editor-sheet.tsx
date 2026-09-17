@@ -92,7 +92,7 @@ export function PostEditorSheet({ post, open, onOpenChange, styleProfileName }: 
           canonical_url: draft.canonical_url,
         }
       : { body: draft.body };
-    updatePost({ id: post.id, dto });
+    updatePost({ id: post!.id, dto });
   }
 
   function copyToClipboard(value: string, label: string) {
