@@ -317,15 +317,17 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
     });
 
     return posts
-      .filter((post) => post.text?.trim())
+      .filter((post) => post.postText?.trim())
       .map((post, index) => ({
-        id: post.id ?? post.url ?? `${profile.id}-${index}`,
-        url: post.url,
-        text: post.text!.trim(),
-        posted_at: post.createdAt,
+        id: post.postId ?? post.postUrl ?? `${profile.id}-${index}`,
+        url: post.postUrl,
+        text: post.postText!.trim(),
+        posted_at: post.timestamp
+          ? new Date(post.timestamp).toISOString()
+          : undefined,
         author_name: post.author?.name,
-        likes: post.engagement?.likeCount,
-        comments: post.engagement?.replyCount,
+        likes: post.favouriteCount,
+        comments: post.replyCount,
       }));
   }
 }

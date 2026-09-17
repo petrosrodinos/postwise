@@ -147,11 +147,11 @@
   --text-2: #c7cad3;
   --text-3: #8a8f9a;
 
-  --brass-soft: rgba(184, 134, 46, 0.22);
-  --teal-soft: rgba(46, 107, 94, 0.22);
-  --coral-soft: rgba(194, 93, 69, 0.22);
-  --violet-soft: rgba(91, 90, 140, 0.28);
-  --rust-soft: rgba(156, 59, 46, 0.28);
+  --brass-soft: #3d3325;
+  --teal-soft: #1e2d2f;
+  --coral-soft: #3f2a2a;
+  --violet-soft: #2c2d40;
+  --rust-soft: #3e2525;
 
   --background: var(--paper);
   --foreground: var(--text-1);

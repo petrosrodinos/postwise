@@ -5,41 +5,42 @@ export interface TwitterScraperInput {
 }
 
 export interface TwitterScrapedPostAuthor {
-  id?: string;
   name?: string;
-  userName?: string;
-  url?: string;
-  isVerified?: boolean;
+  screenName?: string;
+  followersCount?: number;
+  favouritesCount?: number;
+  friendsCount?: number;
+  description?: string;
   profileImageUrl?: string;
   [key: string]: unknown;
 }
 
-export interface TwitterScrapedPostEngagement {
-  likeCount?: number;
-  replyCount?: number;
-  retweetCount?: number;
-  quoteCount?: number;
-  viewCount?: number;
-  bookmarkCount?: number;
+export interface TwitterScrapedPostMedia {
+  id?: string;
+  type?: string;
+  mediaUrlHttps?: string;
   [key: string]: unknown;
 }
 
 /**
- * Shape inferred from the scraper_one/x-profile-posts-scraper dataset output, which Apify
- * does not formally document — treat unlisted fields via the index signature as best-effort.
+ * Shape of the scraper_one/x-profile-posts-scraper dataset output (verified against a
+ * live run), which Apify does not formally document — treat unlisted fields via the
+ * index signature as best-effort.
  */
 export interface TwitterScrapedPost {
-  id?: string;
-  url?: string;
-  type?: string;
-  text?: string;
-  createdAt?: string;
-  isPinned?: boolean;
-  isRetweet?: boolean;
-  isQuote?: boolean;
-  isReply?: boolean;
+  postId?: string;
+  postUrl?: string;
+  profileUrl?: string;
+  postText?: string;
+  timestamp?: number;
+  conversationId?: string;
+  media?: TwitterScrapedPostMedia[];
   author?: TwitterScrapedPostAuthor;
-  engagement?: TwitterScrapedPostEngagement;
+  replyCount?: number;
+  quoteCount?: number;
+  repostCount?: number;
+  favouriteCount?: number;
+  viewCount?: number;
   [key: string]: unknown;
 }
 
