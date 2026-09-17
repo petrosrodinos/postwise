@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import ConfirmationDialog from "@/components/ui/confirmation-dialog";
 import { Routes } from "@/routes/routes";
 import { useWorkspaceStore } from "@/stores/workspace";
-import { useDeleteOrganisation, useUpdateOrganisation } from "@/features/organisations/hooks/use-organisations";
+import { useDeleteOrganisation, useOrganisations, useUpdateOrganisation } from "@/features/organisations/hooks/use-organisations";
 import type { Organisation } from "@/features/organisations/interfaces/organisations.interfaces";
 import { organisationGeneralSchema, type OrganisationGeneralFormData } from "../validation-schemas/organisation.schema";
 
@@ -22,7 +22,10 @@ export function GeneralTab({ organisation }: GeneralTabProps) {
   const setActiveWorkspace = useWorkspaceStore((state) => state.setActiveWorkspace);
   const { mutate: updateOrganisation, isPending: isSaving } = useUpdateOrganisation();
   const { mutate: deleteOrganisation, isPending: isDeleting } = useDeleteOrganisation();
+  const { data: organisations } = useOrganisations();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const isOnlyOrganisation = (organisations?.length ?? 0) <= 1;
 
   const form = useForm<OrganisationGeneralFormData>({
     resolver: zodResolver(organisationGeneralSchema),
@@ -102,9 +105,11 @@ export function GeneralTab({ organisation }: GeneralTabProps) {
         </CardHeader>
         <CardContent className="flex items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            Permanently deletes {organisation.name}'s posts, brand assets, members and connected channels. This cannot be undone.
+            {isOnlyOrganisation
+              ? "This is your only organisation — create another one before you can delete this one."
+              : `Permanently deletes ${organisation.name}'s posts, brand assets, members and connected channels. This cannot be undone.`}
           </p>
-          <Button variant="destructive" size="sm" onClick={() => setIsDeleteOpen(true)}>
+          <Button variant="destructive" size="sm" disabled={isOnlyOrganisation} onClick={() => setIsDeleteOpen(true)}>
             Delete
           </Button>
         </CardContent>

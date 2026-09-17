@@ -181,6 +181,16 @@ export class OrganisationsService {
       throw new ForbiddenException('Only the owner can delete the organisation');
     }
 
+    const organisationCount = await this.prisma.organisationMember.count({
+      where: { user_id: userId },
+    });
+    if (organisationCount <= 1) {
+      throw new ConflictException({
+        message: 'You cannot delete your only organisation',
+        code: ErrorCodes.Organisations.ONLY_ORGANISATION,
+      });
+    }
+
     await this.prisma.organisation.delete({ where: { id: organisationId } });
 
     this.activityLogsService.log({
