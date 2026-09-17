@@ -5,7 +5,7 @@ export const createProjectSchema = z.object({
   title: z.string().min(1, "Project title is required"),
   description: z.string().optional(),
   channels: z
-    .array(z.enum([PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG]))
+    .array(z.enum([PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG, PostTypes.INSTAGRAM]))
     .min(1, "Choose at least one channel"),
   style_profile_ids: z.array(z.string()),
   rss_feed_ids: z.array(z.string()),

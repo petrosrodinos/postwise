@@ -194,12 +194,25 @@ export function PostEditorSheet({ post, open, onOpenChange, styleProfileName }: 
             {isBlog ? (
               <RichTextEditor value={draft.body} onChange={(html) => setDraft((d) => ({ ...d, body: html }))} className="flex-1" />
             ) : (
-              <Textarea
-                value={draft.body}
-                onChange={(e) => setDraft((d) => ({ ...d, body: e.target.value }))}
-                rows={20}
-                className="flex-1 text-sm leading-relaxed"
-              />
+              <div className="relative flex-1">
+                <Textarea
+                  value={draft.body}
+                  onChange={(e) => setDraft((d) => ({ ...d, body: e.target.value }))}
+                  rows={20}
+                  className="h-full text-sm leading-relaxed"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-1.5 top-1.5 h-7 w-7 text-muted-foreground"
+                  disabled={!draft.body.trim()}
+                  onClick={() => copyToClipboard(draft.body, "Post")}
+                  aria-label="Copy post"
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                </Button>
+              </div>
             )}
 
             {hasImagePicker && post.attachments && post.attachments.length > 0 && (

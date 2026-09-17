@@ -113,6 +113,11 @@ export type PostIntegration = $Result.DefaultSelection<Prisma.$PostIntegrationPa
  * 
  */
 export type ActivityLog = $Result.DefaultSelection<Prisma.$ActivityLogPayload>
+/**
+ * Model AiUsageEvent
+ * 
+ */
+export type AiUsageEvent = $Result.DefaultSelection<Prisma.$AiUsageEventPayload>
 
 /**
  * Enums
@@ -145,7 +150,8 @@ export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
 export const PostType: {
   TWITTER: 'TWITTER',
   LINKEDIN: 'LINKEDIN',
-  BLOG: 'BLOG'
+  BLOG: 'BLOG',
+  INSTAGRAM: 'INSTAGRAM'
 };
 
 export type PostType = (typeof PostType)[keyof typeof PostType]
@@ -298,6 +304,33 @@ export const ActivityLogEntityType: {
 
 export type ActivityLogEntityType = (typeof ActivityLogEntityType)[keyof typeof ActivityLogEntityType]
 
+
+export const AiUsageType: {
+  TEXT: 'TEXT',
+  IMAGE: 'IMAGE'
+};
+
+export type AiUsageType = (typeof AiUsageType)[keyof typeof AiUsageType]
+
+
+export const AiUsageFeature: {
+  GENERATION_MULTI_CHANNEL_DRAFT: 'GENERATION_MULTI_CHANNEL_DRAFT',
+  GENERATION_RSS_DRAFT: 'GENERATION_RSS_DRAFT',
+  GENERATION_COVER_IMAGE: 'GENERATION_COVER_IMAGE',
+  POST_REVISE: 'POST_REVISE',
+  POST_REPURPOSE: 'POST_REPURPOSE',
+  TOOLS_REVISE: 'TOOLS_REVISE',
+  TOOLS_REPURPOSE: 'TOOLS_REPURPOSE',
+  TOOLS_TITLE_VARIATIONS: 'TOOLS_TITLE_VARIATIONS',
+  TOOLS_META_TAGS: 'TOOLS_META_TAGS',
+  TOOLS_IMAGE: 'TOOLS_IMAGE',
+  STYLE_PROFILE_ANALYZE: 'STYLE_PROFILE_ANALYZE',
+  PROJECT_GENERATE_DETAILS: 'PROJECT_GENERATE_DETAILS',
+  INTERNAL_PASSTHROUGH: 'INTERNAL_PASSTHROUGH'
+};
+
+export type AiUsageFeature = (typeof AiUsageFeature)[keyof typeof AiUsageFeature]
+
 }
 
 export type AuthRole = $Enums.AuthRole
@@ -351,6 +384,14 @@ export const ActivityLogAction: typeof $Enums.ActivityLogAction
 export type ActivityLogEntityType = $Enums.ActivityLogEntityType
 
 export const ActivityLogEntityType: typeof $Enums.ActivityLogEntityType
+
+export type AiUsageType = $Enums.AiUsageType
+
+export const AiUsageType: typeof $Enums.AiUsageType
+
+export type AiUsageFeature = $Enums.AiUsageFeature
+
+export const AiUsageFeature: typeof $Enums.AiUsageFeature
 
 /**
  * ##  Prisma Client ʲˢ
@@ -668,6 +709,16 @@ export class PrismaClient<
     * ```
     */
   get activityLog(): Prisma.ActivityLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiUsageEvent`: Exposes CRUD operations for the **AiUsageEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiUsageEvents
+    * const aiUsageEvents = await prisma.aiUsageEvent.findMany()
+    * ```
+    */
+  get aiUsageEvent(): Prisma.AiUsageEventDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1121,7 +1172,8 @@ export namespace Prisma {
     Post: 'Post',
     PostAttachment: 'PostAttachment',
     PostIntegration: 'PostIntegration',
-    ActivityLog: 'ActivityLog'
+    ActivityLog: 'ActivityLog',
+    AiUsageEvent: 'AiUsageEvent'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1137,7 +1189,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "passwordResetToken" | "document" | "organisation" | "organisationMember" | "organisationInviteToken" | "integration" | "styleProfile" | "project" | "rssFeed" | "projectRssFeed" | "rssFeedItem" | "projectStyleProfile" | "generationRun" | "generationItem" | "automation" | "post" | "postAttachment" | "postIntegration" | "activityLog"
+      modelProps: "user" | "passwordResetToken" | "document" | "organisation" | "organisationMember" | "organisationInviteToken" | "integration" | "styleProfile" | "project" | "rssFeed" | "projectRssFeed" | "rssFeedItem" | "projectStyleProfile" | "generationRun" | "generationItem" | "automation" | "post" | "postAttachment" | "postIntegration" | "activityLog" | "aiUsageEvent"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2621,6 +2673,80 @@ export namespace Prisma {
           }
         }
       }
+      AiUsageEvent: {
+        payload: Prisma.$AiUsageEventPayload<ExtArgs>
+        fields: Prisma.AiUsageEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiUsageEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiUsageEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload>
+          }
+          findFirst: {
+            args: Prisma.AiUsageEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiUsageEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload>
+          }
+          findMany: {
+            args: Prisma.AiUsageEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload>[]
+          }
+          create: {
+            args: Prisma.AiUsageEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload>
+          }
+          createMany: {
+            args: Prisma.AiUsageEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiUsageEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload>[]
+          }
+          delete: {
+            args: Prisma.AiUsageEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload>
+          }
+          update: {
+            args: Prisma.AiUsageEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiUsageEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiUsageEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiUsageEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiUsageEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageEventPayload>
+          }
+          aggregate: {
+            args: Prisma.AiUsageEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiUsageEvent>
+          }
+          groupBy: {
+            args: Prisma.AiUsageEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiUsageEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiUsageEventCountArgs<ExtArgs>
+            result: $Utils.Optional<AiUsageEventCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2749,6 +2875,7 @@ export namespace Prisma {
     postAttachment?: PostAttachmentOmit
     postIntegration?: PostIntegrationOmit
     activityLog?: ActivityLogOmit
+    aiUsageEvent?: AiUsageEventOmit
   }
 
   /* Types for Logging */
@@ -2834,6 +2961,7 @@ export namespace Prisma {
     organisation_memberships: number
     authored_posts: number
     activity_logs: number
+    ai_usage_events: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2842,6 +2970,7 @@ export namespace Prisma {
     organisation_memberships?: boolean | UserCountOutputTypeCountOrganisation_membershipsArgs
     authored_posts?: boolean | UserCountOutputTypeCountAuthored_postsArgs
     activity_logs?: boolean | UserCountOutputTypeCountActivity_logsArgs
+    ai_usage_events?: boolean | UserCountOutputTypeCountAi_usage_eventsArgs
   }
 
   // Custom InputTypes
@@ -2888,6 +3017,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountActivity_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ActivityLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAi_usage_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiUsageEventWhereInput
   }
 
 
@@ -2944,6 +3080,7 @@ export namespace Prisma {
     projects: number
     rss_feeds: number
     activity_logs: number
+    ai_usage_events: number
   }
 
   export type OrganisationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2955,6 +3092,7 @@ export namespace Prisma {
     projects?: boolean | OrganisationCountOutputTypeCountProjectsArgs
     rss_feeds?: boolean | OrganisationCountOutputTypeCountRss_feedsArgs
     activity_logs?: boolean | OrganisationCountOutputTypeCountActivity_logsArgs
+    ai_usage_events?: boolean | OrganisationCountOutputTypeCountAi_usage_eventsArgs
   }
 
   // Custom InputTypes
@@ -3022,6 +3160,13 @@ export namespace Prisma {
    */
   export type OrganisationCountOutputTypeCountActivity_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ActivityLogWhereInput
+  }
+
+  /**
+   * OrganisationCountOutputType without action
+   */
+  export type OrganisationCountOutputTypeCountAi_usage_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiUsageEventWhereInput
   }
 
 
@@ -3299,11 +3444,13 @@ export namespace Prisma {
   export type GenerationRunCountOutputType = {
     posts: number
     items: number
+    usage_events: number
   }
 
   export type GenerationRunCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | GenerationRunCountOutputTypeCountPostsArgs
     items?: boolean | GenerationRunCountOutputTypeCountItemsArgs
+    usage_events?: boolean | GenerationRunCountOutputTypeCountUsage_eventsArgs
   }
 
   // Custom InputTypes
@@ -3329,6 +3476,13 @@ export namespace Prisma {
    */
   export type GenerationRunCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GenerationItemWhereInput
+  }
+
+  /**
+   * GenerationRunCountOutputType without action
+   */
+  export type GenerationRunCountOutputTypeCountUsage_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiUsageEventWhereInput
   }
 
 
@@ -3411,12 +3565,14 @@ export namespace Prisma {
     repurposed_posts: number
     attachments: number
     integrations: number
+    usage_events: number
   }
 
   export type PostCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     repurposed_posts?: boolean | PostCountOutputTypeCountRepurposed_postsArgs
     attachments?: boolean | PostCountOutputTypeCountAttachmentsArgs
     integrations?: boolean | PostCountOutputTypeCountIntegrationsArgs
+    usage_events?: boolean | PostCountOutputTypeCountUsage_eventsArgs
   }
 
   // Custom InputTypes
@@ -3449,6 +3605,13 @@ export namespace Prisma {
    */
   export type PostCountOutputTypeCountIntegrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostIntegrationWhereInput
+  }
+
+  /**
+   * PostCountOutputType without action
+   */
+  export type PostCountOutputTypeCountUsage_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiUsageEventWhereInput
   }
 
 
@@ -3649,6 +3812,7 @@ export namespace Prisma {
     organisation_memberships?: boolean | User$organisation_membershipsArgs<ExtArgs>
     authored_posts?: boolean | User$authored_postsArgs<ExtArgs>
     activity_logs?: boolean | User$activity_logsArgs<ExtArgs>
+    ai_usage_events?: boolean | User$ai_usage_eventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3692,6 +3856,7 @@ export namespace Prisma {
     organisation_memberships?: boolean | User$organisation_membershipsArgs<ExtArgs>
     authored_posts?: boolean | User$authored_postsArgs<ExtArgs>
     activity_logs?: boolean | User$activity_logsArgs<ExtArgs>
+    ai_usage_events?: boolean | User$ai_usage_eventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3705,6 +3870,7 @@ export namespace Prisma {
       organisation_memberships: Prisma.$OrganisationMemberPayload<ExtArgs>[]
       authored_posts: Prisma.$PostPayload<ExtArgs>[]
       activity_logs: Prisma.$ActivityLogPayload<ExtArgs>[]
+      ai_usage_events: Prisma.$AiUsageEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4114,6 +4280,7 @@ export namespace Prisma {
     organisation_memberships<T extends User$organisation_membershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$organisation_membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganisationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     authored_posts<T extends User$authored_postsArgs<ExtArgs> = {}>(args?: Subset<T, User$authored_postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     activity_logs<T extends User$activity_logsArgs<ExtArgs> = {}>(args?: Subset<T, User$activity_logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ai_usage_events<T extends User$ai_usage_eventsArgs<ExtArgs> = {}>(args?: Subset<T, User$ai_usage_eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4656,6 +4823,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ActivityLogScalarFieldEnum | ActivityLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.ai_usage_events
+   */
+  export type User$ai_usage_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    where?: AiUsageEventWhereInput
+    orderBy?: AiUsageEventOrderByWithRelationInput | AiUsageEventOrderByWithRelationInput[]
+    cursor?: AiUsageEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiUsageEventScalarFieldEnum | AiUsageEventScalarFieldEnum[]
   }
 
   /**
@@ -7131,6 +7322,7 @@ export namespace Prisma {
     projects?: boolean | Organisation$projectsArgs<ExtArgs>
     rss_feeds?: boolean | Organisation$rss_feedsArgs<ExtArgs>
     activity_logs?: boolean | Organisation$activity_logsArgs<ExtArgs>
+    ai_usage_events?: boolean | Organisation$ai_usage_eventsArgs<ExtArgs>
     _count?: boolean | OrganisationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organisation"]>
 
@@ -7174,6 +7366,7 @@ export namespace Prisma {
     projects?: boolean | Organisation$projectsArgs<ExtArgs>
     rss_feeds?: boolean | Organisation$rss_feedsArgs<ExtArgs>
     activity_logs?: boolean | Organisation$activity_logsArgs<ExtArgs>
+    ai_usage_events?: boolean | Organisation$ai_usage_eventsArgs<ExtArgs>
     _count?: boolean | OrganisationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrganisationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7195,6 +7388,7 @@ export namespace Prisma {
       projects: Prisma.$ProjectPayload<ExtArgs>[]
       rss_feeds: Prisma.$RssFeedPayload<ExtArgs>[]
       activity_logs: Prisma.$ActivityLogPayload<ExtArgs>[]
+      ai_usage_events: Prisma.$AiUsageEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7606,6 +7800,7 @@ export namespace Prisma {
     projects<T extends Organisation$projectsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     rss_feeds<T extends Organisation$rss_feedsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$rss_feedsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RssFeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     activity_logs<T extends Organisation$activity_logsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$activity_logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ai_usage_events<T extends Organisation$ai_usage_eventsArgs<ExtArgs> = {}>(args?: Subset<T, Organisation$ai_usage_eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8226,6 +8421,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ActivityLogScalarFieldEnum | ActivityLogScalarFieldEnum[]
+  }
+
+  /**
+   * Organisation.ai_usage_events
+   */
+  export type Organisation$ai_usage_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    where?: AiUsageEventWhereInput
+    orderBy?: AiUsageEventOrderByWithRelationInput | AiUsageEventOrderByWithRelationInput[]
+    cursor?: AiUsageEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiUsageEventScalarFieldEnum | AiUsageEventScalarFieldEnum[]
   }
 
   /**
@@ -19028,6 +19247,7 @@ export namespace Prisma {
     automation?: boolean | GenerationRun$automationArgs<ExtArgs>
     posts?: boolean | GenerationRun$postsArgs<ExtArgs>
     items?: boolean | GenerationRun$itemsArgs<ExtArgs>
+    usage_events?: boolean | GenerationRun$usage_eventsArgs<ExtArgs>
     _count?: boolean | GenerationRunCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["generationRun"]>
 
@@ -19077,6 +19297,7 @@ export namespace Prisma {
     automation?: boolean | GenerationRun$automationArgs<ExtArgs>
     posts?: boolean | GenerationRun$postsArgs<ExtArgs>
     items?: boolean | GenerationRun$itemsArgs<ExtArgs>
+    usage_events?: boolean | GenerationRun$usage_eventsArgs<ExtArgs>
     _count?: boolean | GenerationRunCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GenerationRunIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19098,6 +19319,7 @@ export namespace Prisma {
       automation: Prisma.$AutomationPayload<ExtArgs> | null
       posts: Prisma.$PostPayload<ExtArgs>[]
       items: Prisma.$GenerationItemPayload<ExtArgs>[]
+      usage_events: Prisma.$AiUsageEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19507,6 +19729,7 @@ export namespace Prisma {
     automation<T extends GenerationRun$automationArgs<ExtArgs> = {}>(args?: Subset<T, GenerationRun$automationArgs<ExtArgs>>): Prisma__AutomationClient<$Result.GetResult<Prisma.$AutomationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     posts<T extends GenerationRun$postsArgs<ExtArgs> = {}>(args?: Subset<T, GenerationRun$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     items<T extends GenerationRun$itemsArgs<ExtArgs> = {}>(args?: Subset<T, GenerationRun$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenerationItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    usage_events<T extends GenerationRun$usage_eventsArgs<ExtArgs> = {}>(args?: Subset<T, GenerationRun$usage_eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20023,6 +20246,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GenerationItemScalarFieldEnum | GenerationItemScalarFieldEnum[]
+  }
+
+  /**
+   * GenerationRun.usage_events
+   */
+  export type GenerationRun$usage_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    where?: AiUsageEventWhereInput
+    orderBy?: AiUsageEventOrderByWithRelationInput | AiUsageEventOrderByWithRelationInput[]
+    cursor?: AiUsageEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiUsageEventScalarFieldEnum | AiUsageEventScalarFieldEnum[]
   }
 
   /**
@@ -22884,6 +23131,7 @@ export namespace Prisma {
     repurposed_posts?: boolean | Post$repurposed_postsArgs<ExtArgs>
     attachments?: boolean | Post$attachmentsArgs<ExtArgs>
     integrations?: boolean | Post$integrationsArgs<ExtArgs>
+    usage_events?: boolean | Post$usage_eventsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
@@ -23009,6 +23257,7 @@ export namespace Prisma {
     repurposed_posts?: boolean | Post$repurposed_postsArgs<ExtArgs>
     attachments?: boolean | Post$attachmentsArgs<ExtArgs>
     integrations?: boolean | Post$integrationsArgs<ExtArgs>
+    usage_events?: boolean | Post$usage_eventsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -23052,6 +23301,7 @@ export namespace Prisma {
       repurposed_posts: Prisma.$PostPayload<ExtArgs>[]
       attachments: Prisma.$PostAttachmentPayload<ExtArgs>[]
       integrations: Prisma.$PostIntegrationPayload<ExtArgs>[]
+      usage_events: Prisma.$AiUsageEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -23487,6 +23737,7 @@ export namespace Prisma {
     repurposed_posts<T extends Post$repurposed_postsArgs<ExtArgs> = {}>(args?: Subset<T, Post$repurposed_postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attachments<T extends Post$attachmentsArgs<ExtArgs> = {}>(args?: Subset<T, Post$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     integrations<T extends Post$integrationsArgs<ExtArgs> = {}>(args?: Subset<T, Post$integrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    usage_events<T extends Post$usage_eventsArgs<ExtArgs> = {}>(args?: Subset<T, Post$usage_eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -24159,6 +24410,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PostIntegrationScalarFieldEnum | PostIntegrationScalarFieldEnum[]
+  }
+
+  /**
+   * Post.usage_events
+   */
+  export type Post$usage_eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    where?: AiUsageEventWhereInput
+    orderBy?: AiUsageEventOrderByWithRelationInput | AiUsageEventOrderByWithRelationInput[]
+    cursor?: AiUsageEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiUsageEventScalarFieldEnum | AiUsageEventScalarFieldEnum[]
   }
 
   /**
@@ -27564,6 +27839,1387 @@ export namespace Prisma {
 
 
   /**
+   * Model AiUsageEvent
+   */
+
+  export type AggregateAiUsageEvent = {
+    _count: AiUsageEventCountAggregateOutputType | null
+    _avg: AiUsageEventAvgAggregateOutputType | null
+    _sum: AiUsageEventSumAggregateOutputType | null
+    _min: AiUsageEventMinAggregateOutputType | null
+    _max: AiUsageEventMaxAggregateOutputType | null
+  }
+
+  export type AiUsageEventAvgAggregateOutputType = {
+    input_tokens: number | null
+    output_tokens: number | null
+    total_tokens: number | null
+    image_count: number | null
+    input_cost: Decimal | null
+    output_cost: Decimal | null
+    total_cost: Decimal | null
+  }
+
+  export type AiUsageEventSumAggregateOutputType = {
+    input_tokens: number | null
+    output_tokens: number | null
+    total_tokens: number | null
+    image_count: number | null
+    input_cost: Decimal | null
+    output_cost: Decimal | null
+    total_cost: Decimal | null
+  }
+
+  export type AiUsageEventMinAggregateOutputType = {
+    id: string | null
+    organisation_id: string | null
+    user_id: string | null
+    type: $Enums.AiUsageType | null
+    feature: $Enums.AiUsageFeature | null
+    provider: string | null
+    model: string | null
+    input_tokens: number | null
+    output_tokens: number | null
+    total_tokens: number | null
+    image_count: number | null
+    input_cost: Decimal | null
+    output_cost: Decimal | null
+    total_cost: Decimal | null
+    generation_run_id: string | null
+    post_id: string | null
+    created_at: Date | null
+  }
+
+  export type AiUsageEventMaxAggregateOutputType = {
+    id: string | null
+    organisation_id: string | null
+    user_id: string | null
+    type: $Enums.AiUsageType | null
+    feature: $Enums.AiUsageFeature | null
+    provider: string | null
+    model: string | null
+    input_tokens: number | null
+    output_tokens: number | null
+    total_tokens: number | null
+    image_count: number | null
+    input_cost: Decimal | null
+    output_cost: Decimal | null
+    total_cost: Decimal | null
+    generation_run_id: string | null
+    post_id: string | null
+    created_at: Date | null
+  }
+
+  export type AiUsageEventCountAggregateOutputType = {
+    id: number
+    organisation_id: number
+    user_id: number
+    type: number
+    feature: number
+    provider: number
+    model: number
+    input_tokens: number
+    output_tokens: number
+    total_tokens: number
+    image_count: number
+    input_cost: number
+    output_cost: number
+    total_cost: number
+    generation_run_id: number
+    post_id: number
+    metadata: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type AiUsageEventAvgAggregateInputType = {
+    input_tokens?: true
+    output_tokens?: true
+    total_tokens?: true
+    image_count?: true
+    input_cost?: true
+    output_cost?: true
+    total_cost?: true
+  }
+
+  export type AiUsageEventSumAggregateInputType = {
+    input_tokens?: true
+    output_tokens?: true
+    total_tokens?: true
+    image_count?: true
+    input_cost?: true
+    output_cost?: true
+    total_cost?: true
+  }
+
+  export type AiUsageEventMinAggregateInputType = {
+    id?: true
+    organisation_id?: true
+    user_id?: true
+    type?: true
+    feature?: true
+    provider?: true
+    model?: true
+    input_tokens?: true
+    output_tokens?: true
+    total_tokens?: true
+    image_count?: true
+    input_cost?: true
+    output_cost?: true
+    total_cost?: true
+    generation_run_id?: true
+    post_id?: true
+    created_at?: true
+  }
+
+  export type AiUsageEventMaxAggregateInputType = {
+    id?: true
+    organisation_id?: true
+    user_id?: true
+    type?: true
+    feature?: true
+    provider?: true
+    model?: true
+    input_tokens?: true
+    output_tokens?: true
+    total_tokens?: true
+    image_count?: true
+    input_cost?: true
+    output_cost?: true
+    total_cost?: true
+    generation_run_id?: true
+    post_id?: true
+    created_at?: true
+  }
+
+  export type AiUsageEventCountAggregateInputType = {
+    id?: true
+    organisation_id?: true
+    user_id?: true
+    type?: true
+    feature?: true
+    provider?: true
+    model?: true
+    input_tokens?: true
+    output_tokens?: true
+    total_tokens?: true
+    image_count?: true
+    input_cost?: true
+    output_cost?: true
+    total_cost?: true
+    generation_run_id?: true
+    post_id?: true
+    metadata?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type AiUsageEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiUsageEvent to aggregate.
+     */
+    where?: AiUsageEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiUsageEvents to fetch.
+     */
+    orderBy?: AiUsageEventOrderByWithRelationInput | AiUsageEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiUsageEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiUsageEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiUsageEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiUsageEvents
+    **/
+    _count?: true | AiUsageEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AiUsageEventAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AiUsageEventSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiUsageEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiUsageEventMaxAggregateInputType
+  }
+
+  export type GetAiUsageEventAggregateType<T extends AiUsageEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiUsageEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiUsageEvent[P]>
+      : GetScalarType<T[P], AggregateAiUsageEvent[P]>
+  }
+
+
+
+
+  export type AiUsageEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiUsageEventWhereInput
+    orderBy?: AiUsageEventOrderByWithAggregationInput | AiUsageEventOrderByWithAggregationInput[]
+    by: AiUsageEventScalarFieldEnum[] | AiUsageEventScalarFieldEnum
+    having?: AiUsageEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiUsageEventCountAggregateInputType | true
+    _avg?: AiUsageEventAvgAggregateInputType
+    _sum?: AiUsageEventSumAggregateInputType
+    _min?: AiUsageEventMinAggregateInputType
+    _max?: AiUsageEventMaxAggregateInputType
+  }
+
+  export type AiUsageEventGroupByOutputType = {
+    id: string
+    organisation_id: string | null
+    user_id: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens: number | null
+    output_tokens: number | null
+    total_tokens: number | null
+    image_count: number | null
+    input_cost: Decimal
+    output_cost: Decimal
+    total_cost: Decimal
+    generation_run_id: string | null
+    post_id: string | null
+    metadata: JsonValue | null
+    created_at: Date
+    _count: AiUsageEventCountAggregateOutputType | null
+    _avg: AiUsageEventAvgAggregateOutputType | null
+    _sum: AiUsageEventSumAggregateOutputType | null
+    _min: AiUsageEventMinAggregateOutputType | null
+    _max: AiUsageEventMaxAggregateOutputType | null
+  }
+
+  type GetAiUsageEventGroupByPayload<T extends AiUsageEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiUsageEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiUsageEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiUsageEventGroupByOutputType[P]>
+            : GetScalarType<T[P], AiUsageEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiUsageEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organisation_id?: boolean
+    user_id?: boolean
+    type?: boolean
+    feature?: boolean
+    provider?: boolean
+    model?: boolean
+    input_tokens?: boolean
+    output_tokens?: boolean
+    total_tokens?: boolean
+    image_count?: boolean
+    input_cost?: boolean
+    output_cost?: boolean
+    total_cost?: boolean
+    generation_run_id?: boolean
+    post_id?: boolean
+    metadata?: boolean
+    created_at?: boolean
+    organisation?: boolean | AiUsageEvent$organisationArgs<ExtArgs>
+    user?: boolean | AiUsageEvent$userArgs<ExtArgs>
+    generation_run?: boolean | AiUsageEvent$generation_runArgs<ExtArgs>
+    post?: boolean | AiUsageEvent$postArgs<ExtArgs>
+  }, ExtArgs["result"]["aiUsageEvent"]>
+
+  export type AiUsageEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organisation_id?: boolean
+    user_id?: boolean
+    type?: boolean
+    feature?: boolean
+    provider?: boolean
+    model?: boolean
+    input_tokens?: boolean
+    output_tokens?: boolean
+    total_tokens?: boolean
+    image_count?: boolean
+    input_cost?: boolean
+    output_cost?: boolean
+    total_cost?: boolean
+    generation_run_id?: boolean
+    post_id?: boolean
+    metadata?: boolean
+    created_at?: boolean
+    organisation?: boolean | AiUsageEvent$organisationArgs<ExtArgs>
+    user?: boolean | AiUsageEvent$userArgs<ExtArgs>
+    generation_run?: boolean | AiUsageEvent$generation_runArgs<ExtArgs>
+    post?: boolean | AiUsageEvent$postArgs<ExtArgs>
+  }, ExtArgs["result"]["aiUsageEvent"]>
+
+  export type AiUsageEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organisation_id?: boolean
+    user_id?: boolean
+    type?: boolean
+    feature?: boolean
+    provider?: boolean
+    model?: boolean
+    input_tokens?: boolean
+    output_tokens?: boolean
+    total_tokens?: boolean
+    image_count?: boolean
+    input_cost?: boolean
+    output_cost?: boolean
+    total_cost?: boolean
+    generation_run_id?: boolean
+    post_id?: boolean
+    metadata?: boolean
+    created_at?: boolean
+    organisation?: boolean | AiUsageEvent$organisationArgs<ExtArgs>
+    user?: boolean | AiUsageEvent$userArgs<ExtArgs>
+    generation_run?: boolean | AiUsageEvent$generation_runArgs<ExtArgs>
+    post?: boolean | AiUsageEvent$postArgs<ExtArgs>
+  }, ExtArgs["result"]["aiUsageEvent"]>
+
+  export type AiUsageEventSelectScalar = {
+    id?: boolean
+    organisation_id?: boolean
+    user_id?: boolean
+    type?: boolean
+    feature?: boolean
+    provider?: boolean
+    model?: boolean
+    input_tokens?: boolean
+    output_tokens?: boolean
+    total_tokens?: boolean
+    image_count?: boolean
+    input_cost?: boolean
+    output_cost?: boolean
+    total_cost?: boolean
+    generation_run_id?: boolean
+    post_id?: boolean
+    metadata?: boolean
+    created_at?: boolean
+  }
+
+  export type AiUsageEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organisation_id" | "user_id" | "type" | "feature" | "provider" | "model" | "input_tokens" | "output_tokens" | "total_tokens" | "image_count" | "input_cost" | "output_cost" | "total_cost" | "generation_run_id" | "post_id" | "metadata" | "created_at", ExtArgs["result"]["aiUsageEvent"]>
+  export type AiUsageEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organisation?: boolean | AiUsageEvent$organisationArgs<ExtArgs>
+    user?: boolean | AiUsageEvent$userArgs<ExtArgs>
+    generation_run?: boolean | AiUsageEvent$generation_runArgs<ExtArgs>
+    post?: boolean | AiUsageEvent$postArgs<ExtArgs>
+  }
+  export type AiUsageEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organisation?: boolean | AiUsageEvent$organisationArgs<ExtArgs>
+    user?: boolean | AiUsageEvent$userArgs<ExtArgs>
+    generation_run?: boolean | AiUsageEvent$generation_runArgs<ExtArgs>
+    post?: boolean | AiUsageEvent$postArgs<ExtArgs>
+  }
+  export type AiUsageEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organisation?: boolean | AiUsageEvent$organisationArgs<ExtArgs>
+    user?: boolean | AiUsageEvent$userArgs<ExtArgs>
+    generation_run?: boolean | AiUsageEvent$generation_runArgs<ExtArgs>
+    post?: boolean | AiUsageEvent$postArgs<ExtArgs>
+  }
+
+  export type $AiUsageEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiUsageEvent"
+    objects: {
+      organisation: Prisma.$OrganisationPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs> | null
+      generation_run: Prisma.$GenerationRunPayload<ExtArgs> | null
+      post: Prisma.$PostPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      organisation_id: string | null
+      user_id: string | null
+      type: $Enums.AiUsageType
+      feature: $Enums.AiUsageFeature
+      provider: string
+      model: string
+      input_tokens: number | null
+      output_tokens: number | null
+      total_tokens: number | null
+      image_count: number | null
+      input_cost: Prisma.Decimal
+      output_cost: Prisma.Decimal
+      total_cost: Prisma.Decimal
+      generation_run_id: string | null
+      post_id: string | null
+      metadata: Prisma.JsonValue | null
+      created_at: Date
+    }, ExtArgs["result"]["aiUsageEvent"]>
+    composites: {}
+  }
+
+  type AiUsageEventGetPayload<S extends boolean | null | undefined | AiUsageEventDefaultArgs> = $Result.GetResult<Prisma.$AiUsageEventPayload, S>
+
+  type AiUsageEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiUsageEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiUsageEventCountAggregateInputType | true
+    }
+
+  export interface AiUsageEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiUsageEvent'], meta: { name: 'AiUsageEvent' } }
+    /**
+     * Find zero or one AiUsageEvent that matches the filter.
+     * @param {AiUsageEventFindUniqueArgs} args - Arguments to find a AiUsageEvent
+     * @example
+     * // Get one AiUsageEvent
+     * const aiUsageEvent = await prisma.aiUsageEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiUsageEventFindUniqueArgs>(args: SelectSubset<T, AiUsageEventFindUniqueArgs<ExtArgs>>): Prisma__AiUsageEventClient<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiUsageEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiUsageEventFindUniqueOrThrowArgs} args - Arguments to find a AiUsageEvent
+     * @example
+     * // Get one AiUsageEvent
+     * const aiUsageEvent = await prisma.aiUsageEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiUsageEventFindUniqueOrThrowArgs>(args: SelectSubset<T, AiUsageEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiUsageEventClient<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiUsageEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageEventFindFirstArgs} args - Arguments to find a AiUsageEvent
+     * @example
+     * // Get one AiUsageEvent
+     * const aiUsageEvent = await prisma.aiUsageEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiUsageEventFindFirstArgs>(args?: SelectSubset<T, AiUsageEventFindFirstArgs<ExtArgs>>): Prisma__AiUsageEventClient<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiUsageEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageEventFindFirstOrThrowArgs} args - Arguments to find a AiUsageEvent
+     * @example
+     * // Get one AiUsageEvent
+     * const aiUsageEvent = await prisma.aiUsageEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiUsageEventFindFirstOrThrowArgs>(args?: SelectSubset<T, AiUsageEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiUsageEventClient<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiUsageEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiUsageEvents
+     * const aiUsageEvents = await prisma.aiUsageEvent.findMany()
+     * 
+     * // Get first 10 AiUsageEvents
+     * const aiUsageEvents = await prisma.aiUsageEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiUsageEventWithIdOnly = await prisma.aiUsageEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiUsageEventFindManyArgs>(args?: SelectSubset<T, AiUsageEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiUsageEvent.
+     * @param {AiUsageEventCreateArgs} args - Arguments to create a AiUsageEvent.
+     * @example
+     * // Create one AiUsageEvent
+     * const AiUsageEvent = await prisma.aiUsageEvent.create({
+     *   data: {
+     *     // ... data to create a AiUsageEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiUsageEventCreateArgs>(args: SelectSubset<T, AiUsageEventCreateArgs<ExtArgs>>): Prisma__AiUsageEventClient<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiUsageEvents.
+     * @param {AiUsageEventCreateManyArgs} args - Arguments to create many AiUsageEvents.
+     * @example
+     * // Create many AiUsageEvents
+     * const aiUsageEvent = await prisma.aiUsageEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiUsageEventCreateManyArgs>(args?: SelectSubset<T, AiUsageEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiUsageEvents and returns the data saved in the database.
+     * @param {AiUsageEventCreateManyAndReturnArgs} args - Arguments to create many AiUsageEvents.
+     * @example
+     * // Create many AiUsageEvents
+     * const aiUsageEvent = await prisma.aiUsageEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiUsageEvents and only return the `id`
+     * const aiUsageEventWithIdOnly = await prisma.aiUsageEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiUsageEventCreateManyAndReturnArgs>(args?: SelectSubset<T, AiUsageEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiUsageEvent.
+     * @param {AiUsageEventDeleteArgs} args - Arguments to delete one AiUsageEvent.
+     * @example
+     * // Delete one AiUsageEvent
+     * const AiUsageEvent = await prisma.aiUsageEvent.delete({
+     *   where: {
+     *     // ... filter to delete one AiUsageEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiUsageEventDeleteArgs>(args: SelectSubset<T, AiUsageEventDeleteArgs<ExtArgs>>): Prisma__AiUsageEventClient<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiUsageEvent.
+     * @param {AiUsageEventUpdateArgs} args - Arguments to update one AiUsageEvent.
+     * @example
+     * // Update one AiUsageEvent
+     * const aiUsageEvent = await prisma.aiUsageEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiUsageEventUpdateArgs>(args: SelectSubset<T, AiUsageEventUpdateArgs<ExtArgs>>): Prisma__AiUsageEventClient<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiUsageEvents.
+     * @param {AiUsageEventDeleteManyArgs} args - Arguments to filter AiUsageEvents to delete.
+     * @example
+     * // Delete a few AiUsageEvents
+     * const { count } = await prisma.aiUsageEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiUsageEventDeleteManyArgs>(args?: SelectSubset<T, AiUsageEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiUsageEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiUsageEvents
+     * const aiUsageEvent = await prisma.aiUsageEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiUsageEventUpdateManyArgs>(args: SelectSubset<T, AiUsageEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiUsageEvents and returns the data updated in the database.
+     * @param {AiUsageEventUpdateManyAndReturnArgs} args - Arguments to update many AiUsageEvents.
+     * @example
+     * // Update many AiUsageEvents
+     * const aiUsageEvent = await prisma.aiUsageEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiUsageEvents and only return the `id`
+     * const aiUsageEventWithIdOnly = await prisma.aiUsageEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiUsageEventUpdateManyAndReturnArgs>(args: SelectSubset<T, AiUsageEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiUsageEvent.
+     * @param {AiUsageEventUpsertArgs} args - Arguments to update or create a AiUsageEvent.
+     * @example
+     * // Update or create a AiUsageEvent
+     * const aiUsageEvent = await prisma.aiUsageEvent.upsert({
+     *   create: {
+     *     // ... data to create a AiUsageEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiUsageEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiUsageEventUpsertArgs>(args: SelectSubset<T, AiUsageEventUpsertArgs<ExtArgs>>): Prisma__AiUsageEventClient<$Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiUsageEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageEventCountArgs} args - Arguments to filter AiUsageEvents to count.
+     * @example
+     * // Count the number of AiUsageEvents
+     * const count = await prisma.aiUsageEvent.count({
+     *   where: {
+     *     // ... the filter for the AiUsageEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiUsageEventCountArgs>(
+      args?: Subset<T, AiUsageEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiUsageEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiUsageEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiUsageEventAggregateArgs>(args: Subset<T, AiUsageEventAggregateArgs>): Prisma.PrismaPromise<GetAiUsageEventAggregateType<T>>
+
+    /**
+     * Group by AiUsageEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiUsageEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiUsageEventGroupByArgs['orderBy'] }
+        : { orderBy?: AiUsageEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiUsageEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiUsageEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiUsageEvent model
+   */
+  readonly fields: AiUsageEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiUsageEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiUsageEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    organisation<T extends AiUsageEvent$organisationArgs<ExtArgs> = {}>(args?: Subset<T, AiUsageEvent$organisationArgs<ExtArgs>>): Prisma__OrganisationClient<$Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends AiUsageEvent$userArgs<ExtArgs> = {}>(args?: Subset<T, AiUsageEvent$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    generation_run<T extends AiUsageEvent$generation_runArgs<ExtArgs> = {}>(args?: Subset<T, AiUsageEvent$generation_runArgs<ExtArgs>>): Prisma__GenerationRunClient<$Result.GetResult<Prisma.$GenerationRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    post<T extends AiUsageEvent$postArgs<ExtArgs> = {}>(args?: Subset<T, AiUsageEvent$postArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiUsageEvent model
+   */
+  interface AiUsageEventFieldRefs {
+    readonly id: FieldRef<"AiUsageEvent", 'String'>
+    readonly organisation_id: FieldRef<"AiUsageEvent", 'String'>
+    readonly user_id: FieldRef<"AiUsageEvent", 'String'>
+    readonly type: FieldRef<"AiUsageEvent", 'AiUsageType'>
+    readonly feature: FieldRef<"AiUsageEvent", 'AiUsageFeature'>
+    readonly provider: FieldRef<"AiUsageEvent", 'String'>
+    readonly model: FieldRef<"AiUsageEvent", 'String'>
+    readonly input_tokens: FieldRef<"AiUsageEvent", 'Int'>
+    readonly output_tokens: FieldRef<"AiUsageEvent", 'Int'>
+    readonly total_tokens: FieldRef<"AiUsageEvent", 'Int'>
+    readonly image_count: FieldRef<"AiUsageEvent", 'Int'>
+    readonly input_cost: FieldRef<"AiUsageEvent", 'Decimal'>
+    readonly output_cost: FieldRef<"AiUsageEvent", 'Decimal'>
+    readonly total_cost: FieldRef<"AiUsageEvent", 'Decimal'>
+    readonly generation_run_id: FieldRef<"AiUsageEvent", 'String'>
+    readonly post_id: FieldRef<"AiUsageEvent", 'String'>
+    readonly metadata: FieldRef<"AiUsageEvent", 'Json'>
+    readonly created_at: FieldRef<"AiUsageEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiUsageEvent findUnique
+   */
+  export type AiUsageEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageEvent to fetch.
+     */
+    where: AiUsageEventWhereUniqueInput
+  }
+
+  /**
+   * AiUsageEvent findUniqueOrThrow
+   */
+  export type AiUsageEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageEvent to fetch.
+     */
+    where: AiUsageEventWhereUniqueInput
+  }
+
+  /**
+   * AiUsageEvent findFirst
+   */
+  export type AiUsageEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageEvent to fetch.
+     */
+    where?: AiUsageEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiUsageEvents to fetch.
+     */
+    orderBy?: AiUsageEventOrderByWithRelationInput | AiUsageEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiUsageEvents.
+     */
+    cursor?: AiUsageEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiUsageEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiUsageEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiUsageEvents.
+     */
+    distinct?: AiUsageEventScalarFieldEnum | AiUsageEventScalarFieldEnum[]
+  }
+
+  /**
+   * AiUsageEvent findFirstOrThrow
+   */
+  export type AiUsageEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageEvent to fetch.
+     */
+    where?: AiUsageEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiUsageEvents to fetch.
+     */
+    orderBy?: AiUsageEventOrderByWithRelationInput | AiUsageEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiUsageEvents.
+     */
+    cursor?: AiUsageEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiUsageEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiUsageEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiUsageEvents.
+     */
+    distinct?: AiUsageEventScalarFieldEnum | AiUsageEventScalarFieldEnum[]
+  }
+
+  /**
+   * AiUsageEvent findMany
+   */
+  export type AiUsageEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageEvents to fetch.
+     */
+    where?: AiUsageEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiUsageEvents to fetch.
+     */
+    orderBy?: AiUsageEventOrderByWithRelationInput | AiUsageEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiUsageEvents.
+     */
+    cursor?: AiUsageEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiUsageEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiUsageEvents.
+     */
+    skip?: number
+    distinct?: AiUsageEventScalarFieldEnum | AiUsageEventScalarFieldEnum[]
+  }
+
+  /**
+   * AiUsageEvent create
+   */
+  export type AiUsageEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AiUsageEvent.
+     */
+    data: XOR<AiUsageEventCreateInput, AiUsageEventUncheckedCreateInput>
+  }
+
+  /**
+   * AiUsageEvent createMany
+   */
+  export type AiUsageEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiUsageEvents.
+     */
+    data: AiUsageEventCreateManyInput | AiUsageEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiUsageEvent createManyAndReturn
+   */
+  export type AiUsageEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiUsageEvents.
+     */
+    data: AiUsageEventCreateManyInput | AiUsageEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiUsageEvent update
+   */
+  export type AiUsageEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AiUsageEvent.
+     */
+    data: XOR<AiUsageEventUpdateInput, AiUsageEventUncheckedUpdateInput>
+    /**
+     * Choose, which AiUsageEvent to update.
+     */
+    where: AiUsageEventWhereUniqueInput
+  }
+
+  /**
+   * AiUsageEvent updateMany
+   */
+  export type AiUsageEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiUsageEvents.
+     */
+    data: XOR<AiUsageEventUpdateManyMutationInput, AiUsageEventUncheckedUpdateManyInput>
+    /**
+     * Filter which AiUsageEvents to update
+     */
+    where?: AiUsageEventWhereInput
+    /**
+     * Limit how many AiUsageEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiUsageEvent updateManyAndReturn
+   */
+  export type AiUsageEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * The data used to update AiUsageEvents.
+     */
+    data: XOR<AiUsageEventUpdateManyMutationInput, AiUsageEventUncheckedUpdateManyInput>
+    /**
+     * Filter which AiUsageEvents to update
+     */
+    where?: AiUsageEventWhereInput
+    /**
+     * Limit how many AiUsageEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiUsageEvent upsert
+   */
+  export type AiUsageEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AiUsageEvent to update in case it exists.
+     */
+    where: AiUsageEventWhereUniqueInput
+    /**
+     * In case the AiUsageEvent found by the `where` argument doesn't exist, create a new AiUsageEvent with this data.
+     */
+    create: XOR<AiUsageEventCreateInput, AiUsageEventUncheckedCreateInput>
+    /**
+     * In case the AiUsageEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiUsageEventUpdateInput, AiUsageEventUncheckedUpdateInput>
+  }
+
+  /**
+   * AiUsageEvent delete
+   */
+  export type AiUsageEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+    /**
+     * Filter which AiUsageEvent to delete.
+     */
+    where: AiUsageEventWhereUniqueInput
+  }
+
+  /**
+   * AiUsageEvent deleteMany
+   */
+  export type AiUsageEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiUsageEvents to delete
+     */
+    where?: AiUsageEventWhereInput
+    /**
+     * Limit how many AiUsageEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiUsageEvent.organisation
+   */
+  export type AiUsageEvent$organisationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organisation
+     */
+    select?: OrganisationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organisation
+     */
+    omit?: OrganisationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganisationInclude<ExtArgs> | null
+    where?: OrganisationWhereInput
+  }
+
+  /**
+   * AiUsageEvent.user
+   */
+  export type AiUsageEvent$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AiUsageEvent.generation_run
+   */
+  export type AiUsageEvent$generation_runArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenerationRun
+     */
+    select?: GenerationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenerationRun
+     */
+    omit?: GenerationRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenerationRunInclude<ExtArgs> | null
+    where?: GenerationRunWhereInput
+  }
+
+  /**
+   * AiUsageEvent.post
+   */
+  export type AiUsageEvent$postArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+  }
+
+  /**
+   * AiUsageEvent without action
+   */
+  export type AiUsageEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageEvent
+     */
+    select?: AiUsageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageEvent
+     */
+    omit?: AiUsageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageEventInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -27894,6 +29550,30 @@ export namespace Prisma {
   export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
 
 
+  export const AiUsageEventScalarFieldEnum: {
+    id: 'id',
+    organisation_id: 'organisation_id',
+    user_id: 'user_id',
+    type: 'type',
+    feature: 'feature',
+    provider: 'provider',
+    model: 'model',
+    input_tokens: 'input_tokens',
+    output_tokens: 'output_tokens',
+    total_tokens: 'total_tokens',
+    image_count: 'image_count',
+    input_cost: 'input_cost',
+    output_cost: 'output_cost',
+    total_cost: 'total_cost',
+    generation_run_id: 'generation_run_id',
+    post_id: 'post_id',
+    metadata: 'metadata',
+    created_at: 'created_at'
+  };
+
+  export type AiUsageEventScalarFieldEnum = (typeof AiUsageEventScalarFieldEnum)[keyof typeof AiUsageEventScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -28186,6 +29866,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'AiUsageType'
+   */
+  export type EnumAiUsageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiUsageType'>
+    
+
+
+  /**
+   * Reference to a field of type 'AiUsageType[]'
+   */
+  export type ListEnumAiUsageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiUsageType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AiUsageFeature'
+   */
+  export type EnumAiUsageFeatureFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiUsageFeature'>
+    
+
+
+  /**
+   * Reference to a field of type 'AiUsageFeature[]'
+   */
+  export type ListEnumAiUsageFeatureFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiUsageFeature[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -28219,6 +29941,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberListRelationFilter
     authored_posts?: PostListRelationFilter
     activity_logs?: ActivityLogListRelationFilter
+    ai_usage_events?: AiUsageEventListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -28235,6 +29958,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberOrderByRelationAggregateInput
     authored_posts?: PostOrderByRelationAggregateInput
     activity_logs?: ActivityLogOrderByRelationAggregateInput
+    ai_usage_events?: AiUsageEventOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -28254,6 +29978,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberListRelationFilter
     authored_posts?: PostListRelationFilter
     activity_logs?: ActivityLogListRelationFilter
+    ai_usage_events?: AiUsageEventListRelationFilter
   }, "id" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -28446,6 +30171,7 @@ export namespace Prisma {
     projects?: ProjectListRelationFilter
     rss_feeds?: RssFeedListRelationFilter
     activity_logs?: ActivityLogListRelationFilter
+    ai_usage_events?: AiUsageEventListRelationFilter
   }
 
   export type OrganisationOrderByWithRelationInput = {
@@ -28464,6 +30190,7 @@ export namespace Prisma {
     projects?: ProjectOrderByRelationAggregateInput
     rss_feeds?: RssFeedOrderByRelationAggregateInput
     activity_logs?: ActivityLogOrderByRelationAggregateInput
+    ai_usage_events?: AiUsageEventOrderByRelationAggregateInput
   }
 
   export type OrganisationWhereUniqueInput = Prisma.AtLeast<{
@@ -28485,6 +30212,7 @@ export namespace Prisma {
     projects?: ProjectListRelationFilter
     rss_feeds?: RssFeedListRelationFilter
     activity_logs?: ActivityLogListRelationFilter
+    ai_usage_events?: AiUsageEventListRelationFilter
   }, "id" | "slug">
 
   export type OrganisationOrderByWithAggregationInput = {
@@ -29294,6 +31022,7 @@ export namespace Prisma {
     automation?: XOR<AutomationNullableScalarRelationFilter, AutomationWhereInput> | null
     posts?: PostListRelationFilter
     items?: GenerationItemListRelationFilter
+    usage_events?: AiUsageEventListRelationFilter
   }
 
   export type GenerationRunOrderByWithRelationInput = {
@@ -29310,6 +31039,7 @@ export namespace Prisma {
     automation?: AutomationOrderByWithRelationInput
     posts?: PostOrderByRelationAggregateInput
     items?: GenerationItemOrderByRelationAggregateInput
+    usage_events?: AiUsageEventOrderByRelationAggregateInput
   }
 
   export type GenerationRunWhereUniqueInput = Prisma.AtLeast<{
@@ -29329,6 +31059,7 @@ export namespace Prisma {
     automation?: XOR<AutomationNullableScalarRelationFilter, AutomationWhereInput> | null
     posts?: PostListRelationFilter
     items?: GenerationItemListRelationFilter
+    usage_events?: AiUsageEventListRelationFilter
   }, "id">
 
   export type GenerationRunOrderByWithAggregationInput = {
@@ -29598,6 +31329,7 @@ export namespace Prisma {
     repurposed_posts?: PostListRelationFilter
     attachments?: PostAttachmentListRelationFilter
     integrations?: PostIntegrationListRelationFilter
+    usage_events?: AiUsageEventListRelationFilter
   }
 
   export type PostOrderByWithRelationInput = {
@@ -29640,6 +31372,7 @@ export namespace Prisma {
     repurposed_posts?: PostOrderByRelationAggregateInput
     attachments?: PostAttachmentOrderByRelationAggregateInput
     integrations?: PostIntegrationOrderByRelationAggregateInput
+    usage_events?: AiUsageEventOrderByRelationAggregateInput
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
@@ -29685,6 +31418,7 @@ export namespace Prisma {
     repurposed_posts?: PostListRelationFilter
     attachments?: PostAttachmentListRelationFilter
     integrations?: PostIntegrationListRelationFilter
+    usage_events?: AiUsageEventListRelationFilter
   }, "id">
 
   export type PostOrderByWithAggregationInput = {
@@ -29974,6 +31708,137 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"ActivityLog"> | Date | string
   }
 
+  export type AiUsageEventWhereInput = {
+    AND?: AiUsageEventWhereInput | AiUsageEventWhereInput[]
+    OR?: AiUsageEventWhereInput[]
+    NOT?: AiUsageEventWhereInput | AiUsageEventWhereInput[]
+    id?: StringFilter<"AiUsageEvent"> | string
+    organisation_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    user_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    type?: EnumAiUsageTypeFilter<"AiUsageEvent"> | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFilter<"AiUsageEvent"> | $Enums.AiUsageFeature
+    provider?: StringFilter<"AiUsageEvent"> | string
+    model?: StringFilter<"AiUsageEvent"> | string
+    input_tokens?: IntNullableFilter<"AiUsageEvent"> | number | null
+    output_tokens?: IntNullableFilter<"AiUsageEvent"> | number | null
+    total_tokens?: IntNullableFilter<"AiUsageEvent"> | number | null
+    image_count?: IntNullableFilter<"AiUsageEvent"> | number | null
+    input_cost?: DecimalFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    generation_run_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    post_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    metadata?: JsonNullableFilter<"AiUsageEvent">
+    created_at?: DateTimeFilter<"AiUsageEvent"> | Date | string
+    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    generation_run?: XOR<GenerationRunNullableScalarRelationFilter, GenerationRunWhereInput> | null
+    post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
+  }
+
+  export type AiUsageEventOrderByWithRelationInput = {
+    id?: SortOrder
+    organisation_id?: SortOrderInput | SortOrder
+    user_id?: SortOrderInput | SortOrder
+    type?: SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrderInput | SortOrder
+    output_tokens?: SortOrderInput | SortOrder
+    total_tokens?: SortOrderInput | SortOrder
+    image_count?: SortOrderInput | SortOrder
+    input_cost?: SortOrder
+    output_cost?: SortOrder
+    total_cost?: SortOrder
+    generation_run_id?: SortOrderInput | SortOrder
+    post_id?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    organisation?: OrganisationOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    generation_run?: GenerationRunOrderByWithRelationInput
+    post?: PostOrderByWithRelationInput
+  }
+
+  export type AiUsageEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AiUsageEventWhereInput | AiUsageEventWhereInput[]
+    OR?: AiUsageEventWhereInput[]
+    NOT?: AiUsageEventWhereInput | AiUsageEventWhereInput[]
+    organisation_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    user_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    type?: EnumAiUsageTypeFilter<"AiUsageEvent"> | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFilter<"AiUsageEvent"> | $Enums.AiUsageFeature
+    provider?: StringFilter<"AiUsageEvent"> | string
+    model?: StringFilter<"AiUsageEvent"> | string
+    input_tokens?: IntNullableFilter<"AiUsageEvent"> | number | null
+    output_tokens?: IntNullableFilter<"AiUsageEvent"> | number | null
+    total_tokens?: IntNullableFilter<"AiUsageEvent"> | number | null
+    image_count?: IntNullableFilter<"AiUsageEvent"> | number | null
+    input_cost?: DecimalFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    generation_run_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    post_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    metadata?: JsonNullableFilter<"AiUsageEvent">
+    created_at?: DateTimeFilter<"AiUsageEvent"> | Date | string
+    organisation?: XOR<OrganisationNullableScalarRelationFilter, OrganisationWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    generation_run?: XOR<GenerationRunNullableScalarRelationFilter, GenerationRunWhereInput> | null
+    post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
+  }, "id">
+
+  export type AiUsageEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    organisation_id?: SortOrderInput | SortOrder
+    user_id?: SortOrderInput | SortOrder
+    type?: SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrderInput | SortOrder
+    output_tokens?: SortOrderInput | SortOrder
+    total_tokens?: SortOrderInput | SortOrder
+    image_count?: SortOrderInput | SortOrder
+    input_cost?: SortOrder
+    output_cost?: SortOrder
+    total_cost?: SortOrder
+    generation_run_id?: SortOrderInput | SortOrder
+    post_id?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    _count?: AiUsageEventCountOrderByAggregateInput
+    _avg?: AiUsageEventAvgOrderByAggregateInput
+    _max?: AiUsageEventMaxOrderByAggregateInput
+    _min?: AiUsageEventMinOrderByAggregateInput
+    _sum?: AiUsageEventSumOrderByAggregateInput
+  }
+
+  export type AiUsageEventScalarWhereWithAggregatesInput = {
+    AND?: AiUsageEventScalarWhereWithAggregatesInput | AiUsageEventScalarWhereWithAggregatesInput[]
+    OR?: AiUsageEventScalarWhereWithAggregatesInput[]
+    NOT?: AiUsageEventScalarWhereWithAggregatesInput | AiUsageEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiUsageEvent"> | string
+    organisation_id?: StringNullableWithAggregatesFilter<"AiUsageEvent"> | string | null
+    user_id?: StringNullableWithAggregatesFilter<"AiUsageEvent"> | string | null
+    type?: EnumAiUsageTypeWithAggregatesFilter<"AiUsageEvent"> | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureWithAggregatesFilter<"AiUsageEvent"> | $Enums.AiUsageFeature
+    provider?: StringWithAggregatesFilter<"AiUsageEvent"> | string
+    model?: StringWithAggregatesFilter<"AiUsageEvent"> | string
+    input_tokens?: IntNullableWithAggregatesFilter<"AiUsageEvent"> | number | null
+    output_tokens?: IntNullableWithAggregatesFilter<"AiUsageEvent"> | number | null
+    total_tokens?: IntNullableWithAggregatesFilter<"AiUsageEvent"> | number | null
+    image_count?: IntNullableWithAggregatesFilter<"AiUsageEvent"> | number | null
+    input_cost?: DecimalWithAggregatesFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalWithAggregatesFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalWithAggregatesFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    generation_run_id?: StringNullableWithAggregatesFilter<"AiUsageEvent"> | string | null
+    post_id?: StringNullableWithAggregatesFilter<"AiUsageEvent"> | string | null
+    metadata?: JsonNullableWithAggregatesFilter<"AiUsageEvent">
+    created_at?: DateTimeWithAggregatesFilter<"AiUsageEvent"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -29988,6 +31853,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
     authored_posts?: PostCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -30004,6 +31870,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
     authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -30020,6 +31887,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
     authored_posts?: PostUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -30036,6 +31904,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -30239,6 +32108,7 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateInput = {
@@ -30256,6 +32126,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUpdateInput = {
@@ -30273,6 +32144,7 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateInput = {
@@ -30290,6 +32162,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationCreateManyInput = {
@@ -31175,6 +33048,7 @@ export namespace Prisma {
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
     posts?: PostCreateNestedManyWithoutGeneration_runInput
     items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateInput = {
@@ -31188,6 +33062,7 @@ export namespace Prisma {
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
     items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUpdateInput = {
@@ -31201,6 +33076,7 @@ export namespace Prisma {
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
     posts?: PostUpdateManyWithoutGeneration_runNestedInput
     items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateInput = {
@@ -31214,6 +33090,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
     items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunCreateManyInput = {
@@ -31487,6 +33364,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateInput = {
@@ -31519,6 +33397,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostUpdateInput = {
@@ -31551,6 +33430,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateInput = {
@@ -31583,6 +33463,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostCreateManyInput = {
@@ -31887,6 +33768,149 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AiUsageEventCreateInput = {
+    id?: string
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    organisation?: OrganisationCreateNestedOneWithoutAi_usage_eventsInput
+    user?: UserCreateNestedOneWithoutAi_usage_eventsInput
+    generation_run?: GenerationRunCreateNestedOneWithoutUsage_eventsInput
+    post?: PostCreateNestedOneWithoutUsage_eventsInput
+  }
+
+  export type AiUsageEventUncheckedCreateInput = {
+    id?: string
+    organisation_id?: string | null
+    user_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    generation_run_id?: string | null
+    post_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type AiUsageEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneWithoutAi_usage_eventsNestedInput
+    user?: UserUpdateOneWithoutAi_usage_eventsNestedInput
+    generation_run?: GenerationRunUpdateOneWithoutUsage_eventsNestedInput
+    post?: PostUpdateOneWithoutUsage_eventsNestedInput
+  }
+
+  export type AiUsageEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageEventCreateManyInput = {
+    id?: string
+    organisation_id?: string | null
+    user_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    generation_run_id?: string | null
+    post_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type AiUsageEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -31965,6 +33989,12 @@ export namespace Prisma {
     none?: ActivityLogWhereInput
   }
 
+  export type AiUsageEventListRelationFilter = {
+    every?: AiUsageEventWhereInput
+    some?: AiUsageEventWhereInput
+    none?: AiUsageEventWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -31987,6 +34017,10 @@ export namespace Prisma {
   }
 
   export type ActivityLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AiUsageEventOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -33514,6 +35548,148 @@ export namespace Prisma {
     _max?: NestedEnumActivityLogEntityTypeNullableFilter<$PrismaModel>
   }
 
+  export type EnumAiUsageTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AiUsageType | EnumAiUsageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AiUsageType[] | ListEnumAiUsageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AiUsageType[] | ListEnumAiUsageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAiUsageTypeFilter<$PrismaModel> | $Enums.AiUsageType
+  }
+
+  export type EnumAiUsageFeatureFilter<$PrismaModel = never> = {
+    equals?: $Enums.AiUsageFeature | EnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    in?: $Enums.AiUsageFeature[] | ListEnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AiUsageFeature[] | ListEnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    not?: NestedEnumAiUsageFeatureFilter<$PrismaModel> | $Enums.AiUsageFeature
+  }
+
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type AiUsageEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    organisation_id?: SortOrder
+    user_id?: SortOrder
+    type?: SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    total_tokens?: SortOrder
+    image_count?: SortOrder
+    input_cost?: SortOrder
+    output_cost?: SortOrder
+    total_cost?: SortOrder
+    generation_run_id?: SortOrder
+    post_id?: SortOrder
+    metadata?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type AiUsageEventAvgOrderByAggregateInput = {
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    total_tokens?: SortOrder
+    image_count?: SortOrder
+    input_cost?: SortOrder
+    output_cost?: SortOrder
+    total_cost?: SortOrder
+  }
+
+  export type AiUsageEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    organisation_id?: SortOrder
+    user_id?: SortOrder
+    type?: SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    total_tokens?: SortOrder
+    image_count?: SortOrder
+    input_cost?: SortOrder
+    output_cost?: SortOrder
+    total_cost?: SortOrder
+    generation_run_id?: SortOrder
+    post_id?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type AiUsageEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    organisation_id?: SortOrder
+    user_id?: SortOrder
+    type?: SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    total_tokens?: SortOrder
+    image_count?: SortOrder
+    input_cost?: SortOrder
+    output_cost?: SortOrder
+    total_cost?: SortOrder
+    generation_run_id?: SortOrder
+    post_id?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type AiUsageEventSumOrderByAggregateInput = {
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    total_tokens?: SortOrder
+    image_count?: SortOrder
+    input_cost?: SortOrder
+    output_cost?: SortOrder
+    total_cost?: SortOrder
+  }
+
+  export type EnumAiUsageTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AiUsageType | EnumAiUsageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AiUsageType[] | ListEnumAiUsageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AiUsageType[] | ListEnumAiUsageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAiUsageTypeWithAggregatesFilter<$PrismaModel> | $Enums.AiUsageType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAiUsageTypeFilter<$PrismaModel>
+    _max?: NestedEnumAiUsageTypeFilter<$PrismaModel>
+  }
+
+  export type EnumAiUsageFeatureWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AiUsageFeature | EnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    in?: $Enums.AiUsageFeature[] | ListEnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AiUsageFeature[] | ListEnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    not?: NestedEnumAiUsageFeatureWithAggregatesFilter<$PrismaModel> | $Enums.AiUsageFeature
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAiUsageFeatureFilter<$PrismaModel>
+    _max?: NestedEnumAiUsageFeatureFilter<$PrismaModel>
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
   export type PasswordResetTokenCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -33549,6 +35725,13 @@ export namespace Prisma {
     connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
   }
 
+  export type AiUsageEventCreateNestedManyWithoutUserInput = {
+    create?: XOR<AiUsageEventCreateWithoutUserInput, AiUsageEventUncheckedCreateWithoutUserInput> | AiUsageEventCreateWithoutUserInput[] | AiUsageEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutUserInput | AiUsageEventCreateOrConnectWithoutUserInput[]
+    createMany?: AiUsageEventCreateManyUserInputEnvelope
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+  }
+
   export type PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -33582,6 +35765,13 @@ export namespace Prisma {
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
     createMany?: ActivityLogCreateManyUserInputEnvelope
     connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+  }
+
+  export type AiUsageEventUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AiUsageEventCreateWithoutUserInput, AiUsageEventUncheckedCreateWithoutUserInput> | AiUsageEventCreateWithoutUserInput[] | AiUsageEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutUserInput | AiUsageEventCreateOrConnectWithoutUserInput[]
+    createMany?: AiUsageEventCreateManyUserInputEnvelope
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -33670,6 +35860,20 @@ export namespace Prisma {
     deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
   }
 
+  export type AiUsageEventUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AiUsageEventCreateWithoutUserInput, AiUsageEventUncheckedCreateWithoutUserInput> | AiUsageEventCreateWithoutUserInput[] | AiUsageEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutUserInput | AiUsageEventCreateOrConnectWithoutUserInput[]
+    upsert?: AiUsageEventUpsertWithWhereUniqueWithoutUserInput | AiUsageEventUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AiUsageEventCreateManyUserInputEnvelope
+    set?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    disconnect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    delete?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    update?: AiUsageEventUpdateWithWhereUniqueWithoutUserInput | AiUsageEventUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AiUsageEventUpdateManyWithWhereWithoutUserInput | AiUsageEventUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
+  }
+
   export type PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -33738,6 +35942,20 @@ export namespace Prisma {
     update?: ActivityLogUpdateWithWhereUniqueWithoutUserInput | ActivityLogUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ActivityLogUpdateManyWithWhereWithoutUserInput | ActivityLogUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
+  }
+
+  export type AiUsageEventUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AiUsageEventCreateWithoutUserInput, AiUsageEventUncheckedCreateWithoutUserInput> | AiUsageEventCreateWithoutUserInput[] | AiUsageEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutUserInput | AiUsageEventCreateOrConnectWithoutUserInput[]
+    upsert?: AiUsageEventUpsertWithWhereUniqueWithoutUserInput | AiUsageEventUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AiUsageEventCreateManyUserInputEnvelope
+    set?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    disconnect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    delete?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    update?: AiUsageEventUpdateWithWhereUniqueWithoutUserInput | AiUsageEventUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AiUsageEventUpdateManyWithWhereWithoutUserInput | AiUsageEventUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPassword_reset_tokensInput = {
@@ -33930,6 +36148,13 @@ export namespace Prisma {
     connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
   }
 
+  export type AiUsageEventCreateNestedManyWithoutOrganisationInput = {
+    create?: XOR<AiUsageEventCreateWithoutOrganisationInput, AiUsageEventUncheckedCreateWithoutOrganisationInput> | AiUsageEventCreateWithoutOrganisationInput[] | AiUsageEventUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutOrganisationInput | AiUsageEventCreateOrConnectWithoutOrganisationInput[]
+    createMany?: AiUsageEventCreateManyOrganisationInputEnvelope
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+  }
+
   export type OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput = {
     create?: XOR<OrganisationMemberCreateWithoutOrganisationInput, OrganisationMemberUncheckedCreateWithoutOrganisationInput> | OrganisationMemberCreateWithoutOrganisationInput[] | OrganisationMemberUncheckedCreateWithoutOrganisationInput[]
     connectOrCreate?: OrganisationMemberCreateOrConnectWithoutOrganisationInput | OrganisationMemberCreateOrConnectWithoutOrganisationInput[]
@@ -33984,6 +36209,13 @@ export namespace Prisma {
     connectOrCreate?: ActivityLogCreateOrConnectWithoutOrganisationInput | ActivityLogCreateOrConnectWithoutOrganisationInput[]
     createMany?: ActivityLogCreateManyOrganisationInputEnvelope
     connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+  }
+
+  export type AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput = {
+    create?: XOR<AiUsageEventCreateWithoutOrganisationInput, AiUsageEventUncheckedCreateWithoutOrganisationInput> | AiUsageEventCreateWithoutOrganisationInput[] | AiUsageEventUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutOrganisationInput | AiUsageEventCreateOrConnectWithoutOrganisationInput[]
+    createMany?: AiUsageEventCreateManyOrganisationInputEnvelope
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutOrganisations_createdNestedInput = {
@@ -34106,6 +36338,20 @@ export namespace Prisma {
     deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
   }
 
+  export type AiUsageEventUpdateManyWithoutOrganisationNestedInput = {
+    create?: XOR<AiUsageEventCreateWithoutOrganisationInput, AiUsageEventUncheckedCreateWithoutOrganisationInput> | AiUsageEventCreateWithoutOrganisationInput[] | AiUsageEventUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutOrganisationInput | AiUsageEventCreateOrConnectWithoutOrganisationInput[]
+    upsert?: AiUsageEventUpsertWithWhereUniqueWithoutOrganisationInput | AiUsageEventUpsertWithWhereUniqueWithoutOrganisationInput[]
+    createMany?: AiUsageEventCreateManyOrganisationInputEnvelope
+    set?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    disconnect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    delete?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    update?: AiUsageEventUpdateWithWhereUniqueWithoutOrganisationInput | AiUsageEventUpdateWithWhereUniqueWithoutOrganisationInput[]
+    updateMany?: AiUsageEventUpdateManyWithWhereWithoutOrganisationInput | AiUsageEventUpdateManyWithWhereWithoutOrganisationInput[]
+    deleteMany?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
+  }
+
   export type OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput = {
     create?: XOR<OrganisationMemberCreateWithoutOrganisationInput, OrganisationMemberUncheckedCreateWithoutOrganisationInput> | OrganisationMemberCreateWithoutOrganisationInput[] | OrganisationMemberUncheckedCreateWithoutOrganisationInput[]
     connectOrCreate?: OrganisationMemberCreateOrConnectWithoutOrganisationInput | OrganisationMemberCreateOrConnectWithoutOrganisationInput[]
@@ -34216,6 +36462,20 @@ export namespace Prisma {
     update?: ActivityLogUpdateWithWhereUniqueWithoutOrganisationInput | ActivityLogUpdateWithWhereUniqueWithoutOrganisationInput[]
     updateMany?: ActivityLogUpdateManyWithWhereWithoutOrganisationInput | ActivityLogUpdateManyWithWhereWithoutOrganisationInput[]
     deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
+  }
+
+  export type AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput = {
+    create?: XOR<AiUsageEventCreateWithoutOrganisationInput, AiUsageEventUncheckedCreateWithoutOrganisationInput> | AiUsageEventCreateWithoutOrganisationInput[] | AiUsageEventUncheckedCreateWithoutOrganisationInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutOrganisationInput | AiUsageEventCreateOrConnectWithoutOrganisationInput[]
+    upsert?: AiUsageEventUpsertWithWhereUniqueWithoutOrganisationInput | AiUsageEventUpsertWithWhereUniqueWithoutOrganisationInput[]
+    createMany?: AiUsageEventCreateManyOrganisationInputEnvelope
+    set?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    disconnect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    delete?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    update?: AiUsageEventUpdateWithWhereUniqueWithoutOrganisationInput | AiUsageEventUpdateWithWhereUniqueWithoutOrganisationInput[]
+    updateMany?: AiUsageEventUpdateManyWithWhereWithoutOrganisationInput | AiUsageEventUpdateManyWithWhereWithoutOrganisationInput[]
+    deleteMany?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
   }
 
   export type OrganisationCreateNestedOneWithoutMembersInput = {
@@ -35134,6 +37394,13 @@ export namespace Prisma {
     connect?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
   }
 
+  export type AiUsageEventCreateNestedManyWithoutGeneration_runInput = {
+    create?: XOR<AiUsageEventCreateWithoutGeneration_runInput, AiUsageEventUncheckedCreateWithoutGeneration_runInput> | AiUsageEventCreateWithoutGeneration_runInput[] | AiUsageEventUncheckedCreateWithoutGeneration_runInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutGeneration_runInput | AiUsageEventCreateOrConnectWithoutGeneration_runInput[]
+    createMany?: AiUsageEventCreateManyGeneration_runInputEnvelope
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+  }
+
   export type PostUncheckedCreateNestedManyWithoutGeneration_runInput = {
     create?: XOR<PostCreateWithoutGeneration_runInput, PostUncheckedCreateWithoutGeneration_runInput> | PostCreateWithoutGeneration_runInput[] | PostUncheckedCreateWithoutGeneration_runInput[]
     connectOrCreate?: PostCreateOrConnectWithoutGeneration_runInput | PostCreateOrConnectWithoutGeneration_runInput[]
@@ -35146,6 +37413,13 @@ export namespace Prisma {
     connectOrCreate?: GenerationItemCreateOrConnectWithoutGeneration_runInput | GenerationItemCreateOrConnectWithoutGeneration_runInput[]
     createMany?: GenerationItemCreateManyGeneration_runInputEnvelope
     connect?: GenerationItemWhereUniqueInput | GenerationItemWhereUniqueInput[]
+  }
+
+  export type AiUsageEventUncheckedCreateNestedManyWithoutGeneration_runInput = {
+    create?: XOR<AiUsageEventCreateWithoutGeneration_runInput, AiUsageEventUncheckedCreateWithoutGeneration_runInput> | AiUsageEventCreateWithoutGeneration_runInput[] | AiUsageEventUncheckedCreateWithoutGeneration_runInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutGeneration_runInput | AiUsageEventCreateOrConnectWithoutGeneration_runInput[]
+    createMany?: AiUsageEventCreateManyGeneration_runInputEnvelope
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
   }
 
   export type ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput = {
@@ -35204,6 +37478,20 @@ export namespace Prisma {
     deleteMany?: GenerationItemScalarWhereInput | GenerationItemScalarWhereInput[]
   }
 
+  export type AiUsageEventUpdateManyWithoutGeneration_runNestedInput = {
+    create?: XOR<AiUsageEventCreateWithoutGeneration_runInput, AiUsageEventUncheckedCreateWithoutGeneration_runInput> | AiUsageEventCreateWithoutGeneration_runInput[] | AiUsageEventUncheckedCreateWithoutGeneration_runInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutGeneration_runInput | AiUsageEventCreateOrConnectWithoutGeneration_runInput[]
+    upsert?: AiUsageEventUpsertWithWhereUniqueWithoutGeneration_runInput | AiUsageEventUpsertWithWhereUniqueWithoutGeneration_runInput[]
+    createMany?: AiUsageEventCreateManyGeneration_runInputEnvelope
+    set?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    disconnect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    delete?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    update?: AiUsageEventUpdateWithWhereUniqueWithoutGeneration_runInput | AiUsageEventUpdateWithWhereUniqueWithoutGeneration_runInput[]
+    updateMany?: AiUsageEventUpdateManyWithWhereWithoutGeneration_runInput | AiUsageEventUpdateManyWithWhereWithoutGeneration_runInput[]
+    deleteMany?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
+  }
+
   export type PostUncheckedUpdateManyWithoutGeneration_runNestedInput = {
     create?: XOR<PostCreateWithoutGeneration_runInput, PostUncheckedCreateWithoutGeneration_runInput> | PostCreateWithoutGeneration_runInput[] | PostUncheckedCreateWithoutGeneration_runInput[]
     connectOrCreate?: PostCreateOrConnectWithoutGeneration_runInput | PostCreateOrConnectWithoutGeneration_runInput[]
@@ -35230,6 +37518,20 @@ export namespace Prisma {
     update?: GenerationItemUpdateWithWhereUniqueWithoutGeneration_runInput | GenerationItemUpdateWithWhereUniqueWithoutGeneration_runInput[]
     updateMany?: GenerationItemUpdateManyWithWhereWithoutGeneration_runInput | GenerationItemUpdateManyWithWhereWithoutGeneration_runInput[]
     deleteMany?: GenerationItemScalarWhereInput | GenerationItemScalarWhereInput[]
+  }
+
+  export type AiUsageEventUncheckedUpdateManyWithoutGeneration_runNestedInput = {
+    create?: XOR<AiUsageEventCreateWithoutGeneration_runInput, AiUsageEventUncheckedCreateWithoutGeneration_runInput> | AiUsageEventCreateWithoutGeneration_runInput[] | AiUsageEventUncheckedCreateWithoutGeneration_runInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutGeneration_runInput | AiUsageEventCreateOrConnectWithoutGeneration_runInput[]
+    upsert?: AiUsageEventUpsertWithWhereUniqueWithoutGeneration_runInput | AiUsageEventUpsertWithWhereUniqueWithoutGeneration_runInput[]
+    createMany?: AiUsageEventCreateManyGeneration_runInputEnvelope
+    set?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    disconnect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    delete?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    update?: AiUsageEventUpdateWithWhereUniqueWithoutGeneration_runInput | AiUsageEventUpdateWithWhereUniqueWithoutGeneration_runInput[]
+    updateMany?: AiUsageEventUpdateManyWithWhereWithoutGeneration_runInput | AiUsageEventUpdateManyWithWhereWithoutGeneration_runInput[]
+    deleteMany?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
   }
 
   export type GenerationRunCreateNestedOneWithoutItemsInput = {
@@ -35516,6 +37818,13 @@ export namespace Prisma {
     connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
   }
 
+  export type AiUsageEventCreateNestedManyWithoutPostInput = {
+    create?: XOR<AiUsageEventCreateWithoutPostInput, AiUsageEventUncheckedCreateWithoutPostInput> | AiUsageEventCreateWithoutPostInput[] | AiUsageEventUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutPostInput | AiUsageEventCreateOrConnectWithoutPostInput[]
+    createMany?: AiUsageEventCreateManyPostInputEnvelope
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+  }
+
   export type PostUncheckedCreateNestedManyWithoutSource_postInput = {
     create?: XOR<PostCreateWithoutSource_postInput, PostUncheckedCreateWithoutSource_postInput> | PostCreateWithoutSource_postInput[] | PostUncheckedCreateWithoutSource_postInput[]
     connectOrCreate?: PostCreateOrConnectWithoutSource_postInput | PostCreateOrConnectWithoutSource_postInput[]
@@ -35535,6 +37844,13 @@ export namespace Prisma {
     connectOrCreate?: PostIntegrationCreateOrConnectWithoutPostInput | PostIntegrationCreateOrConnectWithoutPostInput[]
     createMany?: PostIntegrationCreateManyPostInputEnvelope
     connect?: PostIntegrationWhereUniqueInput | PostIntegrationWhereUniqueInput[]
+  }
+
+  export type AiUsageEventUncheckedCreateNestedManyWithoutPostInput = {
+    create?: XOR<AiUsageEventCreateWithoutPostInput, AiUsageEventUncheckedCreateWithoutPostInput> | AiUsageEventCreateWithoutPostInput[] | AiUsageEventUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutPostInput | AiUsageEventCreateOrConnectWithoutPostInput[]
+    createMany?: AiUsageEventCreateManyPostInputEnvelope
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
   }
 
   export type EnumPostStatusFieldUpdateOperationsInput = {
@@ -35679,6 +37995,20 @@ export namespace Prisma {
     deleteMany?: PostIntegrationScalarWhereInput | PostIntegrationScalarWhereInput[]
   }
 
+  export type AiUsageEventUpdateManyWithoutPostNestedInput = {
+    create?: XOR<AiUsageEventCreateWithoutPostInput, AiUsageEventUncheckedCreateWithoutPostInput> | AiUsageEventCreateWithoutPostInput[] | AiUsageEventUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutPostInput | AiUsageEventCreateOrConnectWithoutPostInput[]
+    upsert?: AiUsageEventUpsertWithWhereUniqueWithoutPostInput | AiUsageEventUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: AiUsageEventCreateManyPostInputEnvelope
+    set?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    disconnect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    delete?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    update?: AiUsageEventUpdateWithWhereUniqueWithoutPostInput | AiUsageEventUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: AiUsageEventUpdateManyWithWhereWithoutPostInput | AiUsageEventUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
+  }
+
   export type PostUncheckedUpdateManyWithoutSource_postNestedInput = {
     create?: XOR<PostCreateWithoutSource_postInput, PostUncheckedCreateWithoutSource_postInput> | PostCreateWithoutSource_postInput[] | PostUncheckedCreateWithoutSource_postInput[]
     connectOrCreate?: PostCreateOrConnectWithoutSource_postInput | PostCreateOrConnectWithoutSource_postInput[]
@@ -35719,6 +38049,20 @@ export namespace Prisma {
     update?: PostIntegrationUpdateWithWhereUniqueWithoutPostInput | PostIntegrationUpdateWithWhereUniqueWithoutPostInput[]
     updateMany?: PostIntegrationUpdateManyWithWhereWithoutPostInput | PostIntegrationUpdateManyWithWhereWithoutPostInput[]
     deleteMany?: PostIntegrationScalarWhereInput | PostIntegrationScalarWhereInput[]
+  }
+
+  export type AiUsageEventUncheckedUpdateManyWithoutPostNestedInput = {
+    create?: XOR<AiUsageEventCreateWithoutPostInput, AiUsageEventUncheckedCreateWithoutPostInput> | AiUsageEventCreateWithoutPostInput[] | AiUsageEventUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: AiUsageEventCreateOrConnectWithoutPostInput | AiUsageEventCreateOrConnectWithoutPostInput[]
+    upsert?: AiUsageEventUpsertWithWhereUniqueWithoutPostInput | AiUsageEventUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: AiUsageEventCreateManyPostInputEnvelope
+    set?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    disconnect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    delete?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    connect?: AiUsageEventWhereUniqueInput | AiUsageEventWhereUniqueInput[]
+    update?: AiUsageEventUpdateWithWhereUniqueWithoutPostInput | AiUsageEventUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: AiUsageEventUpdateManyWithWhereWithoutPostInput | AiUsageEventUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
   }
 
   export type PostCreateNestedOneWithoutAttachmentsInput = {
@@ -35819,6 +38163,86 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActivity_logsInput, UserUpdateWithoutActivity_logsInput>, UserUncheckedUpdateWithoutActivity_logsInput>
+  }
+
+  export type OrganisationCreateNestedOneWithoutAi_usage_eventsInput = {
+    create?: XOR<OrganisationCreateWithoutAi_usage_eventsInput, OrganisationUncheckedCreateWithoutAi_usage_eventsInput>
+    connectOrCreate?: OrganisationCreateOrConnectWithoutAi_usage_eventsInput
+    connect?: OrganisationWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAi_usage_eventsInput = {
+    create?: XOR<UserCreateWithoutAi_usage_eventsInput, UserUncheckedCreateWithoutAi_usage_eventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAi_usage_eventsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type GenerationRunCreateNestedOneWithoutUsage_eventsInput = {
+    create?: XOR<GenerationRunCreateWithoutUsage_eventsInput, GenerationRunUncheckedCreateWithoutUsage_eventsInput>
+    connectOrCreate?: GenerationRunCreateOrConnectWithoutUsage_eventsInput
+    connect?: GenerationRunWhereUniqueInput
+  }
+
+  export type PostCreateNestedOneWithoutUsage_eventsInput = {
+    create?: XOR<PostCreateWithoutUsage_eventsInput, PostUncheckedCreateWithoutUsage_eventsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutUsage_eventsInput
+    connect?: PostWhereUniqueInput
+  }
+
+  export type EnumAiUsageTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AiUsageType
+  }
+
+  export type EnumAiUsageFeatureFieldUpdateOperationsInput = {
+    set?: $Enums.AiUsageFeature
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type OrganisationUpdateOneWithoutAi_usage_eventsNestedInput = {
+    create?: XOR<OrganisationCreateWithoutAi_usage_eventsInput, OrganisationUncheckedCreateWithoutAi_usage_eventsInput>
+    connectOrCreate?: OrganisationCreateOrConnectWithoutAi_usage_eventsInput
+    upsert?: OrganisationUpsertWithoutAi_usage_eventsInput
+    disconnect?: OrganisationWhereInput | boolean
+    delete?: OrganisationWhereInput | boolean
+    connect?: OrganisationWhereUniqueInput
+    update?: XOR<XOR<OrganisationUpdateToOneWithWhereWithoutAi_usage_eventsInput, OrganisationUpdateWithoutAi_usage_eventsInput>, OrganisationUncheckedUpdateWithoutAi_usage_eventsInput>
+  }
+
+  export type UserUpdateOneWithoutAi_usage_eventsNestedInput = {
+    create?: XOR<UserCreateWithoutAi_usage_eventsInput, UserUncheckedCreateWithoutAi_usage_eventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAi_usage_eventsInput
+    upsert?: UserUpsertWithoutAi_usage_eventsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAi_usage_eventsInput, UserUpdateWithoutAi_usage_eventsInput>, UserUncheckedUpdateWithoutAi_usage_eventsInput>
+  }
+
+  export type GenerationRunUpdateOneWithoutUsage_eventsNestedInput = {
+    create?: XOR<GenerationRunCreateWithoutUsage_eventsInput, GenerationRunUncheckedCreateWithoutUsage_eventsInput>
+    connectOrCreate?: GenerationRunCreateOrConnectWithoutUsage_eventsInput
+    upsert?: GenerationRunUpsertWithoutUsage_eventsInput
+    disconnect?: GenerationRunWhereInput | boolean
+    delete?: GenerationRunWhereInput | boolean
+    connect?: GenerationRunWhereUniqueInput
+    update?: XOR<XOR<GenerationRunUpdateToOneWithWhereWithoutUsage_eventsInput, GenerationRunUpdateWithoutUsage_eventsInput>, GenerationRunUncheckedUpdateWithoutUsage_eventsInput>
+  }
+
+  export type PostUpdateOneWithoutUsage_eventsNestedInput = {
+    create?: XOR<PostCreateWithoutUsage_eventsInput, PostUncheckedCreateWithoutUsage_eventsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutUsage_eventsInput
+    upsert?: PostUpsertWithoutUsage_eventsInput
+    disconnect?: PostWhereInput | boolean
+    delete?: PostWhereInput | boolean
+    connect?: PostWhereUniqueInput
+    update?: XOR<XOR<PostUpdateToOneWithWhereWithoutUsage_eventsInput, PostUpdateWithoutUsage_eventsInput>, PostUncheckedUpdateWithoutUsage_eventsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -36266,6 +38690,67 @@ export namespace Prisma {
     _max?: NestedEnumActivityLogEntityTypeNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumAiUsageTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AiUsageType | EnumAiUsageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AiUsageType[] | ListEnumAiUsageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AiUsageType[] | ListEnumAiUsageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAiUsageTypeFilter<$PrismaModel> | $Enums.AiUsageType
+  }
+
+  export type NestedEnumAiUsageFeatureFilter<$PrismaModel = never> = {
+    equals?: $Enums.AiUsageFeature | EnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    in?: $Enums.AiUsageFeature[] | ListEnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AiUsageFeature[] | ListEnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    not?: NestedEnumAiUsageFeatureFilter<$PrismaModel> | $Enums.AiUsageFeature
+  }
+
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type NestedEnumAiUsageTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AiUsageType | EnumAiUsageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AiUsageType[] | ListEnumAiUsageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AiUsageType[] | ListEnumAiUsageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAiUsageTypeWithAggregatesFilter<$PrismaModel> | $Enums.AiUsageType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAiUsageTypeFilter<$PrismaModel>
+    _max?: NestedEnumAiUsageTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAiUsageFeatureWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AiUsageFeature | EnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    in?: $Enums.AiUsageFeature[] | ListEnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AiUsageFeature[] | ListEnumAiUsageFeatureFieldRefInput<$PrismaModel>
+    not?: NestedEnumAiUsageFeatureWithAggregatesFilter<$PrismaModel> | $Enums.AiUsageFeature
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAiUsageFeatureFilter<$PrismaModel>
+    _max?: NestedEnumAiUsageFeatureFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
   export type PasswordResetTokenCreateWithoutUserInput = {
     id?: string
     token_hash: string
@@ -36306,6 +38791,7 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutCreated_byInput = {
@@ -36322,6 +38808,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutCreated_byInput = {
@@ -36393,6 +38880,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutUserInput = {
@@ -36424,6 +38912,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutUserInput = {
@@ -36465,6 +38954,56 @@ export namespace Prisma {
 
   export type ActivityLogCreateManyUserInputEnvelope = {
     data: ActivityLogCreateManyUserInput | ActivityLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AiUsageEventCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    organisation?: OrganisationCreateNestedOneWithoutAi_usage_eventsInput
+    generation_run?: GenerationRunCreateNestedOneWithoutUsage_eventsInput
+    post?: PostCreateNestedOneWithoutUsage_eventsInput
+  }
+
+  export type AiUsageEventUncheckedCreateWithoutUserInput = {
+    id?: string
+    organisation_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    generation_run_id?: string | null
+    post_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type AiUsageEventCreateOrConnectWithoutUserInput = {
+    where: AiUsageEventWhereUniqueInput
+    create: XOR<AiUsageEventCreateWithoutUserInput, AiUsageEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type AiUsageEventCreateManyUserInputEnvelope = {
+    data: AiUsageEventCreateManyUserInput | AiUsageEventCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -36632,6 +39171,46 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"ActivityLog"> | Date | string
   }
 
+  export type AiUsageEventUpsertWithWhereUniqueWithoutUserInput = {
+    where: AiUsageEventWhereUniqueInput
+    update: XOR<AiUsageEventUpdateWithoutUserInput, AiUsageEventUncheckedUpdateWithoutUserInput>
+    create: XOR<AiUsageEventCreateWithoutUserInput, AiUsageEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type AiUsageEventUpdateWithWhereUniqueWithoutUserInput = {
+    where: AiUsageEventWhereUniqueInput
+    data: XOR<AiUsageEventUpdateWithoutUserInput, AiUsageEventUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AiUsageEventUpdateManyWithWhereWithoutUserInput = {
+    where: AiUsageEventScalarWhereInput
+    data: XOR<AiUsageEventUpdateManyMutationInput, AiUsageEventUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AiUsageEventScalarWhereInput = {
+    AND?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
+    OR?: AiUsageEventScalarWhereInput[]
+    NOT?: AiUsageEventScalarWhereInput | AiUsageEventScalarWhereInput[]
+    id?: StringFilter<"AiUsageEvent"> | string
+    organisation_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    user_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    type?: EnumAiUsageTypeFilter<"AiUsageEvent"> | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFilter<"AiUsageEvent"> | $Enums.AiUsageFeature
+    provider?: StringFilter<"AiUsageEvent"> | string
+    model?: StringFilter<"AiUsageEvent"> | string
+    input_tokens?: IntNullableFilter<"AiUsageEvent"> | number | null
+    output_tokens?: IntNullableFilter<"AiUsageEvent"> | number | null
+    total_tokens?: IntNullableFilter<"AiUsageEvent"> | number | null
+    image_count?: IntNullableFilter<"AiUsageEvent"> | number | null
+    input_cost?: DecimalFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFilter<"AiUsageEvent"> | Decimal | DecimalJsLike | number | string
+    generation_run_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    post_id?: StringNullableFilter<"AiUsageEvent"> | string | null
+    metadata?: JsonNullableFilter<"AiUsageEvent">
+    created_at?: DateTimeFilter<"AiUsageEvent"> | Date | string
+  }
+
   export type UserCreateWithoutPassword_reset_tokensInput = {
     id?: string
     name: string
@@ -36645,6 +39224,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
     authored_posts?: PostCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPassword_reset_tokensInput = {
@@ -36660,6 +39240,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
     authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPassword_reset_tokensInput = {
@@ -36691,6 +39272,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
     authored_posts?: PostUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPassword_reset_tokensInput = {
@@ -36706,6 +39288,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationCreateWithoutDocumentsInput = {
@@ -36722,6 +39305,7 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutDocumentsInput = {
@@ -36738,6 +39322,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutDocumentsInput = {
@@ -36798,6 +39383,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutCover_documentInput = {
@@ -36829,6 +39415,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutCover_documentInput = {
@@ -36866,6 +39453,7 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutDocumentsInput = {
@@ -36882,6 +39470,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type PostAttachmentUpsertWithWhereUniqueWithoutDocumentInput = {
@@ -36940,6 +39529,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
     authored_posts?: PostCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrganisations_createdInput = {
@@ -36955,6 +39545,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
     authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrganisations_createdInput = {
@@ -37057,6 +39648,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutOrganisationInput = {
@@ -37088,6 +39680,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutOrganisationInput = {
@@ -37324,6 +39917,56 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AiUsageEventCreateWithoutOrganisationInput = {
+    id?: string
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    user?: UserCreateNestedOneWithoutAi_usage_eventsInput
+    generation_run?: GenerationRunCreateNestedOneWithoutUsage_eventsInput
+    post?: PostCreateNestedOneWithoutUsage_eventsInput
+  }
+
+  export type AiUsageEventUncheckedCreateWithoutOrganisationInput = {
+    id?: string
+    user_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    generation_run_id?: string | null
+    post_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type AiUsageEventCreateOrConnectWithoutOrganisationInput = {
+    where: AiUsageEventWhereUniqueInput
+    create: XOR<AiUsageEventCreateWithoutOrganisationInput, AiUsageEventUncheckedCreateWithoutOrganisationInput>
+  }
+
+  export type AiUsageEventCreateManyOrganisationInputEnvelope = {
+    data: AiUsageEventCreateManyOrganisationInput | AiUsageEventCreateManyOrganisationInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutOrganisations_createdInput = {
     update: XOR<UserUpdateWithoutOrganisations_createdInput, UserUncheckedUpdateWithoutOrganisations_createdInput>
     create: XOR<UserCreateWithoutOrganisations_createdInput, UserUncheckedCreateWithoutOrganisations_createdInput>
@@ -37348,6 +39991,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
     authored_posts?: PostUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrganisations_createdInput = {
@@ -37363,6 +40007,7 @@ export namespace Prisma {
     organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationMemberUpsertWithWhereUniqueWithoutOrganisationInput = {
@@ -37587,6 +40232,22 @@ export namespace Prisma {
     data: XOR<ActivityLogUpdateManyMutationInput, ActivityLogUncheckedUpdateManyWithoutOrganisationInput>
   }
 
+  export type AiUsageEventUpsertWithWhereUniqueWithoutOrganisationInput = {
+    where: AiUsageEventWhereUniqueInput
+    update: XOR<AiUsageEventUpdateWithoutOrganisationInput, AiUsageEventUncheckedUpdateWithoutOrganisationInput>
+    create: XOR<AiUsageEventCreateWithoutOrganisationInput, AiUsageEventUncheckedCreateWithoutOrganisationInput>
+  }
+
+  export type AiUsageEventUpdateWithWhereUniqueWithoutOrganisationInput = {
+    where: AiUsageEventWhereUniqueInput
+    data: XOR<AiUsageEventUpdateWithoutOrganisationInput, AiUsageEventUncheckedUpdateWithoutOrganisationInput>
+  }
+
+  export type AiUsageEventUpdateManyWithWhereWithoutOrganisationInput = {
+    where: AiUsageEventScalarWhereInput
+    data: XOR<AiUsageEventUpdateManyMutationInput, AiUsageEventUncheckedUpdateManyWithoutOrganisationInput>
+  }
+
   export type OrganisationCreateWithoutMembersInput = {
     id?: string
     name: string
@@ -37601,6 +40262,7 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutMembersInput = {
@@ -37617,6 +40279,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutMembersInput = {
@@ -37637,6 +40300,7 @@ export namespace Prisma {
     organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
     authored_posts?: PostCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrganisation_membershipsInput = {
@@ -37652,6 +40316,7 @@ export namespace Prisma {
     organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
     authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrganisation_membershipsInput = {
@@ -37712,6 +40377,7 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutMembersInput = {
@@ -37728,6 +40394,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type UserUpsertWithoutOrganisation_membershipsInput = {
@@ -37754,6 +40421,7 @@ export namespace Prisma {
     organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
     authored_posts?: PostUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrganisation_membershipsInput = {
@@ -37769,6 +40437,7 @@ export namespace Prisma {
     organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationInviteTokenUpsertWithWhereUniqueWithoutOrganisation_memberInput = {
@@ -37870,6 +40539,7 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutIntegrationsInput = {
@@ -37886,6 +40556,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutIntegrationsInput = {
@@ -37952,6 +40623,7 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutIntegrationsInput = {
@@ -37968,6 +40640,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type PostIntegrationUpsertWithWhereUniqueWithoutIntegrationInput = {
@@ -38016,6 +40689,7 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutStyle_profilesInput = {
@@ -38032,6 +40706,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutStyle_profilesInput = {
@@ -38071,6 +40746,7 @@ export namespace Prisma {
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
     posts?: PostCreateNestedManyWithoutGeneration_runInput
     items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateWithoutStyle_profileInput = {
@@ -38083,6 +40759,7 @@ export namespace Prisma {
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
     items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunCreateOrConnectWithoutStyle_profileInput = {
@@ -38178,6 +40855,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutStyle_profileInput = {
@@ -38209,6 +40887,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutStyle_profileInput = {
@@ -38246,6 +40925,7 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutStyle_profilesInput = {
@@ -38262,6 +40942,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type ProjectStyleProfileUpsertWithWhereUniqueWithoutStyle_profileInput = {
@@ -38390,6 +41071,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutProjectsInput = {
@@ -38406,6 +41088,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutProjectsInput = {
@@ -38486,6 +41169,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutProjectInput = {
@@ -38517,6 +41201,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutProjectInput = {
@@ -38539,6 +41224,7 @@ export namespace Prisma {
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
     posts?: PostCreateNestedManyWithoutGeneration_runInput
     items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateWithoutProjectInput = {
@@ -38551,6 +41237,7 @@ export namespace Prisma {
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
     items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunCreateOrConnectWithoutProjectInput = {
@@ -38642,6 +41329,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutProjectsInput = {
@@ -38658,6 +41346,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type ProjectStyleProfileUpsertWithWhereUniqueWithoutProjectInput = {
@@ -38764,6 +41453,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutRss_feedsInput = {
@@ -38780,6 +41470,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutRss_feedsInput = {
@@ -38924,6 +41615,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutRss_feedsInput = {
@@ -38940,6 +41632,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type ProjectRssFeedUpsertWithWhereUniqueWithoutRss_feedInput = {
@@ -39230,6 +41923,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutRss_feed_itemInput = {
@@ -39261,6 +41955,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutRss_feed_itemInput = {
@@ -39710,6 +42405,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutGeneration_runInput = {
@@ -39741,6 +42437,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutGeneration_runInput = {
@@ -39776,6 +42473,56 @@ export namespace Prisma {
 
   export type GenerationItemCreateManyGeneration_runInputEnvelope = {
     data: GenerationItemCreateManyGeneration_runInput | GenerationItemCreateManyGeneration_runInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AiUsageEventCreateWithoutGeneration_runInput = {
+    id?: string
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    organisation?: OrganisationCreateNestedOneWithoutAi_usage_eventsInput
+    user?: UserCreateNestedOneWithoutAi_usage_eventsInput
+    post?: PostCreateNestedOneWithoutUsage_eventsInput
+  }
+
+  export type AiUsageEventUncheckedCreateWithoutGeneration_runInput = {
+    id?: string
+    organisation_id?: string | null
+    user_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    post_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type AiUsageEventCreateOrConnectWithoutGeneration_runInput = {
+    where: AiUsageEventWhereUniqueInput
+    create: XOR<AiUsageEventCreateWithoutGeneration_runInput, AiUsageEventUncheckedCreateWithoutGeneration_runInput>
+  }
+
+  export type AiUsageEventCreateManyGeneration_runInputEnvelope = {
+    data: AiUsageEventCreateManyGeneration_runInput | AiUsageEventCreateManyGeneration_runInput[]
     skipDuplicates?: boolean
   }
 
@@ -39987,6 +42734,22 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"GenerationItem"> | Date | string
   }
 
+  export type AiUsageEventUpsertWithWhereUniqueWithoutGeneration_runInput = {
+    where: AiUsageEventWhereUniqueInput
+    update: XOR<AiUsageEventUpdateWithoutGeneration_runInput, AiUsageEventUncheckedUpdateWithoutGeneration_runInput>
+    create: XOR<AiUsageEventCreateWithoutGeneration_runInput, AiUsageEventUncheckedCreateWithoutGeneration_runInput>
+  }
+
+  export type AiUsageEventUpdateWithWhereUniqueWithoutGeneration_runInput = {
+    where: AiUsageEventWhereUniqueInput
+    data: XOR<AiUsageEventUpdateWithoutGeneration_runInput, AiUsageEventUncheckedUpdateWithoutGeneration_runInput>
+  }
+
+  export type AiUsageEventUpdateManyWithWhereWithoutGeneration_runInput = {
+    where: AiUsageEventScalarWhereInput
+    data: XOR<AiUsageEventUpdateManyMutationInput, AiUsageEventUncheckedUpdateManyWithoutGeneration_runInput>
+  }
+
   export type GenerationRunCreateWithoutItemsInput = {
     id?: string
     label?: string | null
@@ -39997,6 +42760,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
     posts?: PostCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateWithoutItemsInput = {
@@ -40009,6 +42773,7 @@ export namespace Prisma {
     language?: string
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunCreateOrConnectWithoutItemsInput = {
@@ -40045,6 +42810,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutGeneration_itemInput = {
@@ -40076,6 +42842,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutGeneration_itemInput = {
@@ -40109,6 +42876,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
     posts?: PostUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateWithoutItemsInput = {
@@ -40121,6 +42889,7 @@ export namespace Prisma {
     language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutGeneration_itemInput = {
@@ -40278,6 +43047,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
     posts?: PostCreateNestedManyWithoutGeneration_runInput
     items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateWithoutAutomationInput = {
@@ -40290,6 +43060,7 @@ export namespace Prisma {
     created_at?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
     items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunCreateOrConnectWithoutAutomationInput = {
@@ -40331,6 +43102,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutAutomationInput = {
@@ -40362,6 +43134,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutAutomationInput = {
@@ -40566,6 +43339,7 @@ export namespace Prisma {
     organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuthored_postsInput = {
@@ -40581,6 +43355,7 @@ export namespace Prisma {
     organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuthored_postsInput = {
@@ -40602,6 +43377,7 @@ export namespace Prisma {
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutPostsInput = {
@@ -40618,6 +43394,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
     activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutPostsInput = {
@@ -40733,6 +43510,7 @@ export namespace Prisma {
     style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
     automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
     items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunUncheckedCreateWithoutPostsInput = {
@@ -40745,6 +43523,7 @@ export namespace Prisma {
     language?: string
     created_at?: Date | string
     items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutGeneration_runInput
   }
 
   export type GenerationRunCreateOrConnectWithoutPostsInput = {
@@ -40913,6 +43692,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutRepurposed_postsInput = {
@@ -40944,6 +43724,7 @@ export namespace Prisma {
     updated_at?: Date | string
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutRepurposed_postsInput = {
@@ -40980,6 +43761,7 @@ export namespace Prisma {
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutSource_postInput = {
@@ -41011,6 +43793,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutSource_postInput = {
@@ -41081,6 +43864,56 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AiUsageEventCreateWithoutPostInput = {
+    id?: string
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    organisation?: OrganisationCreateNestedOneWithoutAi_usage_eventsInput
+    user?: UserCreateNestedOneWithoutAi_usage_eventsInput
+    generation_run?: GenerationRunCreateNestedOneWithoutUsage_eventsInput
+  }
+
+  export type AiUsageEventUncheckedCreateWithoutPostInput = {
+    id?: string
+    organisation_id?: string | null
+    user_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    generation_run_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type AiUsageEventCreateOrConnectWithoutPostInput = {
+    where: AiUsageEventWhereUniqueInput
+    create: XOR<AiUsageEventCreateWithoutPostInput, AiUsageEventUncheckedCreateWithoutPostInput>
+  }
+
+  export type AiUsageEventCreateManyPostInputEnvelope = {
+    data: AiUsageEventCreateManyPostInput | AiUsageEventCreateManyPostInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutAuthored_postsInput = {
     update: XOR<UserUpdateWithoutAuthored_postsInput, UserUncheckedUpdateWithoutAuthored_postsInput>
     create: XOR<UserCreateWithoutAuthored_postsInput, UserUncheckedCreateWithoutAuthored_postsInput>
@@ -41105,6 +43938,7 @@ export namespace Prisma {
     organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuthored_postsInput = {
@@ -41120,6 +43954,7 @@ export namespace Prisma {
     organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrganisationUpsertWithoutPostsInput = {
@@ -41147,6 +43982,7 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutPostsInput = {
@@ -41163,6 +43999,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type ProjectUpsertWithoutPostsInput = {
@@ -41296,6 +44133,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
     items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateWithoutPostsInput = {
@@ -41308,6 +44146,7 @@ export namespace Prisma {
     language?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationItemUpsertWithoutPostsInput = {
@@ -41506,6 +44345,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutRepurposed_postsInput = {
@@ -41537,6 +44377,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutSource_postInput = {
@@ -41587,6 +44428,22 @@ export namespace Prisma {
     data: XOR<PostIntegrationUpdateManyMutationInput, PostIntegrationUncheckedUpdateManyWithoutPostInput>
   }
 
+  export type AiUsageEventUpsertWithWhereUniqueWithoutPostInput = {
+    where: AiUsageEventWhereUniqueInput
+    update: XOR<AiUsageEventUpdateWithoutPostInput, AiUsageEventUncheckedUpdateWithoutPostInput>
+    create: XOR<AiUsageEventCreateWithoutPostInput, AiUsageEventUncheckedCreateWithoutPostInput>
+  }
+
+  export type AiUsageEventUpdateWithWhereUniqueWithoutPostInput = {
+    where: AiUsageEventWhereUniqueInput
+    data: XOR<AiUsageEventUpdateWithoutPostInput, AiUsageEventUncheckedUpdateWithoutPostInput>
+  }
+
+  export type AiUsageEventUpdateManyWithWhereWithoutPostInput = {
+    where: AiUsageEventScalarWhereInput
+    data: XOR<AiUsageEventUpdateManyMutationInput, AiUsageEventUncheckedUpdateManyWithoutPostInput>
+  }
+
   export type PostCreateWithoutAttachmentsInput = {
     id?: string
     type: $Enums.PostType
@@ -41616,6 +44473,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutAttachmentsInput = {
@@ -41647,6 +44505,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutAttachmentsInput = {
@@ -41725,6 +44584,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutAttachmentsInput = {
@@ -41756,6 +44616,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type DocumentUpsertWithoutPost_attachmentsInput = {
@@ -41824,6 +44685,7 @@ export namespace Prisma {
     source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
     repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutIntegrationsInput = {
@@ -41855,6 +44717,7 @@ export namespace Prisma {
     updated_at?: Date | string
     repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
     attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
+    usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutIntegrationsInput = {
@@ -41945,6 +44808,7 @@ export namespace Prisma {
     source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutIntegrationsInput = {
@@ -41976,6 +44840,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type IntegrationUpsertWithoutPost_integrationsInput = {
@@ -42041,6 +44906,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
     projects?: ProjectCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationUncheckedCreateWithoutActivity_logsInput = {
@@ -42057,6 +44923,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
     projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
     rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutOrganisationInput
   }
 
   export type OrganisationCreateOrConnectWithoutActivity_logsInput = {
@@ -42077,6 +44944,7 @@ export namespace Prisma {
     organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
     authored_posts?: PostCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivity_logsInput = {
@@ -42092,6 +44960,7 @@ export namespace Prisma {
     organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
     organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
     authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_events?: AiUsageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivity_logsInput = {
@@ -42124,6 +44993,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutActivity_logsInput = {
@@ -42140,6 +45010,7 @@ export namespace Prisma {
     style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type UserUpsertWithoutActivity_logsInput = {
@@ -42166,6 +45037,7 @@ export namespace Prisma {
     organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
     authored_posts?: PostUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivity_logsInput = {
@@ -42181,6 +45053,383 @@ export namespace Prisma {
     organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
     organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
     authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type OrganisationCreateWithoutAi_usage_eventsInput = {
+    id?: string
+    name: string
+    slug: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    created_by: UserCreateNestedOneWithoutOrganisations_createdInput
+    members?: OrganisationMemberCreateNestedManyWithoutOrganisationInput
+    documents?: DocumentCreateNestedManyWithoutOrganisationInput
+    posts?: PostCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationCreateNestedManyWithoutOrganisationInput
+    style_profiles?: StyleProfileCreateNestedManyWithoutOrganisationInput
+    projects?: ProjectCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedCreateNestedManyWithoutOrganisationInput
+    activity_logs?: ActivityLogCreateNestedManyWithoutOrganisationInput
+  }
+
+  export type OrganisationUncheckedCreateWithoutAi_usage_eventsInput = {
+    id?: string
+    name: string
+    slug: string
+    created_by_user_id: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    members?: OrganisationMemberUncheckedCreateNestedManyWithoutOrganisationInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutOrganisationInput
+    posts?: PostUncheckedCreateNestedManyWithoutOrganisationInput
+    integrations?: IntegrationUncheckedCreateNestedManyWithoutOrganisationInput
+    style_profiles?: StyleProfileUncheckedCreateNestedManyWithoutOrganisationInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutOrganisationInput
+    rss_feeds?: RssFeedUncheckedCreateNestedManyWithoutOrganisationInput
+    activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutOrganisationInput
+  }
+
+  export type OrganisationCreateOrConnectWithoutAi_usage_eventsInput = {
+    where: OrganisationWhereUniqueInput
+    create: XOR<OrganisationCreateWithoutAi_usage_eventsInput, OrganisationUncheckedCreateWithoutAi_usage_eventsInput>
+  }
+
+  export type UserCreateWithoutAi_usage_eventsInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    organisations_created?: OrganisationCreateNestedManyWithoutCreated_byInput
+    organisation_memberships?: OrganisationMemberCreateNestedManyWithoutUserInput
+    authored_posts?: PostCreateNestedManyWithoutUserInput
+    activity_logs?: ActivityLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAi_usage_eventsInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    organisations_created?: OrganisationUncheckedCreateNestedManyWithoutCreated_byInput
+    organisation_memberships?: OrganisationMemberUncheckedCreateNestedManyWithoutUserInput
+    authored_posts?: PostUncheckedCreateNestedManyWithoutUserInput
+    activity_logs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAi_usage_eventsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAi_usage_eventsInput, UserUncheckedCreateWithoutAi_usage_eventsInput>
+  }
+
+  export type GenerationRunCreateWithoutUsage_eventsInput = {
+    id?: string
+    label?: string | null
+    posts_requested?: number | null
+    language?: string
+    created_at?: Date | string
+    project: ProjectCreateNestedOneWithoutGeneration_runsInput
+    style_profile?: StyleProfileCreateNestedOneWithoutGeneration_runsInput
+    automation?: AutomationCreateNestedOneWithoutGeneration_runsInput
+    posts?: PostCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemCreateNestedManyWithoutGeneration_runInput
+  }
+
+  export type GenerationRunUncheckedCreateWithoutUsage_eventsInput = {
+    id?: string
+    project_id: string
+    style_profile_id?: string | null
+    automation_id?: string | null
+    label?: string | null
+    posts_requested?: number | null
+    language?: string
+    created_at?: Date | string
+    posts?: PostUncheckedCreateNestedManyWithoutGeneration_runInput
+    items?: GenerationItemUncheckedCreateNestedManyWithoutGeneration_runInput
+  }
+
+  export type GenerationRunCreateOrConnectWithoutUsage_eventsInput = {
+    where: GenerationRunWhereUniqueInput
+    create: XOR<GenerationRunCreateWithoutUsage_eventsInput, GenerationRunUncheckedCreateWithoutUsage_eventsInput>
+  }
+
+  export type PostCreateWithoutUsage_eventsInput = {
+    id?: string
+    type: $Enums.PostType
+    status?: $Enums.PostStatus
+    hook?: string | null
+    body?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: string | null
+    excerpt?: string | null
+    seo_title?: string | null
+    seo_description?: string | null
+    canonical_url?: string | null
+    scheduled_at?: Date | string | null
+    published_at?: Date | string | null
+    failed_reason?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutAuthored_postsInput
+    organisation: OrganisationCreateNestedOneWithoutPostsInput
+    project?: ProjectCreateNestedOneWithoutPostsInput
+    style_profile?: StyleProfileCreateNestedOneWithoutPostsInput
+    generation_run?: GenerationRunCreateNestedOneWithoutPostsInput
+    generation_item?: GenerationItemCreateNestedOneWithoutPostsInput
+    cover_document?: DocumentCreateNestedOneWithoutCover_of_postsInput
+    rss_feed_item?: RssFeedItemCreateNestedOneWithoutPostsInput
+    automation?: AutomationCreateNestedOneWithoutPostsInput
+    source_post?: PostCreateNestedOneWithoutRepurposed_postsInput
+    repurposed_posts?: PostCreateNestedManyWithoutSource_postInput
+    attachments?: PostAttachmentCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationCreateNestedManyWithoutPostInput
+  }
+
+  export type PostUncheckedCreateWithoutUsage_eventsInput = {
+    id?: string
+    user_id: string
+    organisation_id: string
+    project_id?: string | null
+    style_profile_id?: string | null
+    generation_run_id?: string | null
+    generation_item_id?: string | null
+    source_post_id?: string | null
+    rss_feed_item_id?: string | null
+    automation_id?: string | null
+    type: $Enums.PostType
+    status?: $Enums.PostStatus
+    hook?: string | null
+    body?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: string | null
+    excerpt?: string | null
+    cover_document_id?: string | null
+    seo_title?: string | null
+    seo_description?: string | null
+    canonical_url?: string | null
+    scheduled_at?: Date | string | null
+    published_at?: Date | string | null
+    failed_reason?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    repurposed_posts?: PostUncheckedCreateNestedManyWithoutSource_postInput
+    attachments?: PostAttachmentUncheckedCreateNestedManyWithoutPostInput
+    integrations?: PostIntegrationUncheckedCreateNestedManyWithoutPostInput
+  }
+
+  export type PostCreateOrConnectWithoutUsage_eventsInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutUsage_eventsInput, PostUncheckedCreateWithoutUsage_eventsInput>
+  }
+
+  export type OrganisationUpsertWithoutAi_usage_eventsInput = {
+    update: XOR<OrganisationUpdateWithoutAi_usage_eventsInput, OrganisationUncheckedUpdateWithoutAi_usage_eventsInput>
+    create: XOR<OrganisationCreateWithoutAi_usage_eventsInput, OrganisationUncheckedCreateWithoutAi_usage_eventsInput>
+    where?: OrganisationWhereInput
+  }
+
+  export type OrganisationUpdateToOneWithWhereWithoutAi_usage_eventsInput = {
+    where?: OrganisationWhereInput
+    data: XOR<OrganisationUpdateWithoutAi_usage_eventsInput, OrganisationUncheckedUpdateWithoutAi_usage_eventsInput>
+  }
+
+  export type OrganisationUpdateWithoutAi_usage_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: UserUpdateOneRequiredWithoutOrganisations_createdNestedInput
+    members?: OrganisationMemberUpdateManyWithoutOrganisationNestedInput
+    documents?: DocumentUpdateManyWithoutOrganisationNestedInput
+    posts?: PostUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUpdateManyWithoutOrganisationNestedInput
+    style_profiles?: StyleProfileUpdateManyWithoutOrganisationNestedInput
+    projects?: ProjectUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
+    activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+  }
+
+  export type OrganisationUncheckedUpdateWithoutAi_usage_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    created_by_user_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: OrganisationMemberUncheckedUpdateManyWithoutOrganisationNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutOrganisationNestedInput
+    posts?: PostUncheckedUpdateManyWithoutOrganisationNestedInput
+    integrations?: IntegrationUncheckedUpdateManyWithoutOrganisationNestedInput
+    style_profiles?: StyleProfileUncheckedUpdateManyWithoutOrganisationNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
+    rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
+    activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+  }
+
+  export type UserUpsertWithoutAi_usage_eventsInput = {
+    update: XOR<UserUpdateWithoutAi_usage_eventsInput, UserUncheckedUpdateWithoutAi_usage_eventsInput>
+    create: XOR<UserCreateWithoutAi_usage_eventsInput, UserUncheckedCreateWithoutAi_usage_eventsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAi_usage_eventsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAi_usage_eventsInput, UserUncheckedUpdateWithoutAi_usage_eventsInput>
+  }
+
+  export type UserUpdateWithoutAi_usage_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    organisations_created?: OrganisationUpdateManyWithoutCreated_byNestedInput
+    organisation_memberships?: OrganisationMemberUpdateManyWithoutUserNestedInput
+    authored_posts?: PostUpdateManyWithoutUserNestedInput
+    activity_logs?: ActivityLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAi_usage_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    organisations_created?: OrganisationUncheckedUpdateManyWithoutCreated_byNestedInput
+    organisation_memberships?: OrganisationMemberUncheckedUpdateManyWithoutUserNestedInput
+    authored_posts?: PostUncheckedUpdateManyWithoutUserNestedInput
+    activity_logs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type GenerationRunUpsertWithoutUsage_eventsInput = {
+    update: XOR<GenerationRunUpdateWithoutUsage_eventsInput, GenerationRunUncheckedUpdateWithoutUsage_eventsInput>
+    create: XOR<GenerationRunCreateWithoutUsage_eventsInput, GenerationRunUncheckedCreateWithoutUsage_eventsInput>
+    where?: GenerationRunWhereInput
+  }
+
+  export type GenerationRunUpdateToOneWithWhereWithoutUsage_eventsInput = {
+    where?: GenerationRunWhereInput
+    data: XOR<GenerationRunUpdateWithoutUsage_eventsInput, GenerationRunUncheckedUpdateWithoutUsage_eventsInput>
+  }
+
+  export type GenerationRunUpdateWithoutUsage_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    label?: NullableStringFieldUpdateOperationsInput | string | null
+    posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutGeneration_runsNestedInput
+    style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
+    automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
+    posts?: PostUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
+  }
+
+  export type GenerationRunUncheckedUpdateWithoutUsage_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
+    style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    automation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    label?: NullableStringFieldUpdateOperationsInput | string | null
+    posts_requested?: NullableIntFieldUpdateOperationsInput | number | null
+    language?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
+    items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
+  }
+
+  export type PostUpsertWithoutUsage_eventsInput = {
+    update: XOR<PostUpdateWithoutUsage_eventsInput, PostUncheckedUpdateWithoutUsage_eventsInput>
+    create: XOR<PostCreateWithoutUsage_eventsInput, PostUncheckedCreateWithoutUsage_eventsInput>
+    where?: PostWhereInput
+  }
+
+  export type PostUpdateToOneWithWhereWithoutUsage_eventsInput = {
+    where?: PostWhereInput
+    data: XOR<PostUpdateWithoutUsage_eventsInput, PostUncheckedUpdateWithoutUsage_eventsInput>
+  }
+
+  export type PostUpdateWithoutUsage_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
+    hook?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    excerpt?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_title?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_description?: NullableStringFieldUpdateOperationsInput | string | null
+    canonical_url?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduled_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAuthored_postsNestedInput
+    organisation?: OrganisationUpdateOneRequiredWithoutPostsNestedInput
+    project?: ProjectUpdateOneWithoutPostsNestedInput
+    style_profile?: StyleProfileUpdateOneWithoutPostsNestedInput
+    generation_run?: GenerationRunUpdateOneWithoutPostsNestedInput
+    generation_item?: GenerationItemUpdateOneWithoutPostsNestedInput
+    cover_document?: DocumentUpdateOneWithoutCover_of_postsNestedInput
+    rss_feed_item?: RssFeedItemUpdateOneWithoutPostsNestedInput
+    automation?: AutomationUpdateOneWithoutPostsNestedInput
+    source_post?: PostUpdateOneWithoutRepurposed_postsNestedInput
+    repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
+    attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutUsage_eventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: StringFieldUpdateOperationsInput | string
+    project_id?: NullableStringFieldUpdateOperationsInput | string | null
+    style_profile_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    generation_item_id?: NullableStringFieldUpdateOperationsInput | string | null
+    source_post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    rss_feed_item_id?: NullableStringFieldUpdateOperationsInput | string | null
+    automation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
+    status?: EnumPostStatusFieldUpdateOperationsInput | $Enums.PostStatus
+    hook?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    excerpt?: NullableStringFieldUpdateOperationsInput | string | null
+    cover_document_id?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_title?: NullableStringFieldUpdateOperationsInput | string | null
+    seo_description?: NullableStringFieldUpdateOperationsInput | string | null
+    canonical_url?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduled_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    published_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
+    attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
+    integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PasswordResetTokenCreateManyUserInput = {
@@ -42247,6 +45496,26 @@ export namespace Prisma {
     created_at?: Date | string
   }
 
+  export type AiUsageEventCreateManyUserInput = {
+    id?: string
+    organisation_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    generation_run_id?: string | null
+    post_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
   export type PasswordResetTokenUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     token_hash?: StringFieldUpdateOperationsInput | string
@@ -42285,6 +45554,7 @@ export namespace Prisma {
     projects?: ProjectUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateWithoutCreated_byInput = {
@@ -42301,6 +45571,7 @@ export namespace Prisma {
     projects?: ProjectUncheckedUpdateManyWithoutOrganisationNestedInput
     rss_feeds?: RssFeedUncheckedUpdateManyWithoutOrganisationNestedInput
     activity_logs?: ActivityLogUncheckedUpdateManyWithoutOrganisationNestedInput
+    ai_usage_events?: AiUsageEventUncheckedUpdateManyWithoutOrganisationNestedInput
   }
 
   export type OrganisationUncheckedUpdateManyWithoutCreated_byInput = {
@@ -42369,6 +45640,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutUserInput = {
@@ -42400,6 +45672,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutUserInput = {
@@ -42459,6 +45732,66 @@ export namespace Prisma {
     entity_type?: NullableEnumActivityLogEntityTypeFieldUpdateOperationsInput | $Enums.ActivityLogEntityType | null
     entity_id?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageEventUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneWithoutAi_usage_eventsNestedInput
+    generation_run?: GenerationRunUpdateOneWithoutUsage_eventsNestedInput
+    post?: PostUpdateOneWithoutUsage_eventsNestedInput
+  }
+
+  export type AiUsageEventUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageEventUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    post_id?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -42548,6 +45881,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutCover_documentInput = {
@@ -42579,6 +45913,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutCover_documentInput = {
@@ -42731,6 +46066,26 @@ export namespace Prisma {
     created_at?: Date | string
   }
 
+  export type AiUsageEventCreateManyOrganisationInput = {
+    id?: string
+    user_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    generation_run_id?: string | null
+    post_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
   export type OrganisationMemberUpdateWithoutOrganisationInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumOrganisationRoleFieldUpdateOperationsInput | $Enums.OrganisationRole
@@ -42826,6 +46181,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutOrganisationInput = {
@@ -42857,6 +46213,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutOrganisationInput = {
@@ -43135,6 +46492,66 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AiUsageEventUpdateWithoutOrganisationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutAi_usage_eventsNestedInput
+    generation_run?: GenerationRunUpdateOneWithoutUsage_eventsNestedInput
+    post?: PostUpdateOneWithoutUsage_eventsNestedInput
+  }
+
+  export type AiUsageEventUncheckedUpdateWithoutOrganisationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageEventUncheckedUpdateManyWithoutOrganisationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OrganisationInviteTokenCreateManyOrganisation_memberInput = {
     id?: string
     token_hash: string
@@ -43311,6 +46728,7 @@ export namespace Prisma {
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
     posts?: PostUpdateManyWithoutGeneration_runNestedInput
     items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateWithoutStyle_profileInput = {
@@ -43323,6 +46741,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
     items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateManyWithoutStyle_profileInput = {
@@ -43428,6 +46847,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutStyle_profileInput = {
@@ -43459,6 +46879,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutStyle_profileInput = {
@@ -43624,6 +47045,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutProjectInput = {
@@ -43655,6 +47077,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutProjectInput = {
@@ -43695,6 +47118,7 @@ export namespace Prisma {
     automation?: AutomationUpdateOneWithoutGeneration_runsNestedInput
     posts?: PostUpdateManyWithoutGeneration_runNestedInput
     items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateWithoutProjectInput = {
@@ -43707,6 +47131,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
     items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateManyWithoutProjectInput = {
@@ -43998,6 +47423,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutRss_feed_itemInput = {
@@ -44029,6 +47455,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutRss_feed_itemInput = {
@@ -44094,6 +47521,26 @@ export namespace Prisma {
     created_at?: Date | string
   }
 
+  export type AiUsageEventCreateManyGeneration_runInput = {
+    id?: string
+    organisation_id?: string | null
+    user_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    post_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
   export type PostUpdateWithoutGeneration_runInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -44123,6 +47570,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutGeneration_runInput = {
@@ -44154,6 +47602,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutGeneration_runInput = {
@@ -44204,6 +47653,66 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     topic?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageEventUpdateWithoutGeneration_runInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneWithoutAi_usage_eventsNestedInput
+    user?: UserUpdateOneWithoutAi_usage_eventsNestedInput
+    post?: PostUpdateOneWithoutUsage_eventsNestedInput
+  }
+
+  export type AiUsageEventUncheckedUpdateWithoutGeneration_runInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageEventUncheckedUpdateManyWithoutGeneration_runInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    post_id?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -44264,6 +47773,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutGeneration_itemInput = {
@@ -44295,6 +47805,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutGeneration_itemInput = {
@@ -44373,6 +47884,7 @@ export namespace Prisma {
     style_profile?: StyleProfileUpdateOneWithoutGeneration_runsNestedInput
     posts?: PostUpdateManyWithoutGeneration_runNestedInput
     items?: GenerationItemUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateWithoutAutomationInput = {
@@ -44385,6 +47897,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutGeneration_runNestedInput
     items?: GenerationItemUncheckedUpdateManyWithoutGeneration_runNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutGeneration_runNestedInput
   }
 
   export type GenerationRunUncheckedUpdateManyWithoutAutomationInput = {
@@ -44426,6 +47939,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutAutomationInput = {
@@ -44457,6 +47971,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutAutomationInput = {
@@ -44534,6 +48049,26 @@ export namespace Prisma {
     updated_at?: Date | string
   }
 
+  export type AiUsageEventCreateManyPostInput = {
+    id?: string
+    organisation_id?: string | null
+    user_id?: string | null
+    type: $Enums.AiUsageType
+    feature: $Enums.AiUsageFeature
+    provider: string
+    model: string
+    input_tokens?: number | null
+    output_tokens?: number | null
+    total_tokens?: number | null
+    image_count?: number | null
+    input_cost?: Decimal | DecimalJsLike | number | string
+    output_cost?: Decimal | DecimalJsLike | number | string
+    total_cost?: Decimal | DecimalJsLike | number | string
+    generation_run_id?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
   export type PostUpdateWithoutSource_postInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPostTypeFieldUpdateOperationsInput | $Enums.PostType
@@ -44563,6 +48098,7 @@ export namespace Prisma {
     repurposed_posts?: PostUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutSource_postInput = {
@@ -44594,6 +48130,7 @@ export namespace Prisma {
     repurposed_posts?: PostUncheckedUpdateManyWithoutSource_postNestedInput
     attachments?: PostAttachmentUncheckedUpdateManyWithoutPostNestedInput
     integrations?: PostIntegrationUncheckedUpdateManyWithoutPostNestedInput
+    usage_events?: AiUsageEventUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutSource_postInput = {
@@ -44679,6 +48216,66 @@ export namespace Prisma {
     failed_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageEventUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    organisation?: OrganisationUpdateOneWithoutAi_usage_eventsNestedInput
+    user?: UserUpdateOneWithoutAi_usage_eventsNestedInput
+    generation_run?: GenerationRunUpdateOneWithoutUsage_eventsNestedInput
+  }
+
+  export type AiUsageEventUncheckedUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageEventUncheckedUpdateManyWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organisation_id?: NullableStringFieldUpdateOperationsInput | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAiUsageTypeFieldUpdateOperationsInput | $Enums.AiUsageType
+    feature?: EnumAiUsageFeatureFieldUpdateOperationsInput | $Enums.AiUsageFeature
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    output_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    total_tokens?: NullableIntFieldUpdateOperationsInput | number | null
+    image_count?: NullableIntFieldUpdateOperationsInput | number | null
+    input_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    output_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_cost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generation_run_id?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

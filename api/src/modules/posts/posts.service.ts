@@ -18,6 +18,7 @@ import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
 import {
   ActivityLogAction,
   ActivityLogEntityType,
+  AiUsageFeature,
   Integration,
   IntegrationProvider,
   IntegrationStatus,
@@ -45,7 +46,10 @@ const MANAGE_ROLES: OrganisationRole[] = [
 ];
 
 // Which provider a post's own connected integrations must match to publish.
-const PROVIDER_BY_TYPE: Record<PostType, IntegrationProvider> = {
+// INSTAGRAM has no entry — Instagram is a content-creation-only channel for
+// now, with no publishing integration built yet (see the explicit guard in
+// publishNow()).
+const PROVIDER_BY_TYPE: Partial<Record<PostType, IntegrationProvider>> = {
   [PostType.BLOG]: IntegrationProvider.SANITY,
   [PostType.TWITTER]: IntegrationProvider.TWITTER,
   [PostType.LINKEDIN]: IntegrationProvider.LINKEDIN,
@@ -201,6 +205,7 @@ export class PostsService {
             },
           },
           generation_item: { select: { id: true, topic: true, order: true } },
+          attachments: { include: { document: true } },
         },
       }),
       this.prisma.post.count({ where }),
@@ -213,7 +218,7 @@ export class PostsService {
     const post = await this.prisma.post.findUnique({
       where: { id },
       include: {
-        attachments: true,
+        attachments: { include: { document: true } },
         integrations: true,
         automation: { select: { id: true, name: true } },
         project: { select: { id: true, title: true } },
@@ -457,6 +462,13 @@ export class PostsService {
     if (!post) throw new NotFoundException('Post not found');
 
     const provider = PROVIDER_BY_TYPE[post.type];
+    if (!provider) {
+      throw new BadRequestException({
+        message: `Publishing ${post.type} posts is not supported yet`,
+        code: ErrorCodes.Posts.UNSUPPORTED_POST_TYPE,
+      });
+    }
+
     const integrations = await this.prisma.integration.findMany({
       where: {
         organisation_id: post.organisation_id,
@@ -631,6 +643,12 @@ export class PostsService {
           hook: post.hook,
           body: post.body,
           excerpt: post.excerpt,
+          usageContext: {
+            organisation_id: post.organisation_id,
+            user_id: userId,
+            feature: AiUsageFeature.POST_REPURPOSE,
+            post_id: post.id,
+          },
         });
 
         return this.prisma.post.create({
@@ -690,6 +708,12 @@ export class PostsService {
       excerpt: post.excerpt,
       preset: dto.preset,
       instructions: dto.instructions,
+      usageContext: {
+        organisation_id: post.organisation_id,
+        user_id: userId,
+        feature: AiUsageFeature.POST_REVISE,
+        post_id: post.id,
+      },
     });
   }
 }

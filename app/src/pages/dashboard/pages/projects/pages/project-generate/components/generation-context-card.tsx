@@ -41,7 +41,7 @@ export function GenerationContextCard({
 }: GenerationContextCardProps) {
   const styleProfiles = project.style_profiles ?? [];
   const channels = project.channels.length ? project.channels : [project.platform];
-  const hasBlogChannel = channels.includes(PostTypes.BLOG);
+  const hasImageChannel = channels.includes(PostTypes.BLOG) || channels.includes(PostTypes.INSTAGRAM);
 
   return (
     <div className="sticky top-20 flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
@@ -102,7 +102,7 @@ export function GenerationContextCard({
         </Select>
       </div>
 
-      {hasBlogChannel && (
+      {hasImageChannel && (
         <div className="flex flex-col gap-3 rounded-lg border border-input p-3">
           <div className="flex items-center gap-2">
             <Checkbox
@@ -111,7 +111,7 @@ export function GenerationContextCard({
               onCheckedChange={(checked) => onGenerateImagesChange(!!checked)}
             />
             <Label htmlFor="generate-images" className="text-sm font-normal">
-              Generate AI cover image candidates
+              Generate AI image candidates
             </Label>
           </div>
           {generateImages && (

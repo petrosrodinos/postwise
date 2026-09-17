@@ -14,7 +14,7 @@ import type { StyleProfile } from "@/features/style-profiles/interfaces/style-pr
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
-  platform: z.enum([PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG]),
+  platform: z.enum([PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG, PostTypes.INSTAGRAM]),
   source_url: z.string().url("Enter a valid URL").optional().or(z.literal("")),
   tone_score: z.number().min(0).max(100),
   structure_score: z.number().min(0).max(100),

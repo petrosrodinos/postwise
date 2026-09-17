@@ -5,6 +5,7 @@ const PLATFORM_GLYPH: Record<PostType, { label: string; className: string }> = {
   [PostTypes.LINKEDIN]: { label: "in", className: "bg-[#0A66C2] text-white" },
   [PostTypes.TWITTER]: { label: "X", className: "bg-[var(--ink-950)] text-white" },
   [PostTypes.BLOG]: { label: "B", className: "bg-teal text-white" },
+  [PostTypes.INSTAGRAM]: { label: "IG", className: "bg-[#E1306C] text-white" },
 };
 
 interface PlatformGlyphProps {

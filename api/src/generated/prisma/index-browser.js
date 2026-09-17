@@ -377,6 +377,27 @@ exports.Prisma.ActivityLogScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.AiUsageEventScalarFieldEnum = {
+  id: 'id',
+  organisation_id: 'organisation_id',
+  user_id: 'user_id',
+  type: 'type',
+  feature: 'feature',
+  provider: 'provider',
+  model: 'model',
+  input_tokens: 'input_tokens',
+  output_tokens: 'output_tokens',
+  total_tokens: 'total_tokens',
+  image_count: 'image_count',
+  input_cost: 'input_cost',
+  output_cost: 'output_cost',
+  total_cost: 'total_cost',
+  generation_run_id: 'generation_run_id',
+  post_id: 'post_id',
+  metadata: 'metadata',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -446,7 +467,8 @@ exports.IntegrationStatus = exports.$Enums.IntegrationStatus = {
 exports.PostType = exports.$Enums.PostType = {
   TWITTER: 'TWITTER',
   LINKEDIN: 'LINKEDIN',
-  BLOG: 'BLOG'
+  BLOG: 'BLOG',
+  INSTAGRAM: 'INSTAGRAM'
 };
 
 exports.AutomationFrequency = exports.$Enums.AutomationFrequency = {
@@ -544,6 +566,27 @@ exports.ActivityLogEntityType = exports.$Enums.ActivityLogEntityType = {
   INTEGRATION: 'INTEGRATION'
 };
 
+exports.AiUsageType = exports.$Enums.AiUsageType = {
+  TEXT: 'TEXT',
+  IMAGE: 'IMAGE'
+};
+
+exports.AiUsageFeature = exports.$Enums.AiUsageFeature = {
+  GENERATION_MULTI_CHANNEL_DRAFT: 'GENERATION_MULTI_CHANNEL_DRAFT',
+  GENERATION_RSS_DRAFT: 'GENERATION_RSS_DRAFT',
+  GENERATION_COVER_IMAGE: 'GENERATION_COVER_IMAGE',
+  POST_REVISE: 'POST_REVISE',
+  POST_REPURPOSE: 'POST_REPURPOSE',
+  TOOLS_REVISE: 'TOOLS_REVISE',
+  TOOLS_REPURPOSE: 'TOOLS_REPURPOSE',
+  TOOLS_TITLE_VARIATIONS: 'TOOLS_TITLE_VARIATIONS',
+  TOOLS_META_TAGS: 'TOOLS_META_TAGS',
+  TOOLS_IMAGE: 'TOOLS_IMAGE',
+  STYLE_PROFILE_ANALYZE: 'STYLE_PROFILE_ANALYZE',
+  PROJECT_GENERATE_DETAILS: 'PROJECT_GENERATE_DETAILS',
+  INTERNAL_PASSTHROUGH: 'INTERNAL_PASSTHROUGH'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
@@ -564,7 +607,8 @@ exports.Prisma.ModelName = {
   Post: 'Post',
   PostAttachment: 'PostAttachment',
   PostIntegration: 'PostIntegration',
-  ActivityLog: 'ActivityLog'
+  ActivityLog: 'ActivityLog',
+  AiUsageEvent: 'AiUsageEvent'
 };
 
 /**

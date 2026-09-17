@@ -17,6 +17,7 @@ import { paginate, paginationMeta } from '@/shared/schemas/pagination.schema';
 import {
   ActivityLogAction,
   ActivityLogEntityType,
+  AiUsageFeature,
   Automation,
   AutomationOutputStage,
   DocumentType,
@@ -99,7 +100,7 @@ export class GenerationRunsService {
       })
       .join('\n');
 
-    return `Generate ${postsRequested} distinct post ideas for the following project. Write each idea once for every one of these channels: ${channels.join(', ')} — keep the same underlying idea across channels but tailor it to each channel's conventions: BLOG should be a fuller, well-structured article with its own SEO title/description; TWITTER should be concise and punchy; LINKEDIN should be more narrative and professional. Return ONLY a raw JSON array (no markdown) of ${postsRequested} objects, each shaped exactly like ${shape}. Write every field in ${languageName}.
+    return `Generate ${postsRequested} distinct post ideas for the following project. Write each idea once for every one of these channels: ${channels.join(', ')} — keep the same underlying idea across channels but tailor it to each channel's conventions: BLOG should be a fuller, well-structured article with its own SEO title/description; TWITTER should be concise and punchy; LINKEDIN should be more narrative and professional; INSTAGRAM should read like a caption — a short, evocative hook followed by a brief story or tip, ending with a few relevant hashtags. Return ONLY a raw JSON array (no markdown) of ${postsRequested} objects, each shaped exactly like ${shape}. Write every field in ${languageName}.
 
 Project title: ${project.title}
 Project description: ${project.description ?? 'n/a'}
@@ -135,6 +136,7 @@ ${
   private async generateMultiChannelDrafts(
     project: Pick<
       Project,
+      | 'organisation_id'
       | 'title'
       | 'description'
       | 'pillars'
@@ -146,6 +148,7 @@ ${
     styleProfiles: Partial<Record<PostType, StyleProfile | null>>,
     postsRequested: number,
     language: string,
+    authorUserId: string | null,
   ): Promise<MultiChannelDraft[]> {
     const prompt = this.buildMultiChannelPrompt(
       project,
@@ -160,6 +163,11 @@ ${
       system:
         'You are an expert content ghostwriter who adapts one idea across multiple platforms, including full-length blog articles.',
       temperature: 0.8,
+      usage: {
+        organisation_id: project.organisation_id,
+        user_id: authorUserId,
+        feature: AiUsageFeature.GENERATION_MULTI_CHANNEL_DRAFT,
+      },
     });
 
     return parseAiJson(
@@ -172,6 +180,8 @@ ${
     item: Pick<RssFeedItem, 'title' | 'link' | 'summary' | 'content'>,
     styleProfile: StyleProfile | null,
     language: string,
+    organisationId: string,
+    authorUserId: string | null,
   ): Promise<Draft> {
     const prompt = this.buildRssPrompt(item, styleProfile, language);
 
@@ -180,6 +190,11 @@ ${
       system:
         'You are an expert content ghostwriter turning source articles into original blog posts.',
       temperature: 0.7,
+      usage: {
+        organisation_id: organisationId,
+        user_id: authorUserId,
+        feature: AiUsageFeature.GENERATION_RSS_DRAFT,
+      },
     });
 
     return parseAiJson(response, DraftSchema);
@@ -226,6 +241,7 @@ ${
     project: Pick<Project, 'title' | 'organisation_id'>,
     generateImages: boolean | undefined,
     imageCount: number | undefined,
+    authorUserId: string | null,
   ): Promise<string[][]> {
     if (!generateImages) return [];
     const imagesPerIdea = imageCount ?? 1;
@@ -236,6 +252,11 @@ ${
         const images = await this.aiImageService.generateImages({
           prompt,
           count: imagesPerIdea,
+          usage: {
+            organisation_id: project.organisation_id,
+            user_id: authorUserId,
+            feature: AiUsageFeature.GENERATION_COVER_IMAGE,
+          },
         });
 
         const documents = await Promise.all(
@@ -284,8 +305,15 @@ ${
     language: string,
     generateImages: boolean | undefined,
     imageCount: number | undefined,
+    authorUserId: string | null,
   ) {
-    const channels = project.channels;
+    // Legacy projects created before `channels` existed can still have it
+    // empty even though `platform` is set — fall back to that single
+    // channel rather than fanning out across zero channels (which silently
+    // produces topic-only drafts with no actual post content).
+    const channels = project.channels.length
+      ? project.channels
+      : [project.platform];
     const channelStyleProfiles = this.resolveChannelStyleProfiles(
       project,
       channels,
@@ -296,6 +324,7 @@ ${
       channelStyleProfiles,
       postsRequested,
       language,
+      authorUserId,
     );
     const draftDocumentIds = await this.generateImagesForIdeas(
       drafts.length,
@@ -303,6 +332,7 @@ ${
       project,
       generateImages,
       imageCount,
+      authorUserId,
     );
     return { channels, channelStyleProfiles, drafts, draftDocumentIds };
   }
@@ -322,6 +352,7 @@ ${
         language,
         dto.generate_images,
         dto.image_count,
+        userId,
       );
 
     return this.persistRun({
@@ -385,7 +416,15 @@ ${
 
     const language = dto.language ?? DEFAULT_GENERATION_LANGUAGE;
     const drafts = await Promise.all(
-      items.map((item) => this.generateRssDraft(item, styleProfile, language)),
+      items.map((item) =>
+        this.generateRssDraft(
+          item,
+          styleProfile,
+          language,
+          project.organisation_id,
+          userId,
+        ),
+      ),
     );
 
     const draftDocumentIds = await this.generateImagesForIdeas(
@@ -394,6 +433,7 @@ ${
       project,
       dto.generate_images,
       dto.image_count,
+      userId,
     );
 
     return this.persistRun({
@@ -438,6 +478,7 @@ ${
         language,
         dto.generate_images,
         dto.image_count,
+        userId,
       );
 
     return this.persistRun({
@@ -445,7 +486,10 @@ ${
       channels,
       channelStyleProfiles,
       runStyleProfileId: null,
-      automationId: run.automation_id,
+      // A person is adding these posts through the generate page, even if
+      // the run itself originated from an automation — don't tag them as
+      // automation-sourced.
+      automationId: null,
       label: run.label,
       postsRequested: (run.posts_requested ?? 0) + postsRequested,
       language,
@@ -482,6 +526,9 @@ ${
       authorUserId,
       bareProject.id,
     );
+    // Usage/cost is attributed to no user (System), matching ActivityLog's
+    // `isAutomationRun ? null : authorUserId` convention below —
+    // authorUserId here is only needed for the ownership/Post-author lookup.
     const { channels, channelStyleProfiles, drafts, draftDocumentIds } =
       await this.generateForChannels(
         project,
@@ -489,6 +536,7 @@ ${
         language,
         automation.generate_images,
         automation.image_count,
+        null,
       );
 
     return this.persistRun({
@@ -540,7 +588,15 @@ ${
 
     const language = DEFAULT_GENERATION_LANGUAGE;
     const drafts = await Promise.all(
-      items.map((item) => this.generateRssDraft(item, styleProfile, language)),
+      items.map((item) =>
+        this.generateRssDraft(
+          item,
+          styleProfile,
+          language,
+          project.organisation_id,
+          null,
+        ),
+      ),
     );
 
     const draftDocumentIds = await this.generateImagesForIdeas(
@@ -549,6 +605,7 @@ ${
       project,
       automation.generate_images,
       automation.image_count,
+      null,
     );
 
     const { created_by_user_id: authorUserId } =

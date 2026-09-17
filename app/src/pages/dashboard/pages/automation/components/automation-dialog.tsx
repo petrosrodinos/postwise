@@ -77,6 +77,7 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
   const availableStyleProfiles = selectedProject?.style_profiles ?? [];
   const availableRssFeeds = selectedProject?.rss_feeds ?? [];
   const isBlogProject = selectedProject?.platform === PostTypes.BLOG;
+  const hasImageChannel = selectedProject?.platform === PostTypes.BLOG || selectedProject?.platform === PostTypes.INSTAGRAM;
   const frequency = form.watch("frequency");
   const generateImages = form.watch("generate_images");
 
@@ -209,7 +210,7 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
               />
             )}
 
-            {isBlogProject && (
+            {hasImageChannel && (
               <div className="flex flex-col gap-3 rounded-lg border border-input p-3">
                 <FormField
                   control={form.control}
@@ -253,20 +254,23 @@ export function AutomationDialog({ isOpen, onClose, projects, automation, defaul
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Frequency</FormLabel>
-                  <div className="inline-flex rounded-lg border border-input p-1">
-                    {AutomationFrequencyFormOptions.map((option) => (
-                      <button
-                        key={option.id}
-                        type="button"
-                        className={cn(
-                          "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-                          field.value === option.id ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground",
-                        )}
-                        onClick={() => field.onChange(option.id)}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
+                  <div className="flex flex-wrap gap-1.5">
+                    {AutomationFrequencyFormOptions.map((option) => {
+                      const active = field.value === option.id;
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          className={cn(
+                            "h-8 rounded-md border px-3 text-xs font-semibold transition-colors",
+                            active ? "border-foreground bg-foreground text-background" : "border-input text-muted-foreground hover:text-foreground",
+                          )}
+                          onClick={() => field.onChange(option.id)}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
                   </div>
                 </FormItem>
               )}

@@ -38,6 +38,7 @@ enum PostType {
   TWITTER
   LINKEDIN
   BLOG
+  INSTAGRAM
 }
 
 enum PostStatus {
@@ -158,6 +159,27 @@ enum ActivityLogEntityType {
   INTEGRATION
 }
 
+enum AiUsageType {
+  TEXT
+  IMAGE
+}
+
+enum AiUsageFeature {
+  GENERATION_MULTI_CHANNEL_DRAFT
+  GENERATION_RSS_DRAFT
+  GENERATION_COVER_IMAGE
+  POST_REVISE
+  POST_REPURPOSE
+  TOOLS_REVISE
+  TOOLS_REPURPOSE
+  TOOLS_TITLE_VARIATIONS
+  TOOLS_META_TAGS
+  TOOLS_IMAGE
+  STYLE_PROFILE_ANALYZE
+  PROJECT_GENERATE_DETAILS
+  INTERNAL_PASSTHROUGH
+}
+
 model User {
   id       String  @id @default(uuid())
   name     String
@@ -174,6 +196,7 @@ model User {
   organisation_memberships OrganisationMember[]
   authored_posts           Post[]
   activity_logs            ActivityLog[]
+  ai_usage_events          AiUsageEvent[]
 
   @@index([email])
   @@index([phone])
@@ -233,14 +256,15 @@ model Organisation {
 
   created_by User @relation(fields: [created_by_user_id], references: [id], onDelete: Cascade)
 
-  members        OrganisationMember[]
-  documents      Document[]
-  posts          Post[]
-  integrations   Integration[]
-  style_profiles StyleProfile[]
-  projects       Project[]
-  rss_feeds      RssFeed[]
-  activity_logs  ActivityLog[]
+  members         OrganisationMember[]
+  documents       Document[]
+  posts           Post[]
+  integrations    Integration[]
+  style_profiles  StyleProfile[]
+  projects        Project[]
+  rss_feeds       RssFeed[]
+  activity_logs   ActivityLog[]
+  ai_usage_events AiUsageEvent[]
 
   @@index([created_by_user_id])
   @@index([slug])
@@ -485,8 +509,9 @@ model GenerationRun {
   style_profile StyleProfile? @relation(fields: [style_profile_id], references: [id], onDelete: SetNull)
   automation    Automation?   @relation(fields: [automation_id], references: [id], onDelete: SetNull)
 
-  posts Post[]
-  items GenerationItem[]
+  posts        Post[]
+  items        GenerationItem[]
+  usage_events AiUsageEvent[]
 
   @@index([project_id])
   @@index([style_profile_id])
@@ -605,6 +630,7 @@ model Post {
 
   attachments  PostAttachment[]
   integrations PostIntegration[]
+  usage_events AiUsageEvent[]
 
   @@index([user_id])
   @@index([organisation_id])
@@ -687,4 +713,48 @@ model ActivityLog {
   @@index([user_id])
   @@index([action])
   @@map("activity_logs")
+}
+
+// One row per successful AI SDK call (text or image generation), written
+// fire-and-forget by AiUsageService right after the call returns.
+// organisation_id/user_id are nullable and use SetNull (not Cascade, unlike
+// most org-scoped tables) — this is a cost ledger, and deleting an org, user,
+// generation run or post must never silently destroy historical cost
+// records. organisation_id is null only for the org-less internal admin
+// passthrough; user_id is null for automation/cron-triggered runs.
+model AiUsageEvent {
+  id              String         @id @default(uuid())
+  organisation_id String?
+  user_id         String?
+  type            AiUsageType
+  feature         AiUsageFeature
+  provider        String
+  model           String
+
+  input_tokens  Int?
+  output_tokens Int?
+  total_tokens  Int?
+  image_count   Int?
+
+  input_cost  Decimal @default(0) @db.Decimal(14, 8)
+  output_cost Decimal @default(0) @db.Decimal(14, 8)
+  total_cost  Decimal @default(0) @db.Decimal(14, 8)
+
+  generation_run_id String?
+  post_id           String?
+
+  metadata   Json?
+  created_at DateTime @default(now())
+
+  organisation   Organisation?  @relation(fields: [organisation_id], references: [id], onDelete: SetNull)
+  user           User?          @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  generation_run GenerationRun? @relation(fields: [generation_run_id], references: [id], onDelete: SetNull)
+  post           Post?          @relation(fields: [post_id], references: [id], onDelete: SetNull)
+
+  @@index([organisation_id, created_at])
+  @@index([organisation_id, user_id])
+  @@index([organisation_id, feature])
+  @@index([organisation_id, type])
+  @@index([generation_run_id])
+  @@map("ai_usage_events")
 }

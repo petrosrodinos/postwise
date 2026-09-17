@@ -1,4 +1,4 @@
-import { Linkedin, Newspaper, Twitter, type LucideIcon } from "lucide-react";
+import { Instagram, Linkedin, Newspaper, Twitter, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PostTypes, type PostType } from "@/features/posts/interfaces/posts.interfaces";
 
@@ -28,6 +28,12 @@ export const PLATFORM_META: Record<PostType, PlatformMeta> = {
     icon: Newspaper,
     accentClassName: "border-teal bg-teal/[0.08] text-teal",
   },
+  [PostTypes.INSTAGRAM]: {
+    label: "Instagram",
+    description: "Visual posts & photo captions",
+    icon: Instagram,
+    accentClassName: "border-[#E1306C] bg-[#E1306C]/[0.07] text-[#E1306C]",
+  },
 };
 
 interface PlatformPickerProps {
@@ -38,7 +44,7 @@ interface PlatformPickerProps {
 
 export function PlatformPicker({ value, onChange, className }: PlatformPickerProps) {
   return (
-    <div className={cn("grid gap-3 sm:grid-cols-3", className)}>
+    <div className={cn("grid gap-3 sm:grid-cols-2 lg:grid-cols-4", className)}>
       {(Object.keys(PLATFORM_META) as PostType[]).map((id) => {
         const meta = PLATFORM_META[id];
         const Icon = meta.icon;
@@ -69,7 +75,7 @@ export function PlatformPicker({ value, onChange, className }: PlatformPickerPro
   );
 }
 
-const ALL_OPTIONS: PostType[] = [PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG];
+const ALL_OPTIONS: PostType[] = [PostTypes.LINKEDIN, PostTypes.TWITTER, PostTypes.BLOG, PostTypes.INSTAGRAM];
 
 interface ContentChannelsPickerProps {
   value: PostType[];
@@ -91,7 +97,7 @@ export function ContentChannelsPicker({ value, onChange, className }: ContentCha
   }
 
   return (
-    <div className={cn("grid gap-3 sm:grid-cols-3", className)}>
+    <div className={cn("grid gap-3 sm:grid-cols-2 lg:grid-cols-4", className)}>
       {ALL_OPTIONS.map((option) => {
         const meta = PLATFORM_META[option];
         const Icon = meta.icon;

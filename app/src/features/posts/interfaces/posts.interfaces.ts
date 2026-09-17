@@ -6,6 +6,7 @@ export const PostTypes = {
   TWITTER: "TWITTER",
   LINKEDIN: "LINKEDIN",
   BLOG: "BLOG",
+  INSTAGRAM: "INSTAGRAM",
 } as const;
 export type PostType = (typeof PostTypes)[keyof typeof PostTypes];
 
