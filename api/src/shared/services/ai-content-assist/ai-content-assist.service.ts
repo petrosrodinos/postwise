@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { z } from 'zod';
 import { AiService } from '@/integrations/ai/services/ai.service';
+import { AiUsageContext } from '@/integrations/ai/interfaces/ai.interface';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
 import { RevisePreset } from '@/shared/dto/revise-content.dto';
 
@@ -66,6 +67,7 @@ export interface ReviseContentParams {
   preset?: RevisePreset;
   instructions?: string;
   styleGuidance?: string;
+  usageContext: AiUsageContext;
 }
 
 export interface RepurposeContentParams {
@@ -76,6 +78,7 @@ export interface RepurposeContentParams {
   body?: string | null;
   excerpt?: string | null;
   styleGuidance?: string;
+  usageContext: AiUsageContext;
 }
 
 // Revise/repurpose prompt-building and AI calls shared by anything that
@@ -117,6 +120,7 @@ ${params.body ?? ''}`;
       system:
         'You are an expert editor who revises social media and blog content on request.',
       temperature: 0.6,
+      usage: params.usageContext,
     });
 
     return parseAiJson(response, ReviseDraftSchema);
@@ -152,6 +156,7 @@ ${params.body ?? ''}`;
       prompt: `Repurpose the following content into a single ${params.targetType} post. Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${seoGuidance}${bodyFormatGuidance}${voiceGuidance}\n\nSource content:\n${source}`,
       system: 'You are an expert content repurposing assistant.',
       temperature: 0.7,
+      usage: params.usageContext,
     });
 
     return parseAiJson(response, RepurposeDraftSchema);

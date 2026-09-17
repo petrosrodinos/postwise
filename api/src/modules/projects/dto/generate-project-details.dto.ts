@@ -42,6 +42,10 @@ export class GenerateProjectDetailsStyleProfileDto {
 }
 
 export class GenerateProjectDetailsDto {
+  @ApiProperty({ description: 'Organisation this project (being planned) belongs to' })
+  @IsString()
+  organisation_id: string;
+
   @ApiProperty({ description: 'Working project title', example: 'Q1 Product Launch' })
   @IsString()
   title: string;

@@ -1,4 +1,20 @@
 import { z } from 'zod';
+import { AiUsageFeature } from 'generated/prisma';
+
+// Attribution every AI call must carry so its cost can be recorded against
+// an organisation/user. organisation_id is null only for the org-less
+// internal admin passthrough; user_id is null for automation/cron-triggered
+// runs. Required (not optional) on AIGenerateOptions/GenerateImagesOptions
+// so a missing attribution is a compile-time error, not a silently dropped
+// cost record.
+export interface AiUsageContext {
+    organisation_id: string | null;
+    user_id: string | null;
+    feature: AiUsageFeature;
+    generation_run_id?: string | null;
+    post_id?: string | null;
+    metadata?: Record<string, unknown>;
+}
 
 export interface AIGenerateOptions {
     provider?: AiProvider;
@@ -12,6 +28,7 @@ export interface AIGenerateOptions {
     topP?: number;
     frequencyPenalty?: number;
     presencePenalty?: number;
+    usage: AiUsageContext;
 }
 
 export interface AIGenerateTextResponse {

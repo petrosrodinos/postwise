@@ -22,6 +22,7 @@ import { PostsModule } from './modules/posts/posts.module';
 import { ToolsModule } from './modules/tools/tools.module';
 import { RssFeedsModule } from './modules/rss-feeds/rss-feeds.module';
 import { ActivityLogsModule } from './modules/activity-logs/activity-logs.module';
+import { AiUsageModule } from './modules/ai-usage/ai-usage.module';
 import { BackgroundModule } from './background/background.module';
 
 @Module({
@@ -48,6 +49,7 @@ import { BackgroundModule } from './background/background.module';
     ToolsModule,
     RssFeedsModule,
     ActivityLogsModule,
+    AiUsageModule,
     BackgroundModule,
   ],
   controllers: [AppController],

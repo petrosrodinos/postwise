@@ -10,7 +10,7 @@ import { OwnershipService } from '@/shared/services/ownership/ownership.service'
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
 import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
 import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
-import { ActivityLogAction, ActivityLogEntityType, OrganisationRole, PostType } from 'generated/prisma';
+import { ActivityLogAction, ActivityLogEntityType, AiUsageFeature, OrganisationRole, PostType } from 'generated/prisma';
 import { CreateStyleProfileDto } from './dto/create-style-profile.dto';
 import { UpdateStyleProfileDto } from './dto/update-style-profile.dto';
 import { AnalyzeStyleProfileDto } from './dto/analyze-style-profile.dto';
@@ -215,6 +215,11 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
       system:
         'You are an expert content strategist who fingerprints writing style for AI drafting.',
       temperature: 0.4,
+      usage: {
+        organisation_id: profile.organisation_id,
+        user_id: userId,
+        feature: AiUsageFeature.STYLE_PROFILE_ANALYZE,
+      },
     });
 
     const analysis = parseAiJson(response, AnalysisSchema);

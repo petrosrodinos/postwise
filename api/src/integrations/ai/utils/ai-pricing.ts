@@ -21,3 +21,17 @@ export const AiPricing = {
         [AiModels.gemini.geminiProVision]: { input: 0.000008, output: 0.00002 },
     },
 } as const;
+
+// Flat per-image $ price, keyed by provider -> model -> size. Image
+// generation SDKs don't return token usage, so cost here can't be derived
+// from AiPricing's per-token rates like text/embeddings.
+export const AiImagePricing = {
+    [AiProviders.openai]: {
+        'gpt-image-1': {
+            '1024x1024': 0.04,
+            '1024x1536': 0.06,
+            '1536x1024': 0.06,
+            default: 0.04,
+        },
+    },
+} as const;

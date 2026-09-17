@@ -5,16 +5,23 @@ import {
     AIGenerateOptions,
     AIGenerateTextResponse,
     AIStreamTextOptions,
+    AiProviders,
+    AiModels,
 } from '../interfaces/ai.interface';
 import { AiConfig } from '../utils/ai.config';
 import { z } from 'zod';
 import { openai } from '@ai-sdk/openai';
 import { calculateAiCost } from '../utils/ai-cost';
+import { AiUsageService } from '@/modules/ai-usage/ai-usage.service';
+import { AiUsageType } from 'generated/prisma';
 
 @Injectable()
 export class AiService {
 
-    constructor(private readonly aiConfig: AiConfig) { }
+    constructor(
+        private readonly aiConfig: AiConfig,
+        private readonly aiUsageService: AiUsageService,
+    ) { }
 
     private readonly logger = new Logger(AiService.name);
 
@@ -36,11 +43,27 @@ export class AiService {
                 presencePenalty: options.presencePenalty,
             });
 
+            const provider = options.provider ?? AiProviders.openai;
+            const model = options.model ?? AiModels.openai.gpt4o;
+
             const cost = calculateAiCost({
-                provider: options.provider,
-                model: options.model,
+                provider,
+                model,
                 inputTokens: usage.promptTokens,
                 outputTokens: usage.completionTokens,
+            });
+
+            this.aiUsageService.record({
+                ...options.usage,
+                type: AiUsageType.TEXT,
+                provider,
+                model,
+                input_tokens: cost.inputTokens,
+                output_tokens: cost.outputTokens,
+                total_tokens: cost.totalTokens,
+                input_cost: cost.inputCost,
+                output_cost: cost.outputCost,
+                total_cost: cost.totalCost,
             });
 
             return {
@@ -70,11 +93,27 @@ export class AiService {
                     system: options?.system || 'You are a helpful assistant.',
                 });
 
+                const provider = options.provider ?? AiProviders.openai;
+                const model = options.model ?? AiModels.openai.gpt4o;
+
                 const cost = calculateAiCost({
-                    provider: options.provider,
-                    model: options.model,
+                    provider,
+                    model,
                     inputTokens: usage.promptTokens,
                     outputTokens: usage.completionTokens,
+                });
+
+                this.aiUsageService.record({
+                    ...options.usage,
+                    type: AiUsageType.TEXT,
+                    provider,
+                    model,
+                    input_tokens: cost.inputTokens,
+                    output_tokens: cost.outputTokens,
+                    total_tokens: cost.totalTokens,
+                    input_cost: cost.inputCost,
+                    output_cost: cost.outputCost,
+                    total_cost: cost.totalCost,
                 });
 
                 return {
@@ -124,6 +163,30 @@ export class AiService {
                 }
                 fullText += chunk;
             }
+
+            const usage = await stream.usage;
+            const provider = options.provider ?? AiProviders.openai;
+            const model = options.model ?? AiModels.openai.gpt4o;
+
+            const cost = calculateAiCost({
+                provider,
+                model,
+                inputTokens: usage.promptTokens,
+                outputTokens: usage.completionTokens,
+            });
+
+            this.aiUsageService.record({
+                ...options.usage,
+                type: AiUsageType.TEXT,
+                provider,
+                model,
+                input_tokens: cost.inputTokens,
+                output_tokens: cost.outputTokens,
+                total_tokens: cost.totalTokens,
+                input_cost: cost.inputCost,
+                output_cost: cost.outputCost,
+                total_cost: cost.totalCost,
+            });
 
             if (options.onComplete) {
                 options.onComplete(fullText);

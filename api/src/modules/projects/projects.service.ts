@@ -13,6 +13,7 @@ import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
 import {
   ActivityLogAction,
   ActivityLogEntityType,
+  AiUsageFeature,
   OrganisationRole,
 } from 'generated/prisma';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -38,7 +39,9 @@ export class ProjectsService {
     private readonly activityLogsService: ActivityLogsService,
   ) {}
 
-  async generateDetails(dto: GenerateProjectDetailsDto) {
+  async generateDetails(userId: string, dto: GenerateProjectDetailsDto) {
+    await this.ownershipService.resolveContext(userId, dto.organisation_id);
+
     const voiceDescription = dto.style_profiles?.length
       ? dto.style_profiles
           .map(
@@ -70,6 +73,11 @@ Existing instructions (build on these, avoid exact duplicates): ${dto.instructio
       system:
         'You are an expert content strategist who plans social media and blog content.',
       temperature: 0.7,
+      usage: {
+        organisation_id: dto.organisation_id,
+        user_id: userId,
+        feature: AiUsageFeature.PROJECT_GENERATE_DETAILS,
+      },
     });
 
     return parseAiJson(response, ProjectAiSuggestionsSchema);

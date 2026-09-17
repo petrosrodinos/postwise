@@ -41,8 +41,11 @@ export class ProjectsController {
     summary: 'Use AI to suggest content pillars, ideas and instructions for a new project',
   })
   @ApiResponse({ status: 201 })
-  generateDetails(@Body() dto: GenerateProjectDetailsDto) {
-    return this.projectsService.generateDetails(dto);
+  generateDetails(
+    @CurrentUser('id') userId: string,
+    @Body() dto: GenerateProjectDetailsDto,
+  ) {
+    return this.projectsService.generateDetails(userId, dto);
   }
 
   @Get()

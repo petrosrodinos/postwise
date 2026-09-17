@@ -13,6 +13,7 @@ import {
   GeneratedImage,
 } from '@/integrations/ai/services/ai-image.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
+import { AiUsageFeature } from 'generated/prisma';
 import { ReviseToolContentDto } from './dto/revise-tool-content.dto';
 import { RepurposeToolContentDto } from './dto/repurpose-tool-content.dto';
 import { GenerateTitleVariationsDto } from './dto/generate-title-variations.dto';
@@ -66,6 +67,11 @@ export class ToolsService {
       preset: dto.preset,
       instructions: dto.instructions,
       styleGuidance: styleGuidance || undefined,
+      usageContext: {
+        organisation_id: dto.organisation_id,
+        user_id: userId,
+        feature: AiUsageFeature.TOOLS_REVISE,
+      },
     });
   }
 
@@ -88,6 +94,11 @@ export class ToolsService {
           body: dto.body,
           excerpt: dto.excerpt,
           styleGuidance: styleGuidance || undefined,
+          usageContext: {
+            organisation_id: dto.organisation_id,
+            user_id: userId,
+            feature: AiUsageFeature.TOOLS_REPURPOSE,
+          },
         }),
       })),
     );
@@ -151,6 +162,11 @@ ${content}`;
       system:
         'You are an expert copywriter who writes punchy, varied title options.',
       temperature: 0.8,
+      usage: {
+        organisation_id: dto.organisation_id,
+        user_id: userId,
+        feature: AiUsageFeature.TOOLS_TITLE_VARIATIONS,
+      },
     });
 
     return parseAiJson(response, TitleVariationsSchema).titles;
@@ -172,6 +188,11 @@ ${content}`;
       prompt,
       system: 'You are an expert SEO copywriter.',
       temperature: 0.5,
+      usage: {
+        organisation_id: dto.organisation_id,
+        user_id: userId,
+        feature: AiUsageFeature.TOOLS_META_TAGS,
+      },
     });
 
     return parseAiJson(response, MetaTagsSchema);
@@ -192,6 +213,11 @@ ${content}`;
       prompt,
       count: dto.count,
       size: dto.size,
+      usage: {
+        organisation_id: dto.organisation_id,
+        user_id: userId,
+        feature: AiUsageFeature.TOOLS_IMAGE,
+      },
     });
   }
 }

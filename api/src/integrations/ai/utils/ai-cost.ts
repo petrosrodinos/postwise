@@ -1,5 +1,5 @@
-import { AiPricing } from './ai-pricing';
-import { AICost, AICostResponse, AiModels, AiProviders } from '../interfaces/ai.interface';
+import { AiImagePricing, AiPricing } from './ai-pricing';
+import { AICost, AICostResponse, AiModels, AiProvider, AiProviders } from '../interfaces/ai.interface';
 
 
 export function calculateAiCost(cost: AICost): AICostResponse {
@@ -33,6 +33,41 @@ export function calculateAiCost(cost: AICost): AICostResponse {
         inputCost,
         outputCost,
         totalCost: inputCost + outputCost,
+    };
+}
+
+export interface AiImageCost {
+    provider?: AiProvider;
+    model: string;
+    size?: string;
+    count: number;
+}
+
+export interface AiImageCostResponse {
+    costPerImage: number;
+    totalCost: number;
+}
+
+export function calculateAiImageCost(cost: AiImageCost): AiImageCostResponse {
+    const { provider, model, size, count } = cost;
+
+    const providerPricing = AiImagePricing[provider ?? AiProviders.openai];
+
+    if (!providerPricing) {
+        throw new Error(`Unknown image provider: ${provider}`);
+    }
+
+    const modelPricing = providerPricing[model];
+
+    if (!modelPricing) {
+        throw new Error(`Unknown image model: ${model} for provider: ${provider}`);
+    }
+
+    const costPerImage = modelPricing[size] ?? modelPricing.default;
+
+    return {
+        costPerImage,
+        totalCost: costPerImage * count,
     };
 }
 

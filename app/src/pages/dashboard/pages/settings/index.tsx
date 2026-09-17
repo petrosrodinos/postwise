@@ -10,6 +10,7 @@ import { OrganisationRoles } from "@/features/organisations/interfaces/organisat
 import { GeneralTab } from "./components/general-tab";
 import { MembersTab } from "./components/members-tab";
 import { ActivityTab } from "./components/activity-tab";
+import { UsageTab } from "./components/usage-tab";
 import { IntegrationsCard } from "@/pages/dashboard/components/integrations-card";
 
 export default function SettingsPage() {
@@ -81,6 +82,7 @@ export default function SettingsPage() {
             {!isMember && <TabsTrigger value="members">Members</TabsTrigger>}
             {!isMember && <TabsTrigger value="integrations">Integrations</TabsTrigger>}
             <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="usage">Usage</TabsTrigger>
           </TabsList>
           {!isMember && (
             <TabsContent value="general">
@@ -99,6 +101,9 @@ export default function SettingsPage() {
           )}
           <TabsContent value="activity">
             <ActivityTab organisationId={organisation.id} />
+          </TabsContent>
+          <TabsContent value="usage">
+            <UsageTab organisationId={organisation.id} />
           </TabsContent>
         </Tabs>
       )}
