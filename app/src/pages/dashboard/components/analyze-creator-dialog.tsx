@@ -379,22 +379,24 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="source_url"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{isBlog ? "RSS feed URL" : `Source URL${isScrapable ? "" : " (optional)"}`}</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={isBlog ? "https://example.com/feed.xml" : isTwitter ? "x.com/username" : "linkedin.com/in/username"}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {isScrapable && (
+                <FormField
+                  control={form.control}
+                  name="source_url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{isBlog ? "RSS feed URL" : "Source URL"}</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={isBlog ? "https://example.com/feed.xml" : isTwitter ? "x.com/username" : "linkedin.com/in/username"}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               {isScrapable ? (
                 <div className="grid gap-2 rounded-lg border border-border p-3">
