@@ -14,9 +14,11 @@ import {
   Link2Off,
   Undo2,
   Redo2,
+  Copy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 interface RichTextEditorProps {
@@ -84,6 +86,13 @@ export function RichTextEditor({ value, onChange, placeholder, className }: Rich
     if (url) editor!.chain().focus().setLink({ href: url }).run();
   }
 
+  function handleCopy() {
+    const text = editor!.getText();
+    if (!text.trim()) return;
+    navigator.clipboard.writeText(text);
+    toast({ title: "Content copied", duration: 1500 });
+  }
+
   return (
     <div className={cn("rounded-md border border-input bg-transparent shadow-sm", className)}>
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border p-1">
@@ -98,56 +107,62 @@ export function RichTextEditor({ value, onChange, placeholder, className }: Rich
           </TabsList>
         </Tabs>
 
-        {mode === "edit" && (
-          <div className="flex flex-wrap items-center gap-0.5">
-            <ToolbarButton active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()} label="Bold">
-              <Bold className="h-3.5 w-3.5" />
-            </ToolbarButton>
-            <ToolbarButton active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()} label="Italic">
-              <Italic className="h-3.5 w-3.5" />
-            </ToolbarButton>
-            <ToolbarButton active={editor.isActive("strike")} onClick={() => editor.chain().focus().toggleStrike().run()} label="Strikethrough">
-              <Strikethrough className="h-3.5 w-3.5" />
-            </ToolbarButton>
-            <ToolbarButton
-              active={editor.isActive("heading", { level: 2 })}
-              onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-              label="Heading"
-            >
-              <Heading2 className="h-3.5 w-3.5" />
-            </ToolbarButton>
-            <ToolbarButton
-              active={editor.isActive("heading", { level: 3 })}
-              onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-              label="Subheading"
-            >
-              <Heading3 className="h-3.5 w-3.5" />
-            </ToolbarButton>
-            <ToolbarButton active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()} label="Bullet list">
-              <List className="h-3.5 w-3.5" />
-            </ToolbarButton>
-            <ToolbarButton
-              active={editor.isActive("orderedList")}
-              onClick={() => editor.chain().focus().toggleOrderedList().run()}
-              label="Numbered list"
-            >
-              <ListOrdered className="h-3.5 w-3.5" />
-            </ToolbarButton>
-            <ToolbarButton active={editor.isActive("blockquote")} onClick={() => editor.chain().focus().toggleBlockquote().run()} label="Quote">
-              <Quote className="h-3.5 w-3.5" />
-            </ToolbarButton>
-            <ToolbarButton active={editor.isActive("link")} onClick={toggleLink} label={editor.isActive("link") ? "Remove link" : "Add link"}>
-              {editor.isActive("link") ? <Link2Off className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
-            </ToolbarButton>
-            <div className="mx-1 h-4 w-px bg-border" />
-            <ToolbarButton onClick={() => editor.chain().focus().undo().run()} label="Undo">
-              <Undo2 className="h-3.5 w-3.5" />
-            </ToolbarButton>
-            <ToolbarButton onClick={() => editor.chain().focus().redo().run()} label="Redo">
-              <Redo2 className="h-3.5 w-3.5" />
-            </ToolbarButton>
-          </div>
-        )}
+        <div className="flex flex-wrap items-center gap-0.5">
+          {mode === "edit" && (
+            <>
+              <ToolbarButton active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()} label="Bold">
+                <Bold className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <ToolbarButton active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()} label="Italic">
+                <Italic className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <ToolbarButton active={editor.isActive("strike")} onClick={() => editor.chain().focus().toggleStrike().run()} label="Strikethrough">
+                <Strikethrough className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <ToolbarButton
+                active={editor.isActive("heading", { level: 2 })}
+                onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                label="Heading"
+              >
+                <Heading2 className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <ToolbarButton
+                active={editor.isActive("heading", { level: 3 })}
+                onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                label="Subheading"
+              >
+                <Heading3 className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <ToolbarButton active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()} label="Bullet list">
+                <List className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <ToolbarButton
+                active={editor.isActive("orderedList")}
+                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                label="Numbered list"
+              >
+                <ListOrdered className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <ToolbarButton active={editor.isActive("blockquote")} onClick={() => editor.chain().focus().toggleBlockquote().run()} label="Quote">
+                <Quote className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <ToolbarButton active={editor.isActive("link")} onClick={toggleLink} label={editor.isActive("link") ? "Remove link" : "Add link"}>
+                {editor.isActive("link") ? <Link2Off className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
+              </ToolbarButton>
+              <div className="mx-1 h-4 w-px bg-border" />
+              <ToolbarButton onClick={() => editor.chain().focus().undo().run()} label="Undo">
+                <Undo2 className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <ToolbarButton onClick={() => editor.chain().focus().redo().run()} label="Redo">
+                <Redo2 className="h-3.5 w-3.5" />
+              </ToolbarButton>
+              <div className="mx-1 h-4 w-px bg-border" />
+            </>
+          )}
+          <ToolbarButton onClick={handleCopy} label="Copy text">
+            <Copy className="h-3.5 w-3.5" />
+          </ToolbarButton>
+        </div>
       </div>
 
       {mode === "edit" ? (
