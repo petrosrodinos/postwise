@@ -26,7 +26,7 @@ export class ScrapePostsDto {
   @ApiProperty({
     required: false,
     description:
-      "Profile/company URL to scrape. Defaults to the style profile's stored source_url.",
+      "Profile/company URL to scrape, or the RSS feed URL for Blog profiles. Defaults to the style profile's stored source_url.",
   })
   @IsOptional()
   @IsUrl()
@@ -35,7 +35,7 @@ export class ScrapePostsDto {
   // LinkedIn-only fields (harvestapi/linkedin-profile-posts)
   @ApiProperty({
     required: false,
-    description: 'LinkedIn: max posts to scrape. Default 20.',
+    description: 'LinkedIn/Blog: max posts to fetch. Default 20.',
     minimum: 1,
     maximum: 50,
   })

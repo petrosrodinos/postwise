@@ -1,9 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { parse } from 'node-html-parser';
 import { z } from 'zod';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { AiService } from '@/integrations/ai/services/ai.service';
 import { LinkedInScraperService } from '@/integrations/apify/linkedin-scraper/services/linkedin-scraper.service';
 import { TwitterScraperService } from '@/integrations/apify/twitter-scraper/services/twitter-scraper.service';
+import { RssService } from '@/integrations/rss/services/rss.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
 import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
@@ -41,6 +43,7 @@ export class StyleProfilesService {
     private readonly aiService: AiService,
     private readonly linkedInScraperService: LinkedInScraperService,
     private readonly twitterScraperService: TwitterScraperService,
+    private readonly rssService: RssService,
     private readonly ownershipService: OwnershipService,
     private readonly activityLogsService: ActivityLogsService,
   ) {}
@@ -260,6 +263,8 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
         return this.scrapeLinkedInPosts(profile, dto);
       case PostType.TWITTER:
         return this.scrapeTwitterPosts(profile, dto);
+      case PostType.BLOG:
+        return this.scrapeBlogPosts(profile, dto);
       default:
         throw new BadRequestException(
           `Scraping is not supported for ${profile.platform} style profiles`,
@@ -329,5 +334,40 @@ ${dto.sample_posts.map((post, i) => `[${i + 1}] ${post}`).join('\n\n')}`;
         likes: post.favouriteCount,
         comments: post.replyCount,
       }));
+  }
+
+  private async scrapeBlogPosts(
+    profile: { id: string; source_url: string | null },
+    dto: ScrapePostsDto,
+  ): Promise<ScrapedPost[]> {
+    const sourceUrl = dto.source_url ?? profile.source_url;
+    if (!sourceUrl) {
+      throw new BadRequestException(
+        'Provide an RSS feed URL to fetch posts from',
+      );
+    }
+
+    const items = await this.rssService.parseFeed(sourceUrl);
+    const maxPosts = dto.max_posts ?? 20;
+
+    return items
+      .slice(0, maxPosts)
+      .map((item, index) => {
+        const text = this.htmlToPlainText(item.content ?? item.summary ?? '');
+        return { item, text, index };
+      })
+      .filter(({ text }) => text.trim().length > 0)
+      .map(({ item, text, index }) => ({
+        id: item.guid || item.link || `${profile.id}-${index}`,
+        url: item.link,
+        text: text.trim(),
+        posted_at: item.published_at?.toISOString(),
+      }));
+  }
+
+  // RSS feed bodies (<content:encoded>/<description>) are HTML; strip markup
+  // so the AI analyzes prose, not tags, when fingerprinting blog style.
+  private htmlToPlainText(html: string): string {
+    return parse(html).textContent.replace(/\s+/g, ' ').trim();
   }
 }

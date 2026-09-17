@@ -50,8 +50,9 @@ export type PostedLimit = "any" | "1h" | "24h" | "week" | "month" | "3months" | 
 
 export interface ScrapePostsDto {
   source_url?: string;
-  // LinkedIn-only
+  // LinkedIn/Blog-only
   max_posts?: number;
+  // LinkedIn-only
   posted_limit?: PostedLimit;
   include_reposts?: boolean;
   include_quote_posts?: boolean;

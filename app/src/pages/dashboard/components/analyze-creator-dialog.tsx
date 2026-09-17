@@ -143,6 +143,21 @@ function TwitterFetchSettingsFields({ settings, onChange }: FetchSettingsFieldsP
   );
 }
 
+function BlogFetchSettingsFields({ settings, onChange }: FetchSettingsFieldsProps) {
+  return (
+    <div className="grid gap-1.5">
+      <label className="text-xs font-medium text-muted-foreground">Articles to fetch</label>
+      <Input
+        type="number"
+        min={1}
+        max={50}
+        value={settings.maxPosts}
+        onChange={(e) => onChange({ ...settings, maxPosts: clamp(Number(e.target.value) || 1, 1, 50) })}
+      />
+    </div>
+  );
+}
+
 export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogProps) {
   const navigate = useNavigate();
   const { mutateAsync: createStyleProfile, isPending: isCreating } = useCreateStyleProfile();
@@ -173,7 +188,8 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
   const platform = form.watch("platform");
   const isLinkedIn = platform === PostTypes.LINKEDIN;
   const isTwitter = platform === PostTypes.TWITTER;
-  const isScrapable = isLinkedIn || isTwitter;
+  const isBlog = platform === PostTypes.BLOG;
+  const isScrapable = isLinkedIn || isTwitter || isBlog;
   const platformLabel = platform ? PLATFORM_META[platform]?.label : undefined;
 
   const visiblePosts = useMemo(
@@ -229,19 +245,26 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
   }
 
   function buildScrapeDto(sourceUrl?: string) {
-    return isLinkedIn
-      ? {
-          source_url: sourceUrl,
-          max_posts: fetchSettings.maxPosts,
-          posted_limit: fetchSettings.postedLimit,
-          include_reposts: fetchSettings.includeReposts,
-          include_quote_posts: fetchSettings.includeQuotePosts,
-        }
-      : {
-          source_url: sourceUrl,
-          results_limit: fetchSettings.resultsLimit,
-          skip_pinned_posts: fetchSettings.skipPinnedPosts,
-        };
+    if (isLinkedIn) {
+      return {
+        source_url: sourceUrl,
+        max_posts: fetchSettings.maxPosts,
+        posted_limit: fetchSettings.postedLimit,
+        include_reposts: fetchSettings.includeReposts,
+        include_quote_posts: fetchSettings.includeQuotePosts,
+      };
+    }
+    if (isBlog) {
+      return {
+        source_url: sourceUrl,
+        max_posts: fetchSettings.maxPosts,
+      };
+    }
+    return {
+      source_url: sourceUrl,
+      results_limit: fetchSettings.resultsLimit,
+      skip_pinned_posts: fetchSettings.skipPinnedPosts,
+    };
   }
 
   async function handleFetchPosts(data: AnalyzeStyleProfileFormData) {
@@ -285,7 +308,9 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
   async function onSubmit(data: AnalyzeStyleProfileFormData) {
     if (isScrapable) {
       if (!data.source_url) {
-        form.setError("source_url", { message: `Enter a ${platformLabel ?? "profile"} URL to fetch posts` });
+        form.setError("source_url", {
+          message: isBlog ? "Enter an RSS feed URL to fetch articles" : `Enter a ${platformLabel ?? "profile"} URL to fetch posts`,
+        });
         return;
       }
       await handleFetchPosts(data);
@@ -317,9 +342,11 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
           <DialogDescription>
             {step === "review"
               ? "Discard anything that doesn't fit, then run the analysis."
-              : isScrapable
-                ? `We'll fetch this creator's recent ${platformLabel} posts for you to review before analyzing.`
-                : "Build a reusable Style DNA profile from a creator's own writing."}
+              : isBlog
+                ? "We'll fetch this blog's recent articles from its RSS feed for you to review before analyzing."
+                : isScrapable
+                  ? `We'll fetch this creator's recent ${platformLabel} posts for you to review before analyzing.`
+                  : "Build a reusable Style DNA profile from a creator's own writing."}
           </DialogDescription>
         </DialogHeader>
 
@@ -357,9 +384,12 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
                 name="source_url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Source URL{isScrapable ? "" : " (optional)"}</FormLabel>
+                    <FormLabel>{isBlog ? "RSS feed URL" : `Source URL${isScrapable ? "" : " (optional)"}`}</FormLabel>
                     <FormControl>
-                      <Input placeholder={isTwitter ? "x.com/username" : "linkedin.com/in/username"} {...field} />
+                      <Input
+                        placeholder={isBlog ? "https://example.com/feed.xml" : isTwitter ? "x.com/username" : "linkedin.com/in/username"}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -371,6 +401,8 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
                   <p className="text-xs font-medium text-muted-foreground">Fetch settings</p>
                   {isLinkedIn ? (
                     <LinkedInFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
+                  ) : isBlog ? (
+                    <BlogFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
                   ) : (
                     <TwitterFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
                   )}
@@ -420,6 +452,8 @@ export function AnalyzeCreatorDialog({ isOpen, onClose }: AnalyzeCreatorDialogPr
               </div>
               {isLinkedIn ? (
                 <LinkedInFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
+              ) : isBlog ? (
+                <BlogFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
               ) : (
                 <TwitterFetchSettingsFields settings={fetchSettings} onChange={setFetchSettings} />
               )}

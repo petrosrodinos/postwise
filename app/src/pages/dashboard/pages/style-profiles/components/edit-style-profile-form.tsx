@@ -60,6 +60,9 @@ export function EditStyleProfileForm({ profile, onCancel, onSaved }: EditStylePr
     defaultValues: buildDefaultValues(profile),
   });
 
+  const platform = form.watch("platform");
+  const isBlog = platform === PostTypes.BLOG;
+
   function handleCancel() {
     if (isPending) return;
     onCancel();
@@ -133,9 +136,9 @@ export function EditStyleProfileForm({ profile, onCancel, onSaved }: EditStylePr
           name="source_url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Source URL</FormLabel>
+              <FormLabel>{isBlog ? "RSS feed URL" : "Source URL"}</FormLabel>
               <FormControl>
-                <Input placeholder="linkedin.com/in/username" {...field} />
+                <Input placeholder={isBlog ? "https://example.com/feed.xml" : "linkedin.com/in/username"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
