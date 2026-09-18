@@ -2,11 +2,13 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { AiService } from '@/integrations/ai/services/ai.service';
+import { GcsService } from '@/integrations/storage/gcs/services/gcs.service';
 import { parseAiJson } from '@/shared/utils/ai/parse-ai-json.util';
 import { ActivityLogsService } from '@/modules/activity-logs/activity-logs.service';
 import { diffFields } from '@/modules/activity-logs/utils/activity-log.utils';
@@ -32,11 +34,14 @@ const MANAGE_ROLES: OrganisationRole[] = [
 
 @Injectable()
 export class ProjectsService {
+  private readonly logger = new Logger(ProjectsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly ownershipService: OwnershipService,
     private readonly aiService: AiService,
     private readonly activityLogsService: ActivityLogsService,
+    private readonly gcsService: GcsService,
   ) {}
 
   async generateDetails(userId: string, dto: GenerateProjectDetailsDto) {
@@ -263,7 +268,53 @@ Existing instructions (build on these, avoid exact duplicates): ${dto.instructio
     const project = await this.findOwned(userId, id);
     await this.assertManage(userId, project);
 
-    await this.prisma.project.delete({ where: { id } });
+    // Documents (generation-run cover images) live in GCS, outside Prisma's
+    // reach — find every one that belongs only to this project's posts
+    // (never shared with a post elsewhere) and delete its GCS object before
+    // touching the database, so we never leave an orphaned blob behind.
+    const orphanedDocuments = await this.prisma.document.findMany({
+      where: {
+        organisation_id: project.organisation_id,
+        AND: [
+          {
+            OR: [
+              { post_attachments: { some: { post: { project_id: id } } } },
+              { cover_of_posts: { some: { project_id: id } } },
+            ],
+          },
+          { post_attachments: { every: { post: { project_id: id } } } },
+          { cover_of_posts: { every: { project_id: id } } },
+        ],
+      },
+      select: { id: true, path: true },
+    });
+
+    await Promise.all(
+      orphanedDocuments.map(async (document) => {
+        try {
+          await this.gcsService.deleteImage({ filename: document.path });
+        } catch (error) {
+          this.logger.warn(
+            `Failed to delete GCS object "${document.path}" for project ${id}: ${error.message}`,
+          );
+        }
+      }),
+    );
+
+    // Posts keep their generation_run/generation_item links via ON DELETE
+    // SET NULL, but Postgres can't apply that when the run/item are being
+    // cascade-deleted in the same statement as the project — unlink first so
+    // the cascade has nothing left to violate.
+    await this.prisma.$transaction([
+      this.prisma.post.updateMany({
+        where: { generation_run: { project_id: id } },
+        data: { generation_run_id: null, generation_item_id: null },
+      }),
+      this.prisma.document.deleteMany({
+        where: { id: { in: orphanedDocuments.map((document) => document.id) } },
+      }),
+      this.prisma.project.delete({ where: { id } }),
+    ]);
 
     this.activityLogsService.log({
       organisation_id: project.organisation_id,

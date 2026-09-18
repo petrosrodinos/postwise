@@ -47,7 +47,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
       className="flex flex-col gap-3.5 rounded-2xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
     >
       <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <PlatformGlyph platform={project.platform} />
+        <div className="flex items-center gap-1">
+          {(project.channels.length ? project.channels : [project.platform]).map((channel) => (
+            <PlatformGlyph key={channel} platform={channel} />
+          ))}
+        </div>
         <span>Updated {formatDistanceToNow(new Date(project.updated_at), { addSuffix: true })}</span>
       </div>
 
