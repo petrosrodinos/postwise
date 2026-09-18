@@ -65,22 +65,12 @@ export default function ProfilePage() {
           <TabsList>
             <TabsTrigger value="personal">Personal info</TabsTrigger>
             <TabsTrigger value="password">Change password</TabsTrigger>
-            <TabsTrigger value="channels">Connected channels</TabsTrigger>
           </TabsList>
           <TabsContent value="personal">
             <PersonalInfoForm user={user} />
           </TabsContent>
           <TabsContent value="password">
             <ChangePasswordForm />
-          </TabsContent>
-          <TabsContent value="channels" className="max-w-lg">
-            <p className="text-sm text-muted-foreground">
-              Channels are managed per organisation from{" "}
-              <Link to={Routes.dashboard.settings} className="font-semibold text-brass-ink hover:underline">
-                Organisation settings
-              </Link>
-              .
-            </p>
           </TabsContent>
         </Tabs>
       )}
