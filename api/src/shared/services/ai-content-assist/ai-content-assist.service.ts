@@ -36,7 +36,9 @@ export const HUMANIZE_INSTRUCTIONS =
   'pattern. Keep em dashes to at most one per 1,000 words. Vary sentence and paragraph length ' +
   'instead of a uniform rhythm, avoid compulsive rule-of-three lists, and prefer concrete ' +
   'specifics (numbers, names, examples) over vague superlatives. Use contractions and a ' +
-  'distinct, direct voice. Keep the meaning, facts and key points unchanged. Apply all of this ' +
+  'distinct, direct voice. Keep the meaning, facts and key points unchanged. This is a rewrite, ' +
+  'NOT a summary: keep every paragraph, argument, example, citation, name, number and ' +
+  'heading, and keep the output about as long as the input (within roughly 10%). Apply all of this ' +
   'to every field and to the entire body from the first sentence to the last, not just the ' +
   'opening. Keep the same language as the rest of the content: do not translate, and adapt ' +
   'these English examples of AI-tell words to their natural equivalents in that language.';
@@ -104,6 +106,39 @@ export interface RepurposeContentParams {
   usageContext: AiUsageContext;
 }
 
+// Presets that must keep the text's length and coverage. Long inputs are
+// revised chunk by chunk (in parallel) for these: a single call over a long
+// document tends to condense it into a summary instead of rewriting all of it.
+const LENGTH_PRESERVING_PRESETS = new Set<RevisePreset>([
+  RevisePreset.HUMANIZE,
+  RevisePreset.FIX_GRAMMAR,
+  RevisePreset.FRIENDLIER,
+  RevisePreset.MORE_FORMAL,
+  RevisePreset.LESS_FORMAL,
+  RevisePreset.SIMPLIFY,
+]);
+const CHUNK_THRESHOLD_CHARS = 3000;
+const CHUNK_TARGET_CHARS = 2500;
+
+// Splits on paragraph boundaries (HTML block ends, or line breaks for plain
+// text) and packs them into chunks of roughly CHUNK_TARGET_CHARS.
+function splitIntoChunks(body: string, isHtml: boolean): string[] {
+  const units = isHtml
+    ? body.split(/(?<=<\/(?:p|h2|h3|ul|ol|blockquote)>)/i)
+    : body.split(/(?<=\n)/);
+  const chunks: string[] = [];
+  let current = '';
+  for (const unit of units) {
+    if (current && current.length + unit.length > CHUNK_TARGET_CHARS) {
+      chunks.push(current);
+      current = '';
+    }
+    current += unit;
+  }
+  if (current.trim()) chunks.push(current);
+  return chunks;
+}
+
 // Revise/repurpose prompt-building and AI calls shared by anything that
 // edits post-shaped content (currently the persisted `posts` module and the
 // stateless `tools` module) — this service only turns content +
@@ -131,6 +166,18 @@ export class AiContentAssistService {
       ? ' "body" must be simple HTML using only <p>, <h2>, <h3>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a> tags — no other markup.'
       : '';
 
+    const body = params.body ?? '';
+    if (
+      params.preset &&
+      LENGTH_PRESERVING_PRESETS.has(params.preset) &&
+      body.length > CHUNK_THRESHOLD_CHARS
+    ) {
+      const chunks = splitIntoChunks(body, isLongForm);
+      if (chunks.length > 1) {
+        return this.reviseInChunks(params, chunks, directions, isLongForm);
+      }
+    }
+
     const prompt = `Revise the following ${params.type} post. ${directions}
 
 Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${bodyFormatGuidance} Preserve the author's core message and intent.
@@ -147,6 +194,60 @@ ${params.body ?? ''}`;
     });
 
     return parseAiJson(response, ReviseDraftSchema);
+  }
+
+  private async reviseInChunks(
+    params: ReviseContentParams,
+    chunks: string[],
+    directions: string,
+    isLongForm: boolean,
+  ): Promise<ReviseDraft> {
+    const system = `You are an expert editor who revises social media and blog content on request. ${SAME_LANGUAGE_RULE}`;
+    const htmlGuidance = isLongForm
+      ? ' Keep the passage as simple HTML using only <p>, <h2>, <h3>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a> tags.'
+      : ' Keep it plain text with the same line breaks.';
+
+    const revised = await Promise.all(
+      chunks.map(async (chunk, index) => {
+        const isFirst = index === 0;
+        const header = isFirst
+          ? isLongForm
+            ? `Also revise the title and excerpt. Current title: ${params.title ?? 'n/a'}
+Current excerpt: ${params.excerpt ?? 'n/a'}
+`
+            : params.hook
+              ? `Also revise the hook. Current hook: ${params.hook}
+`
+              : ''
+          : '';
+        const shape = isFirst
+          ? isLongForm
+            ? '{ "title": string, "excerpt": string, "body": string }'
+            : '{ "hook": string, "body": string }'
+          : '{ "body": string }';
+
+        const { response } = await this.aiService.generateText({
+          prompt: `Revise the following ${params.type} content. ${directions}
+
+This is part ${index + 1} of ${chunks.length} of one longer document. Revise ONLY this part, completely, from its first word to its last: do not summarise, condense, skip or drop anything (keep every sentence's ideas, examples, citations, names and numbers) and keep it about the same length as the original. Do not add an introduction or conclusion, and do not repeat content from other parts.${htmlGuidance}
+
+Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.
+
+${header}Part ${index + 1} body:
+${chunk}`,
+          system,
+          temperature: 0.6,
+          usage: params.usageContext,
+        });
+        return parseAiJson(response, ReviseDraftSchema);
+      }),
+    );
+
+    const separator = isLongForm ? '' : '\n';
+    return {
+      ...revised[0],
+      body: revised.map((r) => r.body.trim()).join(separator),
+    };
   }
 
   async repurposeContent(
