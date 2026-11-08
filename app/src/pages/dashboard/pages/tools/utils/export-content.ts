@@ -149,3 +149,29 @@ export function exportContent(content: ExportableContent, format: ExportFormat) 
     printAsPdf(toHtmlDocument(content));
   }
 }
+
+// Converts a body between the plain-text shape (Twitter/LinkedIn) and the
+// rich-HTML shape (Blog/Email) so switching channels never loses content.
+export function plainTextToHtml(text: string): string {
+  if (!text.trim()) return "";
+  return plainToHtml(text.trim());
+}
+
+export function htmlToPlainText(html: string): string {
+  if (!html.trim()) return "";
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const blocks = Array.from(doc.body.children);
+  if (!blocks.length) return (doc.body.textContent ?? "").trim();
+  return blocks
+    .map((el) => {
+      const tag = el.tagName.toLowerCase();
+      if (tag === "ul" || tag === "ol") {
+        return Array.from(el.children)
+          .map((li, i) => `${tag === "ol" ? `${i + 1}.` : "-"} ${(li.textContent ?? "").trim()}`)
+          .join("\n");
+      }
+      return (el.textContent ?? "").trim();
+    })
+    .filter(Boolean)
+    .join("\n\n");
+}

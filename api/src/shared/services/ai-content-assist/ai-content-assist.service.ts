@@ -31,7 +31,7 @@ export const HUMANIZE_INSTRUCTIONS =
   'delve, leverage, robust, seamless, testament to, underscores, meticulous, game-changer, ' +
   'cutting-edge, comprehensive, pivotal, and metaphors like landscape/realm/tapestry. Do not ' +
   'stack words like harness, elevate, unleash, streamline, empower, crucial or myriad together ' +
-  'in one paragraph. Cut hedging and hollow intensifiers ("it\'s important to note", "to be ' +
+  'in one paragraph. Rephrase hedging and hollow intensifiers ("it\'s important to note", "to be ' +
   'honest", "genuinely", "truly", "worth checking out") and the "it\'s not X — it\'s Y" reveal ' +
   'pattern. Keep em dashes to at most one per 1,000 words. Vary sentence and paragraph length ' +
   'instead of a uniform rhythm, avoid compulsive rule-of-three lists, and prefer concrete ' +
@@ -117,8 +117,13 @@ const LENGTH_PRESERVING_PRESETS = new Set<RevisePreset>([
   RevisePreset.LESS_FORMAL,
   RevisePreset.SIMPLIFY,
 ]);
-const CHUNK_THRESHOLD_CHARS = 3000;
-const CHUNK_TARGET_CHARS = 2500;
+const CHUNK_THRESHOLD_CHARS = 1200;
+const CHUNK_TARGET_CHARS = 1000;
+const MIN_LENGTH_RATIO = 0.9;
+const MAX_LENGTH_ATTEMPTS = 3;
+
+const visibleLength = (text: string) =>
+  Math.max(text.replace(/<[^>]*>/g, '').trim().length, 1);
 
 // Splits on paragraph boundaries (HTML block ends, or line breaks for plain
 // text) and packs them into chunks of roughly CHUNK_TARGET_CHARS.
@@ -226,20 +231,35 @@ Current excerpt: ${params.excerpt ?? 'n/a'}
             : '{ "hook": string, "body": string }'
           : '{ "body": string }';
 
-        const { response } = await this.aiService.generateText({
-          prompt: `Revise the following ${params.type} content. ${directions}
+        const originalLength = visibleLength(chunk);
+        let best: ReviseDraft | null = null;
+        let feedback = '';
 
-This is part ${index + 1} of ${chunks.length} of one longer document. Revise ONLY this part, completely, from its first word to its last: do not summarise, condense, skip or drop anything (keep every sentence's ideas, examples, citations, names and numbers) and keep it about the same length as the original. Do not add an introduction or conclusion, and do not repeat content from other parts.${htmlGuidance}
+        // The model likes to condense even when told not to, so the result is
+        // measured and retried with explicit feedback until it's long enough.
+        for (let attempt = 0; attempt < MAX_LENGTH_ATTEMPTS; attempt++) {
+          const { response } = await this.aiService.generateText({
+            prompt: `Revise the following ${params.type} content. ${directions}
+
+This is part ${index + 1} of ${chunks.length} of one longer document. This is a sentence-by-sentence rewrite, NOT a summary: every sentence of the original must have a rewritten counterpart in your output, in the same order. Do not merge sentences away, skip, condense or drop anything — keep every idea, example, list item, heading, citation, name and number. The output must be at least ${Math.round(MIN_LENGTH_RATIO * 100)}% as long as the original (the original is ${originalLength} characters). Do not add an introduction or conclusion, and do not repeat content from other parts.${htmlGuidance}${feedback}
 
 Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.
 
 ${header}Part ${index + 1} body:
 ${chunk}`,
-          system,
-          temperature: 0.6,
-          usage: params.usageContext,
-        });
-        return parseAiJson(response, ReviseDraftSchema);
+            system,
+            temperature: 0.4,
+            usage: params.usageContext,
+          });
+          const draft = parseAiJson(response, ReviseDraftSchema);
+          if (!best || visibleLength(draft.body) > visibleLength(best.body)) {
+            best = draft;
+          }
+          const ratio = visibleLength(draft.body) / originalLength;
+          if (ratio >= MIN_LENGTH_RATIO) break;
+          feedback = ` WARNING: your previous attempt was only ${Math.round(ratio * 100)}% of the original length, so you dropped content. Redo it and rewrite EVERY sentence of the original this time.`;
+        }
+        return best!;
       }),
     );
 

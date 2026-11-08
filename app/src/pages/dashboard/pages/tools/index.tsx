@@ -18,7 +18,10 @@ import { TitleVariationsPanel } from "./components/title-variations-panel";
 import { MetaTagsPanel } from "./components/meta-tags-panel";
 import { ImagesPanel } from "./components/images-panel";
 import { FormatPanel } from "./components/format-panel";
+import { htmlToPlainText, plainTextToHtml } from "./utils/export-content";
 import { ExportMenu } from "./components/export-menu";
+import { ChangePreview } from "./components/change-preview";
+import { countWords } from "./utils/count-words";
 
 const NONE_STYLE_PROFILE = "none";
 
@@ -42,8 +45,17 @@ export default function ToolsPage() {
 
   const isLongForm = draft.type === ToolContentTypes.BLOG || draft.type === ToolContentTypes.EMAIL;
 
+  // AI tools that rewrite the body don't overwrite the draft directly: the
+  // result is parked here and shown next to the original (before/after)
+  // until the user applies or discards it.
+  const [pending, setPending] = useState<{ label: string; before: typeof draft; after: typeof draft } | null>(null);
+
+  function proposeChange(label: string, makeNext: (current: typeof draft) => typeof draft) {
+    setPending({ label, before: draft, after: makeNext(draft) });
+  }
+
   function handleRevised(revised: RevisedPostDraft) {
-    setDraft((d) => ({
+    proposeChange("AI edit", (d) => ({
       ...d,
       body: revised.body,
       ...(isLongForm
@@ -53,7 +65,7 @@ export default function ToolsPage() {
   }
 
   function handleRepurposed(targetType: ToolContentType, repurposed: RepurposedContentDraft) {
-    setDraft((d) => ({
+    proposeChange("Repurpose", (d) => ({
       ...d,
       type: targetType,
       body: repurposed.body,
@@ -63,21 +75,27 @@ export default function ToolsPage() {
     }));
   }
 
+  function handleFormatted(body: string) {
+    proposeChange("Format", (d) => ({ ...d, body, hook: isLongForm ? d.hook : "" }));
+  }
+
   function handleMetaTagsApplied(applied: MetaTagsDraft) {
     setDraft((d) => ({ ...d, seo_title: applied.seo_title, seo_description: applied.seo_description }));
   }
 
-  // Blog/Email store `body` as rich HTML while Twitter/X store it as plain
-  // text — carrying either one across that boundary unchanged would leak
-  // raw HTML tags into the plain textarea (or plain text into the rich
-  // editor), so content resets when the picker crosses it. Switching within
-  // a shape (Blog <-> Email, or LinkedIn <-> Twitter) keeps everything.
+  // Blog/Email store `body` as rich HTML while Twitter/LinkedIn store it as
+  // plain text, so crossing that boundary converts the body (instead of
+  // clearing it) and keeps every field: title/excerpt and hook are carried
+  // over rather than dropped.
   function handleContentTypeChange(type: ToolContentType) {
     setDraft((d) => {
       const wasLongForm = d.type === ToolContentTypes.BLOG || d.type === ToolContentTypes.EMAIL;
       const isLongFormNow = type === ToolContentTypes.BLOG || type === ToolContentTypes.EMAIL;
       if (wasLongForm === isLongFormNow) return { ...d, type };
-      return { ...d, type, title: "", hook: "", excerpt: "", body: "" };
+      if (isLongFormNow) {
+        return { ...d, type, body: plainTextToHtml(d.body), title: d.title || d.hook };
+      }
+      return { ...d, type, body: htmlToPlainText(d.body), hook: d.hook || d.title };
     });
   }
 
@@ -147,7 +165,12 @@ export default function ToolsPage() {
 
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase text-muted-foreground">Body</span>
+            <span className="text-xs font-semibold uppercase text-muted-foreground">
+              Body
+              <span className="ml-2 font-normal normal-case tabular-nums">
+                {countWords(draft.body, isLongForm)} words
+              </span>
+            </span>
             <ExportMenu content={{ ...draft, isLongForm }} />
           </div>
           {isLongForm ? (
@@ -166,6 +189,20 @@ export default function ToolsPage() {
             />
           )}
         </div>
+
+        {pending && (
+          <ChangePreview
+            label={pending.label}
+            before={pending.before}
+            after={pending.after}
+            onAfterChange={(after) => setPending((p) => (p ? { ...p, after } : p))}
+            onAccept={() => {
+              setDraft(pending.after);
+              setPending(null);
+            }}
+            onDiscard={() => setPending(null)}
+          />
+        )}
 
         {(draft.seo_title || draft.seo_description) && (
           <div className="flex flex-col gap-2 border-t border-border pt-3">
@@ -211,13 +248,7 @@ export default function ToolsPage() {
             />
           </TabsContent>
           <TabsContent value="format">
-            <FormatPanel
-              type={draft.type}
-              hook={draft.hook}
-              body={draft.body}
-              onApply={(body) => setDraft((d) => ({ ...d, body, hook: "" }))}
-              onRestore={(hook, body) => setDraft((d) => ({ ...d, hook, body }))}
-            />
+            <FormatPanel type={draft.type} hook={draft.hook} body={draft.body} onApply={handleFormatted} />
           </TabsContent>
           <TabsContent value="meta">
             <MetaTagsPanel
