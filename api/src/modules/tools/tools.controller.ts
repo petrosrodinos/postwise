@@ -12,6 +12,7 @@ import { ReviseToolContentDto } from './dto/revise-tool-content.dto';
 import { RepurposeToolContentDto } from './dto/repurpose-tool-content.dto';
 import { GenerateTitleVariationsDto } from './dto/generate-title-variations.dto';
 import { GenerateMetaTagsDto } from './dto/generate-meta-tags.dto';
+import { FormatToolContentDto } from './dto/format-tool-content.dto';
 import { GenerateToolImagesDto } from './dto/generate-tool-images.dto';
 
 // Stateless AI writing tools for the standalone Tools page. Every endpoint
@@ -65,6 +66,19 @@ export class ToolsController {
     @Body() dto: GenerateMetaTagsDto,
   ) {
     return this.toolsService.generateMetaTags(userId, dto);
+  }
+
+  @Post('format')
+  @ApiOperation({
+    summary:
+      'Use AI to structure the given content with headings, paragraphs and lists without changing its wording',
+  })
+  @ApiResponse({ status: 201 })
+  formatContent(
+    @CurrentUser('id') userId: string,
+    @Body() dto: FormatToolContentDto,
+  ) {
+    return this.toolsService.formatContent(userId, dto);
   }
 
   @Post('images')

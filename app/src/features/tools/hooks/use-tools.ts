@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { useWorkspaceStore } from "@/stores/workspace";
 import {
+  formatToolContent,
   generateMetaTags,
   generateTitleVariations,
   generateToolImages,
@@ -9,6 +10,7 @@ import {
   reviseToolContent,
 } from "../services/tools.services";
 import type {
+  FormatToolContentDto,
   GenerateMetaTagsDto,
   GenerateTitleVariationsDto,
   GenerateToolImagesDto,
@@ -76,6 +78,18 @@ export const useGenerateToolImages = () => {
       generateToolImages({ ...dto, organisation_id: activeOrganisationId! }),
     onError: (error: Error) => {
       toast({ title: "Could not generate images", description: error.message, variant: "error" });
+    },
+  });
+};
+
+export const useFormatToolContent = () => {
+  const activeOrganisationId = useWorkspaceStore((state) => state.active_organisation_id);
+
+  return useMutation({
+    mutationFn: (dto: Omit<FormatToolContentDto, "organisation_id">) =>
+      formatToolContent({ ...dto, organisation_id: activeOrganisationId! }),
+    onError: (error: Error) => {
+      toast({ title: "Could not format content", description: error.message, variant: "error" });
     },
   });
 };

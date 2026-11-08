@@ -3,6 +3,8 @@ import { ApiRoutes } from "@/config/api/routes";
 import { getApiErrorMessage } from "@/lib/api-error.utils";
 import type { RevisedPostDraft } from "@/features/posts/interfaces/posts.interfaces";
 import type {
+  FormatToolContentDto,
+  FormattedContentDraft,
   GenerateMetaTagsDto,
   GenerateTitleVariationsDto,
   GenerateToolImagesDto,
@@ -55,5 +57,14 @@ export const generateToolImages = async (dto: GenerateToolImagesDto): Promise<Ge
     return response.data;
   } catch (error) {
     throw new Error(getApiErrorMessage(error, "Failed to generate images. Please try again."));
+  }
+};
+
+export const formatToolContent = async (dto: FormatToolContentDto): Promise<FormattedContentDraft> => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.tools.format, dto);
+    return response.data;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "Failed to format content. Please try again."));
   }
 };

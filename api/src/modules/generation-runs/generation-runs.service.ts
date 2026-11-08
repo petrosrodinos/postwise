@@ -102,7 +102,7 @@ export class GenerationRunsService {
       })
       .join('\n');
 
-    return `Generate ${postsRequested} distinct post ideas for the following project. Write each idea once for every one of these channels: ${channels.join(', ')} — keep the same underlying idea across channels but tailor it to each channel's conventions: BLOG should be a fuller, well-structured article with its own SEO title/description; TWITTER should be concise and punchy; LINKEDIN should be more narrative and professional; INSTAGRAM should read like a caption — a short, evocative hook followed by a brief story or tip, ending with a few relevant hashtags. Return ONLY a raw JSON array (no markdown) of ${postsRequested} objects, each shaped exactly like ${shape}. Write every field in ${languageName}.
+    return `Generate ${postsRequested} distinct post ideas for the following project. Write each idea once for every one of these channels: ${channels.join(', ')} — keep the same underlying idea across channels but tailor it to each channel's conventions: BLOG should be a fuller, well-structured article with its own SEO title/description; TWITTER should be concise and punchy; LINKEDIN should be more narrative and professional; INSTAGRAM should read like a caption — a short, evocative hook followed by a brief story or tip, ending with a few relevant hashtags. Return ONLY a raw JSON array (no markdown) of ${postsRequested} objects, each shaped exactly like ${shape}. Write every field in ${languageName}, and write each channel's body in full, start to finish, not as an outline or summary.
 
 Project title: ${project.title}
 Project description: ${project.description ?? 'n/a'}
@@ -124,7 +124,7 @@ ${voiceGuidance}${project.humanize_by_default ? `\n${HUMANIZE_INSTRUCTIONS}` : '
       GENERATION_LANGUAGES[DEFAULT_GENERATION_LANGUAGE];
     const sourceText = item.content || item.summary || 'n/a';
 
-    return `Write a full, original BLOG post inspired by the following source article. Do not copy it verbatim — rewrite and expand on it in your own words. Return ONLY a raw JSON object (no markdown) shaped exactly like { "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }. Write every field in ${languageName}. "body" must be simple HTML using only <p>, <h2>, <h3>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a> tags — no other markup. "seo_title" should be a search-optimized title (ideally under 60 characters) and "seo_description" a compelling meta description (ideally under 160 characters).
+    return `Write a full, original BLOG post inspired by the following source article. Do not copy it verbatim — rewrite and expand on it in your own words. Return ONLY a raw JSON object (no markdown) shaped exactly like { "title": string, "excerpt": string, "body": string, "seo_title": string, "seo_description": string }. Write every field in ${languageName}. Cover the full source article, not only its opening. "body" must be simple HTML using only <p>, <h2>, <h3>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a> tags — no other markup. "seo_title" should be a search-optimized title (ideally under 60 characters) and "seo_description" a compelling meta description (ideally under 160 characters).
 
 Source title: ${item.title}
 Source URL: ${item.link ?? 'n/a'}

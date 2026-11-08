@@ -68,6 +68,7 @@ export const ApiRoutes = {
         repurpose: "/tools/repurpose",
         title_variations: "/tools/title-variations",
         meta_tags: "/tools/meta-tags",
+        format: "/tools/format",
         images: "/tools/images",
     },
     generation_runs: {

@@ -17,6 +17,8 @@ import { ToolsAiAssistPanel } from "./components/tools-ai-assist-panel";
 import { TitleVariationsPanel } from "./components/title-variations-panel";
 import { MetaTagsPanel } from "./components/meta-tags-panel";
 import { ImagesPanel } from "./components/images-panel";
+import { FormatPanel } from "./components/format-panel";
+import { ExportMenu } from "./components/export-menu";
 
 const NONE_STYLE_PROFILE = "none";
 
@@ -144,7 +146,10 @@ export default function ToolsPage() {
         )}
 
         <div className="flex flex-col gap-1.5">
-          <span className="text-xs font-semibold uppercase text-muted-foreground">Body</span>
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase text-muted-foreground">Body</span>
+            <ExportMenu content={{ ...draft, isLongForm }} />
+          </div>
           {isLongForm ? (
             <RichTextEditor
               value={draft.body}
@@ -191,6 +196,7 @@ export default function ToolsPage() {
         <Tabs defaultValue="titles">
           <TabsList>
             <TabsTrigger value="titles">Title variations</TabsTrigger>
+            <TabsTrigger value="format">Format</TabsTrigger>
             <TabsTrigger value="meta">Meta tags</TabsTrigger>
             <TabsTrigger value="images">Images</TabsTrigger>
           </TabsList>
@@ -202,6 +208,15 @@ export default function ToolsPage() {
               body={draft.body}
               styleProfileId={draft.style_profile_id || undefined}
               onApply={(title) => setDraft((d) => ({ ...d, title }))}
+            />
+          </TabsContent>
+          <TabsContent value="format">
+            <FormatPanel
+              type={draft.type}
+              hook={draft.hook}
+              body={draft.body}
+              onApply={(body) => setDraft((d) => ({ ...d, body, hook: "" }))}
+              onRestore={(hook, body) => setDraft((d) => ({ ...d, hook, body }))}
             />
           </TabsContent>
           <TabsContent value="meta">

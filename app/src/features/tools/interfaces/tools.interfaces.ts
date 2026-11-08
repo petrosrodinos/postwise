@@ -54,6 +54,14 @@ export interface GenerateTitleVariationsDto extends ToolContent {
 
 export type GenerateMetaTagsDto = ToolContent;
 
+export interface FormatToolContentDto extends ToolContent {
+  instructions?: string;
+}
+
+export interface FormattedContentDraft {
+  body: string;
+}
+
 export interface MetaTagsDraft {
   seo_title: string;
   seo_description: string;

@@ -36,7 +36,25 @@ export const HUMANIZE_INSTRUCTIONS =
   'pattern. Keep em dashes to at most one per 1,000 words. Vary sentence and paragraph length ' +
   'instead of a uniform rhythm, avoid compulsive rule-of-three lists, and prefer concrete ' +
   'specifics (numbers, names, examples) over vague superlatives. Use contractions and a ' +
-  'distinct, direct voice. Keep the meaning, facts and key points unchanged.';
+  'distinct, direct voice. Keep the meaning, facts and key points unchanged. Apply all of this ' +
+  'to every field and to the entire body from the first sentence to the last, not just the ' +
+  'opening. Keep the same language as the rest of the content: do not translate, and adapt ' +
+  'these English examples of AI-tell words to their natural equivalents in that language.';
+
+// Appended to every prompt/system message in the AI tools so output stays in
+// the language of the user's text (models otherwise drift to English because
+// the instructions themselves are written in English).
+export const SAME_LANGUAGE_RULE =
+  'IMPORTANT: Detect the language of the provided content and write your entire ' +
+  'output (every field, including titles, excerpts and SEO text) in that exact same ' +
+  'language. Never translate it or switch to English, even though these instructions ' +
+  'are in English. If the content mixes languages, keep each part in its original language.';
+
+// Stops the model from only rewriting the opening or summarising the rest.
+export const FULL_CONTENT_RULE =
+  'Process the ENTIRE content from the first word to the last: every paragraph, list item ' +
+  'and section must be present in the output. Do not skip, truncate, summarise or merge ' +
+  'sections unless the instructions explicitly ask you to shorten it.';
 
 const REVISE_PRESET_INSTRUCTIONS: Record<RevisePreset, string> = {
   [RevisePreset.FRIENDLIER]:
@@ -123,7 +141,7 @@ ${params.body ?? ''}`;
     const { response } = await this.aiService.generateText({
       prompt,
       system:
-        'You are an expert editor who revises social media and blog content on request.',
+        `You are an expert editor who revises social media and blog content on request. ${SAME_LANGUAGE_RULE}`,
       temperature: 0.6,
       usage: params.usageContext,
     });
@@ -134,7 +152,7 @@ ${params.body ?? ''}`;
   async repurposeContent(
     params: RepurposeContentParams,
   ): Promise<RepurposeDraft> {
-    const source = [params.title, params.hook, params.body]
+    const source = [params.title, params.hook, params.excerpt, params.body]
       .filter(Boolean)
       .join('\n\n');
 
@@ -159,7 +177,7 @@ ${params.body ?? ''}`;
 
     const { response } = await this.aiService.generateText({
       prompt: `Repurpose the following content into a single ${params.targetType} post. Return ONLY a raw JSON object (no markdown) shaped exactly like ${shape}.${seoGuidance}${bodyFormatGuidance}${voiceGuidance}\n\nSource content:\n${source}`,
-      system: 'You are an expert content repurposing assistant.',
+      system: `You are an expert content repurposing assistant. ${SAME_LANGUAGE_RULE}`,
       temperature: 0.7,
       usage: params.usageContext,
     });

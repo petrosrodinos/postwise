@@ -5,6 +5,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { SAME_LANGUAGE_RULE } from '@/shared/services/ai-content-assist/ai-content-assist.service';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { OwnershipService } from '@/shared/services/ownership/ownership.service';
 import { AiService } from '@/integrations/ai/services/ai.service';
@@ -76,7 +77,7 @@ Existing instructions (build on these, avoid exact duplicates): ${dto.instructio
     const { response } = await this.aiService.generateText({
       prompt,
       system:
-        'You are an expert content strategist who plans social media and blog content.',
+        `You are an expert content strategist who plans social media and blog content. ${SAME_LANGUAGE_RULE}`,
       temperature: 0.7,
       usage: {
         organisation_id: dto.organisation_id,
