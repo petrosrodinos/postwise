@@ -20,7 +20,7 @@ import { ImagesPanel } from "./components/images-panel";
 import { FormatPanel } from "./components/format-panel";
 import { htmlToPlainText, plainTextToHtml } from "./utils/export-content";
 import { ExportMenu } from "./components/export-menu";
-import { ChangePreview } from "./components/change-preview";
+import { AiResultPanel } from "./components/change-preview";
 import { countWords } from "./utils/count-words";
 
 const NONE_STYLE_PROFILE = "none";
@@ -163,10 +163,11 @@ export default function ToolsPage() {
           </div>
         )}
 
-        <div className="flex flex-col gap-1.5">
+        <div className={pending ? "grid gap-4 md:grid-cols-2" : undefined}>
+        <div className="flex min-w-0 flex-col gap-1.5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase text-muted-foreground">
-              Body
+              {pending ? "Before: Body" : "Body"}
               <span className="ml-2 font-normal normal-case tabular-nums">
                 {countWords(draft.body, isLongForm)} words
               </span>
@@ -189,11 +190,10 @@ export default function ToolsPage() {
             />
           )}
         </div>
-
         {pending && (
-          <ChangePreview
-            label={pending.label}
-            before={pending.before}
+          <AiResultPanel
+            label={`After: ${pending.label}`}
+            current={draft}
             after={pending.after}
             onAfterChange={(after) => setPending((p) => (p ? { ...p, after } : p))}
             onAccept={() => {
@@ -203,6 +203,7 @@ export default function ToolsPage() {
             onDiscard={() => setPending(null)}
           />
         )}
+        </div>
 
         {(draft.seo_title || draft.seo_description) && (
           <div className="flex flex-col gap-2 border-t border-border pt-3">
