@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { z } from 'zod';
 import { AiService } from '@/integrations/ai/services/ai.service';
 import { AiUsageContext } from '@/integrations/ai/interfaces/ai.interface';
@@ -130,7 +130,9 @@ const visibleLength = (text: string) =>
 function splitIntoChunks(body: string, isHtml: boolean): string[] {
   const units = isHtml
     ? body.split(/(?<=<\/(?:p|h2|h3|ul|ol|blockquote)>)/i)
-    : body.split(/(?<=\n)/);
+    : // Sentence ends, not line breaks: pasted text is often hard-wrapped
+      // mid-sentence, and cutting there makes chunks start/end mid-sentence.
+      body.split(/(?<=[.!?]\s)/);
   const chunks: string[] = [];
   let current = '';
   for (const unit of units) {
@@ -150,6 +152,8 @@ function splitIntoChunks(body: string, isHtml: boolean): string[] {
 // instructions into a draft; the caller decides what to do with it.
 @Injectable()
 export class AiContentAssistService {
+  private readonly logger = new Logger(AiContentAssistService.name);
+
   constructor(private readonly aiService: AiService) {}
 
   async reviseContent(params: ReviseContentParams): Promise<ReviseDraft> {
@@ -263,11 +267,23 @@ ${chunk}`,
       }),
     );
 
-    const separator = isLongForm ? '' : '\n';
-    return {
-      ...revised[0],
-      body: revised.map((r) => r.body.trim()).join(separator),
-    };
+    // Re-attach each chunk's original trailing whitespace (paragraph break,
+    // line break or space) so the rewritten text keeps its layout.
+    const body = revised
+      .map((r, i) => {
+        if (isLongForm) return r.body.trim();
+        const trailing = chunks[i].match(/\s*$/)?.[0] || ' ';
+        return r.body.trim() + (i < revised.length - 1 ? trailing : '');
+      })
+      .join('');
+
+    this.logger.log(
+      `Chunked revise (${params.preset}): ${chunks.length} chunks, ${visibleLength(
+        params.body ?? '',
+      )} -> ${visibleLength(body)} chars`,
+    );
+
+    return { ...revised[0], body };
   }
 
   async repurposeContent(
